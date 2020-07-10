@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% block head %}
+    <link rel="stylesheet" href="/ynfinite-install/css/install.css"/>
+    <title>{% block title %}{% endblock %} - Ynfinite CMS</title>
+
+  {% endblock %}
+</head>
+<body>
+<div class="content">{% block content %}{% endblock %}</div>
+<div class="footer">
+  {% block footer %}
+    <p>&copy; Copyright 2019 by <a href="https://www.ynfinite.com/" target="_blank">ynfinite Solutions</a>.</p>
+
+  {% endblock %}
+</div>
+<script src="/ynfinite-install/js/install.js"></script>
+</body>
+</html>

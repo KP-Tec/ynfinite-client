@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  phpfrontend:
+    build:
+      context: ../../
+      dockerfile: demo/development/Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - ${APP_PATH}:/var/www
+    networks:
+      - ynfinite
+
+networks:
+  ynfinite:
+    external:
+      name: ${COMPOSE_PROJECT_NAME}_ynfinite
