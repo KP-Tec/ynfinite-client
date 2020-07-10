@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="theme-color" content="#fff">
+    {% block head %}
+        {% include 'yn/layout/head.twig' %}
+    {% endblock %}
+
+
+</head>
+<body class="{{ _ynfinite.page.css_classes }} {{ useragent }}" id="{{ _ynfinite.page.css_id }}">
+
+{% block header %}
+    {% if templateList['header'] %}
+        {{ include(templateList['header'], {template: _templates["header"]}) }}
+    {% endif %}
+{% endblock header %}
+
+{% block body %}
+
+    {% for section in _ynfinite.sections %}
+        {{ include(templateList[section.template], {section: section, template: _templates[section.template]}) }}
+    {% endfor %}
+
+{% endblock body %}
+{% block footer %}
+    {% if templateList['footer'] %}
+        {{ include(templateList["footer"], {template: _templates["footer"]}) }}
+    {% endif %}
+{% endblock footer %}
+
+{% block footer_scripts %}
+    <script language="javascript" type="text/javascript" src="src/yn/web/js/app.js"></script>
+{% endblock footer_scripts %}
+</body>
+</html>

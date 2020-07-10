@@ -1,0 +1,15 @@
+{
+  "name": "ypsolution/demo-website",
+  "repositories": {
+    "dev-package": {
+      "type": "path",
+      "url": "../YnfinitePhpClient",
+      "options": {
+        "symlink": true
+      }
+    }
+  },
+  "require": {
+    "ypsolution/ynfinite-php-client": "@dev"
+  }
+}

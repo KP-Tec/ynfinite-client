@@ -1,0 +1,8 @@
+<div class='widget widget--{{field.type}}'>
+    <label class="widget__label" for="{{field.alias}}">{{field.label}}{% if(field.required) %}<span class="required"> *</span>{% endif %}</label>
+
+    <div class="widget__input-container">
+        {% block field %}
+        {% endblock field %}
+    </div>
+</div>

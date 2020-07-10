@@ -1,0 +1,45 @@
+{
+  "name": "ypsolution/ynfinite-php-client",
+  "description": "PHP Client for Ynfinite",
+  "type": "library",
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "homepage": "https://www.ynfinite.com",
+  "keywords": [
+    "ynfinite", "cms", "saas"
+  ],
+  "authors": [
+    {
+      "name": "ypsolution GmbH",
+      "email": "hello@ynfinite.com"
+    }
+  ],
+  "require": {
+    "php": "^7.3",
+    "twig/twig": "3.0",
+    "ext-json": "*",
+    "vlucas/phpdotenv": "3.6.3",
+    "slim/slim": "4.5.0",
+    "slim/psr7": "1.0.0",
+    "slim/twig-view": "3.0.0",
+    "php-di/php-di": "6.1.0",
+    "monolog/monolog": "1.25.3",
+    "bryanjhv/slim-session": "4.0",
+    "thadafinser/user-agent-parser": "^2.0",
+    "whichbrowser/parser": "^2.0",
+    "twig/intl-extra": "^3.0",
+    "cocur/slugify": "4.0.0",
+    "composer/composer": "^1.10"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ypsolution\\YnfinitePhpClient\\": "src"
+    }
+  },
+  "scripts": {
+    "post-package-install": [
+      "Ypsolution\\YnfinitePhpClient\\YnfiniteClient::postPackageInstall"
+    ]
+  }
+
+}
