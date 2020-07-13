@@ -1,4 +1,5 @@
 <?php
+
 namespace Ypsolution\YnfinitePhpClient\utils;
 
 use Twig\Loader\ArrayLoader;
@@ -13,68 +14,82 @@ use Ypsolution\YnfinitePhpClient\utils\TwigUtils;
 
 use Ypsolution\YnfinitePhpClient\utils\tokens\IsCookieActive;
 use Ypsolution\YnfinitePhpClient\utils\tokens\GetCookieConsent;
+use Ypsolution\YnfinitePhpClient\StaticPageCache;
 
-class RenderUtils {
+class RenderUtils
+{
 
     private $templates;
     private $data;
 
 
-    public function __construct($config, $templates, $data) {
+    public function __construct($config, $templates, $data)
+    {
         $this->config = $config;
         $this->data = $data;
         $this->templates = $templates;
     }
 
-    private function generateFileList() {
+
+    private function createCacheName()
+    {
+        $url = $_SERVER["REQUEST_URI"];
+        $break = explode('/', $url);
+        $file = $break[count($break) - 1];
+        $cachefile = 'cached-' . substr_replace($file, "", -4) . 'html';
+
+        return getcwd() . "/staticPages/" . $cachefile;
+    }
+
+    private function generateFileList()
+    {
         $templateArray = array();
 
         $namespace = $this->data["theme"]["namespace"];
 
-        foreach($this->templates as $key => $template) {
-            $templateArray[$template["frontend"]] = $namespace."/".$template["alias"].".twig";
+        foreach ($this->templates as $key => $template) {
+            $templateArray[$template["frontend"]] = $namespace . "/" . $template["alias"] . ".twig";
         }
 
         return $templateArray;
     }
 
-    public function getURIData() {
+    public function getURIData()
+    {
         $path = explode('?', $_SERVER['REQUEST_URI'], 2);
 
         $listingSeparator = "?";
         $perPageSeparator = "?";
 
         $listingURL = "";
-        if($this->data["page"]["type"] === "listing") {
+        if ($this->data["page"]["type"] === "listing") {
             $currentPage = $this->data["pagination"]["currentPage"];
             $perPage = $this->data["pagination"]["perPage"];
 
             $listingURL = $path[0];
             $perPageURL = $path[0];
 
-            if($path[1]) {
+            if ($path[1]) {
                 $paramsPagination = explode("&", $path[1]);
 
                 if (($key = array_search("_y.page=$currentPage", $paramsPagination)) !== false) {
                     array_splice($paramsPagination, $key, 1);
                 }
 
-                if(count($paramsPagination) > 0) {
-                    $listingURL .= "?".implode("&", $paramsPagination)."&";
+                if (count($paramsPagination) > 0) {
+                    $listingURL .= "?" . implode("&", $paramsPagination) . "&";
                 }
 
                 if (($key = array_search("_y.perPage=$perPage", $paramsPagination)) !== false) {
                     array_splice($paramsPagination, $key, 1);
                 }
 
-                if(count($paramsPagination) > 0) {
-                    $perPageURL .= "?".implode("&", $paramsPagination)."&";
-                }
-                else {
+                if (count($paramsPagination) > 0) {
+                    $perPageURL .= "?" . implode("&", $paramsPagination) . "&";
+                } else {
                     $perPageURL .= "?";
                 }
-            }
-            else {
+            } else {
                 $listingURL .= "?";
                 $perPageURL .= "?";
             }
@@ -89,13 +104,13 @@ class RenderUtils {
         );
     }
 
-    public function render(){
+    public function render()
+    {
 
         $this->fileList = $this->generateFileList();
 
-        $loader = new FilesystemLoader([__DIR__.'/../'.$this->config["ynfinite"]["templateDir"], getcwd().'/'.$this->config["client"]["templatePath"]]);
-
-
+        $loader = new FilesystemLoader([__DIR__ . '/../' . $this->config["ynfinite"]["templateDir"], getcwd() . '/' . $this->config["client"]["templatePath"]]);
+        $rootPath = realpath(__DIR__);
 
         // $loader = new ArrayLoader($this->templates);
         $this->twig = new Environment($loader, ['debug' => true]);
@@ -113,24 +128,29 @@ class RenderUtils {
         $this->twig->addGlobal("urlData", $this->getURIData());
 
 
-
-        $_yfunc = new \Twig\TwigFunction('_yfunc', function($methode){
+        $_yfunc = new \Twig\TwigFunction('_yfunc', function ($methode) {
 
             $func = new TwigUtils($this->twig, $this->data, $this->fileList, $this->getURIData());
 
             $arg_list = func_get_args();
             unset($arg_list[0]);
 
-            return call_user_func_array( array($func, $methode) , $arg_list );
+            return call_user_func_array(array($func, $methode), $arg_list);
 
         }, ['is_safe' => ['html']]);
 
         $this->twig->addFunction($_yfunc);
 
-        return $this->twig->render($this->fileList['index'], $this->data);
+//        return $this->twig->render($this->fileList['index'], $this->data);
+        $renderedPage = $this->twig->render($this->fileList['index'], $this->data);
+
+        StaticPageCache::createStaticPage($this->data["page"]["type"], $renderedPage);
+
+        return $renderedPage;
     }
 
-    public function renderToolbar(){
+    public function renderToolbar()
+    {
 
         $loader = new FilesystemLoader('src/yn/templates');
         $twig = new Environment($loader, ['debug' => true]);
@@ -145,7 +165,8 @@ class RenderUtils {
     }
 
 
-    public function getBrowserClasses() {
+    public function getBrowserClasses()
+    {
         $provider = new WhichBrowser();
         $uaArray = array();
         try {
@@ -154,22 +175,22 @@ class RenderUtils {
 
             $uaArray = array(
                 $useragent->getBrowser()->getName(),
-                $useragent->getBrowser()->getName()."-".$useragent->getBrowser()->getVersion()->getComplete(),
+                $useragent->getBrowser()->getName() . "-" . $useragent->getBrowser()->getVersion()->getComplete(),
                 $useragent->getRenderingEngine()->getName(),
                 $useragent->getOperatingSystem()->getName(),
-                $useragent->getOperatingSystem()->getName().$useragent->getOperatingSystem()->getVersion()->getComplete(),
+                $useragent->getOperatingSystem()->getName() . $useragent->getOperatingSystem()->getVersion()->getComplete(),
                 $useragent->getDevice()->getType(),
             );
 
-            if($useragent->getDevice()->getModel()) {
+            if ($useragent->getDevice()->getModel()) {
                 $uaArray[] = $useragent->getDevice()->getModel();
 
             }
-            if($useragent->getDevice()->getBrand()) {
+            if ($useragent->getDevice()->getBrand()) {
                 $uaArray[] = $useragent->getDevice()->getBrand();
             }
 
-        } catch (Exception $e){
+        } catch (Exception $e) {
 
         }
         return implode(" ", $uaArray);

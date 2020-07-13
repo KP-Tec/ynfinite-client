@@ -4,7 +4,7 @@ services:
   phpfrontend:
     build:
       context: ../../
-      dockerfile: demo/development/Dockerfile
+      dockerfile: development/docker/Dockerfile
     ports:
       - 80:80
     volumes:

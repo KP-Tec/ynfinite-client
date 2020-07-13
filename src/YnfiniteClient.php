@@ -10,6 +10,7 @@ use Slim\Views\TwigMiddleware;
 use Ypsolution\YnfinitePhpClient\controller\Frontend;
 use Ypsolution\YnfinitePhpClient\controller\Install;
 use Ypsolution\YnfinitePhpClient\controller\Ynfinite;
+use Ypsolution\YnfinitePhpClient\StaticPageCache;
 
 class YnfiniteClient
 {
