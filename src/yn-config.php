@@ -25,8 +25,8 @@ return [
             'frontend' => [
                 'host' => $ynfinite_server,
                 'port' => $ynfinite_port,
-                'controller' => "/v1/cms/frontend/p/",
-                'gdprInfo' => "/v1/cms/frontend/gdpr/info",
+                'controller' => "/v1/cms/newfrontend/p/",
+                'gdprInfo' => "/v1/cms/newfrontend/gdpr/info",
                 'use_frontend_cache' => false,
                 'frontend_cache_url' => getenv('YNFINITE_FRONTEND_CACHE_URL'),
                 'frontend_cache_port' => getenv('YNFINITE_FRONTEND_CACHE_PORT')
@@ -34,20 +34,20 @@ return [
             'form' => [
                 'host' => $ynfinite_server,
                 'port' => $ynfinite_port,
-                'controller' => "/v1/cms/frontend/p/form/",
-                'gdpr' => "/v1/cms/frontend/gdpr/request",
-                'gdprUpdate' => "/v1/cms/frontend/gdpr/update",
-                'gdprDelete' => "/v1/cms/frontend/gdpr/delete"
+                'controller' => "/v1/cms/newfrontend/p/form/",
+                'gdpr' => "/v1/cms/newfrontend/gdpr/request",
+                'gdprUpdate' => "/v1/cms/newfrontend/gdpr/update",
+                'gdprDelete' => "/v1/cms/newfrontend/gdpr/delete"
             ],
             'sitemap' => [
                 'host' => $ynfinite_server,
                 'port' => $ynfinite_port,
-                'controller' => "/v1/cms/frontend/p/sitemap"
+                'controller' => "/v1/cms/newfrontend/p/sitemap"
             ],
             'robotsTxt' => [
                 'host' => $ynfinite_server,
                 'port' => $ynfinite_port,
-                'controller' => "/v1/cms/frontend/p/robotstxt"
+                'controller' => "/v1/cms/newfrontend/p/robotstxt"
             ],
             'file' => [
                 'host' => $fileservice_server,

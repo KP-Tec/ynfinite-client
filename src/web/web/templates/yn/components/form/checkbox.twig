@@ -1,0 +1,14 @@
+{% if field.items|length > 1 %}
+<div class="widget-group widget-group--checkbox">
+{% endif %}
+    {% for option in field.items %}
+        <div class="widget widget--checkbox">
+            <input type="checkbox" id="{{form._id}}_{{field.alias}}" name="fields[{{field.alias}}]" value="{{option.value}}"
+            {% if field.value === option.value %} checked{% endif %}
+            {% if field.required %}required{% endif %}/>
+            <label class="widget__label" for="{{form._id}}_{{field.alias}}"><div class="ynfinite-field-text">{{option.label}}</div></label>
+        </div>
+    {% endfor %}
+{% if field.items|length > 1 %}
+</div>
+{% endif %}

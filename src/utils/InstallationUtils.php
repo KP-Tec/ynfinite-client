@@ -8,7 +8,7 @@ class InstallationUtils {
         $searchString = '/define\(\'' . $key . '\',\s*\'(.)*\'\);/';
         $replacement = 'define(\''.$key.'\', \'' . $value . '\');';
         return preg_replace($searchString, $replacement, $string);
-    }
+    }       
 
    public static function generateRandomString($length = 10)
     {

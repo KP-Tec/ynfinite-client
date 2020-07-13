@@ -1,0 +1,70 @@
+{% set config = cookies.config %}
+
+<link href="/src/yn/web/css/cookieManager.css" rel="stylesheet" />
+
+<div id="yn-cookies" class='yn-cookies'>
+    <div class='yn-cookies__inner'>
+    <div class='yn-cookies__page yn-cookies__page--visible' data-yn-cookie-page='information'>
+        <div class='yn-cookies__header'>
+        <h3>{{config.headline}}</h3>
+        </div>
+        <div class='yn-cookies__body'>
+        {{config.information|raw}}
+        </div>
+        <div class='yn-cookies__footer'>
+        <ul>
+            {% if cookies.available|length > 0 %}
+                <li class="link-left"><a href='#' onClick='ynCookiesShowPage("configuration")' class='yn-cookies__link'>{{config.label.settings}}</a></li>
+            {% endif %}
+            <li><a href='javascript:ynSetDefaultCookieSettings()' class='yn-cookies__button'>{{config.label.useDefault}}</a></li>
+        </ul>
+        </div>
+    </div>
+    <div class='yn-cookies__page yn-cookies__page--hidden' data-yn-cookie-page='configuration'>
+        <div class='yn-cookies__header'>
+          <h3>{{config.label.ownSettings}}</h3>
+        </div>
+        <div class='yn-cookies__body'>
+          <form id="yn-cookies-form">
+            <ul class="yn-cookies__settings">  
+            <li>
+                <div class="yn-cookies__settings__item">
+                    <h4>{{config.necessary.headline}}</h4>
+                    {{config.necessary.text}}
+                </div>
+                <div class="yn-cookies__settings__switch">
+                    <label class="yn-cookies__switch">
+                    <input name="necessary" type="checkbox" checked disabled>
+                    <span class="yn-cookies__slider disabled"></span>
+                    </label>
+                </div>
+            </li>
+
+              {% for cookie in cookies.available %}
+
+                <li data-yn-cookie-settings-id="{{cookie._id}}">
+                    <div class="yn-cookies__settings__item">
+                        <h4>{{cookie.headline}}</h4>
+                        {{cookie.text|raw}}
+                    </div>
+                    <div class="yn-cookies__settings__switch" data-yn-default="{{cookie.default}}">
+                        <label class="yn-cookies__switch">
+                        <input name="activatedScripts[]" type="checkbox" value="{{cookie._id}}">
+                        <span class="yn-cookies__slider"></span>
+                        </label>
+                    </div>
+                </li>
+
+              {% endfor %}
+            </ul>
+          </form>
+        </div>
+        <div class='yn-cookies__footer'>
+          <ul>
+            <li class="link-left"><a href='#' onClick='ynCookiesShowPage("information")' class='yn-cookies__link'>{{config.label.back}}</a></li>
+            <li><a href='javascript:ynSetCookieSettings()' class='yn-cookies__button'>{{config.label.saveSettings}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</div>

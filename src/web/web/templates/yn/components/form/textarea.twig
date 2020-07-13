@@ -1,0 +1,7 @@
+{% extends "yn/components/form/basic.twig" %}
+
+{% block field %}
+    <textarea name="fields[{{field.alias}}]" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}>
+        {{field.value|default("")}}
+    </textarea>
+{% endblock field %}
