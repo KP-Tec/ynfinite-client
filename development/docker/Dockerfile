@@ -27,12 +27,12 @@ RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 
-ADD ./demo/development/localhost /etc/apache2/sites-available/000-default.conf
-ADD ./composer.json /var/www/demo/composer.json
+ADD ./development/docker/localhost /etc/apache2/sites-available/000-default.conf
+ADD ./composer.json /var/www/composer.json
 
-WORKDIR /var/www/demo
+WORKDIR /var/www/development
 
-RUN cd /var/www/demo
+RUN cd /var/www/development
 RUN mkdir cache
 RUN chmod 777 cache
 
