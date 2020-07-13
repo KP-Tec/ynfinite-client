@@ -11,6 +11,9 @@ use Cocur\Slugify\Slugify;
 use Exception;
 use Ypsolution\YnfinitePhpClient\utils\TwigUtils;
 
+use Ypsolution\YnfinitePhpClient\utils\tokens\IsCookieActive;
+use Ypsolution\YnfinitePhpClient\utils\tokens\GetCookieConsent;
+
 class RenderUtils {
 
     private $templates;
@@ -38,28 +41,51 @@ class RenderUtils {
     public function getURIData() {
         $path = explode('?', $_SERVER['REQUEST_URI'], 2);
 
-        $separator = "?";
-        if(count($path) > 1) {
-            $separator = "&";
-        }
+        $listingSeparator = "?";
+        $perPageSeparator = "?";
 
         $listingURL = "";
         if($this->data["page"]["type"] === "listing") {
             $currentPage = $this->data["pagination"]["currentPage"];
+            $perPage = $this->data["pagination"]["perPage"];
 
-            $params = explode("&", $path[1]);
-            if (($key = array_search("_y.page=$currentPage", $params)) !== false) {
-                unset($params[$key]);
+            $listingURL = $path[0];
+            $perPageURL = $path[0];
+
+            if($path[1]) {
+                $paramsPagination = explode("&", $path[1]);
+
+                if (($key = array_search("_y.page=$currentPage", $paramsPagination)) !== false) {
+                    array_splice($paramsPagination, $key, 1);
+                }
+
+                if(count($paramsPagination) > 0) {
+                    $listingURL .= "?".implode("&", $paramsPagination)."&";
+                }
+
+                if (($key = array_search("_y.perPage=$perPage", $paramsPagination)) !== false) {
+                    array_splice($paramsPagination, $key, 1);
+                }
+
+                if(count($paramsPagination) > 0) {
+                    $perPageURL .= "?".implode("&", $paramsPagination)."&";
+                }
+                else {
+                    $perPageURL .= "?";
+                }
             }
-
-            $listingURL = $path[0].implode("&", $params);
+            else {
+                $listingURL .= "?";
+                $perPageURL .= "?";
+            }
         }
 
         return array(
             "cleanURL" => $path[0],
             "URL" => $_SERVER['REQUEST_URI'],
             "separator" => $separator,
-            "listingURL" => $listingURL
+            "listingURL" => $listingURL,
+            "perPageURL" => $perPageURL
         );
     }
 
@@ -67,7 +93,7 @@ class RenderUtils {
 
         $this->fileList = $this->generateFileList();
 
-        $loader = new \Twig\Loader\FilesystemLoader([__DIR__.'/../'.$this->config["ynfinite"]["templateDir"], getcwd().'/'.$this->config["client"]["templatePath"]]);
+        $loader = new FilesystemLoader([getcwd()."/src/yn/web/templates", $this->config["ynfinite"]["templateDir"]]);
 
 
 
@@ -76,7 +102,10 @@ class RenderUtils {
         $this->twig->addExtension(new IntlExtension());
         $this->twig->addExtension(new \Twig\Extension\DebugExtension());
         $this->twig->addExtension(new SlugifyExtension(Slugify::create()));
-       // $this->twig->addGlobal("head", $this->getHeadTemplate($this->twig));
+
+        $this->twig->addTokenParser(new IsCookieActive($this->data));
+        $this->twig->addTokenParser(new GetCookieConsent($this->data, $this->twig));
+
         $this->twig->addGlobal("templateList", $this->fileList);
         $this->twig->addGlobal("useragent", $this->getBrowserClasses());
         $this->twig->addGlobal('_ynfinite', $this->data);
@@ -87,7 +116,7 @@ class RenderUtils {
 
         $_yfunc = new \Twig\TwigFunction('_yfunc', function($methode){
 
-            $func = new TwigUtils($this->twig, $this->data, $this->fileList);
+            $func = new TwigUtils($this->twig, $this->data, $this->fileList, $this->getURIData());
 
             $arg_list = func_get_args();
             unset($arg_list[0]);
