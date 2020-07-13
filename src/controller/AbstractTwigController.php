@@ -18,6 +18,7 @@ abstract class AbstractTwigController extends AbstractController
      */
     protected $session;
 
+    protected $now;
 
     /**
      * AbstractController constructor.
@@ -29,6 +30,18 @@ abstract class AbstractTwigController extends AbstractController
     {
         $this->twig = $twig;
         $this->session = $session;
+        $this->now = microtime();
+    }
+
+    public function profile($txt)
+    {
+
+        list($usec, $sec) = explode(" ", microtime() - $this->now);
+        $ellpased = ((float)$usec + (float)$sec);
+
+        error_log($txt . " | " . ($ellpased * 1000) . "ms");
+
+        $this->now = microtime();
     }
 
     /**

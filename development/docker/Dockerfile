@@ -30,14 +30,19 @@ RUN mv composer.phar /usr/local/bin/composer
 ADD ./development/docker/localhost /etc/apache2/sites-available/000-default.conf
 ADD ./composer.json /var/www/composer.json
 
+
+WORKDIR /var/www/
+
+RUN cd /var/www/
+RUN composer install
+
 WORKDIR /var/www/development
 
 RUN cd /var/www/development
 RUN mkdir cache
+RUN mkdir staticPages
 RUN chmod 777 cache
-
-RUN cd /var/www/
-RUN composer install
+RUN chmod 777 staticPages
 
 EXPOSE 80
 
