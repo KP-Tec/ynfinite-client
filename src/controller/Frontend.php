@@ -35,6 +35,7 @@ class Frontend extends AbstractTwigController
 
     public function index(Request $request, Response $response, array $args = []): Response
     {
+        $this->profile("Starting call");
         $config = $this->preferences->getConfig();
 
         $requestHelper = new RequestUtils($config, $request, $this->session);
@@ -44,21 +45,27 @@ class Frontend extends AbstractTwigController
         $queryParams = $request->getQueryParams();
         $this->session->set("dev", $queryParams["dev"] === "true");
 
+        $this->profile("All parameters ready");
         if ($requestHelper->isPage($path) === true) {
             try {
                 $data = $requestHelper->requestWebsite($request);
-
+                $this->profile("Recieved data");
                 if (is_array($data)) {
                     $renderer = new RenderUtils($config, $data["templates"], $data["data"]);
                     $renderedTemplate = $renderer->render();
+                    $this->profile("Page is rendered");
                     $isDev = $this->session->get("dev", false);
                     if ($isDev) {
                         $toolbarRenderer = new RenderUtils($config, ['toolbar.twig'], $data["data"]);
                         $renderedToolbar = $toolbarRenderer->renderToolbar();
-                        $response->getBody()->write($renderedTemplate . $renderedToolbar);
+                        //$response->getBody()->write($renderedTemplate . $renderedToolbar);
+                        $renderedTemplate .= $renderedToolbar;
+                        $this->profile("Toolbar is rendered");
                     } else {
-                        $response->getBody()->write($renderedTemplate);
+                        //$response->getBody()->write($renderedTemplate);
                     }
+                    $response->getBody()->write($renderedTemplate);
+                    $this->profile("Page is written");
 
 
                 } else {
