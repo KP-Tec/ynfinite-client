@@ -1,6 +1,6 @@
 {
     "name": "ypsolution/website",
-    "description": "My first Ynfinite Website",
+    "description": "My first Ynfinite Website!",
     "type": "project",
     "require": {
         "ypsolution/ynfinite-php-client": "1.0.0"
