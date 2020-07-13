@@ -3,3 +3,5 @@ ynfinite-client.iml
 /vendor/
 /development/templates/*
 !/development/templates/.gitkeep
+/development/staticPages
+!/development/staticPages/.gitkeep
