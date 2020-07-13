@@ -93,7 +93,7 @@ class RenderUtils {
 
         $this->fileList = $this->generateFileList();
 
-        $loader = new FilesystemLoader([getcwd()."/src/yn/web/templates", $this->config["ynfinite"]["templateDir"]]);
+        $loader = new FilesystemLoader([__DIR__.'/../'.$this->config["ynfinite"]["templateDir"], getcwd().'/'.$this->config["client"]["templatePath"]]);
 
 
 

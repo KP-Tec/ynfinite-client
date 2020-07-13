@@ -3,7 +3,6 @@
   "description": "PHP Client for Ynfinite",
   "type": "library",
   "license": "MIT",
-  "minimum-stability": "dev",
   "homepage": "https://www.ynfinite.com",
   "keywords": [
     "ynfinite", "cms", "saas"
@@ -28,18 +27,11 @@
     "thadafinser/user-agent-parser": "^2.0",
     "whichbrowser/parser": "^2.0",
     "twig/intl-extra": "^3.0",
-    "cocur/slugify": "4.0.0",
-    "composer/composer": "^1.10"
+    "cocur/slugify": "4.0.0"
   },
   "autoload": {
     "psr-4": {
       "Ypsolution\\YnfinitePhpClient\\": "src"
     }
-  },
-  "scripts": {
-    "post-package-install": [
-      "Ypsolution\\YnfinitePhpClient\\YnfiniteClient::postPackageInstall"
-    ]
   }
-
 }

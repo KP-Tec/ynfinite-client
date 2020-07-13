@@ -1,15 +1,8 @@
 {
-  "name": "ypsolution/demo-website",
-  "repositories": {
-    "dev-package": {
-      "type": "path",
-      "url": "../YnfinitePhpClient",
-      "options": {
-        "symlink": true
-      }
+    "name": "ypsolution/website",
+    "description": "My first Ynfinite Website",
+    "type": "project",
+    "require": {
+        "ypsolution/ynfinite-php-client": "1.0.0"
     }
-  },
-  "require": {
-    "ypsolution/ynfinite-php-client": "@dev"
-  }
 }
