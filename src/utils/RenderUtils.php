@@ -31,15 +31,6 @@ class RenderUtils
     }
 
 
-    private function createCacheName()
-    {
-        $url = $_SERVER["REQUEST_URI"];
-        $break = explode('/', $url);
-        $file = $break[count($break) - 1];
-        $cachefile = 'cached-' . substr_replace($file, "", -4) . 'html';
-
-        return getcwd() . "/staticPages/" . $cachefile;
-    }
 
     private function generateFileList()
     {
@@ -144,8 +135,8 @@ class RenderUtils
 //        return $this->twig->render($this->fileList['index'], $this->data);
         $renderedPage = $this->twig->render($this->fileList['index'], $this->data);
 
-        StaticPageCache::createStaticPage($this->data["page"]["type"], $renderedPage);
 
+        StaticPageCache::createStaticPage($renderedPage, $this->data["page"]["type"]);
         return $renderedPage;
     }
 

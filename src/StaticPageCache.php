@@ -3,6 +3,7 @@
 namespace Ypsolution\YnfinitePhpClient;
 
 
+
 class StaticPageCache {
     private static function createCacheName() {
         $url = $_SERVER["REQUEST_URI"];
@@ -10,18 +11,28 @@ class StaticPageCache {
         $file = $break[count($break) - 1];
 
         if($file) {
-            $cachefile = 'cached-'.substr_replace($file ,"", -4).'html';
+            $cachefile = 'cached-'.substr_replace($file ,"", -5);
         }
         else {
-            $cachefile = "cached-index.html";
+            $cachefile = "cached-index";
         }
+
+        if($_COOKIE["ynfinite-cookies"]) {
+            $ynCookie = json_decode($_COOKIE["ynfinite-cookies"]);
+            $activeScripts = implode("-", $ynCookie->activeScripts);
+            if($activeScripts) $cachefile .= "-".$activeScripts;
+        }
+
+
+
+        $cachefile .= '.html';
 
 
         return getcwd()."/staticPages/".$cachefile;
     }
 
     public function createStaticPage($content, $pageType) {
-        if($pageType !== "404") {
+        if($pageType !== "listing" && $pageType !== "404") {
             $filename = StaticPageCache::createCacheName();
             file_put_contents($filename, $content);
         }
@@ -30,9 +41,7 @@ class StaticPageCache {
 
     public static function getCachedPage() {
         $filename = StaticPageCache::createCacheName();
-        error_log("TRYING TO READT ".$filename);
         if(file_exists($filename)) {
-            error_log("FILE EXISTS");
             return file_get_contents($filename);
         }
         return false;
