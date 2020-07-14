@@ -2,7 +2,7 @@
 ynfinite-client.iml
 src/web/node_modules
 /vendor/
-/development/web/*
-!/development/web/.gitkeep
+/development/templates/*
+!/development/templates/.gitkeep
 /development/staticPages
 !/development/staticPages/.gitkeep

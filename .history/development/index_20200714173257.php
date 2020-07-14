@@ -10,5 +10,5 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 }
-$app = YnfiniteClient::create('web/templates');
+$app = YnfiniteClient::create('templates');
 $app->run();
