@@ -6,3 +6,4 @@ src/web/node_modules
 !/development/templates/.gitkeep
 /development/staticPages
 !/development/staticPages/.gitkeep
+!/development/docker/.env
