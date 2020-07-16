@@ -6,4 +6,4 @@ src/web/node_modules
 !/development/web/.gitkeep
 /development/staticPages
 !/development/staticPages/.gitkeep
-/.hitsory
+/.history
