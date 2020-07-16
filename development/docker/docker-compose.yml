@@ -1,0 +1,50 @@
+version: '2'
+
+services:
+  ynfinite-client:
+    build:
+      context: ../../
+      dockerfile: development/docker/Dockerfile-apache
+    ports:
+      - 80:80
+    volumes:
+      - ${APP_PATH}:/var/www
+    networks:
+      - ynfinite
+    links:
+      - db
+
+  db:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: myDb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: test
+      MYSQL_ROOT_PASSWORD: test
+    volumes:
+      - ./dump:/docker-entrypoint-initdb.d
+      - persistent:/var/lib/mysql
+    networks:
+      - ynfinite
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      links:
+        - db:db
+      ports:
+        - 8000:80
+      environment:
+        MYSQL_USER: user
+        MYSQL_PASSWORD: test
+        MYSQL_ROOT_PASSWORD: test
+
+
+
+networks:
+  ynfinite:
+    external:
+      name: ${COMPOSE_PROJECT_NAME}_ynfinite
+
+volumes:
+  persistent:
