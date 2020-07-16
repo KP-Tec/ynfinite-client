@@ -1,10 +1,8 @@
 <?php
 
-(require __DIR__ . '/../config/bootstrap.php')->run();
+require_once __DIR__ . '/../vendor/autoload.php';
 
-require_once __DIR__ . '/../vendor/autoload.php'; // Autoload files using Composer autoload
-use Ypsolution\YnfinitePhpClient\YnfiniteClient;
-use Ypsolution\YnfinitePhpClient\StaticPageCache;
+use App\Utils\Cache\StaticPageCache;
 
 $dotenv = Dotenv\Dotenv::create(__DIR__. '/../');
 $dotenv->load();
@@ -17,5 +15,4 @@ if(getenv('STATIC_PAGES') !== "false" && $_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 }
 
-$app = YnfiniteClient::create('../web/templates');
-$app->run();
+(require __DIR__ . '/../config/bootstrap.php')->run();

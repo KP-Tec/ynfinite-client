@@ -3,8 +3,6 @@
 use DI\ContainerBuilder;
 use Slim\App;
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 $containerBuilder = new ContainerBuilder();
 
 // Set up settings
