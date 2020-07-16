@@ -6,13 +6,14 @@ use Ypsolution\YnfinitePhpClient\StaticPageCache;
 $dotenv = Dotenv\Dotenv::create(getcwd());
 $dotenv->load();
 
-if(getenv('STATIC_PAGES') !== "false" && $_SERVER['REQUEST_METHOD'] === 'GET') {
+if(getenv('STATIC_PAGES') && $_SERVER['REQUEST_METHOD'] === 'GET') {
     $cachedPage = StaticPageCache::getCachedPage();
     if ($cachedPage) {
         echo $cachedPage;
         exit;
     }
 }
+
 
 $app = YnfiniteClient::create('web/templates');
 $app->run();
