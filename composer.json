@@ -5,7 +5,9 @@
   "license": "MIT",
   "homepage": "https://www.ynfinite.com",
   "keywords": [
-    "ynfinite", "cms", "saas"
+    "ynfinite",
+    "cms",
+    "saas"
   ],
   "authors": [
     {
@@ -31,7 +33,11 @@
   },
   "autoload": {
     "psr-4": {
-      "Ypsolution\\YnfinitePhpClient\\": "src"
+      "App\\": "src/"
     }
+  },
+  "config": {
+    "process-timeout": 0,
+    "sort-packages": true
   }
 }
