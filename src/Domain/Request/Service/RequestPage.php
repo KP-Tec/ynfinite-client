@@ -32,6 +32,7 @@ final class RequestUtils
 
     public function getPage(ServerRequestInterface $request)
     {
+        $jsonResponse = true;
         $path = $request->getUri()->getPath();
 
         $queryParams = $request->getQueryParams();
@@ -47,16 +48,14 @@ final class RequestUtils
             $service = $this->settings["services"]["frontend-cache"];
 
             try{
-                $this->addHeader('x-user-agent', $request->getHeaderLine('User-Agent'));
+                $this->curlHandler->addHeader('x-user-agent', $request->getHeaderLine('User-Agent'));
             } catch (Exception $e){
                 error_log($e);
             }
-
-
-            return $this->request(trim($path, '/'), $service, false);
+            $jsonResponse = false;
         }
 
-        return $this->request(trim($path, '/'), $service);
+        return $this->request(trim($path, '/'), $service, $jsonResponse);
     }
 
     private function request($path, $service, $json = true)
