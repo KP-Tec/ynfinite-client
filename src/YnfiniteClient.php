@@ -1,12 +1,10 @@
 <?php
 namespace Ypsolution\YnfinitePhpClient;
 
-use Slim\Middleware\Session;
 use SlimSession\Helper;
 use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Slim\Views\Twig;
-use Slim\Views\TwigMiddleware;
 use Ypsolution\YnfinitePhpClient\controller\Frontend;
 use Ypsolution\YnfinitePhpClient\controller\Install;
 use Ypsolution\YnfinitePhpClient\controller\Ynfinite;
@@ -46,17 +44,7 @@ class YnfiniteClient
         });
 
         $app = AppFactory::create();
-        $app->getRouteCollector()->setCacheFile(
-            $projectRootPath.'/cache/routes.cache'
-        );
-        $app->addRoutingMiddleware();
-        $app->add(TwigMiddleware::createFromContainer($app));
-        $app->add(new Session([
-            'name' => 'ynfinite-session',
-            'autorefresh' => true,
-            'lifetime' => '1 hour'
-        ]));
-        $app->addErrorMiddleware(true, true, false);
+        
         $app->group('/ynfinite', function (RouteCollectorProxy $group) {
             $group->get('/install', Install::class . ":index")->setName('install');
             $group->post('/install', Install::class . ":save")->setName('install_save');
