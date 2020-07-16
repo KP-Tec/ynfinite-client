@@ -8,7 +8,7 @@ use App\Domain\Request\Repository\RequestCacheRepository;
 
 use App\Domain\Request\Utils\CurlHandler;
 
-final class RequestUtils
+final class RequestPageService
 {
 
     private $respository;
@@ -69,9 +69,4 @@ final class RequestUtils
     
         return $response;
     }
-
-    private function requestFromCache($path, $service, $json = true) {
-
-    }
-
 }
