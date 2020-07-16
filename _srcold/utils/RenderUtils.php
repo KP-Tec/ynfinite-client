@@ -30,21 +30,6 @@ class RenderUtils
         $this->templates = $templates;
     }
 
-
-
-    private function generateFileList()
-    {
-        $templateArray = array();
-
-        $namespace = $this->data["theme"]["namespace"];
-
-        foreach ($this->templates as $key => $template) {
-            $templateArray[$template["frontend"]] = $namespace . "/" . $template["alias"] . ".twig";
-        }
-
-        return $templateArray;
-    }
-
     public function getURIData()
     {
         $path = explode('?', $_SERVER['REQUEST_URI'], 2);
