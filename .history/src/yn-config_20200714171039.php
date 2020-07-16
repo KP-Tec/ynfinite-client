@@ -59,7 +59,6 @@ return [
             'api_key' => getenv('YN_API_KEY'),
             'service_id' => getenv('YN_SERVICE_ID'),
             'dev' => getenv('DEV'),
-            'static_pages' => getenv('STATIC_PAGES'),
         ]
     ],
 ];
