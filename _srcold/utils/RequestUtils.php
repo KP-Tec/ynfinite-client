@@ -69,7 +69,20 @@ class RequestUtils
 
         $output = curl_exec($this->ch);
 
-        return $output;
+        $httpcode = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($this->ch);
+        $header_size = curl_getinfo($this->ch, CURLINFO_HEADER_SIZE);
+        $body = substr($output, $header_size);
+
+        if ($error) {
+            throw new YnfiniteException($error, 500);
+        }
+
+        if ($httpcode != 200 && $httpcode != 201 && $httpcode != 206) {
+            throw new YnfiniteException($body, $httpcode);
+        }
+
+        return $body;
     }
 
     public function __destruct()
