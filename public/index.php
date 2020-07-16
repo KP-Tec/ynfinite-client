@@ -3,7 +3,7 @@ require_once __DIR__ . '/../vendor/autoload.php'; // Autoload files using Compos
 use Ypsolution\YnfinitePhpClient\YnfiniteClient;
 use Ypsolution\YnfinitePhpClient\StaticPageCache;
 
-$dotenv = Dotenv\Dotenv::create(getcwd());
+$dotenv = Dotenv\Dotenv::create(__DIR__. '/../');
 $dotenv->load();
 
 if(getenv('STATIC_PAGES') !== "false" && $_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -14,5 +14,5 @@ if(getenv('STATIC_PAGES') !== "false" && $_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 }
 
-$app = YnfiniteClient::create('web/templates');
+$app = YnfiniteClient::create('../web/templates');
 $app->run();

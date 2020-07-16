@@ -1,0 +1,36 @@
+FROM php:7.3-apache
+
+RUN a2enmod rewrite expires
+
+RUN apt-get update && apt-get install -y \
+    zip \
+    zlib1g \
+    zlib1g-dev \
+    unzip \
+    curl \
+    git \
+    build-essential \
+    --no-install-recommends \
+    && rm -r /var/lib/apt/lists/*
+
+RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf
+
+RUN curl -sS https://getcomposer.org/installer | php
+RUN mv composer.phar /usr/local/bin/composer
+
+ADD ./development/localhost /etc/apache2/sites-available/000-default.conf
+ADD ./composer.json /var/www/composer.json
+
+ADD ./cache /var/www/cache
+ADD ./staticPages /var/www/staticPages
+
+WORKDIR /var/www
+
+RUN chmod 755 cache
+RUN chmod 755 staticPages
+RUN composer install
+
+EXPOSE 80
+
+
+
