@@ -25,8 +25,10 @@ return [
             'controller' => "/v1/cms/newfrontend/p/",
             'gdprInfo' => "/v1/cms/newfrontend/gdpr/info",
             'use_frontend_cache' => false,
-            'frontend_cache_url' => getenv('YNFINITE_FRONTEND_CACHE_URL'),
-            'frontend_cache_port' => getenv('YNFINITE_FRONTEND_CACHE_PORT')
+        ],
+        'frontend-cache' => [
+            'host' => getenv('YNFINITE_FRONTEND_CACHE_URL'),
+            'port' => getenv('YNFINITE_FRONTEND_CACHE_PORT'),
         ],
         'form' => [
             'host' => $ynfinite_server,
@@ -52,10 +54,10 @@ return [
         ]
     ],
     "templateDir" => "web/templates",
-    "settings" => [
+    "auth" => [
         'api_key' => getenv('YN_API_KEY'),
-        'service_id' => getenv('YN_SERVICE_ID'),
-        'dev' => getenv('DEV'),
-        'static_pages' => getenv('STATIC_PAGES'),
-    ]
+        'service_id' => getenv('YN_SERVICE_ID'),    
+    ],
+    'dev' => getenv('DEV'),
+    'static_pages' => getenv('STATIC_PAGES'),
 ];
