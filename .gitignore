@@ -8,5 +8,7 @@ src/web/node_modules
 !/tmp/static_pages/.gitkeep
 /tmp/twig_cache/*
 !/tmp/twig_cache/.gitkeep
+/templates/*
+!/templates/.gitkeep
 /.history
 .env
