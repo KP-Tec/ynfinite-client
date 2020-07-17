@@ -1,6 +1,6 @@
 <?php
 
-$dotenv = Dotenv\Dotenv::create(getcwd());
+$dotenv = Dotenv\Dotenv::create(__DIR__ . "/../");
 $dotenv->load();
 
 $ynfinite_server = 'https://live-server.ynfinite.de';
@@ -18,6 +18,28 @@ if (getenv('DEV')) {
 return [
     'installPassword' => getenv('YN_INSTALL_PASSWORD'),
     'pageTypes' => array("html", "htm"),
+    "db" => array(
+        'driver' => 'mysql',
+        'host' => getenv("DB_HOST"),
+        'username' => getenv("DB_USER"),
+        'database' => getenv("DB_NAME"),
+        'password' => getenv("DB_PASSWORD"),
+        'charset' => 'utf8mb4',
+        'collation' => 'utf8mb4_unicode_ci',
+        'prefix' => '',
+        'options' => [
+            // Turn off persistent connections
+            PDO::ATTR_PERSISTENT => false,
+            // Enable exceptions
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            // Emulate prepared statements
+            PDO::ATTR_EMULATE_PREPARES => true,
+            // Set default fetch mode to array
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            // Set character set
+            // PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci'
+        ],        
+    ),
     'services' => [
         'frontend' => [
             'host' => $ynfinite_server,
