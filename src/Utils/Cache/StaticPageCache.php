@@ -3,6 +3,8 @@
 namespace App\Utils\Cache;
 
 class StaticPageCache {
+    const BASIC_PATH = "/../tmp/static_pages/";
+
     private static function createCacheName() {
         $url = $_SERVER["REQUEST_URI"];
         $break = explode('/', $url);
@@ -26,22 +28,36 @@ class StaticPageCache {
         $cachefile .= '.html';
 
 
-        return getcwd()."/../tmp/static_pages/".$cachefile;
+        return $cachefile;
     }
 
     public function createStaticPage($content, $pageType) {
         if($pageType !== "listing" && $pageType !== "404") {
             $filename = StaticPageCache::createCacheName();
-            file_put_contents($filename, $content);
+            file_put_contents(getcwd().StaticPageCache::BASIC_PATH.$filename, $content);
+            return $filename;
         }
+        return false;
     }
 
 
     public static function getCachedPage() {
         $filename = StaticPageCache::createCacheName();
-        if(file_exists($filename)) {
-            return file_get_contents($filename);
+        
+        $path = getcwd().StaticPageCache::BASIC_PATH.$filename;
+        
+        if(file_exists($path)) {
+            return file_get_contents($path);
         }
         return false;
+    }
+
+    public static function invalidateCache($filename) {
+        $path = getcwd().StaticPageCache::BASIC_PATH.$filename;
+
+        var_dump($path);
+
+        $result = unlink($path);
+        return $result;    
     }
 }
