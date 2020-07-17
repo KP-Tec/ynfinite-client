@@ -13,38 +13,43 @@ services:
       - ynfinite
     links:
       - db
+    depends_on:
+      - db
 
   db:
     image: mysql
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: myDb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: test
-      MYSQL_ROOT_PASSWORD: test
-    volumes:
-      - ./dump:/docker-entrypoint-initdb.d
-      - persistent:/var/lib/mysql
+      MYSQL_DATABASE: "myDb"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "test"
+      MYSQL_ROOT_PASSWORD: "test"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
     networks:
       - ynfinite
-  phpmyadmin:
-      image: phpmyadmin/phpmyadmin
-      links:
-        - db:db
-      ports:
-        - 8000:80
-      environment:
-        MYSQL_USER: user
-        MYSQL_PASSWORD: test
-        MYSQL_ROOT_PASSWORD: test
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - db
+    depends_on:
+      - db
+    ports:
+      - 8000:80
+    environment:
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "test"
+      MYSQL_ROOT_PASSWORD: "test"
+      PMA_HOST: "db"
+      PMA_PORT: 3306
+    networks:
+       - ynfinite
 
 
 networks:
   ynfinite:
     external:
       name: ${COMPOSE_PROJECT_NAME}_ynfinite
-
-volumes:
-  persistent:
