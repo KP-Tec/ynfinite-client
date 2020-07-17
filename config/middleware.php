@@ -12,11 +12,11 @@ return function (App $app) {
     $app->getRouteCollector()->setCacheFile(
         __DIR__.'/../tmp/cache/routes.cache'
     );
-    
+
     // Add the Slim built-in routing middleware
     $app->addRoutingMiddleware();
 
-    $app->add(TwigMiddleware::createFromContainer($app));
+  //  $app->add(TwigMiddleware::createFromContainer($app));
 
     $app->add(new Session([
         'name' => 'ynfinite-session',
