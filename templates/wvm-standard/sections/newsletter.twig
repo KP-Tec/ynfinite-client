@@ -1,0 +1,16 @@
+{% set data = section.data %}
+
+<section class="section bg wow fadeInUp">
+    <div class="inner">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10">
+                <h2 class="h1 title">{{ data.general_ueberschrift }}</h2>
+                {{ data.general_text|raw }}
+                {{ _yfunc("form", data.general_formular) }}
+            </div>
+            <div class="col-xs-12 col-sm-2 visible-sm text-right">
+                <img data-src="{{template.data.general_icon[0].path}}" class="lazyload" alt="{{template.data.general_icon[0].metadata.alt}}" />
+            </div>
+        </div>
+    </div>
+</section>

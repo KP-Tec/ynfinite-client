@@ -4,6 +4,8 @@
     data-ynfinite-section="{{section._id}}"
     method="post" action="/">
     <div class="form-content">
-        {{include(templates[form.template], {"form": form})}}
+        {% if templates[form.template] %}
+            {{include(templates[form.template], {"form": form})}}
+        {% endif %}
     </div>
 </form>

@@ -26,7 +26,7 @@ class StaticPageCache {
         $cachefile .= '.html';
 
 
-        return getcwd()."/staticPages/".$cachefile;
+        return getcwd()."/../tmp/static_pages/".$cachefile;
     }
 
     public function createStaticPage($content, $pageType) {

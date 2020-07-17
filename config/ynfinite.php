@@ -75,7 +75,7 @@ return [
             'port' => $fileservice_port
         ]
     ],
-    "templateDir" => "templates/yn",
+    "templateDir" => "templates",
     "auth" => [
         'api_key' => getenv('YN_API_KEY'),
         'service_id' => getenv('YN_SERVICE_ID'),    

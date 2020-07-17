@@ -1,0 +1,47 @@
+{% set data = section.data %}
+
+<section class="section wow fadeInUp" id="engagement">
+    <div class="handle">{{template.data.general_bezeichnung}}</div>
+    <div class="inner">
+        <p class="separator"><span>{{template.data.general_bezeichnung}}</span></p>
+      
+        <div class="row row--entry">
+            <div class="col-xs-12 col-sm-6 last-sm">
+                <div class="item">
+                    <figure class="item__image">
+                        <img data-src="{{template.data['general_bild_-_rechts'][0].path}}?w=800"
+                            data-srcset="{{template.data['general_bild_-_rechts'][0].path}}?w=420 360w, {{template.data['general_bild_-_rechts'][0].path}}?w=800 760w"
+                            class="lazyload item__image"
+                            alt="{{template.data['general_bild_-_rechts'][0].metadata.alt}}"
+                        />
+                    </figure>
+            
+                    <p class="tagline">{{template.data.general_oberlinie}}</p>
+                    <h2 class="h1 title">{{template.data.general_ueberschrift}}</h2>
+                    <div class="visible-sm">
+                        <a href="/soziales-engagement.html" class="link">Soziales Engagement</a><br>
+                        <a href="/sponsoring.html" class="link">Sponsoring</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-12 col-sm-6">
+                <div class="item text-right-sm mt-2-md">
+                    <figure class="item__image visible-sm">
+                        <img data-src="{{template.data['general_bild_-_links'][0].path}}?w=800"
+                            data-srcset="{{template.data['general_bild_-_links'][0].path}}?w=420 360w, {{template.data['general_bild_-_links'][0].path}}?w=800 760w"
+                            class="lazyload item__image"
+                            alt="{{template.data['general_bild_-_links'][0].metadata.alt}}"
+                        />
+                    </figure>
+                    
+                    {{template.data.general_text|raw }}
+                    <div class="hidden-sm">
+                        <a href="/soziales-engagement.html" class="link">Soziales Engagement</a><br>
+                        <a href="/sponsoring.html" class="link">Sponsoring</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>

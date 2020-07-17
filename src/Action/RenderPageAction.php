@@ -20,7 +20,8 @@ final class RenderPageAction
         ServerRequestInterface $request, 
         ResponseInterface $response
     ): ResponseInterface {
-     try {
+    
+        try {
             $data = $this->requestPageService->getPage($request);
 
             if (is_array($data)) {
@@ -33,6 +34,7 @@ final class RenderPageAction
         catch (YnfiniteException $e) {
             return $this->handleException($e, $response);
         }
+
         return $response;
     }
 }

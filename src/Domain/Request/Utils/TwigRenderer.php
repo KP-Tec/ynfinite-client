@@ -8,20 +8,23 @@ use Twig\Extra\Intl\IntlExtension;
 use \Twig\Extension\DebugExtension;
 use Cocur\Slugify\Bridge\Twig\SlugifyExtension;
 use Cocur\Slugify\Slugify;
+use UserAgentParser\Provider\WhichBrowser;
+use Psr\Container\ContainerInterface;
 
 use App\Utils\Twig\Tokens\IsCookieActive;
 use App\Utils\Twig\Tokens\GetCookieConsent;
+use App\Utils\Twig\TwigUtils;
 
 final class TwigRenderer
 {
-    public function __construct($settings) {
-        $this->settings = $settings;
-        
-        $loader = new FilesystemLoader([__DIR__ . '/../../../' . $this->settings["templateDir"], getcwd() . '/templates']);
+    public function __construct(ContainerInterface $container) {        
+        $this->settings = $container->get("settings");
+
+        $loader = new FilesystemLoader([getcwd(). "/../src/" . $this->settings["ynfinite"]["templateDir"], getcwd() . '/../templates']);
         $rootPath = realpath(__DIR__);
 
         // $loader = new ArrayLoader($this->templates);
-        $this->twig = new Environment($loader, ['debug' => true]);
+        $this->twig = new Environment($loader, ['debug' => true, 'cache' => getcwd().'/../tmp/twig_cache',]);
         $this->twig->addExtension(new IntlExtension());
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addExtension(new SlugifyExtension(Slugify::create()));
@@ -32,20 +35,22 @@ final class TwigRenderer
     }
 
     public function render($data, $templates) {
-        $templateList = $this->generateTemplateList($templates);
+        $this->data = $data;
+        $this->templates = $templates;
 
-        $uriData = $this->getURIData($data);
+        $this->templateList = $this->generateTemplateList();
+
+        $this->uriData = $this->getURIData();
 
         $this->twig->addTokenParser(new IsCookieActive($data));
         $this->twig->addTokenParser(new GetCookieConsent($data, $this->twig));
-        $this->twig->addGlobal("templateList", $templateList);
-        $this->twig->addGlobal("_templates", $templates);
-        $this->twig->addGlobal('_ynfinite', $data);
-        $this->twig->addGlobal("urlData", $uriData);
+        $this->twig->addGlobal("templateList", $this->templateList);
+        $this->twig->addGlobal("_templates", $this->templates);
+        $this->twig->addGlobal('_ynfinite', $this->data);
+        $this->twig->addGlobal("urlData", $this->uriData);
 
         $_yfunc = new \Twig\TwigFunction('_yfunc', function ($methode) {
-
-            $func = new TwigUtils($this->twig, $data, $templateList, $uriData);
+            $func = new TwigUtils($this->twig, $this->data, $this->templateList, $this->uriData);
 
             $arg_list = func_get_args();
             unset($arg_list[0]);
@@ -56,7 +61,7 @@ final class TwigRenderer
 
         $this->twig->addFunction($_yfunc);
 
-        $renderedPage = $this->twig->render($templateList['index'], $data);
+        $renderedPage = $this->twig->render($this->templateList['index'], $data);
         return $renderedPage;
 
     }
@@ -105,7 +110,7 @@ final class TwigRenderer
         return implode(" ", $uaArray);
     }
 
-    private function getURIData($data)
+    private function getURIData()
     {
         $path = explode('?', $_SERVER['REQUEST_URI'], 2);
 
@@ -113,9 +118,9 @@ final class TwigRenderer
         $perPageSeparator = "?";
 
         $listingURL = "";
-        if ($data["page"]["type"] === "listing") {
-            $currentPage = $data["pagination"]["currentPage"];
-            $perPage = $data["pagination"]["perPage"];
+        if ($this->data["page"]["type"] === "listing") {
+            $currentPage = $this->data["pagination"]["currentPage"];
+            $perPage = $this->data["pagination"]["perPage"];
 
             $listingURL = $path[0];
             $perPageURL = $path[0];

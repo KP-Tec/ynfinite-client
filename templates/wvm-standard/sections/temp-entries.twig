@@ -1,0 +1,49 @@
+{% set data = section.data %}
+
+<section class="section">
+    {% if data.general_handle|length %}
+	    <p class="handle">{{ data.general_handle }}</p>
+	{% endif %}
+	
+	<div class="inner">
+	    {% if data.general_separator|length %}
+            <p class="separator wow fadeInUp"><span>{{ data.general_separator }}</span></p>
+        {% endif %}
+        
+		{% if data.general_entries|length %}
+		{% for item in data.general_entries %}
+    		<div class="row wow fadeInUp {% if loop.last == false %} mb-2{% endif %}">
+    			<div class="col-xs-12 col-sm{% if loop.index is not divisible by(2) %} text-right-sm{% endif %}">
+    				<p class="tagline mt-0">{{ item.data.general_tagline }}</p>
+    				<h2 class="title">{{ item.data.general_heading }}</h2>
+    				{% if item.data.general_text|length > 8 %}
+    				<div class="bodytext">
+    					{{ item.data.general_text|raw }}
+    				    {% if item.data.general_button|length %}
+    				        <p><a href="{{ item.data.general_button[0].href }}" class="button button--primary">{{ item.data.general_button[0].text }}</a></p>
+    		            {% endif %}
+    				</div>
+    				{% endif %}
+    			</div>
+    			
+    			<div class="col-xs-12 col-sm{% if loop.index is divisible by(2) %} first-sm text-right-sm{% endif %}">
+    			    {% if item.data.general_image|length %}
+    				<figure>
+    					<img data-src="{{ item.data.general_image[0].path }}&w=800" class="lazyload" alt="{{ item.data.general_image[0].metadata.alt }}">
+    				</figure>
+    				{% endif %}
+    				
+    				{% if item.data.general_bubble|length > 10 %}
+    				<div class="bubble">
+    					<div class="bubble__content">
+    					    {% if item.data.bubble_heading|length %}<h3>{{ item.data.bubble_heading }}</h3>{% endif %}
+    						{{ item.data.general_bubble|striptags('<p><br><ul><ol><li><a><b>')|raw }}
+    					</div>
+    				</div>
+    			    {% endif %}
+    			</div>
+    		</div>
+		{% endfor %}
+		{% endif %}
+	</div>
+</section>

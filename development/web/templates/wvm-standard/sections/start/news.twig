@@ -1,0 +1,39 @@
+{% set data = section.data %}
+
+{% if data.general_news|length %}
+<section class="section bg wow fadeInUp">
+    <div class="handle">{{template.data.general_bezeichnung}}</div>
+    <div class="inner">
+        <h2 class="separator"><span>{{template.data.general_bezeichnung}}</span></h2>
+
+        <div class="gridx">
+            <div class="gridx-col gridx-col--1"></div>
+            <div class="gridx-col gridx-col--2"></div>
+
+            {% for item in data.general_news %}
+            <div class="gridx-item">
+                <a href="{{_yfunc("linkPage", 'news', item.settings.seo.alias)}}">
+                    <img
+                    data-src="{{ item.data.general_bild[0].path }}?w=800&h=524"
+                    data-srcset="{{item.data.general_bild[0].path}}?w=420&h=275 360w, {{item.data.general_bild[0].path}}?w=800&h=524 760w"
+                    sizes="100%"
+                    class="lazyload item__image"
+                    alt="{{ item.data.general_bild[0].metadata.alt }}">
+                </a>
+                
+                <div class="item__content">
+                    <p class="tagline">{{item.data.general_datum|date("d.m.Y")}}{% if item.data.general_standort|length %} | {{ item.data.general_standort }}{% endif %}</p>
+                    <h3 class="h2 title "><a href="{{_yfunc("linkPage", 'news', item.settings.seo.alias)}}">{{ item.data.general_ueberschrift|raw }}</a></h3>
+                    {{item.data.general_teaser|raw}}
+                    <p><a href="{{_yfunc("linkPage", 'news', item.settings.seo.alias)}}" class="link">Mehr Erfahren</a></p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="buttons mt-0">
+            <a href="/newsliste.html" class="button button--primary">{{template.data.general_mehr_news}}</a>
+        </div>
+    </div>
+</section>
+{% endif %}

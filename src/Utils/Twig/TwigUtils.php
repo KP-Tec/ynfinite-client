@@ -98,8 +98,6 @@ class TwigUtils
   public function perPageDropdown() {
     return $this->twig->render("yn/components/perPageDropdown.twig", array("uriData" => $this->uriData));
    }
- 
-
 
   public function linkPage($pageSlug, $slug = '')
   {
