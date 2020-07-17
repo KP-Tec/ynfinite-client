@@ -7,9 +7,13 @@ use Slim\Middleware\ErrorMiddleware;
 use SlimSession\Helper;
 use Slim\Views\Twig;
 
+use Illuminate\Database\Capsule\Manager;
+
+/*
 use Illuminate\Container\Container as IlluminateContainer;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Connectors\ConnectionFactory;
+*/
 
 return [
     'settings' => function () {
@@ -26,15 +30,31 @@ return [
         return new Helper;
     },
 
-    Connection::class => function (ContainerInterface $container) {
+    Manager::class => function (ContainerInterface $container) {
+        $capsule = new Manager;
+        $capsule->addConnection($container->get('settings')["ynfinite"]['db']);
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
+
+        /*
         $factory = new ConnectionFactory(new IlluminateContainer());
 
         $connection = $factory->make($container->get('settings')["ynfinite"]['db']);
 
         // Disable the query log to prevent memory issues
         $connection->disableQueryLog();
+        */
 
-        return $connection;
+        if (!Manager::schema()->hasTable('static_page_cache')) {
+            Manager::schema()->create('static_page_cache', function ($table) {
+                $table->increments('id');
+                $table->string('cache_key')->unique();
+                $table->string('filename')->unique();
+                $table->timestamps();
+            });
+        }
+
+        return $capsule;
     },
 
 

@@ -6,7 +6,6 @@ use Psr\Http\Message\ServerRequestInterface;
 
 use Psr\Container\ContainerInterface;
 use SlimSession\Helper as SessionHelper;
-use App\Domain\Request\Repository\RequestCacheRepository;
 
 use App\Domain\Request\Utils\CurlHandler;
 
@@ -15,8 +14,7 @@ final class RequestPageService
 
     private $respository;
 
-    public function __construct(RequestCacheRepository $respository, SessionHelper $session, ContainerInterface $container) {
-        $this->repository = $repository;
+    public function __construct(SessionHelper $session, ContainerInterface $container) {
         $this->session = $session;
 
         $this->settings = $container->get("settings")["ynfinite"];

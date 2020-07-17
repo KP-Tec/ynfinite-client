@@ -13,9 +13,10 @@ use App\Utils\Cache\StaticPageCache;
 final class RenderPageService
 {
 
-    private $respository;
+    private $repository;
 
-    public function __construct(TwigRenderer $twig, ContainerInterface $container) {
+    public function __construct(TwigRenderer $twig, RequestCacheRepository $repository, ContainerInterface $container) {
+        $this->repository = $repository;
         $this->settings = $container->get("settings")["ynfinite"];
         $this->twig = $twig;
     }
@@ -26,8 +27,10 @@ final class RenderPageService
 
         
         if(filter_var($this->settings["static_pages"], FILTER_VALIDATE_BOOLEAN) === true) {
-            var_dump("CREATING STATIC PAGE");
-            StaticPageCache::createStaticPage($renderedPage, $data["page"]["type"]);
+            $filename = StaticPageCache::createStaticPage($renderedPage, $data["page"]["type"]);
+            if($filename) {
+                $this->repository->createCache($filename, $data["cacheKey"]);
+            }
         }
         
         return $renderedPage;
