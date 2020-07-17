@@ -7,3 +7,4 @@ src/web/node_modules
 /development/staticPages
 !/development/staticPages/.gitkeep
 /.history
+.env
