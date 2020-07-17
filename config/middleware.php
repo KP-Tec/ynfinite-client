@@ -10,7 +10,7 @@ return function (App $app) {
     $app->addBodyParsingMiddleware();
 
     $app->getRouteCollector()->setCacheFile(
-        getcwd().'/tmp/cache/routes.cache'
+        __DIR__.'/../tmp/cache/routes.cache'
     );
     
     // Add the Slim built-in routing middleware

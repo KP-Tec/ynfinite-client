@@ -5,7 +5,8 @@ namespace App\Action;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-use App\Domain\Request\Service\RequestPage;
+use App\Domain\Request\Service\RequestPageService;
+use App\Domain\Request\Service\RenderPageService;
 use SlimSession\Helper as SessionHelper;
 
 final class RenderPageAction

@@ -53,7 +53,7 @@ return [
             'port' => $fileservice_port
         ]
     ],
-    "templateDir" => "web/templates",
+    "templateDir" => "templates/yn",
     "auth" => [
         'api_key' => getenv('YN_API_KEY'),
         'service_id' => getenv('YN_SERVICE_ID'),    

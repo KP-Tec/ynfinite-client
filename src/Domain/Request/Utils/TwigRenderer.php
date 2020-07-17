@@ -17,7 +17,7 @@ final class TwigRenderer
     public function __construct($settings) {
         $this->settings = $settings;
         
-        $loader = new FilesystemLoader([__DIR__ . '/../' . $this->settings["templateDir"], getcwd() . '/templates']);
+        $loader = new FilesystemLoader([__DIR__ . '/../../../' . $this->settings["templateDir"], getcwd() . '/templates']);
         $rootPath = realpath(__DIR__);
 
         // $loader = new ArrayLoader($this->templates);
