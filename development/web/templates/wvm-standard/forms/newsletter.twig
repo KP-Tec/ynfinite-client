@@ -1,0 +1,35 @@
+{% set data = form.fields %}
+
+<div class="row">
+    <div class="col-xs-12 col-sm">
+        <div class="field">
+            {{ _yfunc("formField", data.general_anrede)}}
+        </div>
+    </div>
+    
+    <div class="col-xs-12 col-sm">
+        <div class="field">
+            {{ _yfunc("formField", data.general_name)}}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs">
+        <div class="field">
+            {{ _yfunc("formField", data['general_e_mail'])}}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs">
+        <div class="field field--consents">
+            {{_yfunc("consents", form)}}
+        </div>
+    </div>
+</div>
+
+<div class="buttons text-left">
+    <button type="submit" class="button button--primary">Jetzt anmelden</button>
+</div>

@@ -43,9 +43,9 @@ return [
     },
 
     Twig::class => function (ContainerInterface $container) {
-        return Twig::create(__DIR__ . '/../src/templates',
+        return Twig::create(getcwd() . '/../src/templates',
             [
-                'cache' => __DIR__ . '/../tmp/cache',
+                'cache' => getcwd() . '/../tmp/cache',
                 'auto_reload' => true,
                 'debug' => false,
             ]

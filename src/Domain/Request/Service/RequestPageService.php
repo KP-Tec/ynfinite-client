@@ -2,6 +2,8 @@
 
 namespace App\Domain\Request\Service;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 use Psr\Container\ContainerInterface;
 use SlimSession\Helper as SessionHelper;
 use App\Domain\Request\Repository\RequestCacheRepository;
@@ -55,14 +57,17 @@ final class RequestPageService
             $jsonResponse = false;
         }
 
-        return $this->request(trim($path, '/'), $service, $jsonResponse);
+        $uri = $request->getUri();
+
+        return $this->request(trim($path, '/'), $service, $uri, $jsonResponse);
     }
 
-    private function request($path, $service, $json = true)
+    private function request($path, $service, $uri, $json = true)
     {
-        $this->curlHandler->setUrl($service, $path, filter_var($this->settings["dev"], FILTER_VALIDATE_BOOLEAN));
-        $response = $this->execCurl($url, $service["port"]);
         
+        $this->curlHandler->setUrl($service, $path, $uri, filter_var($this->settings["dev"], FILTER_VALIDATE_BOOLEAN));
+        $response = $this->curlHandler->exec();    
+
         if ($json) {
             $response = json_decode($response, true);
         }

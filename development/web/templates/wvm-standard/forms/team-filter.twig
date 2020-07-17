@@ -1,0 +1,18 @@
+{% set data = form.fields %}
+
+<select name="fields[{{ data.general_abteilung.alias }}]">
+    <option class="is-empty" value="">Positionen</option>
+    {% for item in data.general_abteilung.items %}
+        {% for subItem in item.children %}
+            <optgroup label="{{ subItem.label }}">
+            <option class="level-0" value="{{subItem.value}}" {% if data.general_abteilung.value == subItem.value %}selected{% endif %} >{{ subItem.label }}</option>
+            {% for subsubItem in subItem.children %}
+                <option class="level-1" value="{{subsubItem.value}}" {% if data.general_abteilung.value == subsubItem.value %}selected{% endif %}>{{ subsubItem.label }}</option>
+                {% for subsubsubItem in subsubItem.children %}
+                    <option class="level-2" value="{{subsubsubItem.value}}" {% if data.general_abteilung.value == subsubsubItem.value %}selected{% endif %}>{{ subsubsubItem.label }}</option>
+                {% endfor %}
+            {% endfor %}
+            </optgroup>
+        {% endfor %}
+    {% endfor %}
+</select>

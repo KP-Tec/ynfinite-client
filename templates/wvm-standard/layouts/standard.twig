@@ -1,0 +1,47 @@
+{% extends "yn/layout/index.twig" %}
+
+{% block head %}
+  {{ parent() }}
+  <link href="/assets/css/app.css" rel="stylesheet" />
+
+  {% isCookieActive "piwik" %}
+    <script type="text/javascript">
+      var _paq = _paq || []; 
+      {% if _ynfinite.content %}
+          _paq.push(["setDocumentTitle", "{{_ynfinite.content.settings.seo.title}}"]);
+      {% else %}
+          _paq.push(["setDocumentTitle", "{{_ynfinite.page.name}}"]);
+      {% endif %}
+      _paq.push(["setDoNotTrack", true]);
+      _paq.push(["setDownloadExtensions", ""]);
+      _paq.push(["trackPageView"]);
+      _paq.push(["enableLinkTracking"]);
+      (function() {
+      var u="https://p376947.mittwaldserver.info/piwik/";
+      _paq.push(["setTrackerUrl", u+"piwik.php"]);
+      _paq.push(["setSiteId", "10"]);
+      var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+      g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+  {% endIsCookieActive %}
+
+{% endblock head %}
+
+{% block body %}
+    {{header}}
+    <main class="site__content">
+        {{ parent() }}
+    </main>
+    {{footer}}
+    
+    {{cookie_information}}
+    {{css}}
+{% endblock %}
+
+{% block footer_scripts %}
+    <script type="text/javascript" src="/assets/js/app.min.js"></script>
+    <script type="text/javascript" src="/assets/js/mapStyle.js"></script>
+    
+    {{ parent() }}
+{% endblock %}

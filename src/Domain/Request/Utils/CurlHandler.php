@@ -23,12 +23,12 @@ final class CurlHandler
         curl_setopt($this->ch, CURLOPT_COOKIE, implode(";", $cookieArray));
     }
 
-    private function addHeader($key, $value)
+    public function addHeader($key, $value)
     {
         $this->headers[$key] = $value;
     }
 
-    private function buildServiceUrl($service, $path)
+    private function buildServiceUrl($service, $path, $uri)
     {
         $host = $service['host'];
         $port = (int)$service['port'];
@@ -50,8 +50,6 @@ final class CurlHandler
                 $controller = $service['controller'];
                 break;
         }
-
-        $uri = $this->request->getUri();
 
         $protocol = $uri->getScheme();
         $domain = $uri->getHost();
@@ -75,9 +73,9 @@ final class CurlHandler
         return $url;
     }
 
-    public function setUrl($service, $path) {
+    public function setUrl($service, $path, $uri, $dev = false) {
 
-        $url = $this->buildServiceUrl($service, $path);
+        $url = $this->buildServiceUrl($service, $path, $uri);
 
         curl_setopt($this->ch, CURLOPT_URL, $url);
         curl_setopt($this->ch, CURLOPT_PORT, $service["port"]);
@@ -97,7 +95,21 @@ final class CurlHandler
 
         curl_setopt($this->ch, CURLOPT_HTTPHEADER, $curlHeaders);
 
-        $this->output = curl_exec($this->ch);
+        $output = curl_exec($this->ch);
+
+        $header_size = curl_getinfo($this->ch, CURLINFO_HEADER_SIZE);
+        $body = substr($output, $header_size);
+        $httpcode = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($this->ch);
+        if ($error) {
+            throw new YnfiniteException($error, 500);
+        }
+
+        if ($httpcode != 200 && $httpcode != 201 && $httpcode != 206) {
+            throw new YnfiniteException($body, $httpcode, true);
+        }
+
+        return $body;
     }
 
 

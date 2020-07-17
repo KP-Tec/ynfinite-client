@@ -1,0 +1,28 @@
+{% set data = section.data %}
+
+<section class="section bg-primary wow fadeInUp">
+  <div class="handle">{{template.data.general_bezeichnung}}</div>
+  <div class="inner">
+    <p class="separator"><span>{{template.data.general_bezeichnung}}</span></p>
+    <h2 class="h1 title text-center">{{template.data.general_ueberschrift}}</h2>
+
+    <div class="row row--list mt-2">
+      {% for item in data.general_termine %}
+      <div class="col-xs-12 col-sm-4">
+        <div class="item item--event">
+          <img data-src="{{ item.data.general_bild[0].path }}?w=680&h=480" class="lazyload item__image" alt="{{ item.data.general_bild[0].metadata.alt }}" />
+          <div class="item__content">
+            <p class="tagline">
+                <time datetime="{{item.data.general_datum|date("Y-m-d")}}">{{ item.data.general_datum|date("d.m.Y") }}</time>
+                {% if item.data.general_ort|length %} | {{ item.data.general_ort }}{% endif %}
+            </p>
+            <h3 class="title">{{item.data.general_ueberschrift}}</h3>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    
+  </div>
+</section>

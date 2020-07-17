@@ -1,0 +1,9 @@
+{% set data = section.data %}
+
+{% if _ynfinite.content.data.panel_rundgang_link|length %}
+<section class="section wow fadeInUp" id="jump360">
+    <figure class="iframe iframe--maps">
+        <iframe width="1440" height="580" frameborder="0" style="border:0; overflow: hidden;" scrolling="no" class="lazyload" data-src="{{ _ynfinite.content.data.panel_rundgang_link }}&amp;key=AIzaSyAb3DRc0x2BCQupG4akbHyIAc36-Pc3K2A" allowfullscreen="false"></iframe>
+    </figure>
+</section>
+{% endif %}

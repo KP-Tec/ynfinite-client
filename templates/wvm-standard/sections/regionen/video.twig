@@ -1,0 +1,9 @@
+{% set data = section.data %}
+
+{% if _ynfinite.content.data.panel_video_youtube_id|length %}
+<section class="section bg pv-0">
+    <div class="iframe iframe--video">
+        <iframe width="560" height="315" data-src="https://www.youtube.com/embed/{{ _ynfinite.content.data.panel_video_youtube_id }}" class="lazyload" frameborder="0" allow="accelerometer; autoplay; encrypted-media;" allowfullscreen></iframe>
+    </div>
+</section>
+{% endif %}
