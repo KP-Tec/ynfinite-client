@@ -3,8 +3,14 @@
   array (
     'GET' => 
     array (
-      '/yn-cache/invalidate' => 'route0',
-      '' => 'route1',
+      '/sitemap.xml' => 'route0',
+      '/robots.txt' => 'route1',
+      '/yn-cache/invalidate' => 'route2',
+      '' => 'route3',
+    ),
+    'POST' => 
+    array (
+      '' => 'route4',
     ),
   ),
   1 => 
@@ -18,7 +24,25 @@
         array (
           2 => 
           array (
-            0 => 'route1',
+            0 => 'route3',
+            1 => 
+            array (
+              'params' => 'params',
+            ),
+          ),
+        ),
+      ),
+    ),
+    'POST' => 
+    array (
+      0 => 
+      array (
+        'regex' => '~^(?|/(.*))$~',
+        'routeMap' => 
+        array (
+          2 => 
+          array (
+            0 => 'route4',
             1 => 
             array (
               'params' => 'params',

@@ -55,8 +55,6 @@ class StaticPageCache {
     public static function invalidateCache($filename) {
         $path = getcwd().StaticPageCache::BASIC_PATH.$filename;
 
-        var_dump($path);
-
         $result = unlink($path);
         return $result;    
     }
