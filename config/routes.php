@@ -15,9 +15,9 @@ return function (App $app) {
     });
     */
 
-    // $app->get('/sitemap.xml', Ynfinite::class . ":index")->setName("sitemap");
-    // $app->get('/robots.txt', Ynfinite::class . ":robotsTxt")->setName("robotsTxt");
+    $app->get('/sitemap.xml', \App\Action\GetSitemapAction::class);
+    $app->get('/robots.txt', \App\Action\GetRobotsTxtAction::class);
     $app->get('/yn-cache/invalidate', \App\Action\InvalidateCacheAction::class);
     $app->get('[/{params:.*}]', \App\Action\RenderPageAction::class);
-    // $app->post('[/{params:.*}]', Frontend::class . ":send")->setName("frontend-send");
+    $app->post('[/{params:.*}]', \App\Action\SendFormAction::class);
 };

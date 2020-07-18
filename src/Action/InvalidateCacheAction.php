@@ -27,7 +27,6 @@ final class InvalidateCacheAction
         $result = false;
 
         if($query["cacheKey"]) {
-            var_dump($query["cacheKey"]);
             $result = $this->repository->invalidateCache($query["cacheKey"]);
         }
 

@@ -4,7 +4,7 @@ namespace App\Domain\Request\Utils;
 
 final class CurlHandler
 {
-    public function __construct($settings) {
+    public function __construct($settings, $postRequest = false) {
         $this->settings = $settings;
 
         $cookieArray = array();
@@ -13,9 +13,21 @@ final class CurlHandler
         }
 
         $this->ch = curl_init();
-        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($this->ch, CURLOPT_HEADER, 1);
-        curl_setopt($this->ch, CURLOPT_VERBOSE, 0);
+
+        if($postRequest) {
+            curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($this->ch, CURLOPT_HEADER, 1);
+            curl_setopt($this->ch, CURLOPT_POST, TRUE);
+            curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($this->ch, CURLOPT_ENCODING, "gzip");
+        }
+        else {
+            curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($this->ch, CURLOPT_HEADER, 1);
+            curl_setopt($this->ch, CURLOPT_VERBOSE, 0);
+        }
+
+        
         if ($this->settings["dev"] === 'true') {
             curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -85,6 +97,14 @@ final class CurlHandler
             curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, false);
         }
 
+    }
+
+    public function execWithData($formData) {
+        curl_setopt($this->ch, CURLOPT_POSTFIELDS, $formData);
+        
+        $response = $this->exec();
+        
+        return $response;
     }
 
     public function exec() {

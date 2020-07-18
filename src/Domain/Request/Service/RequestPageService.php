@@ -8,12 +8,10 @@ use Psr\Container\ContainerInterface;
 use SlimSession\Helper as SessionHelper;
 
 use App\Domain\Request\Utils\CurlHandler;
+use App\Domain\Request\Service\BaseRequestService;
 
 final class RequestPageService
 {
-
-    private $respository;
-
     public function __construct(SessionHelper $session, ContainerInterface $container) {
         $this->session = $session;
 
