@@ -20,4 +20,5 @@ return function (App $app) {
     $app->get('/yn-cache/invalidate', \App\Action\InvalidateCacheAction::class);
     $app->get('[/{params:.*}]', \App\Action\RenderPageAction::class);
     $app->post('[/{params:.*}]', \App\Action\SendFormAction::class);
+    
 };

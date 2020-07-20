@@ -9,6 +9,8 @@ use App\Domain\Request\Service\RequestPageService;
 use App\Domain\Request\Service\RenderPageService;
 use SlimSession\Helper as SessionHelper;
 
+use App\Exception\YnfiniteException;
+
 final class RenderPageAction
 {
     public function __construct(RequestPageService $requestPageService, RenderPageService $renderPageService) {
@@ -36,5 +38,31 @@ final class RenderPageAction
         }
 
         return $response;
+    }
+
+    private function handleException($e, $response) {
+        $error = [];
+        $error["message"] = $e->getMessage();
+        $error["code"] = $e->getCode();
+        $error["trace"] = $e->getTraceAsString();
+
+        $response = $response->withStatus($error["code"]);
+
+        switch ($e->getRenderType()) {
+            case "error":
+                $response->withHeader('Content-Type', 'text/html');
+                return $response;
+                break;
+            case "template":
+                if ($e->getRedirect() != null) {
+                    return $response->withRedirect($e->getRedirect(), 301);
+                }
+
+                $renderedTemplate = $this->renderPageService->render($e->getTemplates(), $e->getData());
+                $response->getBody()->write($renderedTemplate);
+
+                return $response;
+                break;
+        }
     }
 }
