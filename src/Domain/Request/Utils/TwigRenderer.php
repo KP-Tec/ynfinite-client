@@ -40,6 +40,8 @@ final class TwigRenderer
 
         $this->templateList = $this->generateTemplateList();
 
+        var_dump($this->templateList);
+
         $this->uriData = $this->getURIData();
 
         $this->twig->addTokenParser(new IsCookieActive($data));
@@ -73,6 +75,9 @@ final class TwigRenderer
         $namespace = $this->data["theme"]["namespace"];
 
         foreach ($this->templates as $key => $template) {
+            if(!$template["alias"]) {
+                throw new \Exception("Template ".$template["frontend"]." is missing");
+            }
             $templateArray[$template["frontend"]] = $namespace . "/" . $template["alias"] . ".twig";
         }
 

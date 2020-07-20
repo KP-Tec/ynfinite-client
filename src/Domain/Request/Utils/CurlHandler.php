@@ -119,6 +119,8 @@ final class CurlHandler
 
         $output = curl_exec($this->ch);
 
+        var_dump($output);
+
         $header_size = curl_getinfo($this->ch, CURLINFO_HEADER_SIZE);
         $body = substr($output, $header_size);
         $httpcode = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
