@@ -2,8 +2,13 @@
 ynfinite-client.iml
 src/web/node_modules
 /vendor/
-/development/web/*
-!/development/web/.gitkeep
-/development/staticPages
-!/development/staticPages/.gitkeep
+/tmp/cache/*
+!/tmp/cache/.gitkeep
+/tmp/static_pages/*
+!/tmp/static_pages/.gitkeep
+/tmp/twig_cache/*
+!/tmp/twig_cache/.gitkeep
+/templates/*
+!/templates/.gitkeep
 /.history
+.env

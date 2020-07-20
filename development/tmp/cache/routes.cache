@@ -1,0 +1,60 @@
+<?php return array (
+  0 => 
+  array (
+    'GET' => 
+    array (
+      '/ynfinite/install' => 'route0',
+      '/ynfinite/install/password' => 'route2',
+      '/ynfinite/install/success' => 'route4',
+      '/yn-api/cache/invalidate' => 'route5',
+      '/sitemap.xml' => 'route6',
+      '/robots.txt' => 'route7',
+      '' => 'route8',
+    ),
+    'POST' => 
+    array (
+      '/ynfinite/install' => 'route1',
+      '/ynfinite/install/password/check' => 'route3',
+      '' => 'route9',
+    ),
+  ),
+  1 => 
+  array (
+    'GET' => 
+    array (
+      0 => 
+      array (
+        'regex' => '~^(?|/(.*))$~',
+        'routeMap' => 
+        array (
+          2 => 
+          array (
+            0 => 'route8',
+            1 => 
+            array (
+              'params' => 'params',
+            ),
+          ),
+        ),
+      ),
+    ),
+    'POST' => 
+    array (
+      0 => 
+      array (
+        'regex' => '~^(?|/(.*))$~',
+        'routeMap' => 
+        array (
+          2 => 
+          array (
+            0 => 'route9',
+            1 => 
+            array (
+              'params' => 'params',
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+);
