@@ -51,15 +51,12 @@ final class RenderPageAction
         switch ($e->getRenderType()) {
             case "error":
                 $response->withHeader('Content-Type', 'text/html');
-                var_dump($error);
                 return $response;
                 break;
             case "template":
                 if ($e->getRedirect() != null) {
                     return $response->withRedirect($e->getRedirect(), 301);
                 }
-
-                var_dump($e->getTemplates());
 
                 $renderedTemplate = $this->renderPageService->render($e->getTemplates(), $e->getData());
                 $response->getBody()->write($renderedTemplate);
