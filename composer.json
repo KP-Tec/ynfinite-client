@@ -5,7 +5,9 @@
   "license": "MIT",
   "homepage": "https://www.ynfinite.com",
   "keywords": [
-    "ynfinite", "cms", "saas"
+    "ynfinite",
+    "cms",
+    "saas"
   ],
   "authors": [
     {
@@ -15,23 +17,28 @@
   ],
   "require": {
     "php": "^7.3",
-    "twig/twig": "3.0",
     "ext-json": "*",
-    "vlucas/phpdotenv": "3.6.3",
-    "slim/slim": "4.5.0",
-    "slim/psr7": "1.0.0",
-    "slim/twig-view": "3.0.0",
-    "php-di/php-di": "6.1.0",
-    "monolog/monolog": "1.25.3",
     "bryanjhv/slim-session": "4.0",
+    "cocur/slugify": "4.0.0",
+    "illuminate/database": "7.20",
+    "monolog/monolog": "1.25.3",
+    "php-di/php-di": "6.1.0",
+    "slim/psr7": "1.0.0",
+    "slim/slim": "4.5.0",
+    "slim/twig-view": "3.0.0",
     "thadafinser/user-agent-parser": "^2.0",
-    "whichbrowser/parser": "^2.0",
     "twig/intl-extra": "^3.0",
-    "cocur/slugify": "4.0.0"
+    "twig/twig": "3.0",
+    "vlucas/phpdotenv": "3.6.3",
+    "whichbrowser/parser": "^2.0"
   },
   "autoload": {
     "psr-4": {
-      "Ypsolution\\YnfinitePhpClient\\": "src"
+      "App\\": "src/"
     }
+  },
+  "config": {
+    "process-timeout": 0,
+    "sort-packages": true
   }
 }

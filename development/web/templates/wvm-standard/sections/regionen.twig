@@ -1,0 +1,32 @@
+{% set data = section.data %}
+
+<section class="section">
+    <div class="handle">{{template.data.general_ueberschrift}}</div>
+    <div class="inner wow fadeInUp">
+        {% if data.general_text|length %}
+            <div class="bodytext text-center wow fadeInUp">
+                {{ data.general_text|raw }}
+            </div>
+        {% endif %}
+
+        <div class="row wow fadeInUp">
+            {% for region in data.general_regionen %}
+            <div class="col-xs-12 col-sm">
+                <div class="item item--regions text-center">
+                    <figure class="item__image">
+                        <a href="{{ _yfunc("linkPage", 'region', region.settings.seo.alias) }}">
+                            <img data-src="{{ region.data.teaser_bild[0].path }}?w=500" class="lazyload" alt="{{ region.data.teaser_bild[0].metadata.alt }}" />
+                        </a>
+                    </figure>
+                    <div class="item__content">
+                        <p class="tagline">Projekte in {{ region.data.general_name }}</p>
+                        <h2 class="title">{{ region.data.teaser_ueberschrift }}</h2>
+                        {{ region.data.teaser_text|raw }}
+                        <p><a href="{{ _yfunc("linkPage", 'region', region.settings.seo.alias) }}" class="link">Mehr Erfahren</a></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
