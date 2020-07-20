@@ -40,8 +40,6 @@ final class TwigRenderer
 
         $this->templateList = $this->generateTemplateList();
 
-        var_dump($this->templateList);
-
         $this->uriData = $this->getURIData();
 
         $this->twig->addTokenParser(new IsCookieActive($data));

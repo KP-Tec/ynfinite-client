@@ -17,8 +17,6 @@ class YnfiniteException extends \Exception
 
         $message = json_decode($message, true);
 
-        var_dump($message["message"]["templates"]);
-
         if (is_array($message["message"]) && $message["message"]["templates"] && $message["message"]["data"]) {
             $this->renderType = "template";
             $this->data = $message["message"]["data"];
