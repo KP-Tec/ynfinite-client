@@ -2,6 +2,8 @@
 
 namespace App\Domain\Request\Utils;
 
+use App\Exception\YnfiniteException;
+
 final class CurlHandler
 {
     public function __construct($settings, $postRequest = false) {
@@ -121,6 +123,7 @@ final class CurlHandler
         $body = substr($output, $header_size);
         $httpcode = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
         $error = curl_error($this->ch);
+
         if ($error) {
             throw new YnfiniteException($error, 500);
         }
