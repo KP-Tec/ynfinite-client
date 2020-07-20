@@ -7,7 +7,7 @@ $ynfinite_server = 'https://live-server.ynfinite.de';
 $ynfinite_port = 443;
 $fileservice_server = 'https://live-files.ynfinite.de';
 $fileservice_port = 443;
-if (getenv('DEV')) {
+if (getenv('DEV') !== "false") {
     $ynfinite_server = 'https://ynfinite-node';
     $ynfinite_port = 4242;
     $fileservice_server = 'http://imageservice';
