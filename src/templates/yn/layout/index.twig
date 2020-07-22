@@ -8,24 +8,23 @@
     {% block head %}
         {% include 'yn/layout/head.twig' %}
     {% endblock %}
+    <link href="/assets/vendor/ypsolution/css/main.css" rel="stylesheet" />
 
-    
 </head>
 <body class="{{_ynfinite.page.css_classes}} {{useragent}}" id="{{_ynfinite.page.css_id}}">
-    
+
     {% block header %}{{ include(templateList['header'], {template: _templates["header"]}) }}{% endblock header %}
     {% block body %}
-    
+
     {% for section in _ynfinite.sections %}
         {{ include(templateList[section.template], {section: section, template: _templates[section.template]}) }}
     {% endfor %}
 
     {% endblock body %}
     {% block footer %}{{ include(templateList["footer"], {template: _templates["footer"]}) }}{% endblock footer %}
-    
+
     {% block footer_scripts %}
         <script language="javascript" type="text/javascript" src="/assets/vendor/ypsolution/js/app.min.js"></script>
-        <script language="javascript" type="text/javascript" src="/assets/vendor/ypsolution/js/lazysizes.min.js"></script>
     {% endblock footer_scripts %}
 
 

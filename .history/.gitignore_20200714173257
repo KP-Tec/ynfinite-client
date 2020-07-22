@@ -1,8 +1,0 @@
-.idea
-ynfinite-client.iml
-src/web/node_modules
-/vendor/
-/development/templates/*
-!/development/templates/.gitkeep
-/development/staticPages
-!/development/staticPages/.gitkeep
