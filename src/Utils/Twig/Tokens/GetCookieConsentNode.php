@@ -24,7 +24,7 @@ class GetCookieConsentNode extends \Twig\Node\Node {
             
             // $cookieConsent = $this->twig->render("yn/module/cookieManager/consent.twig", array("cookie" => $this->cookie));
             
-            $compiler->write('$this->loadTemplate(\'yn/module/cookieManager/consent.twig\')->display(')
+            $compiler->write('$this->loadTemplate(\'yn/module/consentManager/consent.twig\')->display(')
             ->repr(array("cookie" => $this->cookie))
             ->write(');');
         }

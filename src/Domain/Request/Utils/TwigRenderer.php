@@ -4,6 +4,7 @@ namespace App\Domain\Request\Utils;
 
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
+use Twig\TwigFilter;
 use Twig\Extra\Intl\IntlExtension;
 use \Twig\Extension\DebugExtension;
 use Cocur\Slugify\Bridge\Twig\SlugifyExtension;
@@ -14,6 +15,7 @@ use Psr\Container\ContainerInterface;
 use App\Utils\Twig\Tokens\IsCookieActive;
 use App\Utils\Twig\Tokens\GetCookieConsent;
 use App\Utils\Twig\TwigUtils;
+use App\Utils\Twig\I18nUtils;
 
 final class TwigRenderer
 {
@@ -30,8 +32,6 @@ final class TwigRenderer
         $this->twig->addExtension(new SlugifyExtension(Slugify::create()));
 
         $this->twig->addGlobal("useragent", $this->getBrowserClasses());
-        
-
     }
 
     public function render($data, $templates) {
@@ -60,6 +60,13 @@ final class TwigRenderer
         }, ['is_safe' => ['html']]);
 
         $this->twig->addFunction($_yfunc);
+
+        $filter = new \Twig\TwigFilter('trans', function ($string) {
+            $i18n = new I18nUtils($this->twig, $this->data);
+            return $i18n->translate($string);
+        });
+
+        $this->twig->addFilter($filter);
 
         $renderedPage = $this->twig->render($this->templateList['index'], $data);
         return $renderedPage;

@@ -30,7 +30,7 @@
 
     {% block cookies %}
         {% if _ynfinite.cookies.config.active %}
-            {{ include("yn/module/cookieManager/index.twig", {"cookies": _ynfinite.cookies, "hideConsentManager": _ynfinite.page.hide_consent_manager})}}
+            {{ include("yn/module/consentManager/index.twig", {"cookies": _ynfinite.cookies, "hideConsentManager": _ynfinite.page.hide_consent_manager})}}
         {% endif %}
     {% endblock cookies %}
 </body>
