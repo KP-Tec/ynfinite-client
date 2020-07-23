@@ -1,6 +1,5 @@
 .idea
 ynfinite-client.iml
-src/web/node_modules
 /vendor/
 /tmp/cache/*
 !/tmp/cache/.gitkeep
@@ -11,4 +10,4 @@ src/web/node_modules
 /templates/*
 !/templates/.gitkeep
 /.history
-.env
+/.env
