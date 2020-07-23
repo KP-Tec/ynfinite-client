@@ -62,7 +62,7 @@ class TwigUtils
   }
 
   public function printCookieSettingsButton() {
-    return $this->twig->render("yn/module/cookieManager/settingsButton.twig");
+    return $this->twig->render("yn/module/consentManager/settingsButton.twig");
   }
 
   public function formField($formField) {
