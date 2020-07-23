@@ -11,3 +11,4 @@ ynfinite-client.iml
 !/templates/.gitkeep
 /.history
 /.env
+/src/assets/node_modules

@@ -1,8 +1,6 @@
 {% set config = cookies.config %}
 
-
-
-<div id="yn-cookies" class='yn-cookies'>
+<div id="yn-cookies" class='yn-cookies' data-hide-manager="{{hideConsentManager}}">
     <div class='yn-cookies__inner'>
     <div class='yn-cookies__page yn-cookies__page--visible' data-yn-cookie-page='information'>
         <div class='yn-cookies__header'>
@@ -14,9 +12,9 @@
         <div class='yn-cookies__footer'>
         <ul>
             {% if cookies.available|length > 0 %}
-                <li class="link-left"><a href='#' onClick='ynCookiesShowPage("configuration")' class='yn-cookies__link'>{{config.label.settings}}</a></li>
+                <li class="link-left"><a href='#' id="yn-cookies__show-configuration" class='yn-cookies__link'>{{config.label.settings}}</a></li>
             {% endif %}
-            <li><a href='javascript:ynSetDefaultCookieSettings()' class='yn-cookies__button'>{{config.label.useDefault}}</a></li>
+            <li><a href='#' id="yn-cookies__allow-all" class='yn-cookies__button'>{{config.label.useDefault}}</a></li>
         </ul>
         </div>
     </div>
@@ -49,7 +47,7 @@
                     </div>
                     <div class="yn-cookies__settings__switch" data-yn-default="{{cookie.default}}">
                         <label class="yn-cookies__switch">
-                        <input name="activatedScripts[]" type="checkbox" value="{{cookie._id}}">
+                        <input name="activatedScripts[]" type="checkbox" value="{{cookie._id}}" {% if cookie._id in cookies.active %} checked {% endif %}>
                         <span class="yn-cookies__slider"></span>
                         </label>
                     </div>
@@ -61,8 +59,8 @@
         </div>
         <div class='yn-cookies__footer'>
           <ul>
-            <li class="link-left"><a href='#' onClick='ynCookiesShowPage("information")' class='yn-cookies__link'>{{config.label.back}}</a></li>
-            <li><a href='javascript:ynSetCookieSettings()' class='yn-cookies__button'>{{config.label.saveSettings}}</a></li>
+            <li class="link-left"><a href='#' id="yn-cookies__show-information" class='yn-cookies__link'>{{config.label.back}}</a></li>
+            <li><a href='#' id="yn-cookies__set-cookies" class='yn-cookies__button'>{{config.label.saveSettings}}</a></li>
           </ul>
         </div>
       </div>
