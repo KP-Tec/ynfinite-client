@@ -132,8 +132,8 @@ final class TwigRenderer
             $currentPage = $this->data["pagination"]["currentPage"];
             $perPage = $this->data["pagination"]["perPage"];
 
-            $listingURL = $path[0];
-            $perPageURL = $path[0];
+            $listingURL = $path[0]."?";
+            $perPageURL = $path[0]."?";
 
             if ($path[1]) {
                 $paramsPagination = explode("&", $path[1]);
@@ -143,7 +143,7 @@ final class TwigRenderer
                 }
 
                 if (count($paramsPagination) > 0) {
-                    $listingURL .= "?" . implode("&", $paramsPagination) . "&";
+                    $listingURL .= implode("&", $paramsPagination) . "&";
                 }
 
                 if (($key = array_search("_y.perPage=$perPage", $paramsPagination)) !== false) {
@@ -151,20 +151,14 @@ final class TwigRenderer
                 }
 
                 if (count($paramsPagination) > 0) {
-                    $perPageURL .= "?" . implode("&", $paramsPagination) . "&";
-                } else {
-                    $perPageURL .= "?";
+                    $perPageURL .= implode("&", $paramsPagination) . "&";
                 }
-            } else {
-                $listingURL .= "?";
-                $perPageURL .= "?";
-            }
+            } 
         }
 
         return array(
             "cleanURL" => $path[0],
             "URL" => $_SERVER['REQUEST_URI'],
-            "separator" => $separator,
             "listingURL" => $listingURL,
             "perPageURL" => $perPageURL
         );
