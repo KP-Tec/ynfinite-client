@@ -21,11 +21,9 @@ class RequestCacheRepository {
         $cache = $this->connection->table('static_page_cache')->where("cache_key", "=", $cacheKey)->first();
 
         if($cache->id) {
-            var_dump("UPDATING");
             return (int) $this->connection->table('static_page_cache')->where("cache_key", "=", $cacheKey)->update($values);
         }
         else {
-            var_dump("INSERTING");
             return (int) $this->connection->table('static_page_cache')->insert($values);
         }
 
