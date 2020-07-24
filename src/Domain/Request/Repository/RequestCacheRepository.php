@@ -18,7 +18,16 @@ class RequestCacheRepository {
             'filename' => $filename,
         ];
 
-        return (int) $this->connection->table('static_page_cache')->updateOrInsert($values);
+        $cache = $this->connection->table('static_page_cache')->where("cache_key", "=", $cacheKey)->first();
+
+        if($cache->id) {
+            return (int) $this->connection->table('static_page_cache')->where("cache_key", "=", $cacheKey)->update($values);
+        }
+        else {
+            return (int) $this->connection->table('static_page_cache')->insert($values);
+        }
+
+        
     }
 
     public function invalidateCache($cacheKey) {

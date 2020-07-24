@@ -1,5 +1,3 @@
-console.log("TEST!");
-
 function handleResponse(e, t) {
   t.json().then((t) => {
     const { inline: n, redirect: o, type: i } = t;
