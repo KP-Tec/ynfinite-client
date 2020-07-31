@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c3c6a50e7b165103ceaf07f455c22f4c",
+    "content-hash": "7c01e4a54bce43f728e2f63ecb41d88b",
     "packages": [
         {
             "name": "bryanjhv/slim-session",
@@ -670,6 +670,55 @@
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
             "time": "2020-07-14T02:10:30+00:00"
+        },
+        {
+            "name": "jblond/twig-trans",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JBlond/twig-trans.git",
+                "reference": "0e7c598a1cfecceb8a0634eaffb81123021efe23"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JBlond/twig-trans/zipball/0e7c598a1cfecceb8a0634eaffb81123021efe23",
+                "reference": "0e7c598a1cfecceb8a0634eaffb81123021efe23",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gettext": "*",
+                "ext-mbstring": "*",
+                "php": ">=7.2",
+                "twig/twig": ">=3.0.0"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "jblond\\": "src/jblond"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mario",
+                    "email": "leet31337@web.de"
+                }
+            ],
+            "keywords": [
+                "endtrans",
+                "php",
+                "po file",
+                "trans",
+                "translation",
+                "twig"
+            ],
+            "time": "2020-07-21T10:38:12+00:00"
         },
         {
             "name": "jeremeamia/superclosure",

@@ -4,6 +4,7 @@ namespace App\Domain\Request\Utils;
 
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
+use Twig\TwigFilter;
 use Twig\Extra\Intl\IntlExtension;
 use \Twig\Extension\DebugExtension;
 use Cocur\Slugify\Bridge\Twig\SlugifyExtension;
@@ -14,6 +15,7 @@ use Psr\Container\ContainerInterface;
 use App\Utils\Twig\Tokens\IsCookieActive;
 use App\Utils\Twig\Tokens\GetCookieConsent;
 use App\Utils\Twig\TwigUtils;
+use App\Utils\Twig\I18nUtils;
 
 final class TwigRenderer
 {
@@ -24,14 +26,12 @@ final class TwigRenderer
         $rootPath = realpath(__DIR__);
 
         // $loader = new ArrayLoader($this->templates);
-        $this->twig = new Environment($loader, ['debug' => true, 'cache' => getcwd().'/../tmp/twig_cache',]);
+        $this->twig = new Environment($loader, ['debug' => true, /* 'cache' => getcwd().'/../tmp/twig_cache', */]);
         $this->twig->addExtension(new IntlExtension());
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addExtension(new SlugifyExtension(Slugify::create()));
 
         $this->twig->addGlobal("useragent", $this->getBrowserClasses());
-        
-
     }
 
     public function render($data, $templates) {
@@ -60,6 +60,13 @@ final class TwigRenderer
         }, ['is_safe' => ['html']]);
 
         $this->twig->addFunction($_yfunc);
+
+        $filter = new \Twig\TwigFilter('trans', function ($string) {
+            $i18n = new I18nUtils($this->twig, $this->data);
+            return $i18n->translate($string);
+        });
+
+        $this->twig->addFilter($filter);
 
         $renderedPage = $this->twig->render($this->templateList['index'], $data);
         return $renderedPage;
@@ -125,8 +132,8 @@ final class TwigRenderer
             $currentPage = $this->data["pagination"]["currentPage"];
             $perPage = $this->data["pagination"]["perPage"];
 
-            $listingURL = $path[0];
-            $perPageURL = $path[0];
+            $listingURL = $path[0]."?";
+            $perPageURL = $path[0]."?";
 
             if ($path[1]) {
                 $paramsPagination = explode("&", $path[1]);
@@ -136,7 +143,7 @@ final class TwigRenderer
                 }
 
                 if (count($paramsPagination) > 0) {
-                    $listingURL .= "?" . implode("&", $paramsPagination) . "&";
+                    $listingURL .= implode("&", $paramsPagination) . "&";
                 }
 
                 if (($key = array_search("_y.perPage=$perPage", $paramsPagination)) !== false) {
@@ -144,20 +151,14 @@ final class TwigRenderer
                 }
 
                 if (count($paramsPagination) > 0) {
-                    $perPageURL .= "?" . implode("&", $paramsPagination) . "&";
-                } else {
-                    $perPageURL .= "?";
+                    $perPageURL .= implode("&", $paramsPagination) . "&";
                 }
-            } else {
-                $listingURL .= "?";
-                $perPageURL .= "?";
-            }
+            } 
         }
 
         return array(
             "cleanURL" => $path[0],
             "URL" => $_SERVER['REQUEST_URI'],
-            "separator" => $separator,
             "listingURL" => $listingURL,
             "perPageURL" => $perPageURL
         );

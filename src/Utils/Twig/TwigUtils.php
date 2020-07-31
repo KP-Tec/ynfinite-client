@@ -61,6 +61,10 @@ class TwigUtils
     return $this->twig->render("yn/components/form.twig", array("form" => $form, "section" => $section, "templates" => $this->templates));
   }
 
+  public function printCookieSettingsButton() {
+    return $this->twig->render("yn/module/consentManager/settingsButton.twig");
+  }
+
   public function formField($formField) {
     switch($formField["type"]) {
       case "select": {

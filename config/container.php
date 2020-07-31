@@ -5,15 +5,29 @@ use Slim\App;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\ErrorMiddleware;
 use SlimSession\Helper;
-use Slim\Views\Twig;
 
 use Illuminate\Database\Capsule\Manager;
 
-/*
-use Illuminate\Container\Container as IlluminateContainer;
-use Illuminate\Database\Connection;
-use Illuminate\Database\Connectors\ConnectionFactory;
-*/
+// Actions
+use App\Action\GetRobotsTxtAction;
+use App\Action\GetSitemapAction;
+use App\Action\InvalidateCacheAction;
+use App\Action\RenderPageAction;
+use App\Action\SendFormAction;
+use App\Action\UpdateToVersionAction;
+
+// Services
+use App\Domain\Request\Service\GetRobotsTxtService;
+use App\Domain\Request\Service\GetSitemapService;
+use App\Domain\Request\Service\RenderPageService;
+use App\Domain\Request\Service\RequestPageService;
+use App\Domain\Request\Service\SendFormService;
+
+// Utils
+use App\Domain\Request\Utils\TwigRenderer;
+
+// Repository
+use App\Domain\Request\Repository\RequestCacheRepository;
 
 return [
     'settings' => function () {
@@ -62,16 +76,6 @@ return [
         return $container->get(Connection::class)->getPdo();
     },
 
-    Twig::class => function (ContainerInterface $container) {
-        return Twig::create(getcwd() . '/../src/templates',
-            [
-                'cache' => getcwd() . '/../tmp/cache',
-                'auto_reload' => true,
-                'debug' => false,
-            ]
-        );
-    },
-
     ErrorMiddleware::class => function (ContainerInterface $container) {
         $app = $container->get(App::class);
         $settings = $container->get('settings')['error'];
@@ -85,4 +89,24 @@ return [
         );
     },
 
+    // Actions
+    GetRobotsTxtAction::class => DI\autowire(),
+    GetSitemapAction::class => DI\autowire(),
+    InvalidateCacheAction::class => DI\autowire(),
+    RenderPageAction::class => DI\autowire(),
+    SendFormAction::class => DI\autowire(),
+    UpdateToVersionAction::class => DI\autowire(),
+
+    // Services
+    GetRobotsTxtService::class => DI\autowire(),
+    GetSitemapService::class => DI\autowire(),
+    RenderPageService::class => DI\autowire(),
+    RequestPageService::class => DI\autowire(),
+    SendFormService::class => DI\autowire(),
+
+    // Repository
+    RequestCacheRepository::class => DI\autowire(),
+
+    // Utils
+    TwigRenderer::class => DI\autowire()
 ];
