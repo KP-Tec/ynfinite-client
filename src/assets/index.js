@@ -8,5 +8,3 @@ import "./js/lazysize";
 const YnfiniteCookies = require("./js/cookies");
 
 YnfiniteCookies.setup();
-
-console.log(YnfiniteCookies);
