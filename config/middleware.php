@@ -16,8 +16,6 @@ return function (App $app) {
     // Add the Slim built-in routing middleware
     $app->addRoutingMiddleware();
 
-  //  $app->add(TwigMiddleware::createFromContainer($app));
-
     $app->add(new Session([
         'name' => 'ynfinite-session',
         'autorefresh' => true,

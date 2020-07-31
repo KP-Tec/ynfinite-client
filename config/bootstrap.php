@@ -9,6 +9,8 @@ $containerBuilder = new ContainerBuilder();
 $containerBuilder->addDefinitions(__DIR__ . '/container.php');
 
 // Build PHP-DI Container instance
+$containerBuilder->enableCompilation(__DIR__ . '/../tmp/cache');
+$containerBuilder->enableDefinitionCache();
 $container = $containerBuilder->build();
 
 // Create App instance

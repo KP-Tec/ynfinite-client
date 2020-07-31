@@ -3,7 +3,7 @@
         <h5>{{cookie.headline}}</h5>
         {{cookie.consent_text|raw}}
         <div class="yn-cookie-consent--controlls">
-        <a class="yn-cookie-consent--okay" href="javascript:ynAcceptCookie('{{cookie._id}}')">Give consent</a>
+        <a class="yn-cookie-consent--okay" href="" data-consent-id="{{cookie._id}}">{{"ConsentManager_GiveConsent"|trans}}</a>
         </div>
     </div>
 </div>
