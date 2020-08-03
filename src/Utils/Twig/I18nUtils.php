@@ -10,9 +10,11 @@ class I18nUtils {
       $this->data = $data;
       $this->twig = $twig;
 
-      $this->i18n = new I18n(__DIR__.'/../../locale/lang_{LANGUAGE}.ini', __DIR__.'/../../../tmp/locales/', $this->data["languages"]["current"]);
+      $this->i18n = new I18n(__DIR__.'/../../locale/lang_{LANGUAGE}.ini', __DIR__.'/../../../tmp/locales/', "en");
+      $this->i18n->setForcedLang($this->data["languages"]["current"]);
 
       $this->i18n->init();
+
     }
 
     public function translate($string, $args = array()) {
