@@ -62,8 +62,8 @@ return [
         if (!Manager::schema()->hasTable('static_page_cache')) {
             Manager::schema()->create('static_page_cache', function ($table) {
                 $table->increments('id');
-                $table->string('cache_key')->unique();
-                $table->string('filename')->unique();
+                $table->string('cache_key')->index();
+                $table->text('filename');
                 $table->timestamps();
             });
         }
