@@ -24,6 +24,7 @@ class StaticPageCache
                     $additional_keys .= '_y_page_' . $parsedQuery['_y_page'];
                 }
                 if ($key === '_y__ynfiniteForm') {
+
                     $additional_keys .= '_y__ynfiniteForm_' . $parsedQuery['_y__ynfiniteForm'];
                 }
             }
