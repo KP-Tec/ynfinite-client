@@ -33,20 +33,31 @@ class RequestCacheRepository {
         
     }
 
-    public function invalidateCache($cacheKey) {
-        $cachedPages = $this->connection->table('static_page_cache')->where('cache_key', '=', $cacheKey)->get();
-        
+    public function invalidateAllCache() {
+        $cachedPages = $this->connection->table("static_page_cache")->get();
+        return $this->deletePages($cachedPages);
+    }
+
+    public function invalidateCache($cacheKeys) {
+        if(!is_array($cacheKeys)) $cacheKeys = array($cacheKeys);
+        $cachedPages = $this->connection->table('static_page_cache')->whereIn('cache_key', $cacheKeys)->get();
+
+        return $this->deletePages($cachedPages);
+    }
+
+    private function deletePages($cachedPages) {
         $deletedItems = 0;
+
         foreach($cachedPages as $cachedPage) {
             $pageDeleted = StaticPageCache::invalidateCache($cachedPage->filename);
-            
+
             if($pageDeleted) {
                 $success = $this->connection->table('static_page_cache')->where('id', '=', $cachedPage->id)->delete();
                 if($success) {
                     $deletedItems++;
                 }
-            }
-
+                
+            }            
         }
         
         return $deletedItems;
