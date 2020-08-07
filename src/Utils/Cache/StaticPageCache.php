@@ -14,16 +14,17 @@ class StaticPageCache
             parse_str($_SERVER['QUERY_STRING'], $parsedQuery);
             $hasOtherParams = false;
             foreach ($parsedQuery as $key => $value) {
-                if ($key !== '_y__ynfinitePerPage' && $key !== '_y__ynfinitePage' && $key !== '_y__ynfiniteForm') {
+                if ($key !== '_y_perPage' && $key !== '_y_page' && $key !== '_y__ynfiniteForm') {
                     $hasOtherParams = true;
                 }
-                if ($key === '_y__ynfinitePerPage') {
-                    $additional_keys .= '_y__ynfinitePerPage_' . $parsedQuery['_y__ynfinitePerPage'];
+                if ($key === '_y_perPage') {
+                    $additional_keys .= '_y_perPage_' . $parsedQuery['_y_perPage'];
                 }
-                if ($key === '_y__ynfinitePage' ) {
-                    $additional_keys .= '_y__ynfinitePage_' . $parsedQuery['_y__ynfinitePage'];
+                if ($key === '_y_page' ) {
+                    $additional_keys .= '_y_page_' . $parsedQuery['_y_page'];
                 }
-                if ('_y__ynfiniteForm') {
+                if ($key === '_y__ynfiniteForm') {
+
                     $additional_keys .= '_y__ynfiniteForm_' . $parsedQuery['_y__ynfiniteForm'];
                 }
             }
@@ -32,18 +33,22 @@ class StaticPageCache
             }
         }
 
+        $domain = str_replace('.', '-', $_SERVER["HTTP_HOST"]);
+
         $url = strtok($_SERVER["REQUEST_URI"], '?');
         $file = str_replace('/', '-', $url);
-        $file = str_replace('.html', '', $file);
+        $file = strtr($file, array('.html5' => '', '.html' => '', '.htm' => ''));
 
         if ($file[0] === "-") {
             $file = substr($file, 1);
         }
 
+        $cachefile = $domain."-";
+
         if ($file) {
-            $cachefile = 'cached-' . $file;
+            $cachefile .= $file;
         } else {
-            $cachefile = "cached-index";
+            $cachefile .= "index";
         }
 
         if ($_COOKIE["ynfinite-cookies"]) {
@@ -52,20 +57,24 @@ class StaticPageCache
             if ($activeScripts) $cachefile .= "-" . $activeScripts;
         }
 
-        $cachefile .= '.html' . $additional_keys;
+        $cachefile .= $additional_keys;
 
-        return $cachefile;
+        return md5($cachefile) . ".html";
     }
 
 
     public function createStaticPage($content, $pageType)
     {
 
+        if (!file_exists(getcwd() . StaticPageCache::BASIC_PATH)) {
+            mkdir(getcwd() . StaticPageCache::BASIC_PATH, 0777, true);
+        }
+
         if ($pageType === "listing" && $_SERVER['QUERY_STRING']) {
             parse_str($_SERVER['QUERY_STRING'], $parsedQuery);
             $hasOtherParams = false;
             foreach ($parsedQuery as $key => $value) {
-                if ($key !== '_y__ynfinitePerPage' && $key !== '_y__ynfinitePage' && $key !== '_y__ynfiniteForm') {
+                if ($key !== '_y_perPage' && $key !== '_y_page' && $key !== '_y__ynfiniteForm') {
                     $hasOtherParams = true;
                 }
             }
