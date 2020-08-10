@@ -61,12 +61,21 @@ final class TwigRenderer
 
         $this->twig->addFunction($_yfunc);
 
-        $filter = new \Twig\TwigFilter('trans', function ($string) {
+        $filterTrans = new \Twig\TwigFilter('trans', function ($string) {
             $i18n = new I18nUtils($this->twig, $this->data);
             return $i18n->translate($string);
         });
 
-        $this->twig->addFilter($filter);
+        $filterJoinBy = new \Twig\TwigFilter('joinBy', function ($array, $seperator, $field) {
+            $joinArray = array();
+            foreach($array as $item) {
+                $joinArray[] = $item[$field];
+            }
+            return implode($joinArray, $seperator);
+        });
+
+        $this->twig->addFilter($filterTrans);
+        $this->twig->addFilter($filterJoinBy);
 
         $renderedPage = $this->twig->render($this->templateList['index'], $data);
         return $renderedPage;
