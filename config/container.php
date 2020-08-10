@@ -12,6 +12,7 @@ use Illuminate\Database\Capsule\Manager;
 use App\Action\GetRobotsTxtAction;
 use App\Action\GetSitemapAction;
 use App\Action\InvalidateCacheAction;
+use App\Action\InvalidateAllCacheAction;
 use App\Action\RenderPageAction;
 use App\Action\SendFormAction;
 use App\Action\UpdateToVersionAction;
@@ -93,6 +94,7 @@ return [
     GetRobotsTxtAction::class => DI\autowire(),
     GetSitemapAction::class => DI\autowire(),
     InvalidateCacheAction::class => DI\autowire(),
+    InvalidateAllCacheAction::class => DI\autowire(),
     RenderPageAction::class => DI\autowire(),
     SendFormAction::class => DI\autowire(),
     UpdateToVersionAction::class => DI\autowire(),
