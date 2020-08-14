@@ -1,4 +1,5 @@
 function handleResponse(e, t) {
+  console.log("T", t);
   t.json().then((t) => {
     const { inline: n, redirect: o, type: i } = t;
     "information" === i && (e.innerHTML = n[0].template),
@@ -26,9 +27,11 @@ function functSubmit(e) {
     o = e.target.getAttribute("data-ynfiniteid"),
     i = e.target.getAttribute("data-ynfinitelang"),
     c = e.target.getAttribute("data-ynfinite-content"),
-    s = e.target.getAttribute("data-ynfinite-section");
+    s = e.target.getAttribute("data-ynfinite-section"),
+    sp = e.target.getAttribute("data-ynfinite-slugprefix");
   n.append("formId", o),
     n.append("lang", i),
+    n.append("prefix", sp),
     n.append("contentId", c),
     n.append("sectionId", s),
     n.append("action", "submit"),
