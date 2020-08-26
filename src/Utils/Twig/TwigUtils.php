@@ -58,6 +58,7 @@ class TwigUtils
   }
 
   public function form($form, $section = array()) {
+    $this->currentForm = $form;
     return $this->twig->render("yn/components/form.twig", array("form" => $form, "section" => $section, "templates" => $this->templates));
   }
 
@@ -68,25 +69,25 @@ class TwigUtils
   public function formField($formField) {
     switch($formField["type"]) {
       case "select": {
-        return $this->twig->render("yn/components/form/select.twig", array("field"=> $formField));
+        return $this->twig->render("yn/components/form/select.twig", array("field"=> $formField, "form" => $this->currentForm));
       }
       case "checkbox": {
-        return $this->twig->render("yn/components/form/checkbox.twig", array("field"=> $formField));
+        return $this->twig->render("yn/components/form/checkbox.twig", array("field"=> $formField, "form" => $this->currentForm));
       }
       case "radio": {
-        return $this->twig->render("yn/components/form/radio.twig", array("field"=> $formField));
+        return $this->twig->render("yn/components/form/radio.twig", array("field"=> $formField, "form" => $this->currentForm));
       }
       case "date": {
-        return $this->twig->render("yn/components/form/date.twig", array("field"=> $formField));
+        return $this->twig->render("yn/components/form/date.twig", array("field"=> $formField, "form" => $this->currentForm));
       }
       case "number": {
-        return $this->twig->render("yn/components/form/number.twig", array("field"=> $formField));
+        return $this->twig->render("yn/components/form/number.twig", array("field"=> $formField, "form" => $this->currentForm));
       }
       case "textarea": {
-        return $this->twig->render("yn/components/form/textarea.twig", array("field"=> $formField));
+        return $this->twig->render("yn/components/form/textarea.twig", array("field"=> $formField, "form" => $this->currentForm));
       }
       default: {
-        return $this->twig->render("yn/components/form/basic.twig", array("field"=> $formField));
+        return $this->twig->render("yn/components/form/basic.twig", array("field"=> $formField, "form" => $this->currentForm));
       }
     }
   }

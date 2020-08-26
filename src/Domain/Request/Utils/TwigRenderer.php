@@ -49,13 +49,14 @@ final class TwigRenderer
         $this->twig->addGlobal('_ynfinite', $this->data);
         $this->twig->addGlobal("urlData", $this->uriData);
 
+        $this->twigFunc = new TwigUtils($this->twig, $this->data, $this->templateList, $this->uriData);
+
         $_yfunc = new \Twig\TwigFunction('_yfunc', function ($methode) {
-            $func = new TwigUtils($this->twig, $this->data, $this->templateList, $this->uriData);
 
             $arg_list = func_get_args();
             unset($arg_list[0]);
 
-            return call_user_func_array(array($func, $methode), $arg_list);
+            return call_user_func_array(array($this->twigFunc, $methode), $arg_list);
 
         }, ['is_safe' => ['html']]);
 
