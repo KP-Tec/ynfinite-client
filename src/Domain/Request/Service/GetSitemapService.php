@@ -39,7 +39,7 @@ final class GetSitemapService
     {
         $path = $uri->getPath();
 
-        $this->curlHandler->setUrl($service, $path, $uri, filter_var($this->settings["dev"], FILTER_VALIDATE_BOOLEAN));
+        $this->curlHandler->setUrl($service, trim($path, '/'), $uri, filter_var($this->settings["dev"], FILTER_VALIDATE_BOOLEAN));
         $response = $this->curlHandler->exec();
 
         return $response;

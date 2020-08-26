@@ -19,7 +19,7 @@ final class SendFormAction
         ServerRequestInterface $request, 
         ResponseInterface $response
     ): ResponseInterface {
-        
+        error_log("SENDING FORM");
         $formResponse = $this->sendFormService->sendForm($request, $_POST);
     
         // Build the HTTP response

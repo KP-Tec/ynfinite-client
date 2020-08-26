@@ -20,6 +20,7 @@ use App\Action\UpdateToVersionAction;
 // Services
 use App\Domain\Request\Service\GetRobotsTxtService;
 use App\Domain\Request\Service\GetSitemapService;
+use App\Domain\Request\Service\RenderSitemapService;
 use App\Domain\Request\Service\RenderPageService;
 use App\Domain\Request\Service\RequestPageService;
 use App\Domain\Request\Service\SendFormService;
@@ -102,6 +103,7 @@ return [
     // Services
     GetRobotsTxtService::class => DI\autowire(),
     GetSitemapService::class => DI\autowire(),
+    RenderSitemapService::class => DI\autowire(),
     RenderPageService::class => DI\autowire(),
     RequestPageService::class => DI\autowire(),
     SendFormService::class => DI\autowire(),

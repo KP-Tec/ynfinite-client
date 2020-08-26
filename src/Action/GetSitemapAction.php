@@ -6,13 +6,15 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 use App\Domain\Request\Service\GetSitemapService;
+use App\Domain\Request\Service\RenderSitemapService;
 
 use SlimSession\Helper as SessionHelper;
 
 final class GetSitemapAction
 {
-    public function __construct(GetSitemapService $getSitemapService) {
+    public function __construct(GetSitemapService $getSitemapService, RenderSitemapService $renderSitemapService) {
         $this->getSitemapService = $getSitemapService;
+        $this->renderSitemapService = $renderSitemapService;
     }
 
     public function __invoke(
@@ -21,9 +23,12 @@ final class GetSitemapAction
     ): ResponseInterface {
         
         $sitemap = $this->getSitemapService->getSitemap($request);
+        $sitemap = json_decode($sitemap, true);
     
+        $renderedSitemap = $this->renderSitemapService->render($sitemap);
+
         // Build the HTTP response
-        $response->getBody()->write($sitemap);
+        $response->getBody()->write($renderedSitemap);
 
         return $response
             ->withHeader('Content-Type','application/xml')
