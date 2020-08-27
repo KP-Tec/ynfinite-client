@@ -1,0 +1,15 @@
+{% set data = section.data %}
+
+<section class="section wow fadeInUp">
+	<div class="inner">
+		<p class="separator"><span>{{ data.general_bezeichnung }}</span></p>
+	</div>
+	<div class="banner banner--fixed" style="background-image: url({{ data.general_hintergrund[0].path }}?w=1680)">
+		<div class="banner__overlay" style="width: 100%">
+			<div class="inner">
+				<h2 class="title">{{ data.general_ueberschrift }}</h2>
+				{{ data.general_text|raw }}
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,56 @@
+{% set data = section.data %}
+
+{% if _ynfinite.content.data.tipps_content|length %}
+	<section class="section wow fadeInUp">
+		<div class="inner">
+			<p class="separator"><span>Im Blog</span></p>
+			{% if _ynfinite.content.data.tipps_text|length %}
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="item text-center">
+							<h2 class="h1 title">{{ _ynfinite.content.data.tipps_ueberschrift_1 ?: 'Mitten im Veedel' }}</h2>
+							{{ _ynfinite.content.data.tipps_text|striptags('<p><br><ul><ol><li><b><i>')|raw }}
+						</div>
+					</div>
+				</div>
+			{% endif %}
+
+			{% for item in _ynfinite.content.data.tipps_content %}
+				<div class="mt-3">
+					<div class="row">
+						<div class="col-xs-12 col-sm-8">
+							<div class="text-center">
+								<h3 class="h2 upper">{{ item.data.general_ueberschrift }}</h3>
+								<h4>{{ item.data.general_unterueberschrift }}</h4>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12 col-sm-8">
+							{% if item.data.general_images|length %}
+								<figure class="image mv-1">
+									{% for image in item.data.general_images %}
+										<img data-src="{{ image.path }}?w=800" class="lazyload" title="{{ image.metadata.title }}" alt="{{ image.metadata.alt }}">
+									{% endfor %}
+								</figure>
+							{% endif %}
+
+							{{ item.data.general_text|striptags('<p><br><ul><ol><li><b><i>')|raw }}
+						</div>
+						<div class="col-xs-12 col-sm">
+							<div class="item item--info mv-1">
+								<h3 class="text-primary">{{ item.data.general_info_ueberschrift }}</h3>
+								{{ item.data.general_info_text|striptags('<p><br>')|raw }}
+
+								{% if item.data.general_info_button|length %}
+									{% set button = item.data.general_info_button[0] %}
+									<p><a href="{{ button.href }}" target="_blank">{{ button.text }}</a></p>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</section>
+{% endif %}

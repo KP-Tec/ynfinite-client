@@ -1,0 +1,32 @@
+{% set data = section.data %}
+
+{% if _ynfinite.content.raw.general_projektart != "preview" %}
+	<section id="app" class="section wow fadeInUp">
+		<div class="handle">{{template.data.general_bezeichnung}}</div>
+		<div class="inner">
+			<p class="separator"><span>{{template.data.general_bezeichnung}}</span></p>
+			<div class="row row--entry">
+				<div class="col-xs-12 col-sm-6">
+					<div class="item">
+						<p class="tagline">WVM Immobilien App</p>
+						<h2 class="h1 title">{{template.data.general_ueberschrift}}</h2>
+						{{template.data.general_text|raw}}
+						<p>
+							<a href="https://apps.apple.com/de/app/wvm-immobilien/id1452293898" target="_blank"><img src="{{template.data.general_app_store_icon[0].path}}" alt="Apple Appstore"/></a>
+						</p>
+						<p>
+							<a href="https://play.google.com/store/apps/details?id=com.mycasavi.wvm&hl=de" target="_blank"><img src="{{template.data.general_google_play_icon[0].path}}" alt="Google Play"/></a>
+						</p>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6">
+					<div class="item">
+						<figure class="text-right-md w100">
+							<img src="{{ template.data.general_teaserbild[0].path }}" alt="Mobile Phone">
+						</figure>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endif %}

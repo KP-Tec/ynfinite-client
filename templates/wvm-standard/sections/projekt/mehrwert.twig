@@ -1,0 +1,46 @@
+{% set data = section.data %}
+
+{% if _ynfinite.content.raw.general_projektart != "preview" %}
+	{% if _ynfinite.content.data.panel_mehrwerte_hintergrundbild_beratung|length %}
+		{% set background = _ynfinite.content.data.panel_mehrwerte_hintergrundbild_beratung[0] %}
+		<section class="section bg wow fadeInUp pv-0">
+			<div class="banner">
+				<div class="banner__image">
+					<img
+					data-src="{{ background.path }}?w=800"
+					data-srcset="
+					{{ background.path }}?w=420 360w,
+					{{ background.path }}?w=800 760w,
+					{{ background.path }}?w=1440 1400w"
+					class="lazyload"
+					alt="{{ background.metadata.alt }}">
+
+					{% if _ynfinite.content.data.panel_mehrwerte_caption == 1 %}
+						<span class="banner__caption">{{ _ynfinite.content.data.panel_mehrwerte_caption_text|default('Unverbindliche Darstellung') }}</span>
+					{% endif %}
+				</div>
+
+				<div class="banner__center bg-primary">
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 mb-2">
+							<h3 class="h2 title">{{ _ynfinite.content.data.panel_mehrwerte_ueberschrift ?: 'Lassen Sie sich beraten' }}</h3>
+							{{ _ynfinite.content.data.panel_mehrwerte_beratung_beschreibungstext|raw }}
+						</div>
+
+						{% set image = _ynfinite.content.data.panel_mehrwerte_bilder_beratung[0]|default(null) %}
+						{% if image is not null %}
+						<div class="col-xs-12 col-sm-6">
+							<figure>
+								<img src="{{ image.path }}?w=800" alt="{{ image.metadata.alt }}">
+								{% if _ynfinite.content.data.panel_mehrwerte_caption_beratung == 1 %}
+									<figcaption>{{ _ynfinite.content.data.panel_mehrwerte_caption_text_beratung|default('Unverbindliche Darstellung') }}</figcaption>
+								{% endif %}
+							</figure>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</section>
+	{% endif %}
+{% endif %}

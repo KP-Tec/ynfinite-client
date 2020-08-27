@@ -1,0 +1,44 @@
+{% set data = form.fields %}
+
+<div class="row">
+	{# anrede #}
+	<div class="col-xs-12 col-sm">
+		{{ _yfunc("formField", form.fields['general_anrede']) }}
+	</div>
+
+	{# name #}
+	<div class="col-xs-12 col-sm">
+		{{ _yfunc("formField", form.fields['general_name']) }}
+	</div>
+</div>
+
+<div class="row">
+	{# email #}
+	<div class="col-xs">
+		{{ _yfunc("formField", form.fields['general_e_mail']) }}
+	</div>
+</div>
+
+<div class="row">
+	{# consents #}
+	<div class="col-xs">
+		{{ _yfunc("consents", form) }}
+	</div>
+</div>
+
+<div class="buttons text-left">
+	<button type="submit" class="button button--primary">Jetzt anmelden</button>
+</div>
+
+
+{#
+{% set field = form.fields['general_anrede'] %}
+<div class="field">
+	<label for="{{ field.alias }}">{{ field.label }}{% if field.required %}<em>*</em>{% endif %}</label>
+	<select name="fields[{{ field.alias }}]" id="{{ field.alias }}" {{ field.attributes|raw }} {% if field.required %}required{% endif %}>
+	{% for item in field.items %}
+		<option value="{{ item.value }}">{{ item.value }}</option>
+	{% endfor %}
+	</select>
+</div>
+#}

@@ -1,0 +1,59 @@
+{% set data = section.data %}
+
+{% if _ynfinite.content.raw.general_projektart != "preview" %}
+	{% if data.general_projekte|length %}
+		<section class="section top-padding wow fadeInUp">
+			<div class="handle">{{ template.data.general_bezeichnung }}</div>
+			<div class="inner text-center">
+				<p class="separator"><span>{{ template.data.general_bezeichnung }}</span></p>
+				<h2 class="h1 title">{{ template.data.general_ueberschrift }}</h2>
+				{{ template.data.general_text|raw }}
+			</div>
+
+			<div class="inner mt-2">
+				<div class="squares">
+					{% if data.general_projekte[0] is not empty %}
+						<figure class="square">
+							<a href="{{ _yfunc('linkPage', 'projekt', data.general_projekte[0].settings.seo.alias) }}">
+								<img data-src="{{data.general_projekte[0].data.teaser_bild[0].path}}?w=720" class="lazyload" alt="{{data.general_projekte[0].data.teaser_bild[0].metadata.alt}}">
+							</a>
+							<figcaption>{{data.general_projekte[0].data.panel_intro_projektname}}</figcaption>
+						</figure>
+					{% endif %}
+					{% if data.general_projekte[1] is not empty %}
+						<figure class="square">
+							<a href="{{ _yfunc('linkPage', 'projekt', data.general_projekte[1].settings.seo.alias) }}">
+								<img data-src="{{ data.general_projekte[1].data.teaser_bild[0].path }}?w=720" class="lazyload" alt="{{ data.general_projekte[1].data.teaser_bild[0].metadata.alt }}">
+							</a>
+							<figcaption>{{ data.general_projekte[1].data.panel_intro_projektname }}</figcaption>
+						</figure>
+					{% endif %}
+					{% if data.general_projekte[2] is not empty %}
+						<figure class="square">
+							<a href="{{ _yfunc('linkPage', 'projekt', data.general_projekte[2].settings.seo.alias) }}">
+								<img data-src="{{ data.general_projekte[2].data.teaser_bild[0].path }}?w=720" class="lazyload" alt="{{ data.general_projekte[2].data.teaser_bild[0].metadata.alt }}">
+							</a>
+							<figcaption>{{ data.general_projekte[2].data.panel_intro_projektname }}</figcaption>
+						</figure>
+					{% endif %}
+					{% if data.general_projekte[3] is not empty %}
+						<figure class="square square--2">
+							<a href="{{ _yfunc('linkPage', 'projekt', data.general_projekte[3].settings.seo.alias) }}">
+								<img data-src="{{ data.general_projekte[3].data.teaser_bild[0].path }}?w=720" class="lazyload" alt="{{ data.general_projekte[3].data.teaser_bild[0].metadata.alt }}">
+							</a>
+							<figcaption>{{ data.general_projekte[3].data.panel_intro_projektname }}</figcaption>
+						</figure>
+					{% endif %}
+					{% if data.general_projekte[4] is not empty %}
+						<figure class="square">
+							<a href="{{ _yfunc('linkPage', 'projekt', data.general_projekte[4].settings.seo.alias) }}">
+								<img data-src="{{ data.general_projekte[4].data.teaser_bild[0].path }}?w=720" class="lazyload" alt="{{ data.general_projekte[4].data.teaser_bild[0].metadata.alt }}">
+							</a>
+							<figcaption>{{ data.general_projekte[4].data.panel_intro_projektname }}</figcaption>
+						</figure>
+					{% endif %}
+				</div>
+			</div>
+		</section>
+	{% endif %}
+{% endif %}

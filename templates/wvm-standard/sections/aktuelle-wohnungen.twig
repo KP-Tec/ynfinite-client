@@ -1,0 +1,100 @@
+{% set data = section.data %}
+
+{% if data.general_immobilien|length %}
+	<section class="section">
+		<div class="handle">{{template.data.general_bezeichnung}}</div>
+		<div class="inner">
+			{% if data.general_mit_banner|length == 0 %}
+				<p class="separator"><span>Für Sie interessant</span></p>
+			{% endif %}
+
+			{% if data.general_navigation_anzeigen == 1 %}
+				<div class="row">
+					<div class="col-xs-12 col-sm text-center text-right-sm">
+						<h2 class="h1 title mb-1-sm">{{ data.general_ueberschrift }}</h2>
+					</div>
+
+					<div class="col-xs-12 col-sm mt-1 mt-0-sm">
+						<ul class="dropdown">
+							{% for mainItem in _ynfinite.navigation["projekte"] %}
+								<li>
+									<input type="checkbox" class="dropdown__item" id="toggle_{{ loop.index0 }}">
+									<label for="toggle_{{ loop.index0 }}">{{ mainItem.label }}</label>
+									{% if mainItem.children %}
+										<ul>
+											{# link to main pages #}
+											{% if mainItem.label == 'Berlin' %}
+												<li><a href="/regionen/wohnung-kaufen-in-berlin.html">Alle Projekte in Berlin</a></li>
+											{% elseif mainItem.label == 'Düsseldorf' %}
+												<li><a href="/regionen/wohnung-kaufen-in-duesseldorf.html">Alle Projekte in Düsseldorf</a></li>
+											{% elseif mainItem.label == 'Köln' %}
+												<li><a href="/regionen/wohnung-kaufen-in-koeln-und-umgebung.html">Alle Projekte in Köln</a></li>
+											{% endif %}
+
+											{% for subItem in mainItem.children %}
+												<li>
+													{%if subItem.href %}
+														<a href="{{subItem.href}}" title="{{subItem.title}}">
+														{% endif %}
+														{{subItem.label}}
+														{% if subItem.href %}
+														</a>
+													{% endif %}
+												</li>
+											{% endfor %}
+										</ul>
+									{% endif %}
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			{% else %}
+				<h2 class="title">{{ data.general_ueberschrift }}</h2>
+			{% endif %}
+
+			<div class="grid grid--reveal mt-2">
+				{% for projekt_wohnungen in data.general_immobilien %}
+					{% if projekt_wohnungen.raw.general_projektart == "preview" %}
+						<div class="item item--reveal item--border{% if loop.first %} item--2{% endif %}">
+					{% else %}
+						{% if projekt_wohnungen.data.general_externe_projektwebseite %}
+							<a href="{{ projekt_wohnungen.data.general_externe_projektwebseite }}" class="item item--reveal item--border{% if loop.first %} item--2{% endif %}">
+						{% else %}
+							<a href="{{ _yfunc('linkPage', 'projekt_wohnungen', projekt_wohnungen.settings.seo.alias) }}" class="item item--reveal item--border{% if loop.first %} item--2{% endif %}">
+						{% endif %}
+					{% endif %}
+								<div class="item__content">
+									{% if projekt.data.teaser_logo|length %}
+										<div class="item__content__logo">
+											<img data-src="{{ projekt.data.teaser_logo[0].path }}?w=128" class="lazyload" alt="{{ projekt.data.teaser_logo[0].metadata.alt }}">
+										</div>
+									{% else %}
+										<span class="h1 tp counter bold">{{ projekt.data.panel_intro_hausnummer }}</span>
+									{% endif %}
+
+									<div class="item__content__text">
+										<h3 class="heading">{{ projekt_wohnungen.data.general_name }}</h3>
+										<p>{{ projekt_wohnungen.data.general_ueberschrift }}</p>
+									</div>
+								</div>
+
+								{% set image = projekt_wohnungen.data.general_banner[0] %}
+								<div class="item__image">
+									{% if loop.first %}
+										<img data-src="{{ image.path }}?w=1048&h=740" class="lazyload" alt="{{ image.metadata.alt }}"/>
+									{% else %}
+										<img data-src="{{ image.path }}?w=320&h=480" class="lazyload" alt="{{ image.metadata.alt }}"/>
+									{% endif %}
+								</div>
+
+					{% if projekt_wohnungen.raw.general_projektart == "preview" %}
+						</div>
+					{% else %}
+						</a>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	</section>
+{% endif %}

@@ -1,0 +1,40 @@
+{% set data = section.data %}
+
+{% if _ynfinite.content.data.panel_beratung_hintergrund|length %}
+	<section class="section bg wow fadeInUp pv-0">
+		<div class="banner">
+			<div class="banner__image">
+				{% set background = _ynfinite.content.data.panel_beratung_hintergrund[0] %}
+				<img
+				data-src="{{ background.path }}?w=800"
+				data-srcset="
+				{{ background.path }}?w=420 360w,
+				{{ background.path }}?w=800 760w,
+				{{ background.path }}?w=1440 1400w"
+				sizes="100%"
+				class="lazyload"
+				alt="{{ background.metadata.alt }}">
+
+				{% if _ynfinite.content.data.panel_beratung_caption_1 == 1 %}
+					<span class="banner__caption">{{ _ynfinite.content.data.panel_beratung_caption_text|default('Unverbindliche Darstellung') }}</span>
+				{% endif %}
+			</div>
+
+			{% if _ynfinite.content.data.panel_beratung_text|length %}
+				<div class="banner__center bg-primary">
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 mb-2">
+							<h3 class="h2 title">{{ _ynfinite.content.data.panel_beratung_ueberschrift }}</h3>
+							{{ _ynfinite.content.data.panel_beratung_text|raw }}
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<figure>
+								<img data-src="{{ _ynfinite.content.data.panel_beratung_bild[0].path }}?w=800" class="lazyload" alt="{{ _ynfinite.content.data.panel_beratung_bild[0].metadata.alt }}">
+							</figure>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}

@@ -1,0 +1,25 @@
+{% set data = section.data %}
+
+{% if _ynfinite.content.data.panel_einheit_beschreibungstext|length > 12 %}
+	<section class="section bg wow fadeInUp" id="objekt">
+		<div class="inner">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6">
+					<img src="{{ _ynfinite.content.data.panel_einheit_icon[0].path }}" class="icon" alt="{{_ynfinite.content.data.panel_einheit_icon[0].metadata.alt }}"/>
+					<div class="bodytext">
+						<h2 class="title">{{ _ynfinite.content.data.general_name }}</h2>
+						{{ _ynfinite.content.data.panel_einheit_beschreibungstext|raw }}
+					</div>
+				</div>
+
+				{% if _ynfinite.content.data.panel_einheit_faktenliste|length > 12 %}
+					<div class="col-xs-12 col-sm-6">
+						<div class="bodytext list-underline">
+							{{ _ynfinite.content.data.panel_einheit_faktenliste|raw }}
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</section>
+{% endif %}

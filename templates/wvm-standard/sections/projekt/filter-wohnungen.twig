@@ -1,0 +1,37 @@
+{% set data = section.data %}
+
+{% if _ynfinite.content.data.wohnungen_teaser_wohnungen_panel == 1 %}
+	{% if _ynfinite.content.data.general_filter_wohnungen|length %}
+		<section class="section top-padding wow fadeInUp pb-0">
+			<div class="inner">
+				<p class="separator"><span>{{ data.general_separator }}</span></p>
+			</div>
+			<div class="banner banner--overlay" data-pos="center" data-width="3">
+				<div class="banner__content text-left">
+					<span class="h1 title-minmax">{{ data.general_ueberschrift|raw }}</span>
+					<ul>
+						{% for item in _ynfinite.content.data.general_filter_wohnungen %}
+							<li><a href="{{ _yfunc('linkPage', 'projekt_wohnungen', item.settings.seo.alias) }}">{{ item.data.general_name }}</a></li>
+						{% endfor %}
+					</ul>
+				</div>
+
+				{# image #}
+				{% set image = data.general_background[0] %}
+				{% if _ynfinite.content.data.general_hintergrund_entdecken|length %}
+					{% set image = _ynfinite.content.data.general_hintergrund_entdecken[0] %}
+				{% endif %}
+				<div class="banner__image">
+					<img
+					data-src="{{ image.path }}?w=800"
+					data-srcset="
+					{{ image.path }}?w=420 360w,
+					{{ image.path }}?w=800 760w,
+					{{ image.path }}?w=1440 1400w"
+					class="lazyload"
+					alt="{{ image.metadata.alt }}">
+				</div>
+			</div>
+		</section>
+	{% endif %}
+{% endif %}

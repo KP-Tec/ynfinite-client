@@ -1,0 +1,36 @@
+{% set data = section.data %}
+
+{% if _ynfinite.listing|length %}
+	<section class="section">
+		{% if data.general_handle|length %}
+			<p class="handle">{{ data.general_handle }}</p>
+		{% endif %}
+
+		<div class="inner">
+			{% for item in _ynfinite.listing %}
+				<div class="row wow fadeInUp {% if loop.last == false %} mb-3{% endif %}">
+					<div class="col-xs-12 col-sm{% if loop.index is not divisible by(2) %} text-right-sm{% endif %}">
+						<p class="tagline">{{ item.data.general_datum|date("d.m.Y") }}</p>
+						<h2 class="title">{{ item.data.general_ueberschrift }}</h2>
+						{% if item.data.general_text|length > 8 %}
+							<div class="bodytext">
+								{{ item.data.general_text|striptags('<p><br><ul><ol><li><b><i><a>')|raw }}
+							</div>
+						{% endif %}
+					</div>
+
+					<div class="col-xs-12 col-sm{% if loop.index is divisible by(2) %} first-sm{% endif %}">
+						{% if item.data.general_bild|length %}
+							<figure>
+								{{ _yfunc('printImage', item.data.general_bild[0], [{"w":420, "h":375, "screenSize":360},{"w":800, "h":524, "screenSize":800},{"w":800, "h":524}]) }}
+							</figure>
+						{% endif %}
+					</div>
+				</div>
+			{% endfor %}
+
+			{# pagination #}
+			{{ _yfunc('pagination') }}
+		</div>
+	</section>
+{% endif %}

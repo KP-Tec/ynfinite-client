@@ -1,0 +1,36 @@
+{% set data = section.data %}
+
+<header class="header header--object">
+	<a href="/"><img src="{{ data.general_logo[0].path }}" class="logo logo--small" alt="WvM Immobilien"></a>
+</header>
+
+{# banner #}
+{% if _ynfinite.content.data.general_banner|length %}
+	<div class="banner wow fadeInUp" id="start">
+		<span class="banner__title">{{ _ynfinite.content.data.general_ueberschrift }}</span>
+		<div class="banner__image">
+			{{ _yfunc('printImage', _ynfinite.content.data.general_banner[0], [{"w":420,"h":210,"screenSize":420},{"w":800,"h":400,"screenSize":800},{"w":1440,"h":720,"screenSize":1024},{"w":2880,"h":1440,"screenSize":1680},{"w":1440,"h":900}]) }}
+		</div>
+		{% if _ynfinite.content.data.general_caption == 1 %}
+			<span class="banner__caption">{{ _ynfinite.content.data.general_caption_text|default('Unverbindliche Darstellung') }}</span>
+		{% endif %}
+	</div>
+{% endif %}
+
+{# title #}
+<div class="inner text-center wow fadeInUp">
+	<h1 class="h1 title pv-3">
+		{{ _ynfinite.content.data.general_projekt_zeile1 ?: _ynfinite.content.data.general_title }}
+		{%- if _ynfinite.content.data.general_projekt_zeile2|length %}<br><span class="tp">{{ _ynfinite.content.data.general_projekt_zeile2 }}</span>
+		{% endif -%}
+	</h1>
+
+	{# back to project #}
+	{% if data.general_projekt|length %}
+		{% for item in data.general_projekt %}
+			<a href="{{ _yfunc('linkPage','projekt', item.settings.seo.alias) }}" class="button button--primary">
+				<i class="far fa-angle-left"></i> zurück zum Projekt
+			</a>
+		{% endfor %}
+	{% endif %}
+</div>

@@ -1,0 +1,46 @@
+{% set data = section.data %}
+
+<section class="section top-padding wow fadeInUp">
+	<div class="inner">
+		<p class="separator"><span>{{ template.data.general_bezeichnung }}</span></p>
+	</div>
+
+	<div class="banner banner--overlay" data-pos="center" data-width="3">
+		<div class="banner__content">
+			<h2 class="h1 title-minmax">{{ template.data.general_bezeichnung|raw }}</h2>
+		</div>
+		<div class="banner__image">
+			<img src="{{template.data.general_hintergrundbild[0].path}}?w=800" srcset="{{template.data.general_hintergrundbild[0].path}}?w=420 360w,{{template.data.general_hintergrundbild[0].path}}?w=800 760w,{{template.data.general_hintergrundbild[0].path}}?w=1440 1400w" sizes="100%" loading="lazy" alt="">
+		</div>
+	</div>
+
+	<div class="inner pt-1">
+		<div class="bodytext mb-1">
+			{{template.data.general_text|raw}}
+		</div>
+
+		<div class="grid">
+			{% for item in _ynfinite.listing %}
+				<div class="item">
+					<a href="{{ _yfunc('linkPage', 'referenz', item.settings.seo.alias) }}">
+						<img src="{{ item.data.general_bild[0].path }}?w=600&h=378" class="item__image" alt="{{ item.data.general_bild[0].metadata.alt }}">
+					</a>
+					<div class="item__content">
+						<p class="tagline">{{ item.data.general_baudatum|date("d.m.Y") }} | {{item.data.general_ort.value}}</p>
+						<h3 class="title">{{ item.data.general_ueberschrift|raw }}</h3>
+						<a href="{{ _yfunc('linkPage', 'referenz', item.settings.seo.alias) }}" class="link">Mehr Erfahren</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+
+		{# pagination #}
+		{{ _yfunc('pagination') }}
+
+		{% if template.general_mehr_link %}
+			<div class="buttons">
+				<a href="/referenzen.html" class="button button--primary">{{ template.data.general_mehr_link }}</a>
+			</div>
+		{% endif %}
+	</div>
+</section>

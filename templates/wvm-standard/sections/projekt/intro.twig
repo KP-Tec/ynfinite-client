@@ -1,0 +1,49 @@
+{% set data = section.data %}
+{% set newsSection = _yfunc('sectionByAlias', 'news') %}
+
+{# header #}
+<header class="header header--object">
+	<a href="/"><img src="{{ template.data.general_logo[0].path }}" class="logo logo--small" alt="WvM Immobilien"></a>
+	<ul class="nav__sub">
+		<li><a href="#start">Start</a></li>
+		{% if _ynfinite.content.raw.general_projektart != "preview" %}
+			{% if newsSection.data.general_news|length %}<li><a href="#news">News</a></li>{% endif %}
+			<li><a href="#lage">Lage</a></li>
+			<li><a href="#objekt">Objekt</a></li>
+			{% if not _ynfinite.content.data.panel_details_panel_ausblenden %}<li><a href="#details">Details</a></li>{% endif %}
+		{% endif %}
+		<li><a href="#kontakt">Kontakt</a></li>
+	</ul>
+</header>
+
+{# banner #}
+<div class="banner wow fadeInUp" id="start">
+	<span class="banner__title">{{ _ynfinite.content.data.panel_intro_ueberschrift }}</span>
+	<div class="banner__image">
+		{{ _yfunc('printImage', _ynfinite.content.data.panel_intro_hintergrundbild[0], [{"w":420,"h":210,"screenSize":420},{"w":800,"h":400,"screenSize":800},{"w":1440,"h":720,"screenSize":1024},{"w":2880,"h":1440,"screenSize":1680},{"w":1440,"h":900}]) }}
+	</div>
+	{% if _ynfinite.content.data.panel_intro_caption == 1 %}
+		<span class="banner__caption">{{ _ynfinite.content.data.panel_intro_caption_text|default('Unverbindliche Darstellung') }}</span>
+	{% endif %}
+</div>
+
+{# title #}
+<div class="inner text-center wow fadeInUp">
+	<h1 class="title pv-3">
+		{{ _ynfinite.content.data.panel_intro_projektname }}<br/>
+		<span class="tp">{{ _ynfinite.content.data.panel_intro_hausnummer }}</span>
+	</h1>
+</div>
+
+
+{# nav: project_nav #}
+{# erst aktivieren, wenn Seiten freigegeben sind #}
+{#
+{% if data.general_filter_einheiten|length %}
+	<div class="text-center">
+		{% for item in data.general_filter_einheiten %}
+		<a href="{{ _yfunc.linkPage('projekt_einheiten', item.settings.seo.alias) }}" class="button">{{ item.data.general_title }}</a>
+		{% endfor %}
+	</div>
+{% endif %}
+#}

@@ -1,0 +1,95 @@
+{% set data = section.data %}
+
+{% if _ynfinite.content.raw.general_projektart != "preview" %}
+	{% if data.general_mitarbeiter|length %}
+		<section class="section bg wow fadeInUp" id="kontakt">
+			<div class="handle">Kontakt</div>
+			<div class="inner">
+				<div class="row">
+					<div class="col-xs-12 col-sm-4">
+						<div class="item mb-2" id="start-tv">
+							<h2 class="title"><span>Wir sind</span> für sie da</h2>
+							<p>Sie haben Fragen?<br>Melden Sie sich bei uns.</p>
+							<p>
+								<a href="#contact" class="button button--primary js-tv" data-tv="contact">Kontaktformular</a>
+							</p>
+						</div>
+					</div>
+
+					<div class="col-xs-12 col-sm-8">
+						<div class="swiper__box">
+							<div class="swiper-container swiper--2">
+								<div class="swiper-wrapper">
+									{% for item in data.general_mitarbeiter %}
+										<div class="swiper-slide">
+											{% if item.data.general_interview is not empty %}
+												<a href="#team-modal-{{ loop.index0 }}" class="item item--team js-modal">
+											{% else %}
+												<div class="item item--team">
+											{% endif %}
+													<img src="{{ item.data.general_bild[0].path }}" class="item__image" alt="{{ item.data.general_name }}">
+													<div class="item__content">
+														<h3 class="h4 heading">{{ item.data.general_name }}</h3>
+														<p>{{ item.data.general_position }}</p>
+													</div>
+											{% if item.data.general_interview is not empty %}
+												</a>
+											{% else %}
+												</div>
+											{% endif %}
+										</div>
+									{% endfor %}
+								</div>
+
+								{# navigation #}
+								<div class="swiper-button-prev"></div>
+								<div class="swiper-button-next"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{# modals #}
+			{% for item in data.general_mitarbeiter %}
+				{% if item.data.general_interview is not empty %}
+					<div id="team-modal-{{ loop.index0 }}" class="modal">
+						{{ item.data.general_interview|raw }}
+					</div>
+				{% endif %}
+			{% endfor %}
+		</section>
+
+		{# contact #}
+		<section id="contact" class="section tv tv--contact bg" data-tv="contact">
+			<div class="inner">
+				<div class="row">
+					<div class="col-xs-12 col-sm-3">
+						<h3 class="h3 title">Kontakt</h3>
+						<p class="bold">
+							{% if _ynfinite.content.data.general_kontakt_telefon|length %}
+								T. {{ _ynfinite.content.data.general_kontakt_telefon }}<br>
+							{% else %}
+								T. 030-586 19 90-0<br>
+							{% endif %}
+
+							{% if _ynfinite.content.data.general_email|length %}
+								<a href="mailto:{{ _ynfinite.content.data.general_email }}">{{ _ynfinite.content.data.general_email }}</a>
+							{% else %}
+								<a href="mailto:berlinvertrieb@wvm.de">berlinvertrieb@wvm.de</a>
+							{% endif %}
+						</p>
+						<p class="bold">
+							Presseanfragen:<br/>
+							<a href="mailto:presse@wvm.de">presse@wvm.de</a>
+						</p>
+					</div>
+					<div class="col-xs-12 col-sm-9">
+						{{ _yfunc("form", data.general_formular) }}
+					</div>
+				</div>
+			</div>
+			<button class="tv__button js-tv-close">&times;</button>
+		</section>
+	{% endif %}
+{% endif %}

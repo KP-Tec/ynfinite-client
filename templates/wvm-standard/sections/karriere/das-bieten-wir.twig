@@ -1,0 +1,27 @@
+{% set data = section.data %}
+
+<section class="section">
+	<div class="inner">
+		<p class="separator wow fadeInUp">
+			<span>{{ template.data.general_bezeichnung }}</span>
+		</p>
+		<div class="row row--list text-center">
+			<div class="col-xs-12 col-sm-4">
+				<div class="item wow fadeInUp">
+					<img src="{{ template.data.general_logo[0].path }}" alt="Das bieten wir" />
+				</div>
+			</div>
+			{% for item in data.general_vorteile %}
+				<div class="col-xs-12 col-sm-4">
+					<div class="item wow fadeInUp" data-wow-delay=".25s">
+						<div class="item__content">
+							<span class="counter">{{ item.data.general_position }}</span>
+							<h3 class="title">{{ item.data.general_ueberschrift }}</h3>
+							{{ item.data.general_text|raw }}
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>

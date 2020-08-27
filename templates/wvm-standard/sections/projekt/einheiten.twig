@@ -1,0 +1,19 @@
+{% set data = section.data %}
+
+{% if _ynfinite.content.children|length %}
+	<section class="section bg-primary wow fadeInUp">
+		<div class="inner">
+			<div class="row center-xs">
+				{# TODO: filter_einheiten ist obsolet sobald die Seiten mit lokalen templates online sind #}
+				{% for item in _ynfinite.content.children %}
+					<div class="col-xs-12 col-sm-4">
+						<a href="{{ _yfunc('linkPage', 'projekt_einheiten', item.settings.seo.alias) }}" class="box">
+							<h2 class="title">{{ item.data.general_title }}</h2>
+							<span class="angle-right"></span>
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
+{% endif %}

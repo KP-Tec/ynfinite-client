@@ -1,0 +1,36 @@
+{% set data = section.data %}
+
+<section class="section bg wow fadeInUp">
+	<div class="handle">{{ template.data.general_bezeichnung }}</div>
+	<div class="inner">
+		<p class="separator"><span>{{ template.data.general_bezeichnung }}</span></p>
+
+		{# dropdown #}
+		{# {{ _yfunc("perPageDropdown") }} #}
+
+		<div class="grid grid--2 text-center">
+			{% for item in _ynfinite.listing %}
+				{% set url = _yfunc('linkPage', 'news', item.settings.seo.alias) %}
+				{% set image = item.data.general_bild[0] %}
+				<div class="item">
+					<a href="{{ url }}">
+						<img data-src="{{ image.path }}?w=800&h=524" data-srcset="{{ image.path }}?w=420&h=275 360w, {{ image.path }}?w=800&h=524 760w" sizes="100%" class="lazyload item__image" alt="{{ image.metadata.alt }}">
+					</a>
+					<div class="item__content">
+						<p class="tagline">
+							{{ item.data.general_datum|date("d.m.Y") }}
+							{% if item.data.general_standort|length %}| {{ item.data.general_standort.value }}{% endif %}
+						</p>
+
+						<h2 class="title"><a href="{{ url }}">{{ item.data.general_ueberschrift|raw }}</a></h2>
+						{{ item.data.general_teaser|raw }}
+						<a href="{{ url }}" class="link">Mehr Erfahren</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+
+		{# pagination #}
+		{{ _yfunc('pagination') }}
+	</div>
+</section>

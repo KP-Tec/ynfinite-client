@@ -1,0 +1,17 @@
+{% set data = section.data %}
+
+<section class="section bg wow fadeInUp">
+	<div class="inner">
+		<div class="row center-xs">
+			{% for item in data.general_standorte %}
+				<div class="col-xs-6 col-sm-3 text-left">
+					<a href="{{ _yfunc('linkPage', 'region', item.data.general_region[0].settings.seo.alias) }}">
+						<img data-src="{{ item.data.general_teaser_bild[0].path }}" class="lazyload mb-1" alt="{{ item.data.general_name }}" />
+					</a>
+					{{ item.data.general_beschreibung|raw }}
+					<a href="{{ _yfunc('linkPage', 'region', item.data.general_region[0].settings.seo.alias) }}" class="link">Mehr Erfahren</a>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>

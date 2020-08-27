@@ -1,0 +1,24 @@
+{% set data = section.data %}
+
+<section class="section wow fadeInUp">
+	<div class="handle">{{ template.data.general_bezeichnung }}</div>
+	<div class="inner">
+		<p class="separator"><span>{{ template.data.general_bezeichnung }}</span></p>
+		<h2 class="h1 title">{{_ynfinite.content.data.panel_vor_ort_ueberschrift}}</h2>
+		<div class="bodytext">
+			{{ _ynfinite.content.data.panel_vor_ort_beschreibungstext|raw }}
+		</div>
+
+		<div class="grid grid--districts">
+			{% for item in data.general_stadtteile %}
+				{% set image = item.data.teaser_bild[0] %}
+				<a href="{{ _yfunc('linkPage', 'stadtteil', item.settings.seo.alias) }}" class="item item--district">
+					<h3 class="h2 title">{{ item.data.general_ueberschrift|raw }}</h3>
+					<figure class="item__image">
+						<img src="{{ image.path }}?w=640&h=400'" title="{{ image.metadata.title }}" alt="{{ image.metadata.alt }}">
+					</figure>
+				</a>
+			{% endfor %}
+		</div>
+	</div>
+</section>

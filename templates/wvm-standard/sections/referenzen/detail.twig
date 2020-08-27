@@ -1,0 +1,57 @@
+{% set data = section.data %}
+
+<div class="flexgrid header wow fadeInUp">
+	<div class="flexitem header__content">
+		<div class="flexitem__item">
+			<p class="tagline">
+				<time datetime="{{ _ynfinite.content.data.general_baudatum|date('Y-m-d') }}">{{_ynfinite.content.data.general_baudatum|date("d.m.Y")}}</time> | {{ _ynfinite.content.data.general_ort.value }}
+			</p>
+
+			<h1 class="title">{{ _ynfinite.content.data.general_ueberschrift|raw }}</h1>
+			{{ _ynfinite.content.data.general_fliesstext|raw }}
+		</div>
+	</div>
+	<div class="flexitem header__meta">
+		<div class="flexitem__item">
+			{% set image = _ynfinite.content.data.general_bild[0] %}
+			<figure class="header__image">
+				<img data-src="{{ image.path}}?w=800"
+				data-srcset="
+				{{ image.path }}?w=420 360w,
+				{{ image.path }}?w=800 760w,
+				{{ image.path }}?w=1280 1280w",
+				class="lazyload"
+				alt="{{ image.metadata.alt }}">
+			</figure>
+
+			{# bubble #}
+			{% if _ynfinite.content.data.general_infobox %}
+				<div class="bubble">
+					<div class="bubble__content">
+						{{_ynfinite.content.data.general_infobox|raw}}
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+{% if _ynfinite.content.data.general_galerie %}
+	<section class="section wow fadeInUp">
+		<div class="inner">
+			<div class="squares">
+				{% for image in _ynfinite.content.data.general_galerie %}
+					<figure class="square">
+						<img data-src="{{ image.path }}?w=512&h=512" class="lazyload" alt="{{image.metadata.alt}}">
+						{% if image.metadata.description %}
+							<figcaption>{{image.metadata.description}}</figcaption>
+						{% endif %}
+					</figure>
+				{% endfor %}
+			</div>
+			<div class="buttons mt-0">
+				<a href="{{_yfunc('linkPage', 'referenzen')}}" class="button button--primary">Mehr Referenzen</a>
+			</div>
+		</div>
+	</section>
+{% endif %}

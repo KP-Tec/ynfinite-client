@@ -1,0 +1,23 @@
+{% set data = section.data %}
+
+<section class="section wow fadeInUp">
+    <div class="inner">
+        <div class="flexgrid text-center text-primary upper">
+            {% for item in data.general_zaehler %}
+            <div class="flexitem">
+                <span class='numscroller counter' data-min='0' data-max='{{item.data.general_ziel}}' data-delay='4' data-increment='1'>{{item.data.general_ziel}}</span>
+                <p>{{item.data.general_beschriftung}}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% if data.general_bild[0] is not empty %}
+         <figure class="w100">
+            <img src="{{data.general_bild[0].path}}?w=800"
+            srcset="{{data.general_bild[0].path}}?w=420 360w, {{data.general_bild[0].path}}?w=800 760w, {{data.general_bild[0].path}}?w=1440 1400w"
+            sizes="100%"
+            loading="lazy"
+            alt="">
+        </figure>
+        {% endif %}
+</section>

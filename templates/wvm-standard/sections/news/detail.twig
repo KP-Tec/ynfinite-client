@@ -1,0 +1,40 @@
+{% set data = section.data %}
+
+<section class="flexgrid header wow fadeInUp">
+	<div class="flexitem header__content">
+		<div class="flexitem__item">
+			<p class="tagline">
+				<time datetime="{{_ynfinite.content.data.general_datum|date('Y-m-d') }}">
+				{{ _ynfinite.content.data.general_datum|date("d.m.Y") }}</time> | {{ _ynfinite.content.data.general_standort.value }}
+			</p>
+			<h1 class="title">{{ _ynfinite.content.data.general_ueberschrift|raw }}</h1>
+			{{ _ynfinite.content.data.general_text|raw }}
+		</div>
+	</div>
+
+	<div class="flexitem header__meta">
+		<div class="flexitem__item">
+			{% set image = _ynfinite.content.data.general_bild[0] %}
+			<figure class="header__image">
+				<img data-src="{{ image.path }}?w=800"
+				data-srcset="
+				{{ image.path }}?w=420 360w,
+				{{ image.path }}?w=800 760w"
+				class="lazyload"
+				alt="{{ image.metadata.alt }}">
+			</figure>
+
+			{% if _ynfinite.content.data.general_interessante_links %}
+				<div class="bubble">
+					<div class="bubble__content">
+						<ul>
+							{% for link in _ynfinite.content.data.general_interessante_links %}
+								<li><a href="{{ link.href }}" title={{ link.title }}>{{ link.text }}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</section>

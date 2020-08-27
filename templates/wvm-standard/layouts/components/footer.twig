@@ -1,0 +1,48 @@
+<footer class="site__footer">
+	{% if _ynfinite.global.data.general_footer_texte|length %}
+	<div class="site__footer__meta">
+		<div class="inner">
+			<div class="row">
+				{% for item in _ynfinite.global.data.general_footer_texte %}
+				<div class="col-xs-12 col-sm">
+					{{ item.data.general_column|raw }}
+
+					{% if loop.last %}
+						<h5 class="mt-1">Besuchen Sie uns auch hier</h5>
+						<ul class="social">
+							<li><a href="https://www.facebook.com/wvmimmobilien/?fref=ts"><i class="fab fa-fw fa-2x fa-facebook-square"></i></a></li>
+							<li><a href="https://www.instagram.com/wvmimmobilien/"><i class="fab fa-fw fa-2x fa-instagram"></i></a></li>
+							<li><a href="https://www.youtube.com/user/WvMImmobilien"><i class="fab fa-fw fa-2x fa-youtube"></i></a></li>
+						</ul>
+						<h5 class="mt-1"><a href="https://www.erstraum.de">ErstRaum.de</a></h5>
+						<a href="https://www.erstraum.de" class="link__partner"><img src="/assets/img/logo_erstraum.jpg" alt="ErstRaum"></a>
+					{% endif %}
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	{% endif %}
+
+	<div class="site__footer__bottom">
+		<div class="inner">
+			<div class="row">
+				<div class="col-xs-12 col-sm-9">
+					<p class="mb-1">&copy; {{ "now"|date("Y") }} WvM</p>
+				</div>
+
+				<div class="col-xs-12 col-sm-3">
+					<h5>Rechtliches</h5>
+					<ul>
+						<li><a href="/kontakt.html">Kontakt</a></li>
+						<li><a href="/impressum.html">Impressum</a></li>
+						<li><a href="/datenschutz.html">Datenschutz</a></li>
+						<li>{{_yfunc("printCookieSettingsButton")}}</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<a href="#top" class="totop">Nach oben</a>
+	</div>
+</footer>

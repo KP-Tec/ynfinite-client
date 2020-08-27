@@ -1,0 +1,43 @@
+{% set data = section.data %}
+
+{% if data.general_video|length %}
+	<div class="banner banner--intro">
+		<div class="banner__video">
+			<video muted autoplay loop playsinline preload="auto" poster="{{ data.general_hintergrundbild[0].path }}?w=1680">
+				{% for video in data.general_video %}
+					<source src="{{ video.data.general_file[0].path }}" type="video/{{ video.data.general_format }}">
+				{% endfor %}
+			</video>
+		</div>
+		<div class="banner__content">
+			{% if data.general_logo|length %}
+				<img src="{{ data.general_logo[0].path }}" class="banner__logo" alt="WvM Immobilien">
+			{% endif %}
+			<h1 class="title">{{ data.general_ueberschrift|striptags }}</h1>
+			{% if data.general_text|length > 12 %}
+				<h2 class="h3 title no-transform">{{ data.general_text|striptags }}</h2>
+			{% endif %}
+			<p>
+				<a href="/immobilien.html" class="button button--white">Immobilien</a>
+				<a href="/ueber-uns.html" class="button button--white no-transform">WvM</a>
+			</p>
+		</div>
+	</div>
+{% else %}
+	<div class="banner banner--fullsize">
+		<div class="banner__image">
+			{{ _yfunc("printImage", data.general_hintergrundbild[0], [{"w":420, "screenSize":360},{"w":1440, "screenSize":800},{"w":1680, "screenSize":1280},{"w":1440}]) }}
+		</div>
+
+		<div class="banner__content">
+			<h1 class="title">{{ data.general_ueberschrift|striptags }}</h1>
+			{% if data.general_text|length > 12 %}
+				<h2 class="h3 title no-transform">{{ data.general_text|striptags }}</h2>
+			{% endif %}
+			<p>
+				<a href="/projekte.html" class="button button--white">Immobilien</a>
+				<a href="/ueber-uns.html" class="button button--white no-transform">WvM</a>
+			</p>
+		</div>
+	</div>
+{% endif %}

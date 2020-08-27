@@ -1,0 +1,40 @@
+{% set data = section.data %}
+
+{% if _ynfinite.content.raw.general_projektart != "preview" %}
+	<section class="bg" id="google-map" style="height: 640px;">
+		<p>Diese Karte ist nur verfügbar wenn Sie dieser in den Cookie Einstellungen zugestimmt haben.</p>
+	</section>
+{% endif %}
+
+<script>
+	function initMap() {
+		var markers = [];
+		var mapCenter = {
+			lat: {{ _ynfinite.content.data.panel_google_maps_coords.lat }},
+			lng: {{ _ynfinite.content.data.panel_google_maps_coords.lng }}
+		};
+
+		var map = new google.maps.Map(document.getElementById('google-map'), {
+			zoom: 14,
+			center: mapCenter,
+			styles: mapStyles
+		});
+
+		var marker = new google.maps.Marker({
+			position: mapCenter,
+			{% if projekt.data.general_projektart == "preview" %}
+				icon : "{{ template.data.general_map_icons[0].path }}",
+			{% else %}
+				icon : "{{ template.data.general_map_icons[1].path }}",
+			{% endif %}
+			title: "{{ _ynfinite.content.data.panel_intro_projektname }}",
+			map: map
+		});
+
+		markers.push(marker);
+	}
+
+	window.onload = (function () {
+		initMap();
+	});
+</script>
