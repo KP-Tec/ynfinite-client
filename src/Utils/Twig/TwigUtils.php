@@ -66,28 +66,28 @@ class TwigUtils
     return $this->twig->render("yn/module/consentManager/settingsButton.twig");
   }
 
-  public function formField($formField) {
+  public function formField($formField, $renderWidget = true) {
     switch($formField["type"]) {
       case "select": {
-        return $this->twig->render("yn/components/form/select.twig", array("field"=> $formField, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/select.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
       }
       case "checkbox": {
-        return $this->twig->render("yn/components/form/checkbox.twig", array("field"=> $formField, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/checkbox.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
       }
       case "radio": {
-        return $this->twig->render("yn/components/form/radio.twig", array("field"=> $formField, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/radio.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
       }
       case "date": {
-        return $this->twig->render("yn/components/form/date.twig", array("field"=> $formField, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/date.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
       }
       case "number": {
-        return $this->twig->render("yn/components/form/number.twig", array("field"=> $formField, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/number.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
       }
       case "textarea": {
-        return $this->twig->render("yn/components/form/textarea.twig", array("field"=> $formField, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/textarea.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
       }
       default: {
-        return $this->twig->render("yn/components/form/basic.twig", array("field"=> $formField, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/basic.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
       }
     }
   }
