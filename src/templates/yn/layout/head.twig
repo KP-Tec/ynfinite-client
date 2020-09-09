@@ -1,6 +1,6 @@
 {% set favicon = _ynfinite.site.meta.favicon[0] %}
 
-<link rel="icon" type="{{ favicon.file_type }}" sizes="192x192"  href="{{ favicon.path }}?w=192&h=192">
+<link rel="icon" type="{{ favicon.file_type }}" sizes="192x192" href="{{ favicon.path }}?w=192&h=192">
 <link rel="icon" type="{{ favicon.file_type }}" sizes="32x32" href="{{ favicon.path }}?w=32&h=32">
 <link rel="icon" type="{{ favicon.file_type }}" sizes="96x96" href="{{ favicon.path }}?w=96&h=96">
 <link rel="icon" type="{{ favicon.file_type }}" sizes="16x16" href="{{ favicon.path }}?w=16&h=16">
@@ -17,46 +17,46 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 
 <title>{{_ynfinite.content.settings.seo.title|default(_ynfinite.page.meta.title)}}</title>
 <meta name="description" content="{{_ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.description)}}">
 <meta name="keyword" content="{{_ynfinite.content.settings.seo.keywords|default(_ynfinite.page.meta.keywords)}}">
 
-<meta property="og:title" content="{{_ynfinite.content.settings.opengraph.title|default(_ynfinite.content.settings.seo.title|default(_ynfinite.page.meta.title))}}">
-<meta property="og:site_name" content="{{_ynfinite.site.meta.title}}">
+<meta name="og:title" content="{{_ynfinite.content.settings.opengraph.title|default(_ynfinite.content.settings.seo.title|default(_ynfinite.page.meta.title))}}">
+<meta name="og:site_name" content="{{_ynfinite.site.meta.title}}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{_ynfinite.content.settings.opengraph.title|default(_ynfinite.content.settings.seo.title|default(_ynfinite.page.meta.title))}}">
 
-<meta property="og:description" content="{{_ynfinite.content.settings.opengraph.description|default(_ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.description))}}">
+<meta name="og:description" content="{{_ynfinite.content.settings.opengraph.description|default(_ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.description))}}">
 <meta name="twitter:description" content="{{_ynfinite.content.settings.opengraph.description|default(_ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.description))}}">
 
-<meta property="og:type" content="{{_ynfinite.content.setting.opengraph.type|default("website")}}">
+<meta name="og:type" content="{{_ynfinite.content.setting.opengraph.type|default("website")}}">
 
 {% if _ynfinite.content.settings.opengraph.images %}
-    <meta name="twitter:image" content="{{_ynfinite.content.settings.opengraph.images[0].path}}">
-    <meta name="og:image" content="{{_ynfinite.content.settings.opengraph.images[0].path}}">
+	<meta name="twitter:image" content="{{_ynfinite.content.settings.opengraph.images[0].path}}">
+	<meta name="og:image" content="{{_ynfinite.content.settings.opengraph.images[0].path}}">
 {% endif %}
 
-<meta property="og:url" content="{{_ynfinite.currentDomain}}{{urlData.cleanURL}}">
+<meta name="og:url" content="{{_ynfinite.currentDomain}}{{urlData.cleanURL}}">
 <meta name="twitter:url" content="{{_ynfinite.currentDomain}}{{urlData.cleanURL}}">
 
 <meta name="robots" content="{{_ynfinite.page.meta.robots|default("index,follow")}}">
 
 {% if _ynfinite.page.type == "listing" %}
-    {% if _ynfinite.pagination.currentPage %}
-        <link rel="canonical" href="{{_ynfinite.page.meta.canonical|default(_ynfinite.currentDomain ~ urlData.cleanURL)}}?_y.page={{_ynfinite.pagination.currentPage}}" />
-    {% else %}
-        <link rel="canonical" href="{{_ynfinite.page.meta.canonical|default(_ynfinite.currentDomain ~ urlData.cleanURL)}}" />
-    {% endif %}
+	{% if _ynfinite.pagination.currentPage %}
+		<link rel="canonical" href="{{_ynfinite.page.meta.canonical|default(_ynfinite.currentDomain ~ urlData.cleanURL)}}?_y.page={{_ynfinite.pagination.currentPage}}"/>
+	{% else %}
+		<link rel="canonical" href="{{_ynfinite.page.meta.canonical|default(_ynfinite.currentDomain ~ urlData.cleanURL)}}"/>
+	{% endif %}
 {% else %}
-    <link rel="canonical" href="{{_ynfinite.content.settings.seo.canonical|default(_ynfinite.page.meta.canonical|default(_ynfinite.currentDomain ~ urlData.cleanURL))}}" />
+	<link rel="canonical" href="{{_ynfinite.content.settings.seo.canonical|default(_ynfinite.page.meta.canonical|default(_ynfinite.currentDomain ~ urlData.cleanURL))}}"/>
 {% endif %}
 
 {% if _ynfinite.pagination.prevPage %}
-    <link rel="prev" href="{{_ynfinite.page.meta.canonical|default(_ynfinite.currentDomain ~ urlData.listingURL)}}{{urlData.separator}}_y.page={{_ynfinite.pagination.prevPage}}" />
+	<link rel="prev" href="{{_ynfinite.page.meta.canonical|default(_ynfinite.currentDomain ~ urlData.listingURL)}}{{urlData.separator}}_y.page={{_ynfinite.pagination.prevPage}}"/>
 {% endif %}
 
 {% if _ynfinite.pagination.nextPage %}
-    <link rel="next" href="{{_ynfinite.page.meta.canonical|default(_ynfinite.currentDomain ~ urlData.listingURL)}}{{urlData.separator}}_y.page={{_ynfinite.pagination.nextPage}}" />
+	<link rel="next" href="{{_ynfinite.page.meta.canonical|default(_ynfinite.currentDomain ~ urlData.listingURL)}}{{urlData.separator}}_y.page={{_ynfinite.pagination.nextPage}}"/>
 {% endif %}
