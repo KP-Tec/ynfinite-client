@@ -12,6 +12,7 @@ Go into the development folder and run the docker-composer inside of
 
     cd /development/docker
     docker-compose up -d
+    docker-compose exec ynfinite-client composer install
 
 This will start a local DEV environment and you can open [http://localhost](http://localhost/) 
 
