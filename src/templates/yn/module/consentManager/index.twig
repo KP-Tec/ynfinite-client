@@ -1,6 +1,6 @@
 {% set config = cookies.config %}
 
-<div id="yn-cookies" class='yn-cookies' data-hide-manager="{{hideConsentManager}}">
+<div id="yn-cookies" class='yn-cookies' data-hide-manager="{{hideConsentManager ? "true" : "false"}}">
 	<div class='yn-cookies__inner'>
 		<div class='yn-cookies__page yn-cookies__page--visible' data-yn-cookie-page='information'>
 			<div class='yn-cookies__header'>
