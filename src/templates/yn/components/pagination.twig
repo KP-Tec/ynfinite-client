@@ -1,66 +1,68 @@
 {% set pagination = _ynfinite.pagination %}
 
-<ul class='yn-pagination'>
-	{% if pagination.currentPage == 1 %}
-		<li class='yn-pagination__control yn-pagination__first'>
-			<span>&lt;&lt;</span>
-		</li>
-	{% else %}
-		<li class='yn-pagination__control yn-pagination__first'>
-			<a href='{{uriData.listingURL}}_y.page=1'>&lt;&lt;</a>
-		</li>
-	{% endif %}
+{% if pagination.totalPages > 1 %}
+	<ul class='yn-pagination'>
+		{% if pagination.currentPage == 1 %}
+			<li class='yn-pagination__control yn-pagination__first'>
+				<span>&lt;&lt;</span>
+			</li>
+		{% else %}
+			<li class='yn-pagination__control yn-pagination__first'>
+				<a href='{{uriData.listingURL}}_y.page=1'>&lt;&lt;</a>
+			</li>
+		{% endif %}
 
-	{% if pagination.currentPage == 1 %}
-		<li class='yn-pagination__control yn-pagination__prev'>
-			<span>&lt;</span>
-		</li>
-	{% else %}
-		<li class='yn-pagination__control yn-pagination__prev'>
-			<a href='{{uriData.listingURL}}_y.page={{pagination.currentPage-1}}'>&lt;</a>
-		</li>
-	{% endif %}
+		{% if pagination.currentPage == 1 %}
+			<li class='yn-pagination__control yn-pagination__prev'>
+				<span>&lt;</span>
+			</li>
+		{% else %}
+			<li class='yn-pagination__control yn-pagination__prev'>
+				<a href='{{uriData.listingURL}}_y.page={{pagination.currentPage-1}}'>&lt;</a>
+			</li>
+		{% endif %}
 
-	{% if pagination.currentPage-5 > 1 %}
-		<li class='yn-pagination__more'>
-			<span>...</span>
-		</li>
-	{% endif %}
+		{% if pagination.currentPage-5 > 1 %}
+			<li class='yn-pagination__more'>
+				<span>...</span>
+			</li>
+		{% endif %}
 
-	{% for page in max(1, pagination.currentPage-5)..min(pagination.currentPage+5,pagination.totalPages) %}
-		<li class='yn-pagination__page{% if page == pagination.currentPage %} yn-pagination__page--active{% endif %}'>
-			{% if page == pagination.currentPage %}
-				<span>{{page}}</span>
-			{% else %}
-				<a href='{{uriData.listingURL}}_y.page={{page}}'>{{page}}</a>
-			{% endif %}
-		</li>
-	{% endfor %}
+		{% for page in max(1, pagination.currentPage-5)..min(pagination.currentPage+5, pagination.totalPages) %}
+			<li class='yn-pagination__page{% if page == pagination.currentPage %} yn-pagination__page--active{% endif %}'>
+				{% if page == pagination.currentPage %}
+					<span>{{page}}</span>
+				{% else %}
+					<a href='{{uriData.listingURL}}_y.page={{page}}'>{{page}}</a>
+				{% endif %}
+			</li>
+		{% endfor %}
 
-	{% if pagination.currentPage+5 < pagination.totalPages %}
-		<li class='yn-pagination__more'>
-			<span>...</span>
-		</li>
-	{% endif %}
+		{% if pagination.currentPage+5 < pagination.totalPages %}
+			<li class='yn-pagination__more'>
+				<span>...</span>
+			</li>
+		{% endif %}
 
 
-	{% if pagination.currentPage == pagination.totalPages %}
-		<li class='yn-pagination__control yn-pagination__next'>
-			<span>&gt;</span>
-		</li>
-	{% else %}
-		<li class='yn-pagination__control yn-pagination__next'>
-			<a href='{{uriData.listingURL}}_y.page={{pagination.currentPage+1}}'>&gt;</a>
-		</li>
-	{% endif %}
+		{% if pagination.currentPage == pagination.totalPages %}
+			<li class='yn-pagination__control yn-pagination__next'>
+				<span>&gt;</span>
+			</li>
+		{% else %}
+			<li class='yn-pagination__control yn-pagination__next'>
+				<a href='{{uriData.listingURL}}_y.page={{pagination.currentPage+1}}'>&gt;</a>
+			</li>
+		{% endif %}
 
-	{% if pagination.currentPage == pagination.totalPages %}
-		<li class='yn-pagination__control yn-pagination__last'>
-			<span>&gt;&gt;</span>
-		</li>
-	{% else %}
-		<li class='yn-pagination__control yn-pagination__last'>
-			<a href='{{uriData.listingURL}}_y.page={{pagination.totalPages}}'>&gt;&gt;</a>
-		</li>
-	{% endif %}
-</ul>
+		{% if pagination.currentPage == pagination.totalPages %}
+			<li class='yn-pagination__control yn-pagination__last'>
+				<span>&gt;&gt;</span>
+			</li>
+		{% else %}
+			<li class='yn-pagination__control yn-pagination__last'>
+				<a href='{{uriData.listingURL}}_y.page={{pagination.totalPages}}'>&gt;&gt;</a>
+			</li>
+		{% endif %}
+	</ul>
+{% endif %}
