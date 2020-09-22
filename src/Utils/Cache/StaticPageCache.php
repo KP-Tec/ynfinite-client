@@ -70,7 +70,7 @@ class StaticPageCache
             mkdir(getcwd() . StaticPageCache::BASIC_PATH, 0777, true);
         }
 
-        if ($pageType === "listing" && $_SERVER['QUERY_STRING']) {
+        if ($_SERVER['QUERY_STRING']) {
             parse_str($_SERVER['QUERY_STRING'], $parsedQuery);
             $hasOtherParams = false;
             foreach ($parsedQuery as $key => $value) {
