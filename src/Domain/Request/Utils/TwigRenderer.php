@@ -85,9 +85,7 @@ final class TwigRenderer
 
             $hasCategory = false;
             
-            foreach($categories as $category) {
-                var_dump($category["name"]);
-    
+            foreach($categories as $category) {    
                 if($category["name"] === $searchFor) {
                     $hasCategory = true;
                     break;
