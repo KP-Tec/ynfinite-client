@@ -25,7 +25,6 @@ final class RenderPageService
 
         $renderedPage = $this->twig->render($data, $templates);
 
-        
         if(filter_var($this->settings["static_pages"], FILTER_VALIDATE_BOOLEAN) === true) {
             $filename = StaticPageCache::createStaticPage($renderedPage, $data["page"]["type"]);
             if($filename) {

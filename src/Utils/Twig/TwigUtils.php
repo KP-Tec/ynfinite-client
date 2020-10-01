@@ -47,14 +47,15 @@ class TwigUtils
     return array("src" => $src, "srcset" => implode(",", $srcset));
   }
 
-  public function printImage($image, $sizes = array()) {
+  public function printImage($image, $sizes = array(), $classes) {
     $sources = $this->getSizes($image, $sizes);
-    return $this->twig->render("yn/components/image.twig", array("image" => $image, "src" => $sources["src"], "srcset" => $sources["srcset"]));
+
+    return $this->twig->render("yn/components/image.twig", array("image" => $image, "src" => $sources["src"], "srcset" => $sources["srcset"], "classes" => $classes));
   }
 
-  public function printFigure($image, $sizes = array()) {
+  public function printFigure($image, $sizes = array(), $classes) {
     $sources = $this->getSizes($image, $sizes);
-    return $this->twig->render("yn/components/figure.twig", array("image" => $image, "src" => $sources["src"], "srcset" => $sources["srcset"]));
+    return $this->twig->render("yn/components/figure.twig", array("image" => $image, "src" => $sources["src"], "srcset" => $sources["srcset"], "classes" => $classes));
   }
 
   public function form($form, $section = array()) {

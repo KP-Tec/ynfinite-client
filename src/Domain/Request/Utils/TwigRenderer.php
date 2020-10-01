@@ -75,8 +75,30 @@ final class TwigRenderer
             return implode($joinArray, $seperator);
         });
 
+        $filterHasCategory = new \Twig\TwigFilter('hasCategory', function ($content, $searchFor) {
+            $joinArray = array();
+           
+            $categories = $content["settings"]["categories"];
+
+            if(!$categories) 
+                return false;
+
+            $hasCategory = false;
+            
+            foreach($categories as $category) {
+                var_dump($category["name"]);
+    
+                if($category["name"] === $searchFor) {
+                    $hasCategory = true;
+                    break;
+                }
+            }
+            return $hasCategory;
+        });
+
         $this->twig->addFilter($filterTrans);
         $this->twig->addFilter($filterJoinBy);
+        $this->twig->addFilter($filterHasCategory);
 
         $renderedPage = $this->twig->render($this->templateList['index'], $data);
         return $renderedPage;
