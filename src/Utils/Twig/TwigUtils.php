@@ -47,13 +47,13 @@ class TwigUtils
     return array("src" => $src, "srcset" => implode(",", $srcset));
   }
 
-  public function printImage($image, $sizes = array(), $classes) {
+  public function printImage($image, $sizes = array(), $classes = "") {
     $sources = $this->getSizes($image, $sizes);
 
     return $this->twig->render("yn/components/image.twig", array("image" => $image, "src" => $sources["src"], "srcset" => $sources["srcset"], "classes" => $classes));
   }
 
-  public function printFigure($image, $sizes = array(), $classes) {
+  public function printFigure($image, $sizes = array(), $classes = "") {
     $sources = $this->getSizes($image, $sizes);
     return $this->twig->render("yn/components/figure.twig", array("image" => $image, "src" => $sources["src"], "srcset" => $sources["srcset"], "classes" => $classes));
   }

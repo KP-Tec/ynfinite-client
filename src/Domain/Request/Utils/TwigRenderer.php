@@ -94,9 +94,23 @@ final class TwigRenderer
             return $hasCategory;
         });
 
+        $filterSome = new \Twig\TwigFilter('some', function ($content, $searchFor) {
+           $result = false;
+
+            foreach($searchFor as $search) {
+                if($content[$search]) {
+                    $result = true;
+                    break;
+                }
+            }
+
+            return $result;
+        });
+
         $this->twig->addFilter($filterTrans);
         $this->twig->addFilter($filterJoinBy);
         $this->twig->addFilter($filterHasCategory);
+        $this->twig->addFilter($filterSome);
 
         $renderedPage = $this->twig->render($this->templateList['index'], $data);
         return $renderedPage;
