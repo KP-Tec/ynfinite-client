@@ -10,7 +10,7 @@
 		<div class="widget__input-container">
 		{% endif %}
 		{% block field %}
-			<input type="{{field.type}}" name="fields[{{field.alias}}]" value="{{field.value|default("")}}" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+			<input type="{{field.type}}" name="fields[{{field.alias}}]" value="{{field.value|default(addValue)}}" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
 		{% endblock field %}
 		{% if renderWidget != false %}
 		</div>

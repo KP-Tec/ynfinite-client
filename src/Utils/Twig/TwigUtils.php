@@ -63,32 +63,66 @@ class TwigUtils
     return $this->twig->render("yn/components/form.twig", array("form" => $form, "section" => $section, "templates" => $this->templates));
   }
 
+  public function renderFields($form, $section = array(), $addValues) {
+    $this->currentForm = $form;
+    $fields = array();
+
+    $currentY = -1;
+    $fieldGrid = array();
+    
+    $hiddenFields = array();
+
+    $currentRow = array();
+
+    foreach($form["fields"] as $field){
+      $grid = $field["grid"];
+      
+      if($field["type"] === "hidden") {
+        $hiddenFields[] = $field;
+      } 
+      else {
+        if(!is_array($fieldGrid[$grid["y"]])) {
+          $fieldGrid[$grid["y"]] = array();
+        }
+        $fieldGrid[$grid["y"]][$grid["x"]] = $field;
+        ksort($fieldGrid[$grid["y"]]);
+      }
+    }
+
+    ksort($fieldGrid);
+
+    return $this->twig->render("yn/components/renderFields.twig", array("form" => $form, "fieldGrid" => $fieldGrid, "hiddenFields" => $hiddenFields, "section" => $section, "templates" => $this->templates, "addValues" => $addValues));
+  }
+
   public function printCookieSettingsButton() {
     return $this->twig->render("yn/module/consentManager/settingsButton.twig");
   }
 
-  public function formField($formField, $renderWidget = true) {
+  public function formField($formField, $renderWidget = true, $valueOverride = "") {
     switch($formField["type"]) {
       case "select": {
-        return $this->twig->render("yn/components/form/select.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/select.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
       case "checkbox": {
-        return $this->twig->render("yn/components/form/checkbox.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/checkbox.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
       case "radio": {
-        return $this->twig->render("yn/components/form/radio.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/radio.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
       case "date": {
-        return $this->twig->render("yn/components/form/date.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/date.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
       case "number": {
-        return $this->twig->render("yn/components/form/number.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/number.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
       case "textarea": {
-        return $this->twig->render("yn/components/form/textarea.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/textarea.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+      }
+      case "spacer": {
+        return $this->twig->render("yn/components/form/spacer.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
       default: {
-        return $this->twig->render("yn/components/form/basic.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm));
+        return $this->twig->render("yn/components/form/basic.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
     }
   }

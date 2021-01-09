@@ -1,8 +1,5 @@
 {% extends "yn/components/form/basic.twig" %}
 
 {% block field %}
-    <input 
-        type="{{field.type}}" name="fields[{{field.alias}}]" 
-        {% if field.min %} min="{{field.min}}"{% endif %}{% if field.max %} max="{{field.max}}"{% endif %} 
-        value="{{field.value|default("")}}" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+	<input type="{{field.type}}" name="fields[{{field.alias}}]" {% if field.min %} min="{{field.min}}" {% endif %} {% if field.max %} max="{{field.max}}" {% endif %} value="{{field.value|default(addValue)}}" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
 {% endblock field %}

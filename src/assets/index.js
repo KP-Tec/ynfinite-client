@@ -1,5 +1,6 @@
 //SCSS Files
 import "./scss/cookieManager.scss";
+import "./scss/formGrid.scss";
 
 //JS Files
 import "./js/general";
