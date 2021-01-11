@@ -39,6 +39,7 @@ final class TwigRenderer
         $this->templates = $templates;
 
         $this->templateList = $this->generateTemplateList();
+        $this->templateOverrides = $this->generateTemplateOverridesList();
 
         $this->uriData = $this->getURIData();
 
@@ -49,7 +50,7 @@ final class TwigRenderer
         $this->twig->addGlobal('_ynfinite', $this->data);
         $this->twig->addGlobal("urlData", $this->uriData);
 
-        $this->twigFunc = new TwigUtils($this->twig, $this->data, $this->templateList, $this->uriData);
+        $this->twigFunc = new TwigUtils($this->twig, $this->data, $this->templateList, $this->templateOverrides, $this->uriData);
 
         $_yfunc = new \Twig\TwigFunction('_yfunc', function ($methode) {
 
@@ -115,6 +116,18 @@ final class TwigRenderer
         $renderedPage = $this->twig->render($this->templateList['index'], $data);
         return $renderedPage;
 
+    }
+
+    private function generateTemplateOverridesList() {
+        $namespace = $this->data["theme"]["namespace"];
+        if(file_exists(getcwd() . "/../" . $this->settings["ynfinite"]["templateDir"] . "/" . $namespace . "/tplConfig.php")) {
+            include(getcwd() . "/../" . $this->settings["ynfinite"]["templateDir"] . "/" . $namespace . "/tplConfig.php");
+            foreach($yn_templateOverrides as $key => $value) {
+                $yn_templateOverrides[$key] = $namespace . "/" . $value; 
+            }
+            return $yn_templateOverrides;
+        }
+        return array();
     }
 
     private function generateTemplateList()

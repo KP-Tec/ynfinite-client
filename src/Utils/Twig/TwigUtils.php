@@ -8,12 +8,41 @@ class TwigUtils
 
   private $data;
 
-  public function __construct($twig, $data, $templates, $uriData)
+  public function __construct($twig, $data, $templates, $templateOverrides, $uriData)
   {
     $this->data = $data;
     $this->twig = $twig;
     $this->templates = $templates;
+    $this->templateOverrides = $templateOverrides;
     $this->uriData = $uriData;
+
+
+    $this->standardTemplates = array(
+      "images:image" => "yn/components/image.twig",
+      "images:figure" => "yn/components/figure.twig",
+      "form:form" => "yn/components/form.twig",
+      "form:fields.select" => "yn/components/form/select.twig",
+      "form:fields.radio" => "yn/components/form/radio.twig",
+      "form:fields.checkbox" => "yn/components/form/checkbox.twig",
+      "form:fields.dateTime-local" => "yn/components/form/datetime-local.twig",
+      "form:fields.month" => "yn/components/form/month.twig",
+      "form:fields.date" => "yn/components/form/date.twig",
+      "form:fields.time" => "yn/components/form/time.twig",
+      "form:fields.week" => "yn/components/form/week.twig",
+      "form:fields.number" => "yn/components/form/number.twig",
+      "form:fields.textarea" => "yn/components/form/textarea.twig",
+      "form:fields.spacer" => "yn/components/form/spacer.twig",
+      "form:fields.basic" => "yn/components/form/basic.twig"
+    );
+  }
+
+  private function getTemplate($name) {
+    $template = $this->standardTemplates[$name];
+    if($this->templateOverrides[$name]) {
+      $template = $this->templateOverrides[$name];
+    }
+
+    return $template;
   }
 
   private function getSizes($image, $sizes) {
@@ -50,17 +79,17 @@ class TwigUtils
   public function printImage($image, $sizes = array(), $classes = "") {
     $sources = $this->getSizes($image, $sizes);
 
-    return $this->twig->render("yn/components/image.twig", array("image" => $image, "src" => $sources["src"], "srcset" => $sources["srcset"], "classes" => $classes));
+    return $this->twig->render($this->getTemplate("images:image"), array("image" => $image, "src" => $sources["src"], "srcset" => $sources["srcset"], "classes" => $classes));
   }
 
   public function printFigure($image, $sizes = array(), $classes = "") {
     $sources = $this->getSizes($image, $sizes);
-    return $this->twig->render("yn/components/figure.twig", array("image" => $image, "src" => $sources["src"], "srcset" => $sources["srcset"], "classes" => $classes));
+    return $this->twig->render($this->getTemplate("images:figure"), array("image" => $image, "src" => $sources["src"], "srcset" => $sources["srcset"], "classes" => $classes));
   }
 
   public function form($form, $section = array()) {
     $this->currentForm = $form;
-    return $this->twig->render("yn/components/form.twig", array("form" => $form, "section" => $section, "templates" => $this->templates));
+    return $this->twig->render($this->getTemplate("form:form"), array("form" => $form, "section" => $section, "templates" => $this->templates));
   }
 
   public function renderFields($form, $section = array(), $addValues) {
@@ -101,28 +130,40 @@ class TwigUtils
   public function formField($formField, $renderWidget = true, $valueOverride = "") {
     switch($formField["type"]) {
       case "select": {
-        return $this->twig->render("yn/components/form/select.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+        return $this->twig->render($this->getTemplate("form:fields.select"), array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
       case "checkbox": {
-        return $this->twig->render("yn/components/form/checkbox.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+        return $this->twig->render($this->getTemplate("form:fields.checkbox"), array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
       case "radio": {
-        return $this->twig->render("yn/components/form/radio.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+        return $this->twig->render($this->getTemplate("form:fields.radio"), array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
+      case "datetime-local": {
+        return $this->twig->render($this->getTemplate("form:fields.dateTime-local"), array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+      }
+      case "month": {
+        return $this->twig->render($this->getTemplate("form:fields.month"), array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+      }      
+      case "time": {
+        return $this->twig->render($this->getTemplate("form:fields.time"), array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+      }      
+      case "week": {
+        return $this->twig->render($this->getTemplate("form:fields.week"), array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+      }            
       case "date": {
-        return $this->twig->render("yn/components/form/date.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
-      }
+        return $this->twig->render($this->getTemplate("form:fields.date"), array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+      }      
       case "number": {
-        return $this->twig->render("yn/components/form/number.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+        return $this->twig->render($this->getTemplate("form:fields.number"), array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
       case "textarea": {
-        return $this->twig->render("yn/components/form/textarea.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+        return $this->twig->render($this->getTemplate("form:fields.textarea"), array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
       case "spacer": {
-        return $this->twig->render("yn/components/form/spacer.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+        return $this->twig->render($this->getTemplate("form:fields.spacer"), array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
       default: {
-        return $this->twig->render("yn/components/form/basic.twig", array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+        return $this->twig->render($this->getTemplate("form:fields.basic"), array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
       }
     }
   }
