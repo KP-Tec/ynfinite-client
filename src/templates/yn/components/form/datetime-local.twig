@@ -1,5 +1,41 @@
 {% extends "yn/components/form/basic.twig" %}
 
 {% block field %}
-	<input type="{{field.type}}" name="fields[{{field.alias}}]" {% if field.min %} min="{{field.min}}" {% endif %} {% if field.max %} max="{{field.max}}" {% endif %} value="{{field.value|default(addValue)}}" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+
+	<script>
+		window.addEventListener('load', function () {
+            var startDate, endDate, value;
+			
+			const data = {
+				from: {
+					unit: '{{ field.dateRestrictions.from.unit }}',
+					value: '{{ field.dateRestrictions.from.value }}'
+				},
+				to: {
+					unit: '{{ field.dateRestrictions.to.unit }}',
+					value: '{{ field.dateRestrictions.to.value }}'
+				},
+				value: '{{field.value}}'
+			}
+
+            var field = document.getElementById('{{field.uid}}');
+
+			if(data.from.unit && data.from.value) {
+				startDate = moment().subtract(data.from.value, data.from.unit);
+				field.setAttribute("min", startDate.format('yyyy-MM-DDThh:mm'))
+			}
+
+			if(data.to.unit && data.to.value) {
+				endDate = moment().add(data.to.value, data.to.unit);
+				field.setAttribute("max", endDate.format('yyyy-MM-DDThh:mm'))
+			}
+			
+            if(data.value) {
+				value = moment('{{ field.value }}');
+            	field.setAttribute("value", value.format("yyyy-MM-DDThh:mm"))
+			}
+        })
+	</script>
+
+	<input id="{{field.uid}}" type="{{field.type}}" name="fields[{{field.alias}}]" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
 {% endblock field %}

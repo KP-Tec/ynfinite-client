@@ -14,6 +14,7 @@ use Psr\Container\ContainerInterface;
 
 use App\Utils\Twig\Tokens\IsCookieActive;
 use App\Utils\Twig\Tokens\GetCookieConsent;
+use App\Utils\Twig\Tokens\IsScriptActive;
 use App\Utils\Twig\TwigUtils;
 use App\Utils\Twig\I18nUtils;
 
@@ -44,6 +45,7 @@ final class TwigRenderer
         $this->uriData = $this->getURIData();
 
         $this->twig->addTokenParser(new IsCookieActive($data));
+        $this->twig->addTokenParser(new IsScriptActive($data));
         $this->twig->addTokenParser(new GetCookieConsent($data, $this->twig));
         $this->twig->addGlobal("templateList", $this->templateList);
         $this->twig->addGlobal("_templates", $this->templates);
