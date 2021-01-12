@@ -1,0 +1,5 @@
+{% extends "yn/components/form/basic.twig" %}
+
+{% block field %}
+	<input type="{{field.type}}" name="fields[{{field.alias}}]" {% if field.pattern %} pattern="{{field.pattern}}" {% endif %} {% if field.min %} minlength="{{field.min}}" {% endif %} {% if field.max %} maxlength="{{field.max}}" {% endif %} value="{{field.value|default(addValue)}}" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+{% endblock field %}
