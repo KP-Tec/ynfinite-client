@@ -9,7 +9,6 @@ ynfinite-client.iml
 !/tmp/twig_cache/.gitkeep
 /tmp/locales/*
 !/tmp/locales/.gitkeep
-/templates/*
 !/templates/.gitkeep
 /.history
 /.env

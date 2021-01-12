@@ -22,17 +22,17 @@
 
 			if(data.from.unit && data.from.value) {
 				startDate = moment().subtract(data.from.value, data.from.unit);
-				field.setAttribute("min", startDate.format('yyyy-MM-DD'))
+				field.setAttribute("min", startDate.weekYear() + "-W" + startDate.isoWeek().toString().padStart(2, "0"))
 			}
 
 			if(data.to.unit && data.to.value) {
 				endDate = moment().add(data.to.value, data.to.unit);
-				field.setAttribute("max", endDate.format('yyyy-MM-DD'))
+				field.setAttribute("max", endDate.weekYear() + "-W" + endDate.isoWeek().toString().padStart(2, "0"))
 			}
 			
             if(data.value) {
 				value = moment('{{ field.value }}');
-            	field.setAttribute("value", value.format("yyyy-MM-DD"))
+            	field.setAttribute("value", value.weekYear() + "-W" + value.isoWeek().toString().padStart(2, "0"))
 			}
         })
 	</script>

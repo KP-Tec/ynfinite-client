@@ -1,0 +1,12 @@
+{% for row in fieldGrid %}
+	<div class="yn-form-grid-row">
+		{% for field in row %}
+			<div class="yn-form-grid-{{field['grid']['w']}}">
+				{{ _yfunc("formField", field) }}
+			</div>
+		{% endfor %}
+	</div>
+{% endfor %}
+{% for field in hiddenFields %}
+	{{ _yfunc("formField", field, false, addValues[field.alias]) }}
+{% endfor %}

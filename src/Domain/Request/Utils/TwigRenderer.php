@@ -14,6 +14,7 @@ use Psr\Container\ContainerInterface;
 
 use App\Utils\Twig\Tokens\IsCookieActive;
 use App\Utils\Twig\Tokens\GetCookieConsent;
+use App\Utils\Twig\Tokens\IsScriptActive;
 use App\Utils\Twig\TwigUtils;
 use App\Utils\Twig\I18nUtils;
 
@@ -39,17 +40,19 @@ final class TwigRenderer
         $this->templates = $templates;
 
         $this->templateList = $this->generateTemplateList();
+        $this->templateOverrides = $this->generateTemplateOverridesList();
 
         $this->uriData = $this->getURIData();
 
         $this->twig->addTokenParser(new IsCookieActive($data));
+        $this->twig->addTokenParser(new IsScriptActive($data));
         $this->twig->addTokenParser(new GetCookieConsent($data, $this->twig));
         $this->twig->addGlobal("templateList", $this->templateList);
         $this->twig->addGlobal("_templates", $this->templates);
         $this->twig->addGlobal('_ynfinite', $this->data);
         $this->twig->addGlobal("urlData", $this->uriData);
 
-        $this->twigFunc = new TwigUtils($this->twig, $this->data, $this->templateList, $this->uriData);
+        $this->twigFunc = new TwigUtils($this->twig, $this->data, $this->templateList, $this->templateOverrides, $this->uriData);
 
         $_yfunc = new \Twig\TwigFunction('_yfunc', function ($methode) {
 
@@ -75,12 +78,58 @@ final class TwigRenderer
             return implode($joinArray, $seperator);
         });
 
+        $filterHasCategory = new \Twig\TwigFilter('hasCategory', function ($content, $searchFor) {
+            $joinArray = array();
+           
+            $categories = $content["settings"]["categories"];
+
+            if(!$categories) 
+                return false;
+
+            $hasCategory = false;
+            
+            foreach($categories as $category) {    
+                if($category["name"] === $searchFor) {
+                    $hasCategory = true;
+                    break;
+                }
+            }
+            return $hasCategory;
+        });
+
+        $filterSome = new \Twig\TwigFilter('some', function ($content, $searchFor) {
+           $result = false;
+
+            foreach($searchFor as $search) {
+                if($content[$search]) {
+                    $result = true;
+                    break;
+                }
+            }
+
+            return $result;
+        });
+
         $this->twig->addFilter($filterTrans);
         $this->twig->addFilter($filterJoinBy);
+        $this->twig->addFilter($filterHasCategory);
+        $this->twig->addFilter($filterSome);
 
         $renderedPage = $this->twig->render($this->templateList['index'], $data);
         return $renderedPage;
 
+    }
+
+    private function generateTemplateOverridesList() {
+        $namespace = $this->data["theme"]["namespace"];
+        if(file_exists(getcwd() . "/../" . $this->settings["ynfinite"]["templateDir"] . "/" . $namespace . "/tplConfig.php")) {
+            include(getcwd() . "/../" . $this->settings["ynfinite"]["templateDir"] . "/" . $namespace . "/tplConfig.php");
+            foreach($yn_templateOverrides as $key => $value) {
+                $yn_templateOverrides[$key] = $namespace . "/" . $value; 
+            }
+            return $yn_templateOverrides;
+        }
+        return array();
     }
 
     private function generateTemplateList()

@@ -1,9 +1,18 @@
-<div class='widget widget--{{field.type}}'>
-    <label class="widget__label" for="{{field.alias}}">{{field.label}}{% if(field.required) %}<span class="required"> *</span>{% endif %}</label>
+{% if renderWidget != false %}
+	<div class='widget widget--{{field.type}}'>
+		<label class="widget__label" for="{{field.alias}}">{{field.label}}
+			{% if(field.required) %}
+				<span class="required">*</span>
+			{% endif %}
+		</label>
 
-    <div class="widget__input-container">
-        {% block field %}
-            <input type="{{field.type}}" name="fields[{{field.alias}}]" value="{{field.value|default("")}}" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
-        {% endblock field %}
-    </div>
-</div>
+
+		<div class="widget__input-container">
+		{% endif %}
+		{% block field %}
+			<input type="{{field.type}}" name="fields[{{field.alias}}]" {% if field.value or addValue %} value="{{field.value|default(addValue)}}" {% endif %} {%if field.placeholder %} placeholder="{{field.placeholder}}" {% endif %} {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+		{% endblock field %}
+		{% if renderWidget != false %}
+		</div>
+	</div>
+{% endif %}
