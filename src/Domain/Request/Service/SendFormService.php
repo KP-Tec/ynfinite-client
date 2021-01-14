@@ -35,12 +35,13 @@ final class SendFormService
         $result = $this->encodeUrl($postData);
 
         $formData = array("formId" => $postData["formId"], "action" => $postData["action"], "formData" => $result);
-        $formData = json_encode($formData, JSON_UNESCAPED_UNICODE);
+
+
+        if($_FILES["fields"] && is_array($_FILES["fields"]["tmp_name"])) {
+            $this->curlHandler->addUploadFiles($_FILES["fields"]);
+        }
 
         $service = $this->settings["services"]["form"];
-
-        $this->curlHandler->addHeader("Content-Type", "application/json");
-        $this->curlHandler->addHeader("Content-Length", strlen($formData));
 
         $uri = $request->getUri();
 
