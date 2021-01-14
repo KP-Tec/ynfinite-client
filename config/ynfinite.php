@@ -56,6 +56,7 @@ return [
             'host' => $ynfinite_server,
             'port' => $ynfinite_port,
             'controller' => "/v1/cms/newfrontend/p/form/",
+            "upload" => "/v1/cms/newfrontend/p/upload/",
             'gdpr' => "/v1/cms/newfrontend/gdpr/request",
             'gdprUpdate' => "/v1/cms/newfrontend/gdpr/update",
             'gdprDelete' => "/v1/cms/newfrontend/gdpr/delete"

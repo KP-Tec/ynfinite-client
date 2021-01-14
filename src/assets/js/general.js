@@ -32,6 +32,7 @@ function handleResponse(e, t) {
 }
 
 function functSubmit(e) {
+  e.preventDefault();
   const t = e.target,
     n = new FormData(t),
     o = e.target.getAttribute("data-ynfiniteid"),
@@ -44,11 +45,12 @@ function functSubmit(e) {
     n.append("prefix", sp),
     n.append("contentId", c),
     n.append("sectionId", s),
-    n.append("action", "submit"),
-    fetch(t.action, {
-      method: t.method,
-      body: n,
-    }).then(handleResponse.bind(null, t)),
+    n.append("action", "submit");
+
+  fetch(t.action, {
+    method: t.method,
+    body: n,
+  }).then(handleResponse.bind(null, t)),
     e.preventDefault();
 }
 

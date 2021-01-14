@@ -38,6 +38,7 @@ class TwigUtils
       "form:fields.url" => "yn/components/form/url.twig",
       "form:fields.email" => "yn/components/form/email.twig",
       "form:fields.password" => "yn/components/form/password.twig",
+      "form:fields.file" => "yn/components/form/file.twig",
       "form:fields.hidden" => "yn/components/form/hidden.twig",
       "form:fields.spacer" => "yn/components/form/spacer.twig",
       "form:fields.basic" => "yn/components/form/basic.twig"

@@ -9,6 +9,8 @@ final class CurlHandler
     public function __construct($settings, $postRequest = false) {
         $this->settings = $settings;
 
+        $this->uploadFiles = array();
+
         $cookieArray = array();
         foreach ($_COOKIE as $key => $cookie) {
             $cookieArray[] = $key . "=" . $cookie;
@@ -20,8 +22,8 @@ final class CurlHandler
             curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($this->ch, CURLOPT_HEADER, 1);
             curl_setopt($this->ch, CURLOPT_POST, TRUE);
-            curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($this->ch, CURLOPT_ENCODING, "gzip");
+            // curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, "POST");
+            // curl_setopt($this->ch, CURLOPT_ENCODING, "gzip");
         }
         else {
             curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
@@ -40,6 +42,10 @@ final class CurlHandler
     public function addHeader($key, $value)
     {
         $this->headers[$key] = $value;
+    }
+
+    public function addUploadFiles($files) {
+        $this->uploadFiles = $files;
     }
 
     private function buildServiceUrl($service, $path, $uri)
@@ -75,8 +81,9 @@ final class CurlHandler
 
         $url = $host . $controller;
 
-        $url .= '?slug=/';
+        $url .= '?slug=';
         if ($path) $url .= $path;
+        else $url .= "/";
 
         if ($protocol) $url .= '&protocol=' . $protocol;
         if ($host) $url .= '&domain=' . $domain;
@@ -93,7 +100,7 @@ final class CurlHandler
 
         curl_setopt($this->ch, CURLOPT_URL, $url);
         curl_setopt($this->ch, CURLOPT_PORT, $service["port"]);
-        curl_setopt($this->ch, CURLOPT_ENCODING, "gzip");
+        // curl_setopt($this->ch, CURLOPT_ENCODING, "gzip");
         if ($dev) {
             curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -102,8 +109,19 @@ final class CurlHandler
     }
 
     public function execWithData($formData) {
-        curl_setopt($this->ch, CURLOPT_POSTFIELDS, $formData);
-        
+        $finalData = array();
+        if(count($this->uploadFiles) > 0) {
+            foreach($this->uploadFiles["tmp_name"] as $key => $value) {
+                if($value) {
+                    $finalData[$key] = curl_file_create($value, mime_content_type($value));
+                }
+            }
+        }
+       
+        $finalData["formData"] = json_encode($formData["formData"], JSON_UNESCAPED_UNICODE);
+
+        curl_setopt($this->ch, CURLOPT_POSTFIELDS, $finalData);
+       
         $response = $this->exec();
         
         return $response;

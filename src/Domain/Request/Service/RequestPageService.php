@@ -55,12 +55,11 @@ final class RequestPageService
 
         $uri = $request->getUri();
 
-        return $this->request(trim($path, '/'), $service, $uri, $jsonResponse);
+        return $this->request(trim($path), $service, $uri, $jsonResponse);
     }
 
     private function request($path, $service, $uri, $json = true)
     {
-        
         $this->curlHandler->setUrl($service, $path, $uri, filter_var($this->settings["dev"], FILTER_VALIDATE_BOOLEAN));
         $response = $this->curlHandler->exec();    
 
