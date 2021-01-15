@@ -1,4 +1,4 @@
-<form enctype="multipart/form-data" data-ynfiniteform="true" data-ynfiniteid="{{form._id}}" data-ynfinitelang="{{_ynfinite.languages.current}}" {% if form.submitOnChange %} data-ynfiniteform-onchange="true" {% endif %} data-ynfinite-content="{{_ynfinite.content._id}}" data-ynfinite-section="{{section._id}}" data-ynfinite-slugprefix="{{_ynfinite.params.slugPrefix}}" method="post" action="{{_ynfinite.params.slug}}">
+<form id="{{form._id}}" enctype="multipart/form-data" data-ynfiniteform="true" data-ynfiniteid="{{form._id}}" data-ynfinitelang="{{_ynfinite.languages.current}}" {% if form.submitOnChange %} data-ynfiniteform-onchange="true" {% endif %} data-ynfinite-content="{{_ynfinite.content._id}}" data-ynfinite-section="{{section._id}}" data-ynfinite-slugprefix="{{_ynfinite.params.slugPrefix}}" method="post" action="{{_ynfinite.params.slug}}">
 	<div class="yn-error"></div>
 	<div class="form-content">
 		{% if templates[form.template] %}
