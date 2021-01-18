@@ -1,7 +1,7 @@
 {% for row in fieldGrid %}
 	<div class="yn-form-grid-row">
 		{% for field in row %}
-			<div class="yn-form-grid-{{field['grid']['w']}}">
+			<div class="yn-form-grid-field yn-form-grid-field-{{field['grid']['w']}}">
 				{{ _yfunc("formField", field) }}
 			</div>
 		{% endfor %}

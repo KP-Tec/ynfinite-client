@@ -101,7 +101,7 @@ class TwigUtils
     return $this->twig->render($this->getTemplate("form:form"), array("form" => $form, "section" => $section, "templates" => $this->templates));
   }
 
-  public function renderFields($form, $section = array(), $addValues) {
+  public function renderFields($form, $section = array(), $addValues = array()) {
     $this->currentForm = $form;
     $fields = array();
 

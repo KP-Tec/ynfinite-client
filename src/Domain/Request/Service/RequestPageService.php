@@ -66,7 +66,7 @@ final class RequestPageService
         if ($json) {
             $response = json_decode($response, true);
         }
-    
+
         return $response;
     }
 }

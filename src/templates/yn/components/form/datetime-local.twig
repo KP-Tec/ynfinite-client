@@ -4,38 +4,77 @@
 
 	<script>
 		window.addEventListener('load', function () {
-            var startDate, endDate, value;
-			
-			const data = {
-				from: {
-					unit: '{{ field.dateRestrictions.from.unit }}',
-					value: '{{ field.dateRestrictions.from.value }}'
-				},
-				to: {
-					unit: '{{ field.dateRestrictions.to.unit }}',
-					value: '{{ field.dateRestrictions.to.value }}'
-				},
-				value: '{{field.value}}'
-			}
+		var field, field2, startDate, endDate, value, value2;
 
-            var field = document.getElementById('{{field.uid}}');
+		const isBetweenCompare = {% if field.compareOperation == "<==>" %}true{% else %}false{% endif %};
 
-			if(data.from.unit && data.from.value) {
-				startDate = moment().subtract(data.from.value, data.from.unit);
-				field.setAttribute("min", startDate.format('yyyy-MM-DDThh:mm'))
-			}
+		const data = {
+			from: {
+				unit: '{{ field.dateRestrictions.from.unit }}',
+				value: '{{ field.dateRestrictions.from.value }}'
+			},
+			to: {
+				unit: '{{ field.dateRestrictions.to.unit }}',
+				value: '{{ field.dateRestrictions.to.value }}'
+			},
+			value: '{{ field.value }}'
+		}
 
-			if(data.to.unit && data.to.value) {
-				endDate = moment().add(data.to.value, data.to.unit);
-				field.setAttribute("max", endDate.format('yyyy-MM-DDThh:mm'))
+		if(isBetweenCompare) {
+			field = document.getElementById('{{field.uid}}_from');
+			field2 = document.getElementById('{{field.uid}}_to');
+		}
+		else {
+			field = document.getElementById('{{field.uid}}');
+		}
+		
+
+		if (data.from.unit && data.from.value) {
+			startDate = moment().subtract(data.from.value, data.from.unit);
+			field.setAttribute("min", startDate.format('yyyy-MM-DDThh:mm'))
+			if(isBetweenCompare) {	
+				field2.setAttribute("min", startDate.format('yyyy-MM-DDThh:mm'))
 			}
-			
-            if(data.value) {
+		}
+
+		if (data.to.unit && data.to.value) {
+			endDate = moment().add(data.to.value, data.to.unit);
+			field.setAttribute("max", endDate.format('yyyy-MM-DDThh:mm'))
+			if(isBetweenCompare) {	
+				field2.setAttribute("max", endDate.format('yyyy-MM-DDThh:mm'))
+			}
+		}
+
+		if (data.value) {
+			if(isBetweenCompare) {
+				value = moment('{{ field.value[0] }}');
+				field.setAttribute("value", value.format("yyyy-MM-DDThh:mm"))
+
+				value2 = moment('{{ field.value[1] }}');
+				field2.setAttribute("value", value2.format("yyyy-MM-DDThh:mm"))
+			}
+			else {
 				value = moment('{{ field.value }}');
-            	field.setAttribute("value", value.format("yyyy-MM-DDThh:mm"))
+				field.setAttribute("value", value.format("yyyy-MM-DDThh:mm"))
 			}
-        })
+		}
+	})
 	</script>
 
-	<input id="{{field.uid}}" type="{{field.type}}" name="fields[{{field.alias}}]" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+	{% if field.compareOperation == "<==>" %}
+		<div class="yn-form-grid-row">
+			<div class="yn-form-grid-field">
+				{% if field.placeholder %}<small>{{field.placeholder}}</small>{% endif %}
+				<input id="{{field.uid}}_from" type="{{field.type}}" name="fields[{{field.alias}}][]" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>				
+			</div>
+			<div class="yn-form-grid-field">
+				{% if field.placeholder %}<small>{{field.placeholderRange}}</small>{% endif %}
+				<input id="{{field.uid}}_to" type="{{field.type}}" name="fields[{{field.alias}}][]" placeholder="{{field.placeholderRange}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+			</div>
+		</div>
+	{% else %}
+		<input id="{{field.uid}}" type="{{field.type}}" name="fields[{{field.alias}}]" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+	{% endif %}
+
+
 {% endblock field %}
