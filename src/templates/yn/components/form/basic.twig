@@ -1,5 +1,5 @@
 {% if renderWidget != false %}
-	<div class='widget widget--{{field.type}}'>
+	<div class='widget widget--{{field.type}}' data-ynformuid="{{field.uid}}">
 		<label class="widget__label" for="{{field.alias}}">{{field.label}}
 			{% if(field.required) %}
 				<span class="required">*</span>

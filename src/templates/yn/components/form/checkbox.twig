@@ -8,7 +8,7 @@
 	</p>
 	{% for option in field.items %}
 		<div class="widget widget--checkbox">
-			<input type="checkbox" id="{{form._id}}_{{field.alias}}_{{option.value}}" name="fields[{{field.alias}}][]" value="{{option.value}}" {% if field.value == option.value %} checked {% endif %} {% if field.required %} required {% endif %}/>
+			<input type="checkbox" id="{{form._id}}_{{field.alias}}_{{option.value}}" name="fields{{parent}}[{{field.alias}}][]" value="{{option.value}}" {% if field.value == option.value %} checked {% endif %} {% if field.required %} required {% endif %}/>
 			<label class="widget__label" for="{{form._id}}_{{field.alias}}_{{option.value}}">
 				<div class="ynfinite-field-text">{{option.label}}</div>
 			</label>
