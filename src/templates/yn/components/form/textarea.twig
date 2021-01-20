@@ -1,5 +1,5 @@
 {% extends "yn/components/form/basic.twig" %}
 
 {% block field %}
-	<textarea name="fields[{{field.alias}}]" placeholder="{{field.placeholder}}" {% if field.max %} maxlength="{{field.max}}" {% endif %} {% if field.required %} required {% endif %} {{field.attributes|raw}}>{{ field.value|default(addValue) }}</textarea>
+	<textarea name="fields{{parent}}[{{field.alias}}]" placeholder="{{field.placeholder}}" {% if field.max %} maxlength="{{field.max}}" {% endif %} {% if field.required %} required {% endif %} {{field.attributes|raw}}>{{ field.value|default(addValue) }}</textarea>
 {% endblock field %}

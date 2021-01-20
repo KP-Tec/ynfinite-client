@@ -3,7 +3,7 @@
 	{% endif %}
 	{% if field.emptyLabel %}
 		<div class="widget widget--radio">
-			<input type="radio" id="{{form._id}}_{{field.alias}}_empty" name="fields[{{field.alias}}]" value="" {% if field.value == option.value %} checked {% endif %} {% if field.required %} required {% endif %}/>
+			<input type="radio" id="{{form._id}}_{{field.alias}}_empty" name="fields{{parent}}[{{field.alias}}]" value="" {% if field.value == option.value %} checked {% endif %} {% if field.required %} required {% endif %}/>
 			<label class="widget__label" for="{{form._id}}_{{field.alias}}_empty">
 				<div class="ynfinite-field-text">{{field.emptyLabel}}</div>
 			</label>
@@ -11,7 +11,7 @@
 	{% endif %}
 	{% for option in field.items %}
 		<div class="widget widget--radio">
-			<input type="radio" id="{{form._id}}_{{field.alias}}_{{option.value}}" name="fields[{{field.alias}}]" value="{{option.value}}" {% if field.value == option.value %} checked {% endif %} {% if field.required %} required {% endif %}/>
+			<input type="radio" id="{{form._id}}_{{field.alias}}_{{option.value}}" name="fields{{parent}}[{{field.alias}}]" value="{{option.value}}" {% if field.value == option.value %} checked {% endif %} {% if field.required %} required {% endif %}/>
 			<label class="widget__label" for="{{form._id}}_{{field.alias}}_{{option.value}}">
 				<div class="ynfinite-field-text">{{option.label}}</div>
 			</label>

@@ -1,7 +1,7 @@
 {% extends "yn/components/form/basic.twig" %}
 
 {% block field %}
-	<select name="fields[{{field.alias}}]" {% if field.required %} required {% endif %} {{field.attributes|raw}}>
+	<select name="fields{{parent}}[{{field.alias}}]" {% if field.required %} required {% endif %} {{field.attributes|raw}}>
 		{% if field.emptyLabel %}
 			<option value="" {% if field.required %} disabled {% endif %}>{{field.emptyLabel}}</option>
 		{% endif %}
