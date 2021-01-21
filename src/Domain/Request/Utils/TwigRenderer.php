@@ -9,7 +9,6 @@ use Twig\Extra\Intl\IntlExtension;
 use \Twig\Extension\DebugExtension;
 use Cocur\Slugify\Bridge\Twig\SlugifyExtension;
 use Cocur\Slugify\Slugify;
-use UserAgentParser\Provider\WhichBrowser;
 use Psr\Container\ContainerInterface;
 
 use App\Utils\Twig\Tokens\IsCookieActive;
@@ -150,27 +149,37 @@ final class TwigRenderer
 
     private function getBrowserClasses()
     {
-        $provider = new WhichBrowser();
+        $useragent = new \WhichBrowser\Parser($_SERVER['HTTP_USER_AGENT']);
         $uaArray = array();
         try {
 
-            $useragent = $provider->parse($_SERVER['HTTP_USER_AGENT']);
+            // $useragent = $provider->parse($_SERVER['HTTP_USER_AGENT']);
+
+            $browserVersion = "";
+            if($useragent->browser->version) {
+                $browserVersion = $useragent->browser->version->toString();
+            }
+
+            $osVersion = "";
+            if($useragent->os->version) {
+                $osVersion = $useragent->os->version->toString();
+            }
 
             $uaArray = array(
-                $useragent->getBrowser()->getName(),
-                $useragent->getBrowser()->getName() . "-" . $useragent->getBrowser()->getVersion()->getComplete(),
-                $useragent->getRenderingEngine()->getName(),
-                $useragent->getOperatingSystem()->getName(),
-                $useragent->getOperatingSystem()->getName() . $useragent->getOperatingSystem()->getVersion()->getComplete(),
-                $useragent->getDevice()->getType(),
+                $useragent->browser->toString(),
+                $useragent->browser->toString() . "-" . $browserVersion,
+                $useragent->engine->toString(),
+                $useragent->os->toString(),
+                $useragent->os->toString() . $osVersion,
+                $useragent->device->type,
             );
 
-            if ($useragent->getDevice()->getModel()) {
-                $uaArray[] = $useragent->getDevice()->getModel();
+            if ($useragent->device->model) {
+                $uaArray[] = $useragent->device->model;
 
             }
-            if ($useragent->getDevice()->getBrand()) {
-                $uaArray[] = $useragent->getDevice()->getBrand();
+            if ($useragent->device->brand) {
+                $uaArray[] = $useragent->device->brand;
             }
 
         } catch (Exception $e) {

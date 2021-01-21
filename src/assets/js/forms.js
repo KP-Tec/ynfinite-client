@@ -2,7 +2,6 @@ const YnfiniteForms = {
   setup() {
     document.addEventListener("DOMContentLoaded", () => {
       const forms = document.querySelectorAll("[data-ynfiniteform=true]");
-      console.log("FORMS", forms);
 
       forms.forEach((form) => {
         const complexFields = form.querySelectorAll(
@@ -18,8 +17,6 @@ const YnfiniteForms = {
             "#complexField_" + complexField.dataset.ynformuid
           );
 
-          console.log("ROW TEMPLATE", rowTemplate.content);
-
           const dataContainer = complexField.querySelector(
             ".yn-complexForm-data"
           );
@@ -27,7 +24,6 @@ const YnfiniteForms = {
           newAction.addEventListener("click", (e) => {
             e.preventDefault();
             const newRow = rowTemplate.content.cloneNode(true);
-            console.log("Created new row", newRow);
             newRow.className = "yn-complexForm-row";
 
             const deleteButton = newRow.querySelector(
@@ -36,16 +32,12 @@ const YnfiniteForms = {
 
             dataContainer.appendChild(newRow);
 
-            console.log("DLETE BUTTON", deleteButton);
-
             deleteButton.addEventListener("click", (e) => {
               e.preventDefault();
               const row = e.target.closest(".yn-complexForm-row");
               dataContainer.removeChild(row);
             });
           });
-
-          console.log("NEW ACTION", newAction);
         });
       });
     });
