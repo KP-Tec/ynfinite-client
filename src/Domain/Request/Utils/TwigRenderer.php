@@ -2,7 +2,6 @@
 
 namespace App\Domain\Request\Utils;
 
-use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 use Twig\TwigFilter;
 use Twig\Extra\Intl\IntlExtension;
@@ -17,12 +16,15 @@ use App\Utils\Twig\Tokens\IsScriptActive;
 use App\Utils\Twig\TwigUtils;
 use App\Utils\Twig\I18nUtils;
 
+use App\Utils\Twig\FileSystemLoader;
+
 final class TwigRenderer
 {
     public function __construct(ContainerInterface $container) {        
         $this->settings = $container->get("settings");
 
-        $loader = new FilesystemLoader([getcwd(). "/../src/" . $this->settings["ynfinite"]["templateDir"], getcwd() . '/../templates']);
+        // $loader = new FilesystemLoader([getcwd(). "/../src/" . $this->settings["ynfinite"]["templateDir"], getcwd() . '/../templates']);
+        $loader = new FileSystemLoader([getcwd(). "/../src/" . $this->settings["ynfinite"]["templateDir"], getcwd() . '/../templates'], null, boolval($this->settings["ynfinite"]["debugTemplates"]));
         $rootPath = realpath(__DIR__);
 
         // $loader = new ArrayLoader($this->templates);
