@@ -112,5 +112,5 @@ return [
     RequestCacheRepository::class => DI\autowire(),
 
     // Utils
-    TwigRenderer::class => DI\autowire()
+    TwigRenderer::class => DI\autowire(),
 ];

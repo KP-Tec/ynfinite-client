@@ -113,6 +113,7 @@ final class CurlHandler
         if(count($this->uploadFiles) > 0) {
             foreach($this->uploadFiles["tmp_name"] as $key => $value) {
                 if($value) {
+                    $formData["formData"]["fields"][$key] = $this->uploadFiles["name"][$key];
                     $finalData[$key] = curl_file_create($value, mime_content_type($value));
                 }
             }

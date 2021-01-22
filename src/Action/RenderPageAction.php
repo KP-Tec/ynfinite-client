@@ -22,7 +22,6 @@ final class RenderPageAction
         ServerRequestInterface $request, 
         ResponseInterface $response
     ): ResponseInterface {
-        error_log("FAIL");
         try {
             $data = $this->requestPageService->getPage($request);
 

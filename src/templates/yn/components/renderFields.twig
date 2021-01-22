@@ -1,8 +1,12 @@
-{% for row in fieldGrid %}
-	<div class="yn-form-grid-row">
-		{% for field in row %}
-			<div class="yn-form-grid-field yn-form-grid-field-{{field['grid']['w']}}">
-				{{ _yfunc("formField", field) }}
+{% for group in groups %}
+	<div class="yn-form-page" data-ynformpagelabel="{{group.label}}">
+		{% for row in group["fields"] %}
+			<div class="yn-form-grid-row">
+				{% for field in row %}
+					<div class="yn-form-grid-field yn-form-grid-field-{{field['grid']['w']}}">
+						{{ _yfunc("formField", field, true, addValues[field.alias], parent) }}
+					</div>
+				{% endfor %}
 			</div>
 		{% endfor %}
 	</div>

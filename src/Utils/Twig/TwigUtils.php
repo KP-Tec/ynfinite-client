@@ -39,8 +39,10 @@ class TwigUtils
       "form:fields.email" => "yn/components/form/email.twig",
       "form:fields.password" => "yn/components/form/password.twig",
       "form:fields.file" => "yn/components/form/file.twig",
+      "form:fields.complexFormField" => "yn/components/form/complexFormField.twig",
       "form:fields.hidden" => "yn/components/form/hidden.twig",
       "form:fields.spacer" => "yn/components/form/spacer.twig",
+      "form:fields.description" => "yn/components/form/description.twig",
       "form:fields.basic" => "yn/components/form/basic.twig"
     );
   }
@@ -101,50 +103,66 @@ class TwigUtils
     return $this->twig->render($this->getTemplate("form:form"), array("form" => $form, "section" => $section, "templates" => $this->templates));
   }
 
-  public function renderFields($form, $section = array(), $addValues = array()) {
+  public function renderFields($form, $section = array(), $addValues = array(), $parent = "") {
     $this->currentForm = $form;
-    $fields = array();
-
-    $currentY = -1;
-    $fieldGrid = array();
     
+    $groups = array();
+
+        
     $hiddenFields = array();
 
-    $currentRow = array();
+    foreach($form["groups"] as $key => $group){
+      $groups[$key] = array("label" => $group["label"]);
 
-    foreach($form["fields"] as $field){
-      $grid = $field["grid"];
-      
-      if($field["type"] === "hidden") {
-        $hiddenFields[] = $field;
-      } 
-      else {
-        if(!is_array($fieldGrid[$grid["y"]])) {
-          $fieldGrid[$grid["y"]] = array();
+      $groupFields = array_filter($form["fields"], function ($field) use($group) {
+        return in_array($field["_id"], $group["fields"]);
+      });
+
+      $fieldGrid = array();
+      $currentRow = array();
+      $currentY = -1;
+
+      foreach($groupFields as $field){
+        $grid = $field["grid"];
+        
+        if($field["type"] === "hidden") {
+          $hiddenFields[] = $field;
+        } 
+        else {
+          if(!is_array($fieldGrid[$grid["y"]])) {
+            $fieldGrid[$grid["y"]] = array();
+          }
+          $fieldGrid[$grid["y"]][$grid["x"]] = $field;
+          ksort($fieldGrid[$grid["y"]]);
         }
-        $fieldGrid[$grid["y"]][$grid["x"]] = $field;
-        ksort($fieldGrid[$grid["y"]]);
       }
+    
+      ksort($fieldGrid);
+    
+      $groups[$key]["fields"] = $fieldGrid;
     }
 
-    ksort($fieldGrid);
-
-    return $this->twig->render("yn/components/renderFields.twig", array("form" => $form, "fieldGrid" => $fieldGrid, "hiddenFields" => $hiddenFields, "section" => $section, "templates" => $this->templates, "addValues" => $addValues));
+    return $this->twig->render("yn/components/renderFields.twig", array("form" => $form, "groups" => $groups, "parent" => $parent, "hiddenFields" => $hiddenFields, "section" => $section, "templates" => $this->templates, "addValues" => $addValues));
   }
 
   public function printCookieSettingsButton() {
     return $this->twig->render("yn/module/consentManager/settingsButton.twig");
   }
 
-  public function formField($formField, $renderWidget = true, $valueOverride = "") {
+  public function formField($formField, $renderWidget = true, $valueOverride = "", $parent = "") {
     
+    if($parent) {
+      $parent = "[".$parent."][]";
+    }
+
+
     $template = $this->getTemplate("form:fields.".$formField["type"]);
     if(!$template) {
       var_dump("form:fields.".$formField["type"]);
       return "<p>Error</p>";
     }
     else {
-      return $this->twig->render($template, array("field"=> $formField, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
+      return $this->twig->render($template, array("field"=> $formField, "parent" => $parent, "renderWidget" => $renderWidget, "form" => $this->currentForm, "addValue" => $valueOverride));
     }
   }
 

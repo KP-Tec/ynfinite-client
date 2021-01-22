@@ -170,7 +170,7 @@ class i18n {
 				mkdir($this->cachePath, 0755, true);
 
             if (file_put_contents($this->cacheFilePath, $compiled) === FALSE) {
-                throw new Exception("Could not write cache file to path '" . $this->cacheFilePath . "'. Is it writable?");
+                throw new \Exception("Could not write cache file to path '" . $this->cacheFilePath . "'. Is it writable?");
             }
             chmod($this->cacheFilePath, 0755);
 

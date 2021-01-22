@@ -15,7 +15,13 @@ if (getenv('DEV') !== "false") {
 }
 
 
+function toBoolean($value) {
+    if(!$value || $value === "false") return false;
+    return true;
+}
+
 return [
+    "debugTemplates" => toBoolean(getenv("DEBUG_TEMPLATES")),
     'installPassword' => getenv('YN_INSTALL_PASSWORD'),
     'pageTypes' => array("html", "htm"),
     "db" => array(

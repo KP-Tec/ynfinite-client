@@ -1,5 +1,5 @@
 {% extends "yn/components/form/basic.twig" %}
 
 {% block field %}
-	<input type="{{field.type}}" name="fields[{{field.alias}}]" {%if field.multiple %} multiple {% endif %} {%if field.accept %} accept="{{field.accept}}" {% endif %} {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+	<input type="{{field.type}}" name="fields{{parent}}[{{field.alias}}]" {%if field.multiple %} multiple {% endif %} {%if field.accept %} accept="{{field.accept}}" {% endif %} {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
 {% endblock field %}
