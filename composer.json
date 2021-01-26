@@ -29,7 +29,7 @@
     "twig/intl-extra": "3.0",
     "twig/twig": "3.0",
     "vlucas/phpdotenv": "3.6.3",
-    "whichbrowser/parser": "2.0"
+    "whichbrowser/parser": "^2.0"
   },
   "autoload": {
     "psr-4": {
