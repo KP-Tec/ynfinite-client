@@ -152,7 +152,7 @@ class TwigUtils
   public function formField($formField, $renderWidget = true, $valueOverride = "", $parent = "") {
     
     if($parent) {
-      $parent = "[".$parent."][]";
+      $parent = "[".$parent."][::count::]";
     }
 
 

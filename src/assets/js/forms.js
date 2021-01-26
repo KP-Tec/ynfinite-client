@@ -30,6 +30,16 @@ const YnfiniteForms = {
               ".yn-complexFormActions-delete"
             );
 
+            const fields = newRow.querySelectorAll("[data-ynfield=true]");
+            console.log("FIELDS IN ROW", fields);
+
+            fields.forEach((f) => {
+              f.setAttribute(
+                "name",
+                f.name.replace("::count::", dataContainer.childElementCount)
+              );
+            });
+
             dataContainer.appendChild(newRow);
 
             deleteButton.addEventListener("click", (e) => {
