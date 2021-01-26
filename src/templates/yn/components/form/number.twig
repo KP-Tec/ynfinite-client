@@ -4,14 +4,14 @@
 	{% if field.compareOperation == "<==>" %}
 		<div class="yn-form-grid-row">
 			<div class="yn-form-grid-field">
-				<input type="{{field.type}}" name="fields{{parent}}[{{field.alias}}][]" {% if field.min %} min="{{field.min}}" {% endif %} {% if field.max %} max="{{field.max}}" {% endif %} {% if field.step %} step="{{field.step}}" {% endif %} value="{{field.value[0]|default(addValue)}}" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+				<input data-ynfield="true" type="{{field.type}}" name="fields{{parent}}[{{field.alias}}][]" {% if field.min %} min="{{field.min}}" {% endif %} {% if field.max %} max="{{field.max}}" {% endif %} {% if field.step %} step="{{field.step}}" {% endif %} value="{{field.value[0]|default(addValue)}}" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
 			</div>
 			<div class="yn-form-grid-field">
-				<input type="{{field.type}}" name="fields{{parent}}[{{field.alias}}][]" {% if field.min %} min="{{field.min}}" {% endif %} {% if field.max %} max="{{field.max}}" {% endif %} {% if field.step %} step="{{field.step}}" {% endif %} value="{{field.value[1]|default(addValue)}}" placeholder="{{field.placeholderRange}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+				<input data-ynfield="true" type="{{field.type}}" name="fields{{parent}}[{{field.alias}}][]" {% if field.min %} min="{{field.min}}" {% endif %} {% if field.max %} max="{{field.max}}" {% endif %} {% if field.step %} step="{{field.step}}" {% endif %} value="{{field.value[1]|default(addValue)}}" placeholder="{{field.placeholderRange}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
 			</div>
 		</div>
 	{% else %}
-		<input type="{{field.type}}" name="fields{{parent}}[{{field.alias}}]" {% if field.min %} min="{{field.min}}" {% endif %} {% if field.max %} max="{{field.max}}" {% endif %} {% if field.step %} step="{{field.step}}" {% endif %} value="{{field.value|default(addValue)}}" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+		<input data-ynfield="true" type="{{field.type}}" name="fields{{parent}}[{{field.alias}}]" {% if field.min %} min="{{field.min}}" {% endif %} {% if field.max %} max="{{field.max}}" {% endif %} {% if field.step %} step="{{field.step}}" {% endif %} value="{{field.value|default(addValue)}}" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
 	{% endif %}
 
 {% endblock field %}
