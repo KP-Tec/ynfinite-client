@@ -63,11 +63,7 @@ function ausCustomPost($url, $post_info="", $refer="")
 
         $result=curl_exec($ch);
 
-            var_dump($result);
-
         $curl_error=curl_error($ch); //returns a human readable error (if any)
-        
-        var_dump($curl_error);
         
         curl_close($ch);
 

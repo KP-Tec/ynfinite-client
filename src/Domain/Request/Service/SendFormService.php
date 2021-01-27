@@ -69,7 +69,7 @@ final class SendFormService
             if (is_array($value)) {
                 $result[$key] = $this->encodeUrl($value);
             } else {
-                $result[$key] = urlencode($value);
+                $result[$key] = rawurlencode($value);
             }
         }
 
