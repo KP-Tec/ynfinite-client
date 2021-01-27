@@ -27,7 +27,7 @@ const YnfiniteForms = {
             newRow.className = "yn-complexForm-row";
 
             const deleteButton = newRow.querySelector(
-              ".yn-complexFormActions-delete"
+              ".yn-complexForm-actions-delete"
             );
 
             const fields = newRow.querySelectorAll("[data-ynfield=true]");
