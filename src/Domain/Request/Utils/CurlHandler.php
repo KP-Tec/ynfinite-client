@@ -118,8 +118,6 @@ final class CurlHandler
                 }
             }
         }
-       
-        var_dump($formData["formData"]);
 
         $finalData["formData"] = json_encode($formData["formData"], JSON_UNESCAPED_UNICODE);
 
