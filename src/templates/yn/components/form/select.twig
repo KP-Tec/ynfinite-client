@@ -6,7 +6,7 @@
 			<option value="" {% if field.required %} disabled {% endif %}>{{field.emptyLabel}}</option>
 		{% endif %}
 		{% for option in field.items %}
-			<option value={{option.value}} {% if field.value == option.value %} selected {% endif %}>{{option.label}}</option>
+			<option value="{{option.value}}" {% if field.value == option.value %} selected {% endif %}>{{option.label}}</option>
 		{% endfor %}
 	</select>
 {% endblock field %}
