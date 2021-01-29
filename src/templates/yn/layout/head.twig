@@ -33,7 +33,7 @@
 
 <meta property="og:type" content="{{_ynfinite.content.setting.opengraph.type|default("website")}}">
 
-{% set ogImage = _ynfinite.content.settings.opengraph.images[0]|default(null)l %}
+{% set ogImage = _ynfinite.content.settings.opengraph.images[0]|default(null) %}
 {% if ogImage is not null %}
 	<meta property="og:image"  content="{{ ogImage.path }}?w=1200&h=630">
 	<meta name="twitter:image" content="{{ ogImage.path }}?w=1200&h=630">
