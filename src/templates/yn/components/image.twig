@@ -1,14 +1,10 @@
-<img src="{{src}}"
-    {% if srcset %}
-      srcset="{{srcset}}" 
-    {% endif %} 
-    {% if image.metadata.title %}
-      title="{{image.metadata.title}}" 
-    {% endif %}
-    
-    alt="{{image.metadata.alt|default(image.metadata.filename|default(image.name))}}{% if image.metadata.author %} &copy;{{image.metadata.author}}{% endif %}"
-    
-    {% if classes %}
-      class="{{classes}}"
-    {% endif %}
-/>
+<img data-src="{{ src }}"
+	{%- if srcset %}
+		data-srcset="{{ srcset }}"
+	{% endif -%}
+	{%- if image.metadata.title %}
+		title="{{ image.metadata.title }}"
+	{% endif -%}
+	alt="{{ image.metadata.alt|default(image.metadata.filename|default(image.name)) }}{% if image.metadata.author %} &copy;{{ image.metadata.author }}{% endif %}"
+	class="lazyload {{ classes }}"
+>

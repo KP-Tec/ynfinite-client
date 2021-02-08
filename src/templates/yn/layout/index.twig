@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html lang="de">
 	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<meta name="theme-color" content="#fff">
 		{% block head %}
 			{% include 'yn/layout/head.twig' %}
 		{% endblock %}
-		<link href="/assets/vendor/ypsolution/css/main.css" rel="stylesheet"/>
-
+		<link href="/assets/vendor/ypsolution/css/main.css" rel="stylesheet">
 	</head>
-	<body class="{{_ynfinite.page.css_classes}} {{useragent}}" id="{{_ynfinite.page.css_id}}">
 
+	<body class="{{_ynfinite.page.css_classes}} {{useragent}}" id="{{_ynfinite.page.css_id}}">
 		{% if templateList['header'] %}
 			{% block header %}
 				{{ include(templateList['header'], {template: _templates["header"]}) }}
@@ -20,11 +15,9 @@
 		{% endif %}
 
 		{% block body %}
-
 			{% for section in _ynfinite.sections %}
 				{{ include(templateList[section.template], {section: section, template: _templates[section.template]}) }}
 			{% endfor %}
-
 		{% endblock body %}
 
 		{% if templateList["footer"] %}
@@ -35,12 +28,11 @@
 
 		{% block footer_scripts %}
 			<script language="javascript" type="text/javascript" src="/assets/vendor/ypsolution/js/app.min.js"></script>
-		
+
 			{% isScriptActive "form:dates" %}
 				<script language="javascript" type="text/javascript" src="/assets/vendor/ypsolution/js/moment.min.js"></script>
 			{% endIsScriptActive %}
 		{% endblock footer_scripts %}
-
 
 		{% block cookies %}
 			{% if _ynfinite.cookies.config.active %}

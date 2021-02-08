@@ -23,6 +23,8 @@ final class RenderPageService
 
     public function render($templates, $data) {
 
+        $this->twig->initializeFileLoader($data);
+        
         $renderedPage = $this->twig->render($data, $templates);
 
         if(filter_var($this->settings["static_pages"], FILTER_VALIDATE_BOOLEAN) === true) {
