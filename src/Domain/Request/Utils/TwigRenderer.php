@@ -20,11 +20,27 @@ use App\Utils\Twig\FileSystemLoader;
 
 final class TwigRenderer
 {
-    public function __construct(ContainerInterface $container) {        
-        $this->settings = $container->get("settings");
+    private $container;
 
-        // $loader = new FilesystemLoader([getcwd(). "/../src/" . $this->settings["ynfinite"]["templateDir"], getcwd() . '/../templates']);
-        $loader = new FileSystemLoader([getcwd(). "/../src/" . $this->settings["ynfinite"]["templateDir"], getcwd() . '/../templates'], null, boolval($this->settings["ynfinite"]["debugTemplates"]));
+    public function __construct(ContainerInterface $container) {        
+        $this->container = $container;
+    }
+
+    public function initializeFileLoader($data) {
+        $this->settings = $this->container->get("settings");
+
+        $templateFolders = array();
+
+        $templateFolders[] = getcwd(). "/../src/" . $this->settings["ynfinite"]["templateDir"];
+        $templateFolders[] = getcwd() . '/../templates/';
+        $templateFolders[] = getcwd() . '/../templates/' . $data["theme"]["namespace"];
+
+        $addNamespaces = explode(",", $data["theme"]["additionalNamespaces"]);
+        foreach($addNamespaces as $addNamespace) {
+            $templateFolders[] = getcwd() . '/../templates/' . $addNamespace;
+        }
+
+        $loader = new FileSystemLoader($templateFolders, null, boolval($this->settings["ynfinite"]["debugTemplates"]));
         $rootPath = realpath(__DIR__);
 
         // $loader = new ArrayLoader($this->templates);
@@ -122,28 +138,39 @@ final class TwigRenderer
     }
 
     private function generateTemplateOverridesList() {
-        $namespace = $this->data["theme"]["namespace"];
-        if(file_exists(getcwd() . "/../" . $this->settings["ynfinite"]["templateDir"] . "/" . $namespace . "/tplConfig.php")) {
-            include(getcwd() . "/../" . $this->settings["ynfinite"]["templateDir"] . "/" . $namespace . "/tplConfig.php");
-            foreach($yn_templateOverrides as $key => $value) {
-                $yn_templateOverrides[$key] = $namespace . "/" . $value; 
-            }
-            return $yn_templateOverrides;
+        
+        $overridePathes = array();
+        $addOverrides = explode(",", $this->data["theme"]["additionalNamespaces"]);
+        
+        forEach( $addOverrides as $override) {
+            $overridePathes[] = getcwd() . "/../" . $this->settings["ynfinite"]["templateDir"] . "/" . $override . "/tplConfig.php";
         }
-        return array();
+        $overridePathes[] = getcwd() . "/../" . $this->settings["ynfinite"]["templateDir"] . "/" . $this->data["theme"]["namespace"] . "/tplConfig.php";
+        
+        $finalOverrides = array();
+        forEach($overridePathes as $path) {
+            if(file_exists($path)) {
+                include($path);
+                foreach($yn_templateOverrides as $key => $value) {
+                    $finalOverrides[$key] = $value; 
+                }
+            }
+        }
+        
+        return $finalOverrides;
     }
 
     private function generateTemplateList()
     {
         $templateArray = array();
 
-        $namespace = $this->data["theme"]["namespace"];
+        // $namespace = $this->data["theme"]["namespace"];
 
         foreach ($this->templates as $key => $template) {
             if(!$template["alias"]) {
                 throw new \Exception("Template ".$template["frontend"]." is missing");
             }
-            $templateArray[$template["frontend"]] = $namespace . "/" . $template["alias"] . ".twig";
+            $templateArray[$template["frontend"]] = $template["alias"] . ".twig";
         }
 
         return $templateArray;

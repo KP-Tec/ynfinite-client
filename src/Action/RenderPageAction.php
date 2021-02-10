@@ -25,6 +25,7 @@ final class RenderPageAction
         try {
             $data = $this->requestPageService->getPage($request);
 
+            
             if (is_array($data)) {
                 $renderedTemplate = $this->renderPageService->render($data["templates"], $data["data"]);
                 $response->getBody()->write($renderedTemplate);
