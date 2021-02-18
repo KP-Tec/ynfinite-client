@@ -13,3 +13,4 @@ ynfinite-client.iml
 /.history
 /.env
 /src/assets/node_modules
+.DS_STORE

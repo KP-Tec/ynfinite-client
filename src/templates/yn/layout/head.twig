@@ -1,6 +1,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title|default('Brycks') }}</title>
+
+<title>{{ _ynfinite.content.settings.seo.title|default(_ynfinite.page.meta.title) }}</title>
 
 {% set favicon = _ynfinite.site.meta.favicon[0]|default(null) %}
 {% if favicon is not null %}
@@ -33,9 +34,11 @@
 
 <meta property="og:type" content="{{_ynfinite.content.setting.opengraph.type|default("website")}}">
 
-{% if _ynfinite.content.settings.opengraph.images %}
-	<meta property="og:image" content="{{_ynfinite.content.settings.opengraph.images[0].path}}">
-	<meta name="twitter:image" content="{{_ynfinite.content.settings.opengraph.images[0].path}}">
+{% set ogImage = _ynfinite.content.settings.opengraph.images[0]|default(null) %}
+{% if ogImage is not null %}
+	<meta property="og:image"  content="{{ ogImage.path }}?w=1200&h=630">
+	<meta name="twitter:image" content="{{ ogImage.path }}?w=1200&h=630">
+	<meta name="twitter:image:alt" content="{{ ogImage.metadata.alt }}">
 {% endif %}
 
 <meta property="og:url" content="{{_ynfinite.currentDomain}}{{urlData.cleanURL}}">
