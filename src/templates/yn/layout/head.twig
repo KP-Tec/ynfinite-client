@@ -1,8 +1,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>{{ _ynfinite.content.settings.seo.title|default(_ynfinite.page.meta.title) }}</title>
 
-{% set favicon = _ynfinite.site.meta.favicon[0] %}
+{% set favicon = _ynfinite.site.meta.favicon[0]|default(null) %}
 {% if favicon is not null %}
 	<link rel="icon" type="{{ favicon.file_type }}" sizes="192x192" href="{{ favicon.path }}?w=192&h=192">
 	<link rel="icon" type="{{ favicon.file_type }}" sizes="32x32" href="{{ favicon.path }}?w=32&h=32">
