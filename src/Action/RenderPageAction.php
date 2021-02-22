@@ -25,7 +25,6 @@ final class RenderPageAction
         try {
             $data = $this->requestPageService->getPage($request);
 
-            
             if (is_array($data)) {
                 $renderedTemplate = $this->renderPageService->render($data["templates"], $data["data"]);
                 $response->getBody()->write($renderedTemplate);
@@ -36,7 +35,7 @@ final class RenderPageAction
         catch (YnfiniteException $e) {
             return $this->handleException($e, $response);
         }
-
+        
         return $response;
     }
 
