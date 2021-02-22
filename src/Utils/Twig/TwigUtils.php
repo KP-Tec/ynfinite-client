@@ -18,6 +18,11 @@ class TwigUtils
 
 
     $this->standardTemplates = array(
+      "article:article" => "yn/components/article.twig",
+      "article:headline" => "yn/components/article/headline.twig",
+      "article:text" => "yn/components/article/text.twig",
+      "article:images" => "yn/components/article/images.twig",
+      "article:video" => "yn/components/article/video.twig",
       "images:image" => "yn/components/image.twig",
       "images:figure" => "yn/components/figure.twig",
       "form:form" => "yn/components/form.twig",
@@ -101,6 +106,14 @@ class TwigUtils
   public function form($form, $section = array()) {
     $this->currentForm = $form;
     return $this->twig->render($this->getTemplate("form:form"), array("form" => $form, "section" => $section, "templates" => $this->templates));
+  }
+
+  public function renderArticle($article) {
+    return $this->twig->render($this->getTemplate("article:article"), array("article" => $article));
+  }
+
+  public function renderArticleComponent($component) {
+    return $this->twig->render($this->getTemplate("article:".$component["type"]), array("component" => $component));
   }
 
   public function renderFields($form, $section = array(), $addValues = array(), $parent = "") {

@@ -1,0 +1,7 @@
+<div class="yn-article">
+	{% for component in article %}
+		{% if component.config.published %}
+			{{_yfunc("renderArticleComponent", component)}}
+		{% endif %}
+	{% endfor %}
+</div>
