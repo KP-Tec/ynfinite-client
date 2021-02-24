@@ -14,12 +14,6 @@ if (getenv('DEV') !== "false") {
     $fileservice_port = 3333;
 }
 
-
-function toBoolean($value) {
-    if(!$value || $value === "false") return false;
-    return true;
-}
-
 return [
     "debugTemplates" => toBoolean(getenv("DEBUG_TEMPLATES")),
     'installPassword' => getenv('YN_INSTALL_PASSWORD'),
