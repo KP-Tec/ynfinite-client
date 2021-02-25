@@ -1,12 +1,13 @@
 .yn-article {
 	margin-bottom: 1rem;
-	.component-video {
+
+	// video
+	&__video {
 		position: relative;
 		padding-bottom: 56.25%;
 		padding-top: 0;
 		height: 0;
 		overflow: hidden;
-
 		margin-bottom: 1rem;
 
 		iframe {
@@ -18,15 +19,14 @@
 		}
 	}
 
-	.component-images {
+	// images
+	&__images {
 		margin-bottom: 1rem;
-
-		figure {
-			img {
-				max-width: 100%;
-			}
-		}
+		img {max-width: 100%;}
 	}
+
+	// text
+	// &__text {}
 
 	& > *:last-child {
 		margin-bottom: 0;
