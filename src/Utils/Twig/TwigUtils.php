@@ -61,10 +61,31 @@ class TwigUtils
     return $template;
   }
 
-  private function getSizes($image, $sizes) {
+  private function getSizes($image, $conf) {
     $srcset = array();
     $src = '';
     
+    $sizeConfig = array();
+
+    if($conf["sizes"]) {
+      $sizeConfig = $conf;
+      $sizes = $conf["sizes"];
+    }
+    else {
+      $sizes = $conf;
+    }
+
+    if(count($sizes) === 0) {
+      $defaultSizesIndex = array_search("true", array_column($this->data["images"], 'isDefault'));
+      
+      if($defaultSizesIndex >= 0) {
+        $keys = array_keys($this->data["images"]);
+        $sizeConfig = $this->data["images"][$keys[$defaultSizesIndex]];
+        $sizes = $sizeConfig["sizes"];
+      }
+    }
+
+
     forEach($sizes as $size) {
     
       $path = $image["path"];
@@ -76,6 +97,9 @@ class TwigUtils
       if ($size["h"]) {
         $attrArray[] = ("h=".$size['h']);
       }
+      if($sizeConfig["disableWebp"] === true) {
+        $attrArray[] = ("disableWebp=1");
+      }
       $path .= "?".implode("&", $attrArray);
 
       if ($size["screenSize"]) {
@@ -86,7 +110,7 @@ class TwigUtils
     }
 
     if (!$src) {
-      $src = $image["path"];;
+      $src = $image["path"];
     }
 
     return array("src" => $src, "srcset" => implode(",", $srcset));
