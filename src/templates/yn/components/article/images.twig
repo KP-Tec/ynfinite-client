@@ -1,5 +1,9 @@
-<div class="component-images">
+<div class="yn-article__images">
 	{% for image in component.value %}
-		<figure><img src="{{image.path}}" alt="{{image.metadata.alt}}"/></figure>
+		{% set caption = image.metadata.description|default(null) %}
+		<figure>
+			<img data-src="{{ image.path }}" class="lazyload" alt="{{ image.metadata.alt }}">
+			{% if caption is not null %}<figcaption>{{ caption }}</figcaption>{% endif %}
+		</figure>
 	{% endfor %}
 </div>
