@@ -36,8 +36,8 @@
 
 {% set ogImage = _ynfinite.content.settings.opengraph.images[0]|default(null) %}
 {% if ogImage is not null %}
-	<meta property="og:image"  content="{{ ogImage.path }}?w=1200&h=630">
-	<meta name="twitter:image" content="{{ ogImage.path }}?w=1200&h=630">
+	<meta property="og:image"  content="{{ ogImage.path }}?w=1200&h=630&disableWebp=1">
+	<meta name="twitter:image" content="{{ ogImage.path }}?w=1200&h=630&disableWebp=1">
 	<meta name="twitter:image:alt" content="{{ ogImage.metadata.alt }}">
 {% endif %}
 
