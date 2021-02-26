@@ -1,7 +1,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>{{ _ynfinite.content.settings.seo.title|default(_ynfinite.page.meta.title) }}</title>
+<title>{{ _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title|default('Title') }}</title>
 
 {% set favicon = _ynfinite.site.meta.favicon[0]|default(null) %}
 {% if favicon is not null %}
@@ -36,7 +35,7 @@
 
 {% set ogImage = _ynfinite.content.settings.opengraph.images[0]|default(null) %}
 {% if ogImage is not null %}
-	<meta property="og:image"  content="{{ ogImage.path }}?w=1200&h=630&disableWebp=1">
+	<meta property="og:image" content="{{ ogImage.path }}?w=1200&h=630&disableWebp=1">
 	<meta name="twitter:image" content="{{ ogImage.path }}?w=1200&h=630&disableWebp=1">
 	<meta name="twitter:image:alt" content="{{ ogImage.metadata.alt }}">
 {% endif %}
