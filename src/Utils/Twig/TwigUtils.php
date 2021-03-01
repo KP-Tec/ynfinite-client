@@ -68,8 +68,6 @@ class TwigUtils
     $sizeConfig = array();
 
     if(!is_array($confAlias)) {
-      var_dump("FINDING", $confAlias);
-      var_dump($this->data["images"][$confAlias]);
       $sizeConfig = $this->data["images"][$confAlias];
       $sizes = $sizeConfig["sizes"];
     }
@@ -138,7 +136,7 @@ class TwigUtils
     return $this->twig->render($this->getTemplate("article:article"), array("article" => $article, "imageConfigAlias" => $imageConfigAlias));
   }
 
-  public function renderArticleComponent($component, $imageConfigAlias) {
+  public function renderArticleComponent($component, $imageConfigAlias = array()) {
     return $this->twig->render($this->getTemplate("article:".$component["type"]), array("component" => $component, "imageConfigAlias" => $imageConfigAlias));
   }
 
