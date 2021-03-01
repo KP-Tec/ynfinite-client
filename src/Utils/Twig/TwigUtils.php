@@ -134,7 +134,7 @@ class TwigUtils
     return $this->twig->render($this->getTemplate("form:form"), array("form" => $form, "section" => $section, "templates" => $this->templates));
   }
 
-  public function renderArticle($article, $imageConfigAlias) {
+  public function renderArticle($article, $imageConfigAlias = array()) {
     return $this->twig->render($this->getTemplate("article:article"), array("article" => $article, "imageConfigAlias" => $imageConfigAlias));
   }
 
