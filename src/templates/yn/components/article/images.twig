@@ -1,9 +1,5 @@
 <div class="yn-article__images">
 	{% for image in component.value %}
-		{% set caption = image.metadata.description|default(null) %}
-		<figure>
-			<img data-src="{{ image.path }}" class="lazyload" alt="{{ image.metadata.alt }}">
-			{% if caption is not null %}<figcaption>{{ caption }}</figcaption>{% endif %}
-		</figure>
+		{{ _yfunc("printFigure", image, imageConfigAlias) }}
 	{% endfor %}
 </div>

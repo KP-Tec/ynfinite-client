@@ -61,7 +61,7 @@ class TwigUtils
     return $template;
   }
 
-  private function getSizes($image, $conf) {
+  private function getSizes($image, $confAlias) {
     $srcset = array();
     $src = '';
     
@@ -72,7 +72,7 @@ class TwigUtils
       $sizes = $conf["sizes"];
     }
     else {
-      $sizes = $conf;
+      $sizes = $data["images"][$confAlias];
     }
 
     if(count($sizes) === 0) {
@@ -132,12 +132,12 @@ class TwigUtils
     return $this->twig->render($this->getTemplate("form:form"), array("form" => $form, "section" => $section, "templates" => $this->templates));
   }
 
-  public function renderArticle($article) {
-    return $this->twig->render($this->getTemplate("article:article"), array("article" => $article));
+  public function renderArticle($article, $imageConfigAlias) {
+    return $this->twig->render($this->getTemplate("article:article"), array("article" => $article, "imageConfigAlias" => $imageConfigAlias));
   }
 
-  public function renderArticleComponent($component) {
-    return $this->twig->render($this->getTemplate("article:".$component["type"]), array("component" => $component));
+  public function renderArticleComponent($component, $imageConfigAlias) {
+    return $this->twig->render($this->getTemplate("article:".$component["type"]), array("component" => $component, "imageConfigAlias" => $imageConfigAlias));
   }
 
   public function renderFields($form, $section = array(), $addValues = array(), $parent = "") {
