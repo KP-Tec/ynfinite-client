@@ -80,7 +80,7 @@ class TwigUtils
     if(count($sizes) === 0) {
       $defaultSizesIndex = array_search("true", array_column($this->data["images"], 'isDefault'));
       
-      if($defaultSizesIndex >= 0) {
+      if($defaultSizesIndex !== false) {
         $keys = array_keys($this->data["images"]);
         $sizeConfig = $this->data["images"][$keys[$defaultSizesIndex]];
         $sizes = $sizeConfig["sizes"];
