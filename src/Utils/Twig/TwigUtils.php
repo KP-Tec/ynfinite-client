@@ -49,7 +49,8 @@ class TwigUtils
       "form:fields.spacer" => "yn/components/form/spacer.twig",
       "form:fields.description" => "yn/components/form/description.twig",
       "form:fields.basic" => "yn/components/form/basic.twig",
-      "listing:pagination" => "yn/components/pagination.twig"
+      "listing:pagination" => "yn/components/pagination.twig",
+      "listing:perPageDropdown" => "yn/components/perPageDropdown.twig"
     );
   }
 
@@ -213,8 +214,8 @@ class TwigUtils
   }
 
   public function perPageDropdown() {
-    return $this->twig->render("yn/components/perPageDropdown.twig", array("uriData" => $this->uriData));
-   }
+	return $this->twig->render($this->getTemplate("listing:perPageDropdown"), array("uriData" => $this->uriData));
+  }
 
   public function linkPage($pageSlug, $slug = '')
   {
