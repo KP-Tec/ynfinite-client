@@ -1,4 +1,4 @@
-{% set seoTitle = _ynfinite.content.settings.seo.title|default(_ynfinite.page.meta.title) %}
+{% set seoTitle = _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title|default(_ynfinite.site.meta.title) %}
 {% set seoDescription = _ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.description) %}
 {% set seoKeywords = _ynfinite.content.settings.seo.keywords|default(_ynfinite.page.meta.keywords) %}
 
