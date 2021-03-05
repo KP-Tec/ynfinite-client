@@ -48,7 +48,9 @@ class TwigUtils
       "form:fields.hidden" => "yn/components/form/hidden.twig",
       "form:fields.spacer" => "yn/components/form/spacer.twig",
       "form:fields.description" => "yn/components/form/description.twig",
-      "form:fields.basic" => "yn/components/form/basic.twig"
+      "form:fields.basic" => "yn/components/form/basic.twig",
+      "listing:pagination" => "yn/components/pagination.twig",
+      "listing:perPageDropdown" => "yn/components/perPageDropdown.twig"
     );
   }
 
@@ -61,24 +63,24 @@ class TwigUtils
     return $template;
   }
 
-  private function getSizes($image, $conf) {
+  private function getSizes($image, $confAlias) {
     $srcset = array();
     $src = '';
     
     $sizeConfig = array();
 
-    if($conf["sizes"]) {
-      $sizeConfig = $conf;
-      $sizes = $conf["sizes"];
+    if(!is_array($confAlias)) {
+      $sizeConfig = $this->data["images"][$confAlias];
+      $sizes = $sizeConfig["sizes"];
     }
     else {
-      $sizes = $conf;
+      $sizes = $confAlias;
     }
 
     if(count($sizes) === 0) {
       $defaultSizesIndex = array_search("true", array_column($this->data["images"], 'isDefault'));
       
-      if($defaultSizesIndex >= 0) {
+      if($defaultSizesIndex !== false) {
         $keys = array_keys($this->data["images"]);
         $sizeConfig = $this->data["images"][$keys[$defaultSizesIndex]];
         $sizes = $sizeConfig["sizes"];
@@ -132,12 +134,12 @@ class TwigUtils
     return $this->twig->render($this->getTemplate("form:form"), array("form" => $form, "section" => $section, "templates" => $this->templates));
   }
 
-  public function renderArticle($article) {
-    return $this->twig->render($this->getTemplate("article:article"), array("article" => $article));
+  public function renderArticle($article, $imageConfigAlias = array()) {
+    return $this->twig->render($this->getTemplate("article:article"), array("article" => $article, "imageConfigAlias" => $imageConfigAlias));
   }
 
-  public function renderArticleComponent($component) {
-    return $this->twig->render($this->getTemplate("article:".$component["type"]), array("component" => $component));
+  public function renderArticleComponent($component, $imageConfigAlias = array()) {
+    return $this->twig->render($this->getTemplate("article:".$component["type"]), array("component" => $component, "imageConfigAlias" => $imageConfigAlias));
   }
 
   public function renderFields($form, $section = array(), $addValues = array(), $parent = "") {
@@ -208,12 +210,12 @@ class TwigUtils
   }
 
   public function pagination() {
-   return $this->twig->render("yn/components/pagination.twig", array("uriData" => $this->uriData));
+   return $this->twig->render($this->getTemplate("listing:pagination"), array("uriData" => $this->uriData));
   }
 
   public function perPageDropdown() {
-    return $this->twig->render("yn/components/perPageDropdown.twig", array("uriData" => $this->uriData));
-   }
+	return $this->twig->render($this->getTemplate("listing:perPageDropdown"), array("uriData" => $this->uriData));
+  }
 
   public function linkPage($pageSlug, $slug = '')
   {
