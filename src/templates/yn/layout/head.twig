@@ -40,7 +40,7 @@
 {% if ogImage is not null %}
 	<meta property="og:image:title" content="{{ _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title|default('Title') }}">
 	<meta property="og:image:url" content="{{ ogImage.path }}?w=2400&h=1260&disableWebp=1" />
-	<meta property="og:image:type" content="image/jpeg" />
+	<meta property="og:image:type" content="{{ ogImage.file_type }}" />
 	<meta property="og:image:width" content="2400" />
 	<meta property="og:image:height" content="1260" />
 	<meta property="og:image:alt" content="{{ ogImage.metadata.alt }}" />
