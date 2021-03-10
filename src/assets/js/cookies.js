@@ -141,8 +141,9 @@ const YnfiniteCookies = {
   },
 
   ynSetDefaultCookieSettings() {
-    const e = document.querySelectorAll("[data-yn-default='1'] input"),
-      t = {};
+    const e = document.querySelectorAll("[data-yn-cookie-settings-id] input"),
+      t = { done: false, activeScripts: [] };
+
     if (e.length > 0) {
       const n = [];
       for (let t = 0; t < e.length; t += 1) n.push(e[t].value);
