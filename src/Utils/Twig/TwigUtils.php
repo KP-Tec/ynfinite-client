@@ -49,6 +49,7 @@ class TwigUtils
       "form:fields.spacer" => "yn/components/form/spacer.twig",
       "form:fields.description" => "yn/components/form/description.twig",
       "form:fields.basic" => "yn/components/form/basic.twig",
+      "form:fields.categoryFilter" => "yn/components/form/categoryFilter.twig",
       "listing:pagination" => "yn/components/pagination.twig",
       "listing:perPageDropdown" => "yn/components/perPageDropdown.twig"
     );
