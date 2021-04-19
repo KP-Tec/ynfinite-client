@@ -20,10 +20,10 @@ AddOutputFilterByType DEFLATE application/x-javascript
 AddOutputFilterByType DEFLATE application/x-shockwave-flash
 
 ExpiresActive On
-ExpiresByType text/css "access plus 1 month"
-ExpiresByType text/javascript "access plus 1 month"
+ExpiresByType text/css "access plus 1 week"
+ExpiresByType text/javascript "access plus 1 week"
 ExpiresByType text/html "access plus 2 minutes"
-ExpiresByType application/javascript "access plus 1 month"
+ExpiresByType application/javascript "access plus 1 week"
 ExpiresByType image/gif "access plus 1 month"
 ExpiresByType image/jpeg "access plus 1 month"
 ExpiresByType image/png "access plus 1 month"
