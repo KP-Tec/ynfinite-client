@@ -121,7 +121,12 @@ class TwigUtils
             $src = $image['path'];
         }
 
-        return ['src' => $src, 'srcset' => implode(',', $srcset)];
+        return [
+            'src' => $src, 
+            'srcset' => implode(',', $srcset),
+            'height' => $sizes[0]["h"], 
+            'width' => $sizes[0]["w"]
+        ];
     }
 
     public function printImage($image, $sizes = [], $classes = '')
@@ -132,6 +137,8 @@ class TwigUtils
             'image' => $image,
             'src' => $sources['src'],
             'srcset' => $sources['srcset'],
+            'height' => $sources['height'],
+            'width' => $sources['width'],
             'classes' => $classes,
         ]);
     }
@@ -143,6 +150,8 @@ class TwigUtils
             'image' => $image,
             'src' => $sources['src'],
             'srcset' => $sources['srcset'],
+            'height' => $sources['height'],
+            'width' => $sources['width'],
             'classes' => $classes,
         ]);
     }

@@ -7,5 +7,11 @@
 	{%- if image.metadata.title %}
 		title="{{ image.metadata.title }}"
 	{% endif -%}
+	{%- if width %}
+		width="{{width}}"
+	{% endif -%}
+	{%- if height %}
+		height="{{height}}"
+	{% endif -%}
 	alt="{{ image.metadata.alt|default(image.metadata.filename|default(image.name)) }}{% if image.metadata.author %} &copy;{{ image.metadata.author }}{% endif %}"
 	class="lazyload {{ classes }}">
