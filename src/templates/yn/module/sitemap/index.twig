@@ -8,7 +8,7 @@
 			<changefreq>{{page.changefreq}}</changefreq>
 			<priority>{{page.priority}}</priority>
 			{% for alt in page.alternatives %}
-				<xhtml:link rel="alternate" hreflang="{{alt.language}}" href="{{alt.url}}"/>
+				<link rel="alternate" hreflang="{{alt.language}}" href="{{alt.url}}"/>
 			{% endfor %}
 		</url>
 

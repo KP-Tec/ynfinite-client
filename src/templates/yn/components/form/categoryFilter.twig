@@ -1,12 +1,23 @@
 {% extends "yn/components/form/basic.twig" %}
 
+{% macro menuItems(field, items, level = 0) %}
+	{% for item in items %}
+    	{% if item.children|length > 0 %}
+				<optgroup class="level-{{level}}" label="{{ item.label }}"></optgroup>
+				<option class="level-{{level + 1}}" value="{{item.value}}" {% if field.value == item.value %} selected {% endif %}>{{item.label}}</option>
+				{{_self.menuItems(field, item.children, level + 1)}}
+		{% else %}
+			<option class="level-{{level}}" value="{{item.value}}" {% if field.value == item.value %} selected {% endif %}>{{item.label}}</option>
+		{% endif %}
+    {% endfor %}
+{% endmacro %}
+
 {% block field %}
 	<select data-ynfield="true" name="fields{{parent}}[{{field.alias}}]" {% if field.required %} required {% endif %} {{field.attributes|raw}}>
 		{% if field.emptyLabel %}
 			<option value="" {% if field.required %} disabled {% endif %}>{{field.emptyLabel}}</option>
 		{% endif %}
-		{% for option in field.items %}
-			<option value="{{option.value}}" {% if field.value == option.value %} selected {% endif %}>{{option.label}}</option>
-		{% endfor %}
+	
+		{{_self.menuItems(field, field.items)}}
 	</select>
 {% endblock field %}
