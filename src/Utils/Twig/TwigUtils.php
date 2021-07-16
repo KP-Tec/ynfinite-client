@@ -308,4 +308,20 @@ class TwigUtils
         }
         return false;
     }
+
+    public function printString ($data){
+        $intro_title = array();
+        foreach($data as $entry){
+            if (is_array($entry)){
+                if ($entry['value']){
+                    $intro_title[]= $entry['prefix'].$entry['value'].$entry['postfix'];
+                }
+            } else{
+                if ($entry){
+                    $intro_title[]= $entry . ' ';
+                }
+            }
+        }
+        return implode('', $intro_title);
+    }
 }
