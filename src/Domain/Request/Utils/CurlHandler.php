@@ -17,6 +17,7 @@ final class CurlHandler
         }
 
         $this->ch = curl_init();
+        $this->path = "";
 
         if($postRequest) {
             curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
@@ -52,6 +53,7 @@ final class CurlHandler
     {
         $host = $service['host'];
         $port = (int)$service['port'];
+        $this->path = $path;
 
         switch ($path) {
             case 'ynfinite/gdpr/request':
@@ -148,7 +150,7 @@ final class CurlHandler
         }
 
         if ($httpcode != 200 && $httpcode != 201 && $httpcode != 206) {
-            throw new YnfiniteException($body, $httpcode, true);
+            throw new YnfiniteException($body, $httpcode, true, $this->path);
         }
 
         return $body;

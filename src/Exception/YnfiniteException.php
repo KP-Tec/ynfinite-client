@@ -11,7 +11,7 @@ class YnfiniteException extends \Exception
     private $redirect = null;
     private $renderType = "error";
 
-    public function __construct($message, $code = 0, $pipeBody = false, \Exception $previous = null)
+    public function __construct($message, $code = 0, $pipeBody = false, $path = "/", \Exception $previous = null)
     {
         $finalMessage = "";
 
@@ -19,7 +19,7 @@ class YnfiniteException extends \Exception
 
         if($code === 301) {
             header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$message["message"]["fallback"]);
+            header("Location: ".$message["message"]["fallback"].$path);
             die();
         }
 
