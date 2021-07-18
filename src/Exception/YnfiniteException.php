@@ -17,6 +17,12 @@ class YnfiniteException extends \Exception
 
         $message = json_decode($message, true);
 
+        if($code === 301) {
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location: ".$message["message"]["fallback"]);
+            die();
+        }
+
         if (is_array($message["message"]) && $message["message"]["templates"] && $message["message"]["data"]) {
             $this->renderType = "template";
             $this->data = $message["message"]["data"];
