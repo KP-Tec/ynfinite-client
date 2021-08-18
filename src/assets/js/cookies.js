@@ -15,12 +15,16 @@ const YnfiniteCookies = {
             this.ynSetDefaultCookieSettings();
           });
 
-        document
-          .getElementById("yn-cookies__show-configuration")
-          .addEventListener("click", (e) => {
-            e.preventDefault();
-            this.ynCookiesShowPage("configuration");
-          });
+
+
+		if (document.getElementById("yn-cookies__show-configuration")) {
+			document
+				.getElementById("yn-cookies__show-configuration")
+				.addEventListener("click", (e) => {
+				e.preventDefault();
+				this.ynCookiesShowPage("configuration");
+			});
+		}
 
         document
           .getElementById("yn-cookies__show-information")
