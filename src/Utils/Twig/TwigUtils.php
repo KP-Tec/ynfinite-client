@@ -324,4 +324,15 @@ class TwigUtils
         }
         return implode('', $intro_title);
     }
+
+    public function withVersion($path) {
+        $parsed = parse_url($path);
+        $separator = "?";
+        if ($parsed["query"]){
+            $separator = "&";
+        }
+        $time = filemtime(getcwd().$parsed["path"]) + 60 * 60 * 2;
+        $pathWithVersion = $path.$separator."v=".$time;
+        return($pathWithVersion);
+    }
 }
