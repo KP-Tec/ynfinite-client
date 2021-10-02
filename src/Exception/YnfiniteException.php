@@ -13,6 +13,8 @@ class YnfiniteException extends \Exception
 
     public function __construct($message, $code = 0, $pipeBody = false, $path = "/", \Exception $previous = null)
     {
+        $this->code = $code;
+
         $finalMessage = "";
 
         $message = json_decode($message, true);
@@ -27,13 +29,14 @@ class YnfiniteException extends \Exception
             $this->renderType = "template";
             $this->data = $message["message"]["data"];
             $this->templates = $message["message"]["templates"];
-        }
-        if (is_array($message["message"]) && $message["message"]["redirect"]) {
+        } else if (is_array($message["message"]) && $message["message"]["redirect"]) {
             $this->renderType = "template";
             $this->redirect = $message["message"]["redirect"];
+        } else {
+            $this->message = $message["message"];
         }
 
-        $finalMessage = $this->__toString($message);
+        $finalMessage = $this->__toString();
 
         parent::__construct($finalMessage, $code, $previous);
     }
