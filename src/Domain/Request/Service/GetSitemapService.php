@@ -7,41 +7,21 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Container\ContainerInterface;
 use SlimSession\Helper as SessionHelper;
 
-use App\Domain\Request\Utils\CurlHandler;
-use App\Domain\Request\Service\BaseRequestService;
+use App\Domain\Request\Service\RequestService;
 
-final class GetSitemapService
+final class GetSitemapService extends RequestService
 {
     public function __construct(SessionHelper $session, ContainerInterface $container) {
-        $this->session = $session;
-
-        $this->settings = $container->get("settings")["ynfinite"];
-
-        $this->curlHandler = new CurlHandler($this->settings);
-
-        $this->curlHandler->addHeader("ynfinite-api-key", $this->settings["auth"]["api_key"]);
-        $this->curlHandler->addHeader("ynfinite-service-id", $this->settings["auth"]["service_id"]);
+        parent::__construct($session, $container);    
     }
 
     public function getSitemap(ServerRequestInterface $request)
     {
+        $jsonResponse = true;
+        $path = $request->getUri()->getPath();
 
-        $service = $this->settings["services"]["sitemap"];
+        $postBody = $this->getBody($request);
 
-        $uri = $request->getUri();
-
-        $response = $this->request($service, $uri);
-
-        return $response;
-    }
-
-    private function request($service, $uri)
-    {
-        $path = $uri->getPath();
-
-        $this->curlHandler->setUrl($service, trim($path, '/'), $uri, filter_var($this->settings["dev"], FILTER_VALIDATE_BOOLEAN));
-        $response = $this->curlHandler->exec();
-
-        return $response;
+        return $this->request(trim($path), $this->settings["services"]["sitemap"], $postBody, $jsonResponse);
     }
 }

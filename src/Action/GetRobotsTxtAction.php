@@ -20,13 +20,13 @@ final class GetRobotsTxtAction
         ResponseInterface $response
     ): ResponseInterface {
         
-        $sitemap = $this->getRobotsTxtService->getRobotsTxt($request);
-    
+        $robots = $this->getRobotsTxtService->getRobotsTxt($request);
+
         // Build the HTTP response
-        $response->getBody()->write($sitemap);
+        $response->getBody()->write($robots);
 
         return $response
             ->withHeader('Content-Type','text/plain')
-            ->withStatus(201);
+            ->withStatus(200);
     }
 }

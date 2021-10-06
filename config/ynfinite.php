@@ -44,32 +44,22 @@ return [
         'frontend' => [
             'host' => $ynfinite_server,
             'port' => $ynfinite_port,
-            'controller' => "/v1/cms/newfrontend/p/",
-            'gdprInfo' => "/v1/cms/newfrontend/gdpr/info",
-            'use_frontend_cache' => false,
-        ],
-        'frontend-cache' => [
-            'host' => getenv('YNFINITE_FRONTEND_CACHE_URL'),
-            'port' => getenv('YNFINITE_FRONTEND_CACHE_PORT'),
+            'controller' => "/v1/api/frontend/page"
         ],
         'form' => [
             'host' => $ynfinite_server,
             'port' => $ynfinite_port,
-            'controller' => "/v1/cms/newfrontend/p/form/",
-            "upload" => "/v1/cms/newfrontend/p/upload/",
-            'gdpr' => "/v1/cms/newfrontend/gdpr/request",
-            'gdprUpdate' => "/v1/cms/newfrontend/gdpr/update",
-            'gdprDelete' => "/v1/cms/newfrontend/gdpr/delete"
+            'controller' => "/v1/api/frontend/form",
         ],
         'sitemap' => [
             'host' => $ynfinite_server,
             'port' => $ynfinite_port,
-            'controller' => "/v1/cms/newfrontend/p/sitemap"
+            'controller' => "/v1/api/frontend/sitemap"
         ],
-        'robotsTxt' => [
+        'robots' => [
             'host' => $ynfinite_server,
             'port' => $ynfinite_port,
-            'controller' => "/v1/cms/newfrontend/p/robotstxt"
+            'controller' => "/v1/api/frontend/robots"
         ],
         'file' => [
             'host' => $fileservice_server,
@@ -83,4 +73,5 @@ return [
     ],
     'dev' => getenv('DEV'),
     'static_pages' => getenv('STATIC_PAGES'),
+    'static_requests' => getenv('STATIC_REQUESTS'),
 ];

@@ -23,8 +23,6 @@ final class GetSitemapAction
     ): ResponseInterface {
         
         $sitemap = $this->getSitemapService->getSitemap($request);
-        $sitemap = json_decode($sitemap, true);
-    
         $renderedSitemap = $this->renderSitemapService->render($sitemap);
 
         // Build the HTTP response
@@ -32,6 +30,6 @@ final class GetSitemapAction
 
         return $response
             ->withHeader('Content-Type','application/xml')
-            ->withStatus(201);
+            ->withStatus(200);
     }
 }

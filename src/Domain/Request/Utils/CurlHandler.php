@@ -3,41 +3,30 @@
 namespace App\Domain\Request\Utils;
 
 use App\Exception\YnfiniteException;
+use Curl;
 
 final class CurlHandler
 {
-    public function __construct($settings, $postRequest = false) {
+    public function __construct($settings) {
         $this->settings = $settings;
 
         $this->uploadFiles = array();
 
-        $cookieArray = array();
-        foreach ($_COOKIE as $key => $cookie) {
-            $cookieArray[] = $key . "=" . $cookie;
-        }
-
-        $this->ch = curl_init();
+        
+        $this->ch = new Curl\Curl();
         $this->path = "";
 
-        if($postRequest) {
-            curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($this->ch, CURLOPT_HEADER, 1);
-            curl_setopt($this->ch, CURLOPT_POST, TRUE);
-            // curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, "POST");
-            // curl_setopt($this->ch, CURLOPT_ENCODING, "gzip");
-        }
-        else {
-            curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($this->ch, CURLOPT_HEADER, 1);
-            curl_setopt($this->ch, CURLOPT_VERBOSE, 0);
+        $cookieArray = array();
+        foreach ($_COOKIE as $key => $cookie) {
+            $this->ch->setCookie($key, $cookie);
         }
 
-        
+
         if ($this->settings["dev"] === 'true') {
-            curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, false);
+            $this->ch->setOpt(CURLOPT_SSL_VERIFYPEER, false);
+            $this->ch->setOpt(CURLOPT_SSL_VERIFYHOST, false);
         }
-        curl_setopt($this->ch, CURLOPT_COOKIE, implode(";", $cookieArray));
+    
     }
 
     public function addHeader($key, $value)
@@ -49,104 +38,58 @@ final class CurlHandler
         $this->uploadFiles = $files;
     }
 
-    private function buildServiceUrl($service, $path, $uri)
+    private function buildServiceUrl($service)
     {
         $host = $service['host'];
         $port = (int)$service['port'];
-        $this->path = $path;
 
-        switch ($path) {
-            case 'ynfinite/gdpr/request':
-                $controller = $service['gdpr'];
-                break;
-            case 'ynfinite/gdpr/delete':
-                $controller = $service['gdprDelete'];
-                break;
-            case 'ynfinite/gdpr/info':
-                $controller = $service['gdprInfo'];
-                break;
-            case 'ynfinite/gdpr/update':
-                $controller = $service['gdprUpdate'];
-                break;
-            default:
-                $controller = $service['controller'];
-                break;
-        }
+        $controller = $service['controller'];
 
-        $protocol = $uri->getScheme();
-        $domain = $uri->getHost();
-        $queryParams = $uri->getQuery();
+        // $protocol = $uri->getScheme();
+        // $domain = $uri->getHost();
+        // $queryParams = $uri->getQuery();
 
         if ($port !== 80 && $port !== 443) {
             $host = $host . ':' . $port;
         }
 
         $url = $host . $controller;
-
-        $url .= '?slug=';
-        if ($path) $url .= $path;
-        else $url .= "/";
-
-        if ($protocol) $url .= '&protocol=' . $protocol;
-        if ($host) $url .= '&domain=' . $domain;
-        if ($queryParams) $url .= '&' . $queryParams;
-
-        $url .= '&lang=' . substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-
         return $url;
     }
 
-    public function setUrl($service, $path, $uri, $dev = false) {
+    public function setUrl($service, $path) {
 
-        $url = $this->buildServiceUrl($service, $path, $uri);
-
-        curl_setopt($this->ch, CURLOPT_URL, $url);
-        curl_setopt($this->ch, CURLOPT_PORT, $service["port"]);
-        // curl_setopt($this->ch, CURLOPT_ENCODING, "gzip");
-        if ($dev) {
-            curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, false);
-        }
-
-    }
-
-    public function execWithData($formData) {
-        $finalData = array();
-        if(count($this->uploadFiles) > 0) {
-            foreach($this->uploadFiles["tmp_name"] as $key => $value) {
-                if($value) {
-                    $formData["formData"]["fields"][$key] = $this->uploadFiles["name"][$key];
-                    $finalData[$key] = curl_file_create($value, mime_content_type($value));
-                }
-            }
-        }
-
-        $finalData["formData"] = json_encode($formData["formData"], JSON_UNESCAPED_UNICODE);
-
-        curl_setopt($this->ch, CURLOPT_POSTFIELDS, $finalData);
-       
-        $response = $this->exec();
+        $url = $this->buildServiceUrl($service);
+        $this->path = $path;
+        $this->url = $url;
         
-        return $response;
+        // $this->ch->setOpt(CURLOPT_URL, $url);
+        $this->ch->setOpt(CURLOPT_PORT, $service["port"]);
+        
     }
 
-    public function exec() {
-        $curlHeaders = [];
+    public function exec($postBody) {       
+        // $this->ch->setHeader("Content-Type", "multipart/form-data");
         foreach ($this->headers as $key => $header) {
-            $curlHeaders[] = $key . ":" . $header;
+            $this->ch->setHeader($key,$header);
         }
 
-        curl_setopt($this->ch, CURLOPT_HTTPHEADER, $curlHeaders);
+        $this->ch->setOpt(CURLOPT_HEADER, 1);
+        $this->ch->setOpt(CURLINFO_HEADER_OUT, true);        
+        
+        $this->ch->post($this->url, $postBody);
 
-        $output = curl_exec($this->ch);
+        if($this->ch->error) {
+            throw new YnfiniteException($this->ch->getErrorMessage(), $this->ch->getErrorCode());
+        }
 
-        $header_size = curl_getinfo($this->ch, CURLINFO_HEADER_SIZE);
-        $body = substr($output, $header_size);
-        $httpcode = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
-        $error = curl_error($this->ch);
+        $response = $this->ch->getResponse();
+        $header_size = curl_getinfo($this->ch->curl, CURLINFO_HEADER_SIZE);
+        $body = substr($response, $header_size);
+        $httpcode = $this->ch->getHttpStatus();
 
-        if ($error) {
-            throw new YnfiniteException($error, 500);
+        if ($this->ch->error) {
+            throw new YnfiniteException($this->ch->getErrorMessage(), $this->ch->getErrorCode());
         }
 
         if ($httpcode != 200 && $httpcode != 201 && $httpcode != 206) {
