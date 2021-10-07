@@ -79,17 +79,13 @@ final class CurlHandler
         
         $this->ch->post($this->url, $postBody);
 
-        if($this->ch->error) {
-            throw new YnfiniteException($this->ch->getErrorMessage(), $this->ch->getErrorCode());
-        }
-
         $response = $this->ch->getResponse();
         $header_size = curl_getinfo($this->ch->curl, CURLINFO_HEADER_SIZE);
         $body = substr($response, $header_size);
         $httpcode = $this->ch->getHttpStatus();
-
+        
         if ($this->ch->error) {
-            throw new YnfiniteException($this->ch->getErrorMessage(), $this->ch->getErrorCode());
+            throw new YnfiniteException($body, $httpcode);
         }
 
         if ($httpcode != 200 && $httpcode != 201 && $httpcode != 206) {

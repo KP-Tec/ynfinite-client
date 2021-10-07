@@ -145,7 +145,9 @@ final class TwigRenderer
     }
 
     public function renderTemplate($template) {
-        $rendered = $this->twig->render($this->templateList[$template], $this->data);
+        $templateData = $this->data;
+        $templateData["template"] = $this->templates[$template];
+        $rendered = $this->twig->render($this->templateList[$template], $templateData);
         return $rendered;
     }
 
