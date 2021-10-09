@@ -55,6 +55,8 @@ final class RenderPageAction
 
         $response = $response->withStatus($error["code"]);
 
+        $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
         switch ($e->getRenderType()) {
             case "error":
                 $response->withHeader('Content-Type', 'text/html');
@@ -65,7 +67,7 @@ final class RenderPageAction
                     return $response->withRedirect($e->getRedirect(), 301);
                 }
 
-                $renderedTemplate = $this->renderPageService->render($e->getTemplates(), $e->getData());
+                $renderedTemplate = $this->renderPageService->render($e->getTemplates(), $e->getData(), $baseUrl);
                 $response->getBody()->write($renderedTemplate);
 
                 return $response;
