@@ -137,6 +137,18 @@ final class TwigRenderer
          $this->twig->addFilter($filterJoinBy);
          $this->twig->addFilter($filterHasCategory);
          $this->twig->addFilter($filterSome); 
+
+         $this->addFilterPlugins();
+    }
+
+    private function addFilterPlugins() {
+        $path = getcwd() . "/../plugins/twig.php";
+        if(file_exists($path)) {
+            include($path);
+            foreach($twigPlugins as $key => $value) {
+                $this->twig->addFilter(new \Twig\TwigFilter($value["name"], $value["func"], $value["options"]));
+            }
+        }
     }
 
     public function renderPage() {
