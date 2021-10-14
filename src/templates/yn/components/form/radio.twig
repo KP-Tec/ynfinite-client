@@ -1,18 +1,23 @@
 {% if field.items|length > 1 %}
 	<div class="widget-group widget-group--radio">
 	{% endif %}
+	<p class="widget-group-header">{{field.label}}
+		{% if(field.required) %}
+			<span class="required">*</span>
+		{% endif %}
+	</p>
 	{% if field.emptyLabel %}
 		<div class="widget widget--radio">
-			<input data-ynfield="true" type="radio" id="{{form._id}}_{{field.alias}}_empty" name="fields{{parent}}[{{field.alias}}]" value="" {% if field.value == option.value %} checked {% endif %} {% if field.required %} required {% endif %}/>
-			<label class="widget__label" for="{{form._id}}_{{field.alias}}_empty">
+			<input data-ynfield="true" type="radio" id="{{form.uid}}_{{field.alias}}_empty" name="fields{{parent}}[{{field.alias}}]" value="" {% if field.value == option.value %} checked {% endif %} {% if field.required %} required {% endif %}/>
+			<label class="widget__label" for="{{form.uid}}_{{field.alias}}_empty">
 				<div class="ynfinite-field-text">{{field.emptyLabel}}</div>
 			</label>
 		</div>
 	{% endif %}
-	{% for option in field.items %}
+	{% for option in field.options %}
 		<div class="widget widget--radio">
-			<input data-ynfield="true" type="radio" id="{{form._id}}_{{field.alias}}_{{option.value}}" name="fields{{parent}}[{{field.alias}}]" value="{{option.value}}" {% if field.value == option.value %} checked {% endif %} {% if field.required %} required {% endif %}/>
-			<label class="widget__label" for="{{form._id}}_{{field.alias}}_{{option.value}}">
+			<input data-ynfield="true" type="radio" id="{{form.uid}}_{{field.alias}}_{{option.value}}" name="fields{{parent}}[{{field.alias}}]" value="{{option.value}}" {% if field.value == option.value or option.selected %} checked {% endif %} {% if field.required %} required {% endif %}/>
+			<label class="widget__label" for="{{form.uid}}_{{field.alias}}_{{option.value}}">
 				<div class="ynfinite-field-text">{{option.label}}</div>
 			</label>
 		</div>

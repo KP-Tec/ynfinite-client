@@ -1,0 +1,29 @@
+{% extends "yn/components/form/basic.twig" %}
+
+{% block field %}
+	{% set parentAlias = parent ~ field.alias %}
+
+	<div class="yn-listForm-wrapper" data-ynformalias="{{form.uid}}_{{field.alias}}">
+		<template id="listField_{{form.uid}}_{{field.alias}}">
+			<div class="yn-listForm-row">
+				<div class="yn-listForm-fields">{{_yfunc("renderFields", field, section, null, parentAlias)}}</div>
+				<div class="yn-listForm-rowActions">
+					<a href="#" class="yn-listForm-actions-delete">{{field.deleteLabel}}</a>
+				</div>
+			</div>
+		</template>
+
+		{% if field.descriptionText %}
+			<div class="yn-listForm-description">
+				{{field.descriptionText|raw}}
+			</div>
+		{% endif %}
+		<div class="yn-listForm-data"></div>
+		<div class="yn-listForm-actionswrapper">
+			<div class="yn-listForm-actions">
+				<a href="#" class="yn-listForm-actions-new">{{field.addLabel}}</a>
+			</div>
+		</div>
+	</div>
+
+{% endblock field %}

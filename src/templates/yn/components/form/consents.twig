@@ -3,8 +3,8 @@
 <div class="yn-consents">
 	{% for consent in consents %}
 		<div class="widget widget--checkbox ynfinite-consent consent-{{consent.alias}}">
-			<input type="checkbox" id="{{form._id}}_{{consent.alias}}" name="consents[{{consent.alias}}]" value="{{consent.alias}}" {% if consent.mandatory %} required {% endif %}/>
-			<label class="widget__label" for="{{form._id}}_{{consent.alias}}">
+			<input type="checkbox" id="{{form.uid}}_{{consent.alias}}" name="consents[]" value="{{consent.alias}}" {% if consent.mandatory %} required {% endif %}/>
+			<label class="widget__label" for="{{form.uid}}_{{consent.alias}}">
 				<div class="ynfinite-consent-text">{{consent.text|raw}}</div>
 			</label>
 		</div>
