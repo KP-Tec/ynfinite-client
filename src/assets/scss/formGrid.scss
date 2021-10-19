@@ -131,6 +131,16 @@
 
 .yn-form {
   position: relative;
+  &__form-group {
+    display: flex;
+    justify-content: space-between;
+
+    margin: 0 -0.5rem;
+
+    > input {
+      margin: 0 0.5rem;
+    }
+  }
 }
 
 .form-content.inactive {
