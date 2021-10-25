@@ -21,6 +21,7 @@ const YnfiniteForms = {
         formData.set("eventType", eventType)
         formData.set("method", element.getAttribute("data-ynformmethod"))
         formData.set("formId", element.getAttribute("data-ynformid"))
+        formData.set("formLanguage", element.getAttribute("data-language"))
         if(element.hasAttribute("data-sectionid")) {
           formData.set("sectionId", element.getAttribute("data-sectionid"))
         }
