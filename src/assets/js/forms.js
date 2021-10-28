@@ -22,8 +22,8 @@ const YnfiniteForms = {
         formData.set("method", element.getAttribute("data-ynformmethod"))
         formData.set("formId", element.getAttribute("data-ynformid"))
         formData.set("formLanguage", element.getAttribute("data-language"))
-        if(element.hasAttribute("data-sectionid")) {
-          formData.set("sectionId", element.getAttribute("data-sectionid"))
+        if(element.hasAttribute("data-ynsectionid")) {
+          formData.set("sectionId", element.getAttribute("data-ynsectionid"))
         }
 
         const data = new URLSearchParams();
