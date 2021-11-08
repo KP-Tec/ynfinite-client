@@ -32,7 +32,7 @@ class TwigUtils
             'form:fields.radio' => 'yn/components/form/radio.twig',
             'form:fields.checkbox' => 'yn/components/form/checkbox.twig',
             'form:fields.datetime-local' =>
-                'yn/components/form/datetime-local.twig',
+            'yn/components/form/datetime-local.twig',
             'form:fields.month' => 'yn/components/form/month.twig',
             'form:fields.date' => 'yn/components/form/date.twig',
             'form:fields.time' => 'yn/components/form/time.twig',
@@ -47,13 +47,13 @@ class TwigUtils
             'form:fields.email' => 'yn/components/form/email.twig',
             'form:fields.password' => 'yn/components/form/password.twig',
             'form:fields.file' => 'yn/components/form/file.twig',
-            'form:fields.complexFormField' =>
-                'yn/components/form/complexFormField.twig',
+            'form:fields.list' => 'yn/components/form/list.twig',
             'form:fields.hidden' => 'yn/components/form/hidden.twig',
             'form:fields.spacer' => 'yn/components/form/spacer.twig',
             'form:fields.description' => 'yn/components/form/description.twig',
             'form:fields.basic' => 'yn/components/form/basic.twig',
-            'form:fields.categoryFilter' => 'yn/components/form/categoryFilter.twig',
+            'form:fields.categories' => 'yn/components/form/categories.twig',
+            'form:fields.distance' => 'yn/components/form/distance.twig',
             'listing:pagination' => 'yn/components/pagination.twig',
             'listing:perPageDropdown' => 'yn/components/perPageDropdown.twig',
         ];
@@ -159,10 +159,21 @@ class TwigUtils
     public function form($form, $section = [])
     {
         $this->currentForm = $form;
+
+        $data = array();
+        foreach($form["events"] as $event) {
+            $isAsync = "";
+            if($event["async"]) {
+                $isAsync = "async";
+            }
+            $data[] = "data-".strtolower($event["type"])."=".$isAsync;
+        }
+
         return $this->twig->render($this->getTemplate('form:form'), [
             'form' => $form,
             'section' => $section,
             'templates' => $this->templates,
+            "data" => implode(" ",$data)
         ]);
     }
 
@@ -197,17 +208,12 @@ class TwigUtils
         foreach ($form['groups'] as $key => $group) {
             $groups[$key] = ['label' => $group['label']];
 
-            $groupFields = array_filter($form['fields'], function ($field) use (
-                $group
-            ) {
-                return in_array($field['_id'], $group['fields']);
-            });
 
             $fieldGrid = [];
             $currentRow = [];
             $currentY = -1;
 
-            foreach ($groupFields as $field) {
+            foreach ($group["elements"] as $field) {
                 $grid = $field['grid'];
 
                 if ($field['type'] === 'hidden') {

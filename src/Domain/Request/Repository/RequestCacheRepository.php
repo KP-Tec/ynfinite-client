@@ -2,7 +2,7 @@
 
 namespace App\Domain\Request\Repository;
 
-use App\Utils\Cache\StaticPageCache;
+use App\Utils\Cache\StaticCache;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Query\Builder;
 
@@ -13,46 +13,48 @@ class RequestCacheRepository {
         $this->connection = $connection;
     }
 
-    public function createCache($filename, $cacheKey) {
+    public function createCache($cacheKey, $filename) {
         $values = [
             'cache_key' => $cacheKey,
             'filename' => $filename,
+            "type" => "page",
             "created_at" => date("Y-m-d H:i:s"),
             "updated_at" => date("Y-m-d H:i:s")
         ];
 
-        $cache = $this->connection->table('static_page_cache')->where("cache_key", "=", $cacheKey)->where("filename", "=", $filename)->first();
+        $cache = $this->connection->table('static_cache')->where("cache_key", "=", $cacheKey)->where("filename", "=", $filename)->first();
 
         if($cache->id) {
-            return (int) $this->connection->table('static_page_cache')->where("cache_key", "=", $cacheKey)->where("filename", "=", $filename)->update($values);
+            return (int) $this->connection->table('static_cache')->where("cache_key", "=", $cacheKey)->where("filename", "=", $filename)->update($values);
         }
         else {
-            return (int) $this->connection->table('static_page_cache')->insert($values);
+            return (int) $this->connection->table('static_cache')->insert($values);
         }
 
         
     }
 
     public function invalidateAllCache() {
-        $cachedPages = $this->connection->table("static_page_cache")->get();
-        return $this->deletePages($cachedPages);
+        $cachedPages = $this->connection->table("static_cache")->get();
+
+        return $this->deleteCache($cachedPages);
     }
 
     public function invalidateCache($cacheKeys) {
         if(!is_array($cacheKeys)) $cacheKeys = array($cacheKeys);
-        $cachedPages = $this->connection->table('static_page_cache')->whereIn('cache_key', $cacheKeys)->get();
+        $cachedPages = $this->connection->table('static_cache')->whereIn('cache_key', $cacheKeys)->get();
 
-        return $this->deletePages($cachedPages);
+        return $this->deleteCache($cachedPages);
     }
 
-    private function deletePages($cachedPages) {
+    private function deleteCache($cachedPages) {
         $deletedItems = 0;
 
         foreach($cachedPages as $cachedPage) {
-            $pageDeleted = StaticPageCache::invalidateCache($cachedPage->filename);
+            $pageDeleted = StaticCache::invalidateCache($cachedPage->filename);
 
             if($pageDeleted) {
-                $success = $this->connection->table('static_page_cache')->where('id', '=', $cachedPage->id)->delete();
+                $success = $this->connection->table('static_cache')->where('id', '=', $cachedPage->id)->delete();
                 if($success) {
                     $deletedItems++;
                 }

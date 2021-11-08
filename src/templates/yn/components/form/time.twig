@@ -21,11 +21,11 @@
 		}
 
 		if(isBetweenCompare) {
-			field = document.getElementById('{{field.uid}}_from');
-			field2 = document.getElementById('{{field.uid}}_to');
+			field = document.getElementById('{{form.uid}}_{{field.alias}}_from');
+			field2 = document.getElementById('{{form.uid}}_{{field.alias}}_to');
 		}
 		else {
-			field = document.getElementById('{{field.uid}}');
+			field = document.getElementById('{{form.uid}}_{{field.alias}}');
 		}
 		
 
@@ -65,15 +65,15 @@
 		<div class="yn-form-grid-row">
 			<div class="yn-form-grid-field">
 				{% if field.placeholder %}<small>{{field.placeholder}}</small>{% endif %}
-				<input data-ynfield="true" id="{{field.uid}}_from" type="{{field.type}}" name="fields{{parent}}[{{field.alias}}][]" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+				<input data-ynfield="true" id="{{form.uid}}_{{field.alias}}_from" type="{{field.type}}" name="fields{{parent}}[{{field.alias}}][]" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
 			</div>
 			<div class="yn-form-grid-field">
 				{% if field.placeholder %}<small>{{field.placeholderRange}}</small>{% endif %}
-				<input data-ynfield="true" id="{{field.uid}}_to" type="{{field.type}}" name="fields{{parent}}[{{field.alias}}][]" placeholder="{{field.placeholderRange}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+				<input data-ynfield="true" id="{{form.uid}}_{{field.alias}}_to" type="{{field.type}}" name="fields{{parent}}[{{field.alias}}][]" placeholder="{{field.placeholderRange}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
 			</div>
 		</div>
 	{% else %}
-		<input data-ynfield="true" id="{{field.uid}}" type="{{field.type}}" name="fields{{parent}}[{{field.alias}}]" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+		<input data-ynfield="true" id="{{form.uid}}_{{field.alias}}" type="{{field.type}}" name="fields{{parent}}[{{field.alias}}]" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
 	{% endif %}
 
 

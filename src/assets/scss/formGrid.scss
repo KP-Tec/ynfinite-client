@@ -85,7 +85,7 @@
 
 // complex form
 
-.yn-complexForm {
+.yn-listForm {
   &-wrapper {
     border: 1px solid lightgrey;
     padding: 1rem;
@@ -126,5 +126,40 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
+  }
+}
+
+.yn-form {
+  position: relative;
+  &__form-group {
+    display: flex;
+    justify-content: space-between;
+
+    margin: 0 -0.5rem;
+
+    > input {
+      margin: 0 0.5rem;
+    }
+  }
+}
+
+.form-content.inactive {
+  opacity: 0;
+}
+
+.yn-form-response {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+
+  &__control {
+    padding: 1rem 0;
+  }
+
+  &.active {
+    display: block;
   }
 }

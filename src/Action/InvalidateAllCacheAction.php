@@ -19,9 +19,12 @@ final class InvalidateAllCacheAction
         ServerRequestInterface $request, 
         ResponseInterface $response
     ): ResponseInterface {
+
         $result = $this->repository->invalidateAllCache();
  
         $response->getBody()->write((string)json_encode(array("success" => $result)));
+
+        
 
         return $response
             ->withHeader('Content-Type', 'application/json')

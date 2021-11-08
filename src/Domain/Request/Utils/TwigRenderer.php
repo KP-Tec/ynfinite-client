@@ -26,6 +26,11 @@ final class TwigRenderer
         $this->container = $container;
     }
 
+    public function initialize($data) {
+        $this->initializeFileLoader($data);
+        $this->initializePlugins($data);
+    }
+
     public function initializeFileLoader($data) {
         $this->settings = $this->container->get("settings");
 
@@ -44,7 +49,7 @@ final class TwigRenderer
         $rootPath = realpath(__DIR__);
 
         // $loader = new ArrayLoader($this->templates);
-        $this->twig = new Environment($loader, ['debug' => true, /* 'cache' => getcwd().'/../tmp/twig_cache', */]);
+        $this->twig = new Environment($loader, ['debug' => true, /* 'cache' =>6 getcwd().'/../tmp/twig_cache', */]);
         $this->twig->addExtension(new IntlExtension());
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addExtension(new SlugifyExtension(Slugify::create()));
@@ -52,18 +57,19 @@ final class TwigRenderer
         $this->twig->addGlobal("useragent", $this->getBrowserClasses());
     }
 
-    public function render($data, $templates) {
+    public function initializePlugins($data, $templates, $baseUrl) {
         $this->data = $data;
         $this->templates = $templates;
 
         $this->templateList = $this->generateTemplateList();
         $this->templateOverrides = $this->generateTemplateOverridesList();
-
-        $this->uriData = $this->getURIData();
-
+        
+        $this->uriData = $this->getURIData($baseUrl);
+        
         $this->twig->addTokenParser(new IsCookieActive($data));
         $this->twig->addTokenParser(new IsScriptActive($data));
         $this->twig->addTokenParser(new GetCookieConsent($data, $this->twig));
+
         $this->twig->addGlobal("templateList", $this->templateList);
         $this->twig->addGlobal("_templates", $this->templates);
         $this->twig->addGlobal('_ynfinite', $this->data);
@@ -115,26 +121,46 @@ final class TwigRenderer
         });
 
         $filterSome = new \Twig\TwigFilter('some', function ($content, $searchFor) {
-           $result = false;
+            $result = false;
+ 
+             foreach($searchFor as $search) {
+                 if($content[$search]) {
+                     $result = true;
+                     break;
+                 }
+             }
+ 
+             return $result;
+         });
+ 
+         $this->twig->addFilter($filterTrans);
+         $this->twig->addFilter($filterJoinBy);
+         $this->twig->addFilter($filterHasCategory);
+         $this->twig->addFilter($filterSome); 
 
-            foreach($searchFor as $search) {
-                if($content[$search]) {
-                    $result = true;
-                    break;
-                }
+         $this->addFilterPlugins();
+    }
+
+    private function addFilterPlugins() {
+        $path = getcwd() . "/../plugins/twig.php";
+        if(file_exists($path)) {
+            include($path);
+            foreach($twigPlugins as $key => $value) {
+                $this->twig->addFilter(new \Twig\TwigFilter($value["name"], $value["func"], $value["options"]));
             }
+        }
+    }
 
-            return $result;
-        });
-
-        $this->twig->addFilter($filterTrans);
-        $this->twig->addFilter($filterJoinBy);
-        $this->twig->addFilter($filterHasCategory);
-        $this->twig->addFilter($filterSome);
-
-        $renderedPage = $this->twig->render($this->templateList['index'], $data);
+    public function renderPage() {
+        $renderedPage = $this->twig->render($this->templateList['index'], $this->data);
         return $renderedPage;
+    }
 
+    public function renderTemplate($template) {
+        $templateData = $this->data;
+        $templateData["template"] = $this->templates[$template];
+        $rendered = $this->twig->render($this->templateList[$template], $templateData);
+        return $rendered;
     }
 
     private function generateTemplateOverridesList() {
@@ -217,9 +243,9 @@ final class TwigRenderer
         return implode(" ", $uaArray);
     }
 
-    private function getURIData()
+    private function getURIData($baseUrl)
     {
-        $path = explode('?', $_SERVER['REQUEST_URI'], 2);
+        $path = explode('?', $baseUrl, 2);
 
         $listingSeparator = "?";
         $perPageSeparator = "?";
@@ -235,7 +261,7 @@ final class TwigRenderer
             if ($path[1]) {
                 $paramsPagination = explode("&", $path[1]);
 
-                if (($key = array_search("_y.page=$currentPage", $paramsPagination)) !== false) {
+                if (($key = array_search("__yPage=$currentPage", $paramsPagination)) !== false) {
                     array_splice($paramsPagination, $key, 1);
                 }
 
@@ -243,7 +269,7 @@ final class TwigRenderer
                     $listingURL .= implode("&", $paramsPagination) . "&";
                 }
 
-                if (($key = array_search("_y.perPage=$perPage", $paramsPagination)) !== false) {
+                if (($key = array_search("__yPerPage=$perPage", $paramsPagination)) !== false) {
                     array_splice($paramsPagination, $key, 1);
                 }
 

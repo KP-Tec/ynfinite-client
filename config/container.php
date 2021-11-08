@@ -52,20 +52,12 @@ return [
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
 
-        /*
-        $factory = new ConnectionFactory(new IlluminateContainer());
-
-        $connection = $factory->make($container->get('settings')["ynfinite"]['db']);
-
-        // Disable the query log to prevent memory issues
-        $connection->disableQueryLog();
-        */
-
-        if (!Manager::schema()->hasTable('static_page_cache')) {
-            Manager::schema()->create('static_page_cache', function ($table) {
+        if (!Manager::schema()->hasTable('static_cache')) {
+            Manager::schema()->create('static_cache', function ($table) {
                 $table->increments('id');
                 $table->string('cache_key')->index();
                 $table->text('filename');
+                $table->text('type');
                 $table->timestamps();
             });
         }

@@ -6,7 +6,7 @@
     <div class='yn-perPage__list'>
         <ul>
             {% for option in pagination.perPageOptions %}
-                <li class='yn-perPage__item{% if option == pagination.perPage %} yn-perPage__item--active{% endif %}'><a href="{{uriData.perPageURL}}_y.perPage={{option}}">{{option}}</a></li>
+                <li class='yn-perPage__item{% if option == pagination.perPage %} yn-perPage__item--active{% endif %}'><a href="{{uriData.perPageURL}}__yPerPage={{option}}">{{option}}</a></li>
             {% endfor %}
         </ul>
     </div>
