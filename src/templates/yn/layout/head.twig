@@ -55,7 +55,7 @@
 
 {% if _ynfinite.page.type == "listing" %}
 	{% if _ynfinite.pagination.currentPage %}
-		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}?_y.page={{ _ynfinite.pagination.currentPage }}" />
+		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}?__yPage={{ _ynfinite.pagination.currentPage }}" />
 	{% else %}
 		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}" />
 	{% endif %}
@@ -64,8 +64,8 @@
 {% endif %}
 
 {% if _ynfinite.pagination.prevPage %}
-	<link rel="prev" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}{{ urlData.separator }}_y.page={{ _ynfinite.pagination.prevPage }}" />
+	<link rel="prev" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}{{ urlData.separator }}__yPage={{ _ynfinite.pagination.prevPage }}" />
 {% endif %}
 {% if _ynfinite.pagination.nextPage %}
-	<link rel="next" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}{{ urlData.separator }}_y.page={{ _ynfinite.pagination.nextPage }}" />
+	<link rel="next" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}{{ urlData.separator }}__yPage={{ _ynfinite.pagination.nextPage }}" />
 {% endif %}
