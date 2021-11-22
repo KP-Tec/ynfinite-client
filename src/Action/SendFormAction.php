@@ -37,7 +37,7 @@ final class SendFormAction
             }
     
             if($formResponse["form"]["method"] !== "post") {
-                $this->cacheService->createCache("REQUEST_".md5($_SERVER['HTTP_REFERER']), json_encode($formResponse));
+                $this->cacheService->createCache("REQUEST", json_encode($formResponse));
             }
         }
 
