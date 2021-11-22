@@ -20,14 +20,23 @@ final class InvalidateCacheAction
         ResponseInterface $response
     ): ResponseInterface {
     
+
+        $entityBody = file_get_contents('php://input');
+        $parsedBody = json_decode($entityBody);
+
         $data = (array)$request->getServerParams();
         $query = array();
         parse_str($data["QUERY_STRING"], $query);
 
         $result = false;
 
+        $cacheKeys = $parsedBody->cacheKey;
         if($query["cacheKey"]) {
-            $result = $this->repository->invalidateCache($query["cacheKey"]);
+            $cacheKeys = $query["cacheKey"];
+        }
+
+        if($cacheKeys) {
+            $result = $this->repository->invalidateCache($cacheKeys);
         }
 
         $response->getBody()->write((string)json_encode(array("success" => $result)));

@@ -31,7 +31,7 @@ final class SendFormAction
         
         if($formResponse) {
             if($formResponse["activeEvent"]["asyncTemplate"]) {
-                $rendered = $this->renderPageService->renderTemplate($formResponse["templates"], $formResponse, $formResponse["activeEvent"]["asyncTemplate"], $_SERVER['HTTP_REFERER']);
+                $rendered = $this->renderPageService->renderTemplate($formResponse["templates"], $formResponse, $formResponse["activeEvent"]["asyncTemplate"]);
     
                 $formResponse["rendered"] = $rendered;
             }

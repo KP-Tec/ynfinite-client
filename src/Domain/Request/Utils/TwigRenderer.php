@@ -57,14 +57,15 @@ final class TwigRenderer
         $this->twig->addGlobal("useragent", $this->getBrowserClasses());
     }
 
-    public function initializePlugins($data, $templates, $baseUrl) {
+    public function initializePlugins($data, $templates, $overrideUrl = "") {
         $this->data = $data;
         $this->templates = $templates;
 
         $this->templateList = $this->generateTemplateList();
         $this->templateOverrides = $this->generateTemplateOverridesList();
         
-        $this->uriData = $this->getURIData($baseUrl);
+        
+        $this->uriData = $this->getURIData($overrideUrl);
         
         $this->twig->addTokenParser(new IsCookieActive($data));
         $this->twig->addTokenParser(new IsScriptActive($data));
@@ -243,8 +244,13 @@ final class TwigRenderer
         return implode(" ", $uaArray);
     }
 
-    private function getURIData($baseUrl)
+    private function getURIData($overrideUrl)
     {
+        $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        if($overrideUrl) {
+            $baseUrl = $overrideUrl;
+        }
+
         $path = explode('?', $baseUrl, 2);
 
         $listingSeparator = "?";

@@ -21,10 +21,10 @@ final class RenderPageService
         $this->twig = $twig;
     }
 
-    public function render($templates, $data, $cacheUrl) {
+    public function render($templates, $data) {
 
         $this->twig->initializeFileLoader($data);
-        $this->twig->initializePlugins($data, $templates, $cacheUrl);
+        $this->twig->initializePlugins($data, $templates);
         
         $renderedPage = $this->twig->renderPage();
         
@@ -32,9 +32,9 @@ final class RenderPageService
 
     }
 
-    public function renderTemplate($templates, $data, $template, $baseUrl) {
+    public function renderTemplate($templates, $data, $template) {
         $this->twig->initializeFileLoader($data);
-        $this->twig->initializePlugins($data, $templates, $baseUrl);
+        $this->twig->initializePlugins($data, $templates, $_SERVER['HTTP_REFERER']);
 
         $rendered = $this->twig->renderTemplate($template, $data);
 
