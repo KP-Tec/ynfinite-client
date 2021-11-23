@@ -53,19 +53,25 @@
 
 <meta name="robots" content="{{ _ynfinite.page.meta.robots|default("index,follow") }}" />
 
+{# canonicals #}
 {% if _ynfinite.page.type == "listing" %}
-	{% if _ynfinite.pagination.currentPage %}
-		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}?__yPage={{ _ynfinite.pagination.currentPage }}" />
-	{% else %}
+	{% if _ynfinite.pagination.currentPage == '1' %}
 		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}" />
-	{% endif %}
+	{% else %}
+		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}{{ urlData.separator }}__yPage={{ _ynfinite.pagination.currentPage }}" />
+	{% endif -%}
 {% else %}
-	<link rel="canonical" href="{{ _ynfinite.content.settings.seo.canonical|default(_ynfinite.page.meta.canonical|default(urlData.cleanURL)) }}" />
-{% endif %}
+	<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}" />
+{% endif -%}
 
+{# prev / next #}
 {% if _ynfinite.pagination.prevPage %}
-	<link rel="prev" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}{{ urlData.separator }}__yPage={{ _ynfinite.pagination.prevPage }}" />
-{% endif %}
+	{% if _ynfinite.pagination.prevPage == '1' %}
+<link rel="prev" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}" />
+	{% else %}
+<link rel="prev" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}{{ urlData.separator }}__yPage={{ _ynfinite.pagination.prevPage }}" />
+	{% endif %}
+{% endif -%}
 {% if _ynfinite.pagination.nextPage %}
-	<link rel="next" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}{{ urlData.separator }}__yPage={{ _ynfinite.pagination.nextPage }}" />
+<link rel="next" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}{{ urlData.separator }}__yPage={{ _ynfinite.pagination.nextPage }}" />
 {% endif %}
