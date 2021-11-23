@@ -9,7 +9,7 @@ $dotenv->load();
 
 if(getenv('STATIC_PAGES') !== "false" && $_SERVER['REQUEST_METHOD'] === 'GET') {
     $cacheUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-    $cachedPage = StaticCache::getCache("PAGE_".md5($cacheUrl));
+    $cachedPage = StaticCache::getCache("PAGE");
     if ($cachedPage) {
         echo $cachedPage;
         exit;
@@ -17,7 +17,7 @@ if(getenv('STATIC_PAGES') !== "false" && $_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 if(getenv('STATIC_REQUESTS') !== "false" && $_SERVER['REQUEST_METHOD'] === 'POST' && $_SERVER["REQUEST_URI"] === "/yn-form/send" && $_POST["method"] !== "post") {
-    $cachedData = StaticCache::getCache("REQUEST_".md5($_SERVER['HTTP_REFERER']));
+    $cachedData = StaticCache::getCache("REQUEST");
     if ($cachedData) {
         header('Content-type: application/json');
         echo $cachedData;

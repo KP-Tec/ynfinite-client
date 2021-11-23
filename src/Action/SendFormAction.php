@@ -31,13 +31,13 @@ final class SendFormAction
         
         if($formResponse) {
             if($formResponse["activeEvent"]["asyncTemplate"]) {
-                $rendered = $this->renderPageService->renderTemplate($formResponse["templates"], $formResponse, $formResponse["activeEvent"]["asyncTemplate"], $_SERVER['HTTP_REFERER']);
+                $rendered = $this->renderPageService->renderTemplate($formResponse["templates"], $formResponse, $formResponse["activeEvent"]["asyncTemplate"]);
     
                 $formResponse["rendered"] = $rendered;
             }
     
             if($formResponse["form"]["method"] !== "post") {
-                $this->cacheService->createCache("REQUEST_".md5($_SERVER['HTTP_REFERER']), json_encode($formResponse));
+                $this->cacheService->createCache("REQUEST", json_encode($formResponse));
             }
         }
 

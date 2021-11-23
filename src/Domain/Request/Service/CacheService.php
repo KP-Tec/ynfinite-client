@@ -17,11 +17,11 @@ final class CacheService
         $this->settings = $container->get("settings")["ynfinite"];
     }
 
-    public function createCache($key, $content) {
-
+    public function createCache($type, $content) {
         if(filter_var($this->settings["static_pages"], FILTER_VALIDATE_BOOLEAN) === true) {
-            $filename = StaticCache::createCache($key, $content);
+            $filename = StaticCache::createCache($type, $content);
             if($filename) {
+                $key = StaticCache::createCacheKey($type, true);
                 $this->repository->createCache($key, $filename);
             }
         }

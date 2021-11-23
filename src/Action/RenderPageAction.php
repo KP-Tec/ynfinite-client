@@ -27,12 +27,10 @@ final class RenderPageAction
         try {
             $data = $this->requestPageService->getPage($request);
 
-            if (is_array($data)) {
-                $cacheUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-                
-                $renderedTemplate = $this->renderPageService->render($data["templates"], $data["data"], $cacheUrl);
+            if (is_array($data)) {                
+                $renderedTemplate = $this->renderPageService->render($data["templates"], $data["data"]);
                 if($data["data"]["page"]["type"] !== "404") {
-                    $this->cacheService->createCache("PAGE_".md5($cacheUrl), $renderedTemplate);
+                    $this->cacheService->createCache("PAGE", $renderedTemplate);
                 }
                 
                 $response->getBody()->write($renderedTemplate);
@@ -55,8 +53,6 @@ final class RenderPageAction
 
         $response = $response->withStatus($error["code"]);
 
-        $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-
         switch ($e->getRenderType()) {
             case "error":
                 $response->withHeader('Content-Type', 'text/html');
@@ -67,7 +63,7 @@ final class RenderPageAction
                     return $response->withRedirect($e->getRedirect(), 301);
                 }
 
-                $renderedTemplate = $this->renderPageService->render($e->getTemplates(), $e->getData(), $baseUrl);
+                $renderedTemplate = $this->renderPageService->render($e->getTemplates(), $e->getData());
                 $response->getBody()->write($renderedTemplate);
 
                 return $response;
