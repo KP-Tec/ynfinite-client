@@ -11,16 +11,16 @@
 		<div class="yn-form-response">
 			<div class="yn-form-response__inner"></div>
 			<div class="yn-form-response__control">
-				<a class="yn-form-response__new-form" href="#">Neues Formular</a>
+				<a href="#" class="yn-form-response__new-form button">Neues Formular</a>
 			</div>
 		</div>
 	</fieldset>
-	
+
 	{% if form.method == "post" %}
 		<script>
 			(function() {
 				const form = document.querySelector("#form_{{form.uid}}");
-				
+
 				form.addEventListener("onAsyncChange", function(e) {
 					window.$_yn.forms.showResponse(this, e.detail.response)
 				})
