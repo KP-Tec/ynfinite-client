@@ -8,7 +8,6 @@ $dotenv = Dotenv\Dotenv::create(__DIR__. '/../');
 $dotenv->load();
 
 if(getenv('STATIC_PAGES') !== "false" && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    $cacheUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     $cachedPage = StaticCache::getCache("PAGE");
     if ($cachedPage) {
         echo $cachedPage;

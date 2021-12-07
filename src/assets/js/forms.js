@@ -44,7 +44,7 @@ const YnfiniteForms = {
 
         const response = await fetch("/yn-form/send", {
           method: "POST",
-          body: data
+          body: formData
         })
 
         const ynAsyncChange = new CustomEvent('onAsyncChange', {detail: {
