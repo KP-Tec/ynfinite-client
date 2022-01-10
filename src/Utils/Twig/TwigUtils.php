@@ -129,7 +129,7 @@ class TwigUtils
         ];
     }
 
-    public function printImage($image, $sizes = [], $classes = '')
+    public function printImage($image, $sizes = [], $classes = '', $nolazy = '')
     {
         $sources = $this->getSizes($image, $sizes);
 
@@ -140,10 +140,11 @@ class TwigUtils
             'height' => $sources['height'],
             'width' => $sources['width'],
             'classes' => $classes,
+            'nolazy' => $nolazy,
         ]);
     }
 
-    public function printFigure($image, $sizes = [], $classes = '')
+    public function printFigure($image, $sizes = [], $classes = '', $nolazy = '')
     {
         $sources = $this->getSizes($image, $sizes);
         return $this->twig->render($this->getTemplate('images:figure'), [
@@ -153,6 +154,7 @@ class TwigUtils
             'height' => $sources['height'],
             'width' => $sources['width'],
             'classes' => $classes,
+            'nolazy' => $nolazy,
         ]);
     }
 
