@@ -245,6 +245,84 @@ class TwigUtils
         ]);
     }
 
+    public function renderGroupFieldsByIndex(
+		$form,
+		$section = [],
+		$groupIndex,
+		$addValues = [],
+		$parent = ''
+	) {
+		$this->currentForm = $form;
+
+		$hiddenFields = [];
+
+		$targetGroup = $form['groups'][$groupIndex];
+
+		return $this->renderGroup($targetGroup);
+	}
+
+	public function renderGroupFieldsByAlias(
+		$form,
+		$section = [],
+		$groupAlias,
+		$addValues = [],
+		$parent = ''
+	) {
+		$this->currentForm = $form;
+
+		$hiddenFields = [];
+
+		$targetGroup = array_filter($form['groups'], function($v) use($groupAlias) {
+		 	return $v['alias'] === $groupAlias;
+		 });
+
+
+		if(sizeof($targetGroup) <= 0) {
+			return "The chosen alias does not exist";
+		}
+
+		$targetGroup = $targetGroup[0];
+
+		return $this->renderGroup($targetGroup);
+	}
+
+	private function renderGroup($targetGroup) {
+		$groups = ['label' => $targetGroup['label']];
+
+		$fieldGrid = [];
+		$currentRow = [];
+		$currentY = -1;
+
+		foreach ($targetGroup["elements"] as $field) {
+			$grid = $field['grid'];
+
+			if ($field['type'] === 'hidden') {
+				$hiddenFields[] = $field;
+			} else {
+				if (!is_array($fieldGrid[$grid['y']])) {
+					$fieldGrid[$grid['y']] = [];
+				}
+				$fieldGrid[$grid['y']][$grid['x']] = $field;
+				ksort($fieldGrid[$grid['y']]);
+			}
+		}
+
+		ksort($fieldGrid);
+
+		$groups[0]['fields'] = $fieldGrid;
+
+
+		return $this->twig->render('yn/components/renderFields.twig', [
+			'form' => $form,
+			'groups' => $groups,
+			'parent' => $parent,
+			'hiddenFields' => $hiddenFields,
+			'section' => $section,
+			'templates' => $this->templates,
+			'addValues' => $addValues,
+		]);
+	}
+
     public function printCookieSettingsButton()
     {
         return $this->twig->render(
