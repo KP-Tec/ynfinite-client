@@ -281,7 +281,7 @@ class TwigUtils
 			return "The chosen alias does not exist";
 		}
 
-		$targetGroup = $targetGroup[0];
+		$targetGroup = array_values($targetGroup)[0];
 
 		return $this->renderGroup($targetGroup);
 	}
