@@ -245,7 +245,7 @@ class TwigUtils
         ]);
     }
 
-    public function renderGroupFieldsByIndex(
+    public function renderGroupByIndex(
 		$form,
 		$section = [],
 		$groupIndex,
@@ -258,10 +258,10 @@ class TwigUtils
 
 		$targetGroup = $form['groups'][$groupIndex];
 
-		return $this->renderGroup($targetGroup);
+		return $this->renderGroup($targetGroup, $form, $section, $addValues, $parent);
 	}
 
-	public function renderGroupFieldsByAlias(
+	public function renderGroupByAlias(
 		$form,
 		$section = [],
 		$groupAlias,
@@ -283,10 +283,10 @@ class TwigUtils
 
 		$targetGroup = array_values($targetGroup)[0];
 
-		return $this->renderGroup($targetGroup);
+		return $this->renderGroup($targetGroup, $form, $section, $addValues, $parent);
 	}
 
-	private function renderGroup($targetGroup) {
+	private function renderGroup($targetGroup, $form, $section, $addValues, $parent) {
 		$groups = ['label' => $targetGroup['label']];
 
 		$fieldGrid = [];
