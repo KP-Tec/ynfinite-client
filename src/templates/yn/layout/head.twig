@@ -1,4 +1,5 @@
-{% set seoTitle = _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title ? ' | ' ~ _ynfinite.site.meta.title : _ynfinite.site.meta.title %}
+{% set title = _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title %}
+{% set seoTitle = title ? title ~ ' | ' ~ _ynfinite.site.meta.title : _ynfinite.site.meta.title %}
 {% set seoDescription = _ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.description) %}
 {% set seoKeywords = _ynfinite.content.settings.seo.keywords|default(_ynfinite.page.meta.keywords) %}
 
