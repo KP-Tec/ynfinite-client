@@ -245,6 +245,56 @@ class TwigUtils
         ]);
     }
 
+    public function renderGroupFieldsByIndex(
+		$form,
+		$section = [],
+		$groupIndex,
+		$addValues = [],
+		$parent = ''
+	) {
+		$this->currentForm = $form;
+
+		$hiddenFields = [];
+
+		$targetGroup = $form['groups'][$groupIndex];
+
+
+		$groups = ['label' => $targetGroup['label']];
+
+		$fieldGrid = [];
+		$currentRow = [];
+		$currentY = -1;
+
+		foreach ($targetGroup["elements"] as $field) {
+			$grid = $field['grid'];
+
+			if ($field['type'] === 'hidden') {
+				$hiddenFields[] = $field;
+			} else {
+				if (!is_array($fieldGrid[$grid['y']])) {
+					$fieldGrid[$grid['y']] = [];
+				}
+				$fieldGrid[$grid['y']][$grid['x']] = $field;
+				ksort($fieldGrid[$grid['y']]);
+			}
+		}
+
+		ksort($fieldGrid);
+
+		$groups[0]['fields'] = $fieldGrid;
+
+
+		return $this->twig->render('yn/components/renderFields.twig', [
+			'form' => $form,
+			'groups' => $groups,
+			'parent' => $parent,
+			'hiddenFields' => $hiddenFields,
+			'section' => $section,
+			'templates' => $this->templates,
+			'addValues' => $addValues,
+		]);
+	}
+
     public function printCookieSettingsButton()
     {
         return $this->twig->render(
