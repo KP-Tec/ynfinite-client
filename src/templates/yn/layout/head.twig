@@ -1,5 +1,9 @@
 {% set title = _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title %}
-{% set seoTitle = title ? title ~ ' | ' ~ _ynfinite.site.meta.title : _ynfinite.site.meta.title %}
+{% if _ynfinite.site.meta.title|length > 0 and _ynfinite.site.meta.title|lower not in title|lower %}
+	{% set seoTitle = title ~ ' | ' ~ _ynfinite.site.meta.title %}
+{% else %}
+	{% set seoTitle = title ?: _ynfinite.site.meta.title %}
+{% endif %}
 {% set seoDescription = _ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.description) %}
 {% set seoKeywords = _ynfinite.content.settings.seo.keywords|default(_ynfinite.page.meta.keywords) %}
 
