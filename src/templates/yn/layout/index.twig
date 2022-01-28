@@ -7,7 +7,7 @@
 		<link href="/assets/vendor/ypsolution/css/main.css" rel="stylesheet">
 	</head>
 
-	<body class="{% block body_classes %}{% endblock body_classes %}{{_ynfinite.page.css_classes}} {{useragent}}" id="{{_ynfinite.page.css_id}}">
+	<body class="{% block body_classes %}{% endblock body_classes %} {{_ynfinite.page.css_classes}}" id="{{_ynfinite.page.css_id}}">
 		{% if templateList['header'] %}
 			{% block header %}
 				{{ include(templateList['header'], {template: _templates["header"]}) }}
