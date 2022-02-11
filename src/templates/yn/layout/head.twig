@@ -40,7 +40,7 @@
 {% set ogImage = _ynfinite.content.settings.opengraph.images[0] ?:  _ynfinite.page.meta.opengraph.image|default(null) %}
 {% set ogLocale = _ynfinite.languages.current|default("de_DE") %}
 
-// Opengraph Tags
+{# Opengraph Tags #}
 <meta property="og:site_name" content="{{ ogSite_name }}" />
 <meta property="og:title" content="{{ ogTitle ?: _ynfinite.page.meta.title }}" />
 <meta property="og:description" content="{{ ogDesc }}" />
@@ -48,7 +48,7 @@
 <meta property="og:type" content="{{ ogType }}" />
 <meta property="og:locale" content="{{ ogLocale }}" />
 
-// Twitter Opengraph Tags
+{# Twitter Opengraph Tags #}
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="{{ ogTitle }}" />
 <meta property="twitter:description" content="{{ ogDesc }}" />
