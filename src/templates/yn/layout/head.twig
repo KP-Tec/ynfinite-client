@@ -33,47 +33,61 @@
 <meta name="description" content="{{ seoDescription }}" />
 <meta name="keyword" content="{{ seoKeywords }}" />
 
-{% set ogSite_name = _ynfinite.site.meta.title %}
-{% set ogType = _ynfinite.content.setting.opengraph.type|default("website") %}
-{% set ogTitle = _ynfinite.page.meta.opengraph.title ?: _ynfinite.content.settings.seo.title|default(null) %}
-{% set ogDesc = _ynfinite.page.meta.opengraph.description ?: _ynfinite.content.settings.seo.title|default(null) %}
-{% set ogImage = _ynfinite.page.meta.opengraph.image ?: _ynfinite.content.settings.opengraph.images[0]|default(null) %}
+{% set ogSite_name = _ynfinite.site.meta.title ?: _ynfinite.page.meta.title %}
+{% set ogType = _ynfinite.content.setting.opengraph.type ?: _ynfinite.page.meta.opengraph.image.file_type|default("website") %}
+{% set ogTitle = _ynfinite.content.settings.opengraph.title ?: _ynfinite.content.settings.seo.title|default(_ynfinite.page.meta.opengraph.title) %}
+{% set ogDesc = _ynfinite.content.settings.opengraph.description ?: _ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.opengraph.description) %}
+{% set ogImage = _ynfinite.content.settings.opengraph.images[0] ?:  _ynfinite.page.meta.opengraph.image|default(null) %}
 {% set ogLocale = _ynfinite.languages.current|default("de_DE") %}
 
+// Opengraph Tags
 <meta property="og:site_name" content="{{ ogSite_name }}" />
-<meta property="og:title" content="{{ ogTitle ?: _ynfinite.page.meta.title|default('Title') }}" />
-<meta property="og:description" content="{{ ogDesc|default(seoDescription) }}" />
+<meta property="og:title" content="{{ ogTitle ?: _ynfinite.page.meta.title }}" />
+<meta property="og:description" content="{{ ogDesc }}" />
 <meta property="og:url" content="{{ urlData.cleanURL }}" />
 <meta property="og:type" content="{{ ogType }}" />
 <meta property="og:locale" content="{{ ogLocale }}" />
 
+// Twitter Opengraph Tags
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="{{ ogTitle ?: _ynfinite.page.meta.title|default('Title') }}" />
-<meta property="twitter:description" content="{{ ogDesc|default(seoDescription) }}" />
+<meta property="twitter:title" content="{{ ogTitle }}" />
+<meta property="twitter:description" content="{{ ogDesc }}" />
 <meta name="twitter:url" content="{{ urlData.cleanURL }}" />
+<meta property="twitter:domain" content="{{ urlData.cleanURL }}">
+
 {# ? Möglichkeit die Twitter Seite/User anzugeben, müssten wir im Ynfinite dann abfragen können #}
+{# ? Mit dem twitter:site kannst du dein Twitter Profil hinterlegen. Somit weiß Twitter, zu welchem Twitter-Profil die getweetete Seite gehört. #}
 {# <meta property="twitter:site" content="@..." /> #}
+{# ? Der twitter:creator ist angelehnt an twitter:site. Hier wird aber anstelle des - beispielhaft - Firmentaccounts der Account des urhebers bzw. des Mitarbeiters hinterlegt. #}
+{# <meta name="twitter:creator" content="@..." /> #}
 
 {% if ogImage is not null %}
-	{% set ogImageTitle = _ynfinite.page.meta.opengraph.image.metadata.title|default(null) %}
-	{% set ogImageURL = _ynfinite.page.meta.opengraph.image.path|default(null) %}
-	{% set ogImageType = _ynfinite.page.meta.opengraph.image.file_type|default(null) %}
-	{% set ogImageMetadata = _ynfinite.page.meta.opengraph.image.metadata.alt|default(null) %}
+	{% set ogImageTitle = ogImage.metadata.title|default(null) %}
+	{% set ogImageURL = ogImage.path|default(null) %}
+	{% set ogImageType = ogImage.file_type|default(null) %}
+	{% set ogImageMetadata = ogImage.metadata.alt|default(null) %}
 	{% if ogImageURL is not null %}
+		
+		// Image
 		<meta property="og:image" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1" />
 		<meta name="twitter:image" content="{{ ogImageURL }}?w=1200&h=675&disableWebp=1" />
+	
+		// URL
 		<meta property="og:image:url" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1" />
 		<meta property="og:image:secure_url" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1" />
-	
+
+		// Image Title, Type
 		<meta property="og:image:title" content="{{ ogImageTitle }}">
 		<meta property="og:image:type" content="{{ ogImageType }}" />
 
+		// Image Alt text
 		<meta property="og:image:alt" content="{{ ogImageMetadata }}" />
 		<meta name="twitter:image:alt" content="{{ ogImageMetadata }}" />
-	{% endif %}
 
-	<meta property="og:image:height" content="630" />
-	<meta property="og:image:width" content="1200" />
+		// Image Size
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:width" content="1200" />
+	{% endif %}
 {% endif %}
 
 <meta name="robots" content="{{ _ynfinite.page.meta.robots|default("index,follow") }}" />
