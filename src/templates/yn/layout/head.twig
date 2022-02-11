@@ -56,7 +56,7 @@
 
 {% if ogImage is not null %}
 	{% set ogImageTitle = _ynfinite.page.meta.opengraph.image.metadata.title|default(null) %}
-	{% set ogImageURL = _ynfinite.page.meta.opengraph.image.path|default(null) %} {# ! Anpassen #}
+	{% set ogImageURL = _ynfinite.page.meta.opengraph.image.path|default(null) %}
 	{% set ogImageType = _ynfinite.page.meta.opengraph.image.file_type|default(null) %}
 	{% set ogImageMetadata = _ynfinite.page.meta.opengraph.image.metadata.alt|default(null) %}
 	{% if ogImageURL is not null %}
