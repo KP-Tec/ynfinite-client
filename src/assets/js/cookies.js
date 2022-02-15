@@ -10,28 +10,28 @@ const YnfiniteCookies = {
 
         document
           .getElementById("yn-cookies__allow-all")
-          .addEventListener("click", (e) => {
+          ?.addEventListener("click", (e) => {
             e.preventDefault();
             this.ynSetDefaultCookieSettings();
           });
 
         document
           .getElementById("yn-cookies__show-configuration")
-          .addEventListener("click", (e) => {
+          ?.addEventListener("click", (e) => {
             e.preventDefault();
             this.ynCookiesShowPage("configuration");
           });
 
         document
           .getElementById("yn-cookies__show-information")
-          .addEventListener("click", (e) => {
+          ?.addEventListener("click", (e) => {
             e.preventDefault();
             this.ynCookiesShowPage("information");
           });
 
         document
           .getElementById("yn-cookies__set-cookies")
-          .addEventListener("click", (e) => {
+          ?.addEventListener("click", (e) => {
             e.preventDefault();
             this.ynSetCookieSettings();
           });
@@ -171,4 +171,4 @@ const YnfiniteCookies = {
   },
 };
 
-module.exports = YnfiniteCookies;
+export default YnfiniteCookies

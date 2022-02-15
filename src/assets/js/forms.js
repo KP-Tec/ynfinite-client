@@ -234,4 +234,4 @@ const YnfiniteForms = {
   }
 };
 
-module.exports = YnfiniteForms;
+export default YnfiniteForms
