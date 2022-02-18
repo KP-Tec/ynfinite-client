@@ -47,6 +47,7 @@ const YnfiniteForms = {
 		sendButton.style.width = sendButton.offsetWidth + 'px'
 		sendButton.style.textAlign = 'center'
 		sendButton.style.opacity = 0.5
+		sendButton.style.cursor = none
 		sendButton.disabled = true
 
 		const loading = setInterval(() => {
@@ -62,12 +63,13 @@ const YnfiniteForms = {
 
 		sendButton.style.removeProperty('opacity')
 		clearInterval(loading)
-    
+
 		if (response.ok) {
-      sendButton.textContent = sendButton_text
+			sendButton.textContent = sendButton_text
 			sendButton.style.removeProperty('width')
 			sendButton.style.removeProperty('textAlign')
-      sendButton.disabled = false
+			sendButton.style.removeProperty('cursor')
+			sendButton.disabled = false
 		} else {
 			sendButton.style.backgroundColor = 'red'
 			sendButton.textContent = 'Error'
