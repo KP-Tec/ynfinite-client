@@ -1,237 +1,250 @@
 const YnfiniteForms = {
-  addChangeEvent(element) {
-    for (var i = 0; i < element.elements.length; i++) {
-      element.elements[i].addEventListener("change", function(e) {
-        e.preventDefault();
-        element.submit();
-      })
-    }  
-  },
+	addChangeEvent(element) {
+		for (var i = 0; i < element.elements.length; i++) {
+			element.elements[i].addEventListener('change', function (e) {
+				e.preventDefault()
+				element.submit()
+			})
+		}
+	},
 
-  resetForm(element) {
-    element.reset()
-  },
+	resetForm(element) {
+		element.reset()
+	},
 
-  async submitForm(element, eventType) {
-    const ynBeforeAsyncChangeData = new Event('onPreAsyncChangeData')
-        element.dispatchEvent(ynBeforeAsyncChangeData)
+	async submitForm(element, eventType) {
+		const ynBeforeAsyncChangeData = new Event('onPreAsyncChangeData')
+		element.dispatchEvent(ynBeforeAsyncChangeData)
 
-        const formData = new FormData(element);
-        formData.set("eventAsync",  true)
-        formData.set("eventType", eventType)
-        formData.set("method", element.getAttribute("data-ynformmethod"))
-        formData.set("formId", element.getAttribute("data-ynformid"))
-        formData.set("formLanguage", element.getAttribute("data-language"))
-        if(element.hasAttribute("data-ynsectionid")) {
-          formData.set("sectionId", element.getAttribute("data-ynsectionid"))
-        }
+		const formData = new FormData(element)
+		formData.set('eventAsync', true)
+		formData.set('eventType', eventType)
+		formData.set('method', element.getAttribute('data-ynformmethod'))
+		formData.set('formId', element.getAttribute('data-ynformid'))
+		formData.set('formLanguage', element.getAttribute('data-language'))
+		if (element.hasAttribute('data-ynsectionid')) {
+			formData.set('sectionId', element.getAttribute('data-ynsectionid'))
+		}
 
-        const data = new URLSearchParams();
+		const data = new URLSearchParams()
 
-        const params = new URLSearchParams(window.location.search);
-        const perPage = params.get("__yPerPage")
-    
-        if(perPage) {
-          data.append("__yPerPage", perPage)
-        }
-    
-        for (const pair of formData) {
-          data.append(pair[0], pair[1]);
-        }
+		const params = new URLSearchParams(window.location.search)
+		const perPage = params.get('__yPerPage')
 
-        const ynBeforeAsyncChange = new Event('onPreAsyncChange')
-        element.dispatchEvent(ynBeforeAsyncChange)
+		if (perPage) {
+			data.append('__yPerPage', perPage)
+		}
 
-        const response = await fetch("/yn-form/send", {
-          method: "POST",
-          body: formData
-        })
+		for (const pair of formData) {
+			data.append(pair[0], pair[1])
+		}
 
-        const ynAsyncChange = new CustomEvent('onAsyncChange', {detail: {
-          response: await response.json()
-        }})
-        element.dispatchEvent(ynAsyncChange)
-  },
+		const ynBeforeAsyncChange = new Event('onPreAsyncChange')
+		element.dispatchEvent(ynBeforeAsyncChange)
 
-  addAsyncChangeEvent(element) {
-    const formInputElements = element.querySelectorAll("select, input");
-    
-    for (var i = 0; i < formInputElements.length; i++) {
-      formInputElements[i].addEventListener("change", async (e) => {
-        e.preventDefault();
-        await this.submitForm(element, "onChange")
-      })
-    }  
-  },
+		const sendButton = element.querySelector('.button')
+		const sendButton_text = sendButton.textContent
+		sendButton.style.width = sendButton.offsetWidth + 'px'
+		sendButton.style.textAlign = 'center'
+		sendButton.style.opacity = 0.5
+		sendButton.style.cursor = none
+		sendButton.disabled = true
 
-  addAsyncSubmitEvent(element) {
-    element.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      await this.submitForm(element, "onSubmit")
-    })
-  },
-  
-  
-  setup() {
-    document.addEventListener("DOMContentLoaded", () => {
-      const forms = document.querySelectorAll("[data-ynform=true]");
+		const loading = setInterval(() => {
+			if (sendButton.textContent.length > 3) {
+				sendButton.textContent = '.'
+			} else sendButton.textContent = sendButton.textContent + ' .'
+		}, 150)
 
-      forms.forEach((form) => {
+		const response = await fetch('/yn-form/send', {
+			method: 'POST',
+			body: formData,
+		})
 
-        if(form.hasAttribute("data-onchange")) {
-    
-          if(form.dataset.onchange === "async") {
-            this.addAsyncChangeEvent(form)
-          } else {
-            this.addChangeEvent(form)
-          }
-        }
+		sendButton.style.removeProperty('opacity')
+		clearInterval(loading)
 
-        if(form.hasAttribute("data-onsubmit")) {
-          if(form.dataset.onsubmit === "async") {
-            this.addAsyncSubmitEvent(form);
-          }
-        }
+		if (response.ok) {
+			sendButton.textContent = sendButton_text
+			sendButton.style.removeProperty('width')
+			sendButton.style.removeProperty('textAlign')
+			sendButton.style.removeProperty('cursor')
+			sendButton.disabled = false
+		} else {
+			sendButton.style.backgroundColor = 'red'
+			sendButton.textContent = 'Error'
+			console.log(response)
+		}
 
-        // Handle reset action
+		const ynAsyncChange = new CustomEvent('onAsyncChange', {
+			detail: {
+				response: await response.json(),
+			},
+		})
+		element.dispatchEvent(ynAsyncChange)
+	},
 
-        const resetButton = form.querySelector("button[type='reset']");
-        if(resetButton) {
-          resetButton.addEventListener("click", async (e) => {
+	addAsyncChangeEvent(element) {
+		const formInputElements = element.querySelectorAll('select, input')
 
-            const formInputElements = form.querySelectorAll("select, input");
-    
-            for (var i = 0; i < formInputElements.length; i++) {
-              formInputElements[i].value = "";
-            }  
+		for (var i = 0; i < formInputElements.length; i++) {
+			formInputElements[i].addEventListener('change', async (e) => {
+				e.preventDefault()
+				await this.submitForm(element, 'onChange')
+			})
+		}
+	},
 
-            await this.submitForm(form)
-          })
-        }
+	addAsyncSubmitEvent(element) {
+		element.addEventListener('submit', async (e) => {
+			e.preventDefault()
+			await this.submitForm(element, 'onSubmit')
+		})
+	},
 
-        // Handle new form
+	setup() {
+		document.addEventListener('DOMContentLoaded', () => {
+			const forms = document.querySelectorAll('[data-ynform=true]')
 
-        const newFormLink = form.querySelector(".yn-form-response__new-form");
-        newFormLink.addEventListener("click", (e) => {
-          e.preventDefault();
-          this.resetForm(form)
-          
-          newFormLink.closest("form").querySelector(".form-content").classList.remove("inactive");
-          newFormLink.closest(".yn-form-response").classList.remove("active");
-          
-        })
+			forms.forEach((form) => {
+				if (form.hasAttribute('data-onchange')) {
+					if (form.dataset.onchange === 'async') {
+						this.addAsyncChangeEvent(form)
+					} else {
+						this.addChangeEvent(form)
+					}
+				}
 
-        // Handle list fields
-        const listFields = form.querySelectorAll(
-          ".yn-listForm-wrapper"
-        );
+				if (form.hasAttribute('data-onsubmit')) {
+					if (form.dataset.onsubmit === 'async') {
+						this.addAsyncSubmitEvent(form)
+					}
+				}
 
-        listFields.forEach((listField) => {
-          const newAction = listField.querySelector(
-            ".yn-listForm-actions-new"
-          );
+				// Handle reset action
 
-          const rowTemplate = listField.querySelector(
-            "#listField_" + listField.dataset.ynformalias
-          );
+				const resetButton = form.querySelector("button[type='reset']")
+				if (resetButton) {
+					resetButton.addEventListener('click', async (e) => {
+						const formInputElements = form.querySelectorAll('select, input')
 
-          const dataContainer = listField.querySelector(
-            ".yn-listForm-data"
-          );
+						for (var i = 0; i < formInputElements.length; i++) {
+							formInputElements[i].value = ''
+						}
 
-          newAction.addEventListener("click", (e) => {
-            e.preventDefault();
-            const newRow = rowTemplate.content.cloneNode(true);
-            newRow.className = "yn-listForm-row";
+						await this.submitForm(form)
+					})
+				}
 
-            const deleteButton = newRow.querySelector(
-              ".yn-listForm-actions-delete"
-            );
+				// Handle new form
 
-            const fields = newRow.querySelectorAll("[data-ynfield=true]");
-            fields.forEach((f) => {
-              f.setAttribute(
-                "name",
-                f.name.replace("::count::", dataContainer.childElementCount)
-              );
-            });
+				const newFormLink = form.querySelector('.yn-form-response__new-form')
+				newFormLink.addEventListener('click', (e) => {
+					e.preventDefault()
+					this.resetForm(form)
 
-            dataContainer.appendChild(newRow);
+					newFormLink.closest('form').querySelector('.form-content').classList.remove('inactive')
+					newFormLink.closest('.yn-form-response').classList.remove('active')
+				})
 
-            deleteButton.addEventListener("click", (e) => {
-              e.preventDefault();
-              const row = e.target.closest(".yn-listForm-row");
-              dataContainer.removeChild(row);
-            });
-          });
-        });
-      });
-    });
-  },
+				// Handle list fields
+				const listFields = form.querySelectorAll('.yn-listForm-wrapper')
 
-  enableForm(form) {
-    const fieldset = form.querySelector("fieldset");
-		fieldset.disabled = false;
-  },
+				listFields.forEach((listField) => {
+					const newAction = listField.querySelector('.yn-listForm-actions-new')
 
-  disableForm(form) {
-    const fieldset = form.querySelector("fieldset");
-		fieldset.disabled = true;
-  },
+					const rowTemplate = listField.querySelector('#listField_' + listField.dataset.ynformalias)
 
-  updateUrl(form) {
-    const formData = new FormData(form);
+					const dataContainer = listField.querySelector('.yn-listForm-data')
 
-    const data = new URLSearchParams();
-    
-    const params = new URLSearchParams(window.location.search);
-    const perPage = params.get("__yPerPage")
+					newAction.addEventListener('click', (e) => {
+						e.preventDefault()
+						const newRow = rowTemplate.content.cloneNode(true)
+						newRow.className = 'yn-listForm-row'
 
-    if(perPage) {
-      data.append("__yPerPage", perPage)
-    }
+						const deleteButton = newRow.querySelector('.yn-listForm-actions-delete')
 
-    for (const pair of formData) {
-      if(pair[1]) {
-        data.append(pair[0], pair[1]);
-      }
-    }
+						const fields = newRow.querySelectorAll('[data-ynfield=true]')
+						fields.forEach((f) => {
+							f.setAttribute('name', f.name.replace('::count::', dataContainer.childElementCount))
+						})
 
-    let newHref = `${window.location.protocol}//${window.location.hostname}${window.location.pathname}`;
-    if(data.toString()) {
-      newHref += `?${data.toString()}`
-    }
+						dataContainer.appendChild(newRow)
 
-    history.pushState({}, "", newHref);
-  },
+						deleteButton.addEventListener('click', (e) => {
+							e.preventDefault()
+							const row = e.target.closest('.yn-listForm-row')
+							dataContainer.removeChild(row)
+						})
+					})
+				})
+			})
+		})
+	},
 
-  repopulateForm(form, data) {
-    const keys = Object.keys(data.fields);
-    for(var i = 0; i < keys.length; i++) {
-      const element = data.fields[keys[i]];
-      const formElement = form.querySelector(`[name="fields[${element.alias}]"]`)
+	enableForm(form) {
+		const fieldset = form.querySelector('fieldset')
+		fieldset.disabled = false
+	},
 
-      if(!formElement) break;
+	disableForm(form) {
+		const fieldset = form.querySelector('fieldset')
+		fieldset.disabled = true
+	},
 
-      let markup = `${element.options.map(option => `<option value="${option.value}" ${option.value === element.value ? "selected" : ""}>${option.label}</option>`).join("")}`;
-      if(!formElement.options[0].value) {
-        markup = `<option value>${formElement.options[0].text}</option>${markup}`
-      }
+	updateUrl(form) {
+		const formData = new FormData(form)
 
-      formElement.innerHTML = markup
-    }
-  },
+		const data = new URLSearchParams()
 
-  showResponse(form, data) {
-    const responseContainer = form.querySelector(".yn-form-response");
-    const formContent = form.querySelector(".form-content");
-    
-    const innerContainer = responseContainer.querySelector(".yn-form-response__inner");
-    
-    formContent.classList.add("inactive")
-    innerContainer.innerHTML = data.rendered;
-    responseContainer.classList.add("active");
-  }
-};
+		const params = new URLSearchParams(window.location.search)
+		const perPage = params.get('__yPerPage')
+
+		if (perPage) {
+			data.append('__yPerPage', perPage)
+		}
+
+		for (const pair of formData) {
+			if (pair[1]) {
+				data.append(pair[0], pair[1])
+			}
+		}
+
+		let newHref = `${window.location.protocol}//${window.location.hostname}${window.location.pathname}`
+		if (data.toString()) {
+			newHref += `?${data.toString()}`
+		}
+
+		history.pushState({}, '', newHref)
+	},
+
+	repopulateForm(form, data) {
+		const keys = Object.keys(data.fields)
+		for (var i = 0; i < keys.length; i++) {
+			const element = data.fields[keys[i]]
+			const formElement = form.querySelector(`[name="fields[${element.alias}]"]`)
+
+			if (!formElement) break
+
+			let markup = `${element.options.map((option) => `<option value="${option.value}" ${option.value === element.value ? 'selected' : ''}>${option.label}</option>`).join('')}`
+			if (!formElement.options[0].value) {
+				markup = `<option value>${formElement.options[0].text}</option>${markup}`
+			}
+
+			formElement.innerHTML = markup
+		}
+	},
+
+	showResponse(form, data) {
+		const responseContainer = form.querySelector('.yn-form-response')
+		const formContent = form.querySelector('.form-content')
+
+		const innerContainer = responseContainer.querySelector('.yn-form-response__inner')
+
+		formContent.classList.add('inactive')
+		innerContainer.innerHTML = data.rendered
+		responseContainer.classList.add('active')
+	},
+}
 
 export default YnfiniteForms
