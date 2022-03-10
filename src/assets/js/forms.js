@@ -48,13 +48,13 @@ const YnfiniteForms = {
 		sendButton.style.textAlign = 'center'
 		sendButton.style.opacity = 0.5
 		sendButton.style.cursor = 'none'
-		sendButton.disabled = true
+		sendButton.disabled = true 
 
 		const loading = setInterval(() => {
 			if (sendButton.textContent.length > 3) {
 				sendButton.textContent = '.'
 			} else sendButton.textContent = sendButton.textContent + ' .'
-		}, 150)
+		}, 150) 
 
 		const response = await fetch('/yn-form/send', {
 			method: 'POST',
