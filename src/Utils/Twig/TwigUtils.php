@@ -51,6 +51,7 @@ class TwigUtils
             'form:fields.hidden' => 'yn/components/form/hidden.twig',
             'form:fields.spacer' => 'yn/components/form/spacer.twig',
             'form:fields.description' => 'yn/components/form/description.twig',
+            'form:fields.highlight' => 'yn/components/form/highlight.twig',
             'form:fields.basic' => 'yn/components/form/basic.twig',
             'form:fields.categories' => 'yn/components/form/categories.twig',
             'form:fields.distance' => 'yn/components/form/distance.twig',
@@ -129,7 +130,7 @@ class TwigUtils
         ];
     }
 
-    public function printImage($image, $sizes = [], $classes = '', $nolazy = '')
+    public function printImage($image, $sizes = [], $classes = '')
     {
         $sources = $this->getSizes($image, $sizes);
 
@@ -140,11 +141,10 @@ class TwigUtils
             'height' => $sources['height'],
             'width' => $sources['width'],
             'classes' => $classes,
-            'nolazy' => $nolazy,
         ]);
     }
 
-    public function printFigure($image, $sizes = [], $classes = '', $nolazy = '')
+    public function printFigure($image, $sizes = [], $classes = '')
     {
         $sources = $this->getSizes($image, $sizes);
         return $this->twig->render($this->getTemplate('images:figure'), [
@@ -154,7 +154,6 @@ class TwigUtils
             'height' => $sources['height'],
             'width' => $sources['width'],
             'classes' => $classes,
-            'nolazy' => $nolazy,
         ]);
     }
 
@@ -244,84 +243,6 @@ class TwigUtils
             'addValues' => $addValues,
         ]);
     }
-
-    public function renderGroupByIndex(
-		$form,
-		$section = [],
-		$groupIndex,
-		$addValues = [],
-		$parent = ''
-	) {
-		$this->currentForm = $form;
-
-		$hiddenFields = [];
-
-		$targetGroup = $form['groups'][$groupIndex];
-
-		return $this->renderGroup($targetGroup, $form, $section, $addValues, $parent);
-	}
-
-	public function renderGroupByAlias(
-		$form,
-		$section = [],
-		$groupAlias,
-		$addValues = [],
-		$parent = ''
-	) {
-		$this->currentForm = $form;
-
-		$hiddenFields = [];
-
-		$targetGroup = array_filter($form['groups'], function($v) use($groupAlias) {
-		 	return $v['alias'] === $groupAlias;
-		 });
-
-
-		if(sizeof($targetGroup) <= 0) {
-			return "The chosen alias does not exist";
-		}
-
-		$targetGroup = array_values($targetGroup)[0];
-
-		return $this->renderGroup($targetGroup, $form, $section, $addValues, $parent);
-	}
-
-	private function renderGroup($targetGroup, $form, $section, $addValues, $parent) {
-		$groups = ['label' => $targetGroup['label']];
-
-		$fieldGrid = [];
-		$currentRow = [];
-		$currentY = -1;
-
-		foreach ($targetGroup["elements"] as $field) {
-			$grid = $field['grid'];
-
-			if ($field['type'] === 'hidden') {
-				$hiddenFields[] = $field;
-			} else {
-				if (!is_array($fieldGrid[$grid['y']])) {
-					$fieldGrid[$grid['y']] = [];
-				}
-				$fieldGrid[$grid['y']][$grid['x']] = $field;
-				ksort($fieldGrid[$grid['y']]);
-			}
-		}
-
-		ksort($fieldGrid);
-
-		$groups[0]['fields'] = $fieldGrid;
-
-
-		return $this->twig->render('yn/components/renderFields.twig', [
-			'form' => $form,
-			'groups' => $groups,
-			'parent' => $parent,
-			'hiddenFields' => $hiddenFields,
-			'section' => $section,
-			'templates' => $this->templates,
-			'addValues' => $addValues,
-		]);
-	}
 
     public function printCookieSettingsButton()
     {
