@@ -44,7 +44,7 @@ const YnfiniteForms = {
 
 		const sendButton = element.querySelector('.button')
 		const sendButton_text = sendButton.textContent
-		sendButton.style.width = sendButton.offsetWidth + 'px'
+		sendButton.style.width = sendButton.getBoundingClientRect().width + 'px'
 		sendButton.style.textAlign = 'center'
 		sendButton.style.opacity = 0.5
 		sendButton.style.cursor = 'none'
