@@ -123,14 +123,14 @@ class TwigUtils
         }
 
         return [
-            'src' => $src, 
+            'src' => $src,
             'srcset' => implode(',', $srcset),
-            'height' => $sizes[0]["h"], 
+            'height' => $sizes[0]["h"],
             'width' => $sizes[0]["w"]
         ];
     }
 
-    public function printImage($image, $sizes = [], $classes = '')
+    public function printImage($image, $sizes = [], $classes = '', $nolazy = '')
     {
         $sources = $this->getSizes($image, $sizes);
 
@@ -141,10 +141,11 @@ class TwigUtils
             'height' => $sources['height'],
             'width' => $sources['width'],
             'classes' => $classes,
+            'nolazy' => $nolazy,
         ]);
     }
 
-    public function printFigure($image, $sizes = [], $classes = '')
+    public function printFigure($image, $sizes = [], $classes = '', $nolazy = '')
     {
         $sources = $this->getSizes($image, $sizes);
         return $this->twig->render($this->getTemplate('images:figure'), [
@@ -154,6 +155,7 @@ class TwigUtils
             'height' => $sources['height'],
             'width' => $sources['width'],
             'classes' => $classes,
+            'nolazy' => $nolazy,
         ]);
     }
 
@@ -243,6 +245,56 @@ class TwigUtils
             'addValues' => $addValues,
         ]);
     }
+
+    public function renderGroupFieldsByIndex(
+		$form,
+		$section = [],
+		$groupIndex,
+		$addValues = [],
+		$parent = ''
+	) {
+		$this->currentForm = $form;
+
+		$hiddenFields = [];
+
+		$targetGroup = $form['groups'][$groupIndex];
+
+
+		$groups = ['label' => $targetGroup['label']];
+
+		$fieldGrid = [];
+		$currentRow = [];
+		$currentY = -1;
+
+		foreach ($targetGroup["elements"] as $field) {
+			$grid = $field['grid'];
+
+			if ($field['type'] === 'hidden') {
+				$hiddenFields[] = $field;
+			} else {
+				if (!is_array($fieldGrid[$grid['y']])) {
+					$fieldGrid[$grid['y']] = [];
+				}
+				$fieldGrid[$grid['y']][$grid['x']] = $field;
+				ksort($fieldGrid[$grid['y']]);
+			}
+		}
+
+		ksort($fieldGrid);
+
+		$groups[0]['fields'] = $fieldGrid;
+
+
+		return $this->twig->render('yn/components/renderFields.twig', [
+			'form' => $form,
+			'groups' => $groups,
+			'parent' => $parent,
+			'hiddenFields' => $hiddenFields,
+			'section' => $section,
+			'templates' => $this->templates,
+			'addValues' => $addValues,
+		]);
+	}
 
     public function printCookieSettingsButton()
     {
