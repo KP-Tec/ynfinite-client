@@ -16,6 +16,7 @@ use App\Action\InvalidateAllCacheAction;
 use App\Action\RenderPageAction;
 use App\Action\SendFormAction;
 use App\Action\UpdateToVersionAction;
+use App\Action\GdprRequest;
 
 // Services
 use App\Domain\Request\Service\GetRobotsTxtService;

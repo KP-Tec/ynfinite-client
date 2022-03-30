@@ -1,0 +1,50 @@
+<div class="yn-gdpr">
+    <div class="yn-form-instruction">
+        {{form.formInstruction|raw}}
+    </div>
+    <form class="yn-form" id="form_gdpr_request" method="POST" enctype="multipart/form-data" action="/yn-gdpr/request" data-ynform="true" data-onsubmit="async" data-language="{{_ynfinite.languages.current}}" {% if(section._id) %} data-ynsectionid="{{section._id}}"{% endif %} data-ynformmethod="POST">
+        <fieldset>
+            <div class="yn-error"></div>
+            <div class="form-content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class='widget widget--email'>
+                            <label class="widget__label" for="email">
+                                E-Mail
+                                <span class="required">*</span>
+                            </label>
+
+                            <div class="widget__input-container">
+                                <input type="email" name="email" required value="m.claus@koenigspunkt.de"/>
+                                <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{ _yfunc("consents", form) }}
+                <div class="yn-form-controlls">
+                    <button type="submit" class="button">
+                        Jetzt absenden
+                    </button>
+                </div>
+            </div>
+            <div class="yn-form-response">
+                <div class="yn-form-response__inner"></div>
+                <div class="yn-form-response__control">
+                    <a class="yn-form-response__new-form" href="#">Neues Formular</a>
+                </div>
+            </div>
+	    </fieldset>
+       
+
+        <script>
+			(function() {
+				const form = document.querySelector("#form_gdpr_request");
+				
+				form.addEventListener("onAsyncChange", function(e) {
+					window.$_yn.forms.showResponse(this, e.detail.response)
+				})
+			})()
+		</script>
+    </form>
+</div>

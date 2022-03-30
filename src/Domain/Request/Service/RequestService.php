@@ -74,10 +74,10 @@ class RequestService {
         return $postBody;
     }
 
-    protected function request($path, $service, $body, $json = true)
+    protected function request($path, $service, $body = array(), $json = true)
     {
         $this->curlHandler->setUrl($service, $path);
-        
+    
         $response = $this->curlHandler->exec($body);    
 
         if ($json) {

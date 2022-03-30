@@ -51,6 +51,16 @@ return [
             'port' => $ynfinite_port,
             'controller' => "/v1/api/frontend/form",
         ],
+        'gdpr_request' => [
+            'host' => $ynfinite_server,
+            'port' => $ynfinite_port,
+            'controller' => "/v1/api/gdpr/request",
+        ],
+        'gdpr_update' => [
+            'host' => $ynfinite_server,
+            'port' => $ynfinite_port,
+            'controller' => "/v1/api/gdpr/update",
+        ],
         'sitemap' => [
             'host' => $ynfinite_server,
             'port' => $ynfinite_port,
@@ -60,6 +70,13 @@ return [
             'host' => $ynfinite_server,
             'port' => $ynfinite_port,
             'controller' => "/v1/api/frontend/robots"
+        ],
+        'gdpr' => [
+            "request" => [
+                'host' => $ynfinite_server,
+                'port' => $ynfinite_port,
+                'controller' => "/v1/api/frontend/gdpr/request"
+            ]
         ],
         'file' => [
             'host' => $fileservice_server,

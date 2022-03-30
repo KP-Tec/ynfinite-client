@@ -78,14 +78,14 @@ final class TwigRenderer
 
         $this->twigFunc = new TwigUtils($this->twig, $this->data, $this->templateList, $this->templateOverrides, $this->uriData);
 
-        $_yfunc = new \Twig\TwigFunction('_yfunc', function ($methode) {
+        $_yfunc = new \Twig\TwigFunction('_yfunc', function ($context, $methode) {
 
             $arg_list = func_get_args();
-            unset($arg_list[0]);
+            unset($arg_list[1]);
 
             return call_user_func_array(array($this->twigFunc, $methode), $arg_list);
 
-        }, ['is_safe' => ['html']]);
+        }, ['is_safe' => ['html'], "needs_context" => true]);
 
         $this->twig->addFunction($_yfunc);
 
