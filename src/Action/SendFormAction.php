@@ -26,7 +26,6 @@ final class SendFormAction
         ServerRequestInterface $request, 
         ResponseInterface $response
     ): ResponseInterface {
-        
         $formResponse = $this->sendFormService->sendForm($request, $_POST);
         
         if($formResponse) {

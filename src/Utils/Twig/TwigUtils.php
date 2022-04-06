@@ -55,6 +55,8 @@ class TwigUtils
             'form:fields.basic' => 'yn/components/form/basic.twig',
             'form:fields.categories' => 'yn/components/form/categories.twig',
             'form:fields.distance' => 'yn/components/form/distance.twig',
+            "gdpr:request" => "yn/module/gdpr/request.twig",
+            "gdpr:update" => "yn/module/gdpr/update.twig",
             'listing:pagination' => 'yn/components/pagination.twig',
             'listing:perPageDropdown' => 'yn/components/perPageDropdown.twig',
         ];
@@ -130,7 +132,7 @@ class TwigUtils
         ];
     }
 
-    public function printImage($image, $sizes = [], $classes = '', $nolazy = '')
+    public function printImage($context, $image, $sizes = [], $classes = '', $nolazy = '')
     {
         $sources = $this->getSizes($image, $sizes);
 
@@ -145,7 +147,7 @@ class TwigUtils
         ]);
     }
 
-    public function printFigure($image, $sizes = [], $classes = '', $nolazy = '')
+    public function printFigure($context, $image, $sizes = [], $classes = '', $nolazy = '')
     {
         $sources = $this->getSizes($image, $sizes);
         return $this->twig->render($this->getTemplate('images:figure'), [
@@ -159,7 +161,7 @@ class TwigUtils
         ]);
     }
 
-    public function form($form, $section = [])
+    public function form($context, $form, $section = [])
     {
         $this->currentForm = $form;
 
@@ -176,11 +178,29 @@ class TwigUtils
             'form' => $form,
             'section' => $section,
             'templates' => $this->templates,
+            "isAsync" => $isAsync ? true : false,
             "data" => implode(" ",$data)
         ]);
     }
 
-    public function renderArticle($article, $imageConfigAlias = [])
+    public function renderGdprRequestForm($context, $form) {
+        return $this->twig->render($this->getTemplate('gdpr:request'), [
+            'form' => $form,
+            "section" => $context["section"], 
+            'templates' => $this->templates,
+        ]);        
+    }
+
+    public function renderGdprUpdateForm($context, $form) {
+        return $this->twig->render($this->getTemplate('gdpr:update'), [
+            'form' => $form,
+            "section" => $context["section"], 
+            "lead" => $context["lead"],
+            'templates' => $this->templates,
+        ]);        
+    }
+
+    public function renderArticle($context, $article, $imageConfigAlias = [])
     {
         return $this->twig->render($this->getTemplate('article:article'), [
             'article' => $article,
@@ -188,7 +208,7 @@ class TwigUtils
         ]);
     }
 
-    public function renderArticleComponent($component, $imageConfigAlias = [])
+    public function renderArticleComponent($context, $component, $imageConfigAlias = [])
     {
         return $this->twig->render(
             $this->getTemplate('article:' . $component['type']),
@@ -197,6 +217,7 @@ class TwigUtils
     }
 
     public function renderFields(
+        $context, 
         $form,
         $section = [],
         $addValues = [],
@@ -304,6 +325,7 @@ class TwigUtils
     }
 
     public function formField(
+        $context, 
         $formField,
         $renderWidget = true,
         $valueOverride = '',
@@ -328,21 +350,21 @@ class TwigUtils
         }
     }
 
-    public function consents($form)
+    public function consents($context, $form)
     {
         return $this->twig->render('yn/components/form/consents.twig', [
             'form' => $form,
         ]);
     }
 
-    public function pagination()
+    public function pagination($context)
     {
         return $this->twig->render($this->getTemplate('listing:pagination'), [
             'uriData' => $this->uriData,
         ]);
     }
 
-    public function perPageDropdown()
+    public function perPageDropdown($context)
     {
         return $this->twig->render(
             $this->getTemplate('listing:perPageDropdown'),
@@ -350,13 +372,13 @@ class TwigUtils
         );
     }
 
-    public function linkPage($pageSlug, $slug = '')
+    public function linkPage($context, $pageSlug, $slug = '')
     {
         $route = $this->data['routes'][$pageSlug];
         return str_replace('{{alias}}', $slug, $route);
     }
 
-    public function sectionByAlias($alias)
+    public function sectionByAlias($context, $alias)
     {
         $sections = $this->data['sections'];
         foreach ($sections as $key => $section) {
@@ -368,7 +390,7 @@ class TwigUtils
         return false;
     }
 
-    public function printString ($data){
+    public function printString ($context, $data){
         $intro_title = array();
         foreach($data as $entry){
             if (is_array($entry)){
@@ -384,7 +406,7 @@ class TwigUtils
         return implode('', $intro_title);
     }
 
-    public function withVersion($path) {
+    public function withVersion($context, $path) {
         $parsed = parse_url($path);
         $separator = "?";
         if ($parsed["query"]){

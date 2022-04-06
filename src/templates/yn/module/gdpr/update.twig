@@ -1,0 +1,254 @@
+<div class="yn-gdpr">
+    <div class="yn-form-instruction">
+        {{form.formInstruction|raw}}
+    </div>
+    {% if lead.error is not defined %}
+        <form class="yn-form" id="form_gdpr_update" method="POST" enctype="multipart/form-data" action="/yn-gdpr/update" data-ynform="true" data-onsubmit="async" data-language="{{_ynfinite.languages.current}}" {% if(section._id) %} data-ynsectionid="{{section._id}}"{% endif %} data-ynformmethod="POST">
+            <fieldset>
+                <div class="yn-error"></div>
+                <div class="form-content">
+                    <input type="hidden" name="hash" value="{{lead.hashes.gdpr.hash}}" />
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class='widget widget--email'>
+                                <label class="widget__label" for="lead[email]">
+                                    E-Mail
+                                    <span class="required">*</span>
+                                </label>
+
+                                <div class="widget__input-container">
+                                    <input type="email" name="lead[email]" required value="{{lead.email}}"/>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class='widget widget--text'>
+                                <label class="widget__label" for="lead[salutation]">
+                                    Salutation
+                                </label>
+
+                                <div class="widget__input-container">
+                                    <select name="lead[salutation]" value="{{lead.salutation}}">
+                                        <option value="" {{lead.salutation == "" ? "selected": ""}}>No information</option>
+                                        <option value="m" {{lead.salutation == "m" ? "selected": ""}}>Mr.</option>
+                                        <option value="f" {{lead.salutation == "f" ? "selected": ""}}>Ms. / Mrs.</option>
+                                        <option value="d" {{lead.salutation == "d" ? "selected": ""}}>Diverse</option>
+                                    </select>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class='widget widget--text'>
+                                <label class="widget__label" for="lead[title]">
+                                    Title
+                                </label>
+
+                                <div class="widget__input-container">
+                                    <input type="text" name="lead[title]" value="{{lead.title}}"/>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class='widget widget--text'>
+                                <label class="widget__label" for="lead[firstName]">
+                                    Firstname
+                                </label>
+
+                                <div class="widget__input-container">
+                                    <input type="text" name="lead[firstName]" value="{{lead.firstName}}"/>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class='widget widget--text'>
+                                <label class="widget__label" for="lead[lastName]">
+                                    Lastname
+                                </label>
+
+                                <div class="widget__input-container">
+                                    <input type="text" name="lead[lastName]" value="{{lead.lastName}}"/>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="yn-form-divider">Address data</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                        <div class='widget widget--text'>
+                                <label class="widget__label" for="lead[company]">
+                                    Company
+                                </label>
+
+                                <div class="widget__input-container">
+                                    <input type="text" name="lead[company]" value="{{lead.company}}"/>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-9">
+                        <div class='widget widget--text'>
+                                <label class="widget__label" for="lead[address][street]">
+                                    Street
+                                </label>
+
+                                <div class="widget__input-container">
+                                    <input type="text" name="lead[address][street]" value="{{lead.address.street}}"/>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-3">
+                        <div class='widget widget--text'>
+                                <label class="widget__label" for="lead[address][houseNumber]">
+                                    House number
+                                </label>
+
+                                <div class="widget__input-container">
+                                    <input type="text" name="lead[address][houseNumber]" value="{{lead.address.houseNumber}}"/>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4">
+                        <div class='widget widget--text'>
+                                <label class="widget__label" for="lead[address][zip]">
+                                    ZIP
+                                </label>
+                                <div class="widget__input-container">
+                                    <input type="text" name="lead[address][zip]" value="{{lead.address.zip}}"/>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-8">
+                        <div class='widget widget--text'>
+                                <label class="widget__label" for="lead[address][city]">
+                                    City
+                                </label>
+                                <div class="widget__input-container">
+                                    <input type="text" name="lead[address][city]" value="{{lead.address.city}}"/>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                        <div class='widget widget--text'>
+                                <label class="widget__label" for="lead[address][state]">
+                                    State
+                                </label>
+                                <div class="widget__input-container">
+                                    <input type="text" name="lead[address][state]" value="{{lead.address.state}}"/>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                        <div class='widget widget--text'>
+                                <label class="widget__label" for="lead[address][country]">
+                                    Country
+                                </label>
+                                <div class="widget__input-container">
+                                    <input type="text" name="lead[address][country]" value="{{lead.address.country}}"/>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="yn-form-divider">Contact data</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                        <div class='widget widget--text'>
+                                <label class="widget__label" for="lead[contactInformation][phone]">
+                                    Phone
+                                </label>
+                                <div class="widget__input-container">
+                                    <input type="text" name="lead[contactInformation][phone]" value="{{lead.contactInformation.phone}}"/>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                        <div class='widget widget--text'>
+                                <label class="widget__label" for="lead[contactInformation][mobile]">
+                                    Mobile
+                                </label>
+                                <div class="widget__input-container">
+                                    <input type="text" name="lead[contactInformation][mobile]" value="{{lead.contactInformation.mobile}}"/>
+                                    {# <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small> #}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="yn-form-divider"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class='widget widget--text yn-form-highlight'>
+                                <label class="widget__label" for="action">
+                                    Action
+                                </label>
+
+                                <div class="widget__input-container">
+                                    <select name="action" required>
+                                        <option value="update">Update my data</option>
+                                        <option value="delete">Delete all my data</option>
+                                    </select>
+                                    <small class="widget__hint">Please tell us what you want us to do with your data.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{ _yfunc("consents", form) }}
+                    <div class="yn-form-controlls">
+                        <button type="submit" class="button">
+                            Jetzt absenden
+                        </button>
+                    </div>
+                </div>
+                <div class="yn-form-response">
+                    <div class="yn-form-response__inner"></div>
+                </div>
+            </fieldset>
+            <script>
+                (function() {
+                    const form = document.querySelector("#form_gdpr_update");
+                    
+                    form.addEventListener("onAsyncChange", function(e) {
+                        window.$_yn.forms.showResponse(this, e.detail.response)
+                    })
+                })()
+            </script>
+        </form>
+    {% else %}
+        <div class="yn-error">
+            <p>{{lead.error}}</p>
+        </div>
+    {% endif %}
+</div>

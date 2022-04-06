@@ -26,6 +26,8 @@ const YnfiniteForms = {
 			formData.set('sectionId', element.getAttribute('data-ynsectionid'))
 		}
 
+		const action = element.getAttribute('action')
+
 		const data = new URLSearchParams()
 
 		const params = new URLSearchParams(window.location.search)
@@ -42,43 +44,10 @@ const YnfiniteForms = {
 		const ynBeforeAsyncChange = new Event('onPreAsyncChange')
 		element.dispatchEvent(ynBeforeAsyncChange)
 
-		const sendButton = element.querySelector('.button')
-		const sendButton_text = sendButton.textContent
-		sendButton.style.width = sendButton.getBoundingClientRect().width + 'px'
-		sendButton.style.height = sendButton.getBoundingClientRect().height + 'px'
-		sendButton.style.justifyContent = 'center'
-		sendButton.style.textAlign = 'center'
-		sendButton.style.opacity = 0.5
-		sendButton.style.cursor = 'wait'
-		sendButton.disabled = true 
-
-		const loading = setInterval(() => {
-			if (sendButton.textContent.length > 3) {
-				sendButton.textContent = '.'
-			} else sendButton.textContent = sendButton.textContent + ' .'
-		}, 150) 
-
-		const response = await fetch('/yn-form/send', {
+		const response = await fetch(action, {
 			method: 'POST',
-			body: formData,
+			body: data,
 		})
-
-		sendButton.style.removeProperty('opacity')
-		clearInterval(loading)
-
-		if (response.ok) {
-			sendButton.textContent = sendButton_text
-			sendButton.style.removeProperty('width')
-			sendButton.style.removeProperty('height')
-			sendButton.style.removeProperty('textAlign') 
-			sendButton.style.removeProperty('cursor')
-			sendButton.style.removeProperty('justifyContent')
-			sendButton.disabled = false
-		} else {
-			sendButton.style.backgroundColor = 'red'
-			sendButton.textContent = 'Error'
-			console.log(response)
-		}
 
 		const ynAsyncChange = new CustomEvent('onAsyncChange', {
 			detail: {
@@ -143,13 +112,15 @@ const YnfiniteForms = {
 				// Handle new form
 
 				const newFormLink = form.querySelector('.yn-form-response__new-form')
-				newFormLink.addEventListener('click', (e) => {
-					e.preventDefault()
-					this.resetForm(form)
+				if (newFormLink) {
+					newFormLink.addEventListener('click', (e) => {
+						e.preventDefault()
+						this.resetForm(form)
 
-					newFormLink.closest('form').querySelector('.form-content').classList.remove('inactive')
-					newFormLink.closest('.yn-form-response').classList.remove('active')
-				})
+						newFormLink.closest('form').querySelector('.form-content').classList.remove('inactive')
+						newFormLink.closest('.yn-form-response').classList.remove('active')
+					})
+				}
 
 				// Handle list fields
 				const listFields = form.querySelectorAll('.yn-listForm-wrapper')
@@ -230,7 +201,14 @@ const YnfiniteForms = {
 
 			if (!formElement) break
 
-			let markup = `${element.options.map((option) => `<option value="${option.value}" ${option.value === element.value ? 'selected' : ''}>${option.label}</option>`).join('')}`
+			let markup = `${element.options
+				.map(
+					(option) =>
+						`<option value="${option.value}" ${option.value === element.value ? 'selected' : ''}>${
+							option.label
+						}</option>`
+				)
+				.join('')}`
 			if (!formElement.options[0].value) {
 				markup = `<option value>${formElement.options[0].text}</option>${markup}`
 			}
@@ -251,4 +229,4 @@ const YnfiniteForms = {
 	},
 }
 
-export default YnfiniteForms
+module.exports = YnfiniteForms

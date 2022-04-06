@@ -1,165 +1,200 @@
 // standard grid
 
 .yn-form-grid-row {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
 
-  margin: 0 -0.5rem;
+	margin: 0 -0.5rem;
 
-  > div {
-    padding: 0 0.5rem;
-  }
+	> div {
+		padding: 0 0.5rem;
+	}
 }
 
 .yn-form-grid-field {
-  width: 100%;
-  flex-basis: 0;
-  -webkit-box-flex: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  max-width: 100%;
+	width: 100%;
+	flex-basis: 0;
+	-webkit-box-flex: 1;
+	-ms-flex-positive: 1;
+	flex-grow: 1;
+	max-width: 100%;
 }
 
 .yn-form-grid-field-1 {
-  width: 8.333333333333333%;
-  max-width: 8.333333333333333%;
+	width: 8.333333333333333%;
+	max-width: 8.333333333333333%;
 }
 
 .yn-form-grid-field-2 {
-  width: 16.66666666666667%;
-  max-width: 16.66666666666667%;
+	width: 16.66666666666667%;
+	max-width: 16.66666666666667%;
 }
 
 .yn-form-grid-field-3 {
-  width: 25%;
-  max-width: 25%;
+	width: 25%;
+	max-width: 25%;
 }
 
 .yn-form-grid-field-4 {
-  width: 33.33333333333333%;
-  max-width: 33.33333333333333%;
+	width: 33.33333333333333%;
+	max-width: 33.33333333333333%;
 }
 
 .yn-form-grid-field-5 {
-  width: 41.66666666666667%;
-  max-width: 41.66666666666667%;
+	width: 41.66666666666667%;
+	max-width: 41.66666666666667%;
 }
 
 .yn-form-grid-field-6 {
-  width: 50%;
-  max-width: 50%;
+	width: 50%;
+	max-width: 50%;
 }
 
 .yn-form-grid-field-7 {
-  width: 58.33333333333333%;
-  max-width: 58.33333333333333%;
+	width: 58.33333333333333%;
+	max-width: 58.33333333333333%;
 }
 
 .yn-form-grid-field-8 {
-  width: 66.66666666666667%;
-  max-width: 66.66666666666667%;
+	width: 66.66666666666667%;
+	max-width: 66.66666666666667%;
 }
 
 .yn-form-grid-field-9 {
-  width: 75%;
-  max-width: 75%;
+	width: 75%;
+	max-width: 75%;
 }
 
 .yn-form-grid-field-10 {
-  width: 83.33333333333333%;
-  max-width: 83.33333333333333%;
+	width: 83.33333333333333%;
+	max-width: 83.33333333333333%;
 }
 
 .yn-form-grid-field-11 {
-  width: 91.66666666666667%;
-  max-width: 91.66666666666667%;
+	width: 91.66666666666667%;
+	max-width: 91.66666666666667%;
 }
 
 .yn-form-grid-field-12 {
-  width: 100%;
-  max-width: 100%;
+	width: 100%;
+	max-width: 100%;
 }
 
 // complex form
 
 .yn-listForm {
-  &-wrapper {
-    border: 1px solid lightgrey;
-    padding: 1rem;
-  }
+	&-wrapper {
+		border: 1px solid lightgrey;
+		padding: 1rem;
+	}
 
-  &-description {
-    margin-bottom: 2rem;
-  }
+	&-description {
+		margin-bottom: 2rem;
+	}
 
-  &-row {
-    display: flex;
-    align-items: center;
+	&-row {
+		display: flex;
+		align-items: center;
 
-    margin-bottom: 1rem;
-    border-bottom: 1px solid lightgrey;
-    padding-bottom: 1rem;
+		margin-bottom: 1rem;
+		border-bottom: 1px solid lightgrey;
+		padding-bottom: 1rem;
 
-    &:last-of-type {
-      border-bottom: none;
-      padding-bottom: 0;
-      margin-bottom: 2rem;
-    }
+		&:last-of-type {
+			border-bottom: none;
+			padding-bottom: 0;
+			margin-bottom: 2rem;
+		}
 
-    .widget {
-      margin-bottom: 0;
-    }
-  }
+		.widget {
+			margin-bottom: 0;
+		}
+	}
 
-  &-fields {
-    flex-grow: 1;
-  }
+	&-fields {
+		flex-grow: 1;
+	}
 
-  &-rowActions {
-    padding: 0 0 0 1rem;
-  }
+	&-rowActions {
+		padding: 0 0 0 1rem;
+	}
 
-  &-actions {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-  }
+	&-actions {
+		width: 100%;
+		display: flex;
+		justify-content: flex-end;
+	}
 }
 
 .yn-form {
-  position: relative;
-  &__form-group {
-    display: flex;
-    justify-content: space-between;
+	position: relative;
+}
 
-    margin: 0 -0.5rem;
+.yn-form-instruction {
+	margin-bottom: 1.5rem;
+	position: relative;
+	&__form-group {
+		display: flex;
+		justify-content: space-between;
 
-    > input {
-      margin: 0 0.5rem;
-    }
-  }
+		margin: 0 -0.5rem;
+
+		> input {
+			margin: 0 0.5rem;
+		}
+	}
 }
 
 .form-content.inactive {
-  opacity: 0;
+	opacity: 0;
 }
 
 .yn-form-response {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: none;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
 
-  &__control {
-    padding: 1rem 0;
-  }
+	&__control {
+		padding: 1rem 0;
+	}
 
-  &.active {
-    display: block;
-  }
+	&.active {
+		display: block;
+	}
+}
+
+.yn-form-highlight {
+	background-color: #eeeeee;
+	padding: 2rem;
+}
+
+.yn-form-divider {
+	display: flex;
+	align-items: center;
+	text-align: center;
+	margin: 1rem 0;
+}
+
+/* To show the lines on right 
+  and left sides of the text */
+.yn-form-divider::after,
+.yn-form-divider::before {
+	content: '';
+	border: 1px solid lightgrey;
+	flex: 1;
+}
+
+/* Space on left and right sides of text */
+.yn-form-divider:not(:empty)::before {
+	margin-right: 0.25em;
+}
+
+.yn-form-divider:not(:empty)::after {
+	margin-left: 0.25em;
 }

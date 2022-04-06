@@ -1,9 +1,21 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . /index.php [L]
 RewriteRule ^index\.php$ - [L]
+
+Redirect 301 /datenschutz.html /datenschutz
+Redirect 301 /impressum.html /impressum
+Redirect 301 /kontakt.html /kontakt
+Redirect 301 /immobilien/wohnung-kaufen-in-buergerstrasse-53.html /immobilien/wohnung-kaufen-in-buergerstrasse-53
+Redirect 301 /immobilien/wohnung-kaufen-in-clarenbachplatz-1.html /immobilien/wohnung-kaufen-in-clarenbachplatz-1
+Redirect 301 /immobilien/wohnung-kaufen-in-subbelrather-strasse-436.html /immobilien/wohnung-kaufen-in-subbelrather-strasse-436
+Redirect 301 /regionen/wohnung-kaufen-in-berlin.html /regionen/wohnung-kaufen-in-berlin
+Redirect 301 /regionen/wohnung-kaufen-in-koeln-und-umgebung.html /regionen/wohnung-kaufen-in-koeln-und-umgebung
+Redirect 301 /stadtteile/wohnung-kaufen-in-porz-eil.html /stadtteile/wohnung-kaufen-in-porz-eil
+
 </IfModule>
 
 AddOutputFilterByType DEFLATE text/plain
@@ -19,6 +31,10 @@ AddOutputFilterByType DEFLATE application/javascript
 AddOutputFilterByType DEFLATE application/x-javascript
 AddOutputFilterByType DEFLATE application/x-shockwave-flash
 
+AddType application/x-font-woff .woff
+AddType application/x-font-woff2 .woff2
+
+
 ExpiresActive On
 ExpiresByType text/css "access plus 1 month"
 ExpiresByType text/javascript "access plus 1 month"
@@ -28,6 +44,8 @@ ExpiresByType image/gif "access plus 1 month"
 ExpiresByType image/jpeg "access plus 1 month"
 ExpiresByType image/png "access plus 1 month"
 ExpiresByType image/x-icon "access plus 1 month"
+ExpiresByType application/x-font-woff "access plus 1 year"
+ExpiresByType application/x-font-woff2  "access plus 1 year"
 
 <IfModule mod_headers.c>
   <filesmatch "\\.(ico|jpe?g|png|gif|swf)$">

@@ -4,7 +4,7 @@
 		{% block head %}
 			{% include 'yn/layout/head.twig' %}
 		{% endblock %}
-		<link href="/assets/vendor/ypsolution/css/main.css" rel="stylesheet">
+		<link href="{{ _yfunc("withVersion", "/assets/vendor/ypsolution/css/main.css") }}" rel="stylesheet">
 	</head>
 
 	<body class="{% block body_classes %}{% endblock body_classes %} {{_ynfinite.page.css_classes}}" id="{{_ynfinite.page.css_id}}">
