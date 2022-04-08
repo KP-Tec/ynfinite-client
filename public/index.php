@@ -7,10 +7,6 @@ use App\Utils\Cache\StaticCache;
 $dotenv = Dotenv\Dotenv::create(__DIR__. '/../');
 $dotenv->load();
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 if(getenv('STATIC_PAGES') !== "false" && $_SERVER['REQUEST_METHOD'] === 'GET') {
     $cachedPage = StaticCache::getCache("PAGE");
     if ($cachedPage) {
