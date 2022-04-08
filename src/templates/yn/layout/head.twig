@@ -1,11 +1,19 @@
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
 {# seo #}
-{# ?: defined in site_layout #}
+{# seo: title #}
+{% set title	= _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title %}
+{% set seoTitle	= title ?: _ynfinite.site.meta.title %}
+{% if _ynfinite.site.meta.title|length > 0 and title|length > 0 and _ynfinite.site.meta.title|lower not in title|lower %}
+	{% set seoTitle = title ~ ' | ' ~ _ynfinite.site.meta.title %}
+{% endif %}
+
+{# seo: description, keywords #}
+{% set seoDescription = _ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.description) %}
+{% set seoKeywords = _ynfinite.content.settings.seo.keywords|default(_ynfinite.page.meta.keywords) %}
+<meta charset="UTF-8" />
 <title>{{ seoTitle }}</title>
 <meta name="description" content="{{ seoDescription }}" />
 <meta name="keyword" content="{{ seoKeywords }}" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="robots" content="{{ _ynfinite.page.meta.robots|default("index,follow") }}" />
 
 {# favicons #}
