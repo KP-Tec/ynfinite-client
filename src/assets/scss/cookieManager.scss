@@ -1,177 +1,265 @@
 .yn-cookies {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
-}
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	z-index: 10000;
+	color: var(--font-pri, #000);
 
+	:is(h1, h2, h3, h4, h5, h6, p, li, button, a) {
+		font-family: var(--font-family-pri, system-ui);
+	}
+
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		margin: auto;
+		height: 100vh;
+		width: 100vw;
+		background-color: var(--bg-sec);
+		opacity: 0.75;
+		z-index: 9000;
+	}
+
+	ul {
+		padding: 0;
+	}
+
+	li {
+		list-style: none;
+	}
+
+	h4 {
+		width: fit-content;
+	}
+
+	.button {
+		cursor: pointer;
+	}
+}
 .yn-cookies--show {
-  display: flex;
+	display: flex;
 }
 
 .yn-cookies__inner {
-  width: 80%;
-  max-width: 800px;
-  background-color: white;
-  max-height: 75vh;
+	width: 80%;
+	max-width: 50rem;
+	background-color: var(--bg-pri, #fff);
+	max-height: 75vh;
+	border-radius: var(--cookie-radius, 4px);
+	z-index: 10000;
+	overflow: scroll;
 }
 
 .yn-cookies__page {
-  padding: 32px;
-  max-height: 75vh;
-  overflow-y: auto;
+	padding: 5rem;
+	max-height: 75vh;
+	overflow-y: auto;
 }
 
 .yn-cookies__page--visible {
-  display: block;
+	display: block;
 }
 
 .yn-cookies__page--hidden {
-  display: none;
+	display: none;
 }
 
 .yn-cookies__body {
-  margin-bottom: 32px;
-  border-bottom: 1px solid lightgrey;
-  padding-bottom: 17px;
+	margin-block: 1rem;
+	padding-bottom: 1rem;
 }
 
 .yn-cookies__footer ul {
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-  display: flex;
-  justify-content: flex-end;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	gap: 0.5rem;
 }
 
 .yn-cookies__footer ul li {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: flex-end;
+	width: 33.3%;
+
+	a {
+		width: 100%;
+	}
 }
 
-.yn-cookies__footer ul li.link-left {
-  margin-right: auto;
-}
-
-.yn-cookies__button {
-  display: block;
-  background-color: #e91e63;
-  padding: 20px;
-  color: white;
-}
-
-.yn-cookies__switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
+li.link-left {
+	margin-right: auto;
 }
 
 .yn-cookies__settings {
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
+	> li {
+		margin-bottom: 2rem;
+
+		&:last-child {
+			margin-bottom: 1rem;
+		}
+	}
+}
+
+.yn-cookies__settings__item {
+	ul {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		gap: 0.5rem;
+	}
+}
+
+.yn-cookies__switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+}
+
+.yn-cookies__settings {
+	padding: 0;
+	margin: 0;
 }
 
 .yn-cookies__settings__switch {
-  display: flex;
-  justify-content: flex-end;
+	display: flex;
+	justify-content: flex-end;
 }
 
 /* Hide default HTML checkbox */
 .yn-cookies__switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+	opacity: 0;
+	width: 0;
+	height: 0;
 }
 
 /* The slider */
 .yn-cookies__slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #eeeeee;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: var(--bg-muted-100, #eeeeee);
+	-webkit-transition: 0.4s;
+	transition: 0.4s;
+	border-radius: 50px;
 }
 
 .yn-cookies__slider.disabled {
-  opacity: 0.5;
-  pointer-events: none;
+	opacity: 0.5;
+	pointer-events: none;
 }
 
 .yn-cookies__slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+	position: absolute;
+	content: '';
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: #fff;
+	-webkit-transition: 0.4s;
+	transition: 0.4s;
+	border-radius: 50px;
 }
 
 .yn-cookies__switch input:checked + .yn-cookies__slider {
-  background-color: red;
+	background-color: var(--accent-ui, #1434a4);
 }
 
 .yn-cookies__switch input:focus + .yn-cookies__slider {
-  box-shadow: 0 0 1px red;
+	box-shadow: 0 0 1px var(--accent-ui, #1434a4);
 }
 
 .yn-cookies__switch input:checked + .yn-cookies__slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
+}
+@media only screen and (max-width: 900px) {
+	.yn-cookies__footer ul {
+		flex-wrap: wrap;
+
+		li {
+			width: 100%;
+
+			&:nth-last-child(-n + 2) {
+				width: calc(50% - 0.25rem);
+			}
+		}
+	}
 }
 
-@media only screen and (max-width: 500px) {
-  .yn-cookies__inner {
-    width: 90%;
-  }
+@media only screen and (max-width: 700px) {
+	.yn-cookies__inner {
+		width: 90%;
+	}
+
+	.yn-cookies__page {
+		padding: 3rem;
+	}
 }
 
-@media only screen and (max-width: 440px) {
-  .yn-cookies__footer ul {
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-  .yn-cookies__footer ul li.link-left {
-    margin-bottom: 25px;
-  }
+@media only screen and (max-width: 550px) {
+	.yn-cookies__inner {
+		width: 90%;
+	}
+
+	.yn-cookies__page {
+		padding: 2.5rem;
+	}
+
+	.yn-cookies__footer li {
+		width: 100% !important;
+	}
 }
+
+// @media only screen and (max-width: 440px) {
+// 	.yn-cookies__footer ul {
+// 		flex-direction: column;
+// 		justify-content: flex-start;
+// 	}
+// }
 
 .yn-cookie-consent {
-  width: 100%;
-  background-color: #eeeeee;
-  min-height: 200px;
+	width: 100%;
+	background-color: #eeeeee;
+	min-height: 200px;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-  text-align: center;
+	text-align: center;
 }
 
 .yn-cookie-consent--inner {
-  width: 80%;
-  margin: 0 auto;
+	width: 80%;
+	margin: 0 auto;
 }
 
 .yn-cookie-consent h5 {
-  margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .yn-cookie-consent--controlls {
-  margin-top: 20px;
+	margin-top: 20px;
+}
+
+.theme--dark {
+	.yn-cookies {
+		&::after {
+			opacity: 0.25;
+		}
+	}
 }

@@ -8,16 +8,20 @@
 			</div>
 			<div class='yn-cookies__body'>
 				{{config.information|raw}}
+
 			</div>
 			<div class='yn-cookies__footer'>
 				<ul>
 					{% if cookies.available|length > 0 %}
 						<li class="link-left">
-							<a href='#' id="yn-cookies__show-configuration" class='yn-cookies__link'>{{"ConsentManager_ChangeSettings"|trans}}</a>
+							<a id="yn-cookies__show-configuration" class='yn-cookies__link button'>{{"ConsentManager_ChangeSettings"|trans}}</a>
 						</li>
 					{% endif %}
 					<li>
-						<a href='#' id="yn-cookies__allow-all" class='yn-cookies__button'>{{"ConsentManager_AcceptAll"|trans}}</a>
+						<a id="yn-cookies__deny-all" class='yn-cookies__button button button--solid button--pri'>{{"ConsentManager_DenyAll"|trans}}</a>
+					</li>
+					<li>
+						<a id="yn-cookies__allow-all" class='yn-cookies__button button button--solid button--pri'>{{"ConsentManager_AcceptAll"|trans}}</a>
 					</li>
 				</ul>
 			</div>
@@ -31,30 +35,42 @@
 					<ul class="yn-cookies__settings">
 						<li>
 							<div class="yn-cookies__settings__item">
-								<h4>{{config.necessary.headline}}</h4>
+								<ul>
+									<li>
+										<h4>{{config.necessary.headline}}</h4>
+									</li>
+									<li>
+										<div class="yn-cookies__settings__switch">
+											<label class="yn-cookies__switch">
+												<input name="necessary" type="checkbox" checked disabled>
+												<span class="yn-cookies__slider disabled"></span>
+											</label>
+										</div>
+									</li>
+								</ul>
 								{{config.necessary.text|raw}}
-							</div>
-							<div class="yn-cookies__settings__switch">
-								<label class="yn-cookies__switch">
-									<input name="necessary" type="checkbox" checked disabled>
-									<span class="yn-cookies__slider disabled"></span>
-								</label>
 							</div>
 						</li>
 
 						{% for cookie in cookies.available %}
 
 							<li data-yn-cookie-settings-id="{{cookie._id}}">
-								<div class="yn-cookies__settings__item">
-									<h4>{{cookie.headline}}</h4>
+								<label for="{{cookie._id}}" class="yn-cookies__settings__item">
+									<ul>
+										<li>
+											<h4>{{cookie.headline}}</h4>
+										</li>
+										<li>
+											<div class="yn-cookies__settings__switch" data-yn-default="{{cookie.default}}">
+												<div class="yn-cookies__switch">
+													<input name="activatedScripts[]" type="checkbox" id="{{cookie._id}}" value="{{cookie._id}}" {% if cookie._id in cookies.active %} checked {% endif %}>
+													<span class="yn-cookies__slider"></span>
+												</div>
+											</div>
+										</li>
+									</ul>
 									{{cookie.text|raw}}
-								</div>
-								<div class="yn-cookies__settings__switch" data-yn-default="{{cookie.default}}">
-									<label class="yn-cookies__switch">
-										<input name="activatedScripts[]" type="checkbox" value="{{cookie._id}}" {% if cookie._id in cookies.active %} checked {% endif %}>
-										<span class="yn-cookies__slider"></span>
-									</label>
-								</div>
+								</label>
 							</li>
 
 						{% endfor %}
@@ -64,10 +80,10 @@
 			<div class='yn-cookies__footer'>
 				<ul>
 					<li class="link-left">
-						<a href='#' id="yn-cookies__show-information" class='yn-cookies__link'>{{"ConsentManager_Back"|trans}}</a>
+						<a id="yn-cookies__show-information" class='yn-cookies__link button'>{{"ConsentManager_Back"|trans}}</a>
 					</li>
 					<li>
-						<a href='#' id="yn-cookies__set-cookies" class='yn-cookies__button'>{{"ConsentManager_SaveSettings"|trans}}</a>
+						<a id="yn-cookies__set-cookies" class='yn-cookies__button button button--solid button--pri'>{{"ConsentManager_SaveSettings"|trans}}</a>
 					</li>
 				</ul>
 			</div>
