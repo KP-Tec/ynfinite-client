@@ -48,14 +48,16 @@
 		border-color: transparent;
 	}
 
-	.link-left a{
-		color: var(--font-pri, #000) !important;
-		border-color: var(--bg-sec, #000) !important;
-		background-color: transparent !important;
+	.link-left{
+		a{
+			color: var(--font-pri, #000) !important;
+			border-color: var(--bg-sec, #000) !important;
+			background-color: transparent !important;
+		}
 
-		&:hover {
-			color: var(--font-sec) !important;
-			background-color: var(--bg-sec) !important;
+		&:hover a{
+			color: var(--font-sec, #fff) !important;
+			background-color: var(--bg-sec, #000) !important;
 		}
 	}
 }
@@ -127,7 +129,7 @@ li.link-left {
 
 .yn-cookies__settings__item {
 	margin: 0 !important;
-	
+
 	ul {
 		display: flex;
 		flex-direction: row;
