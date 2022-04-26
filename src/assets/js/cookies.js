@@ -134,7 +134,7 @@ const YnfiniteCookies = {
 		}
 		;(t.done = !0), this.ynSetCookie('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
 	},
-
+ 
 	ynDenyAllCookieSettings() {
 		const t = { done: true, activeScripts: [] }
 		this.ynSetCookie('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
