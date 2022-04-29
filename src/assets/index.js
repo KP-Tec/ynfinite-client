@@ -9,7 +9,7 @@ YnfiniteConsents.setup()
 YnfiniteForms.setup()
 
 window.$_yn = {
-	forms: {
+	forms: { 
 		updateUrl: YnfiniteForms.updateUrl,
 		repopulate: YnfiniteForms.repopulateForm,
 		enable: YnfiniteForms.enableForm,

@@ -4,7 +4,7 @@ const YnfiniteConsents = {
 			const manager = document.getElementById('yn-cookies')
 
 			if (manager) {
-				if (manager.dataset.hideManager !== 'true') {
+				if (manager.dataset.hideManager !== 'true') { 
 					this.ynCheckForConsents()
 				}
 
@@ -118,9 +118,9 @@ const YnfiniteConsents = {
 			const manager = document.getElementById('yn-cookies')
 			const consents = JSON.parse(manager.getAttribute('data-consents') || '[]')
 			const diff = consents.filter((x) => !oldConsents.includes(x))
-			if (diff.length == 0) {
-				this.hideConsent()
-			} else {
+			if (diff.length == 0) { 
+				this.hideConsent() 
+			} else { 
 				this.showConsent()
 			}
 		} else this.showConsent()
