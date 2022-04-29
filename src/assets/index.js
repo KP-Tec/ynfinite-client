@@ -2,10 +2,10 @@
 import './js/general'
 import './js/lazysize'
 
-import YnfiniteCookies from './js/cookies'
+import YnfiniteConsents from './js/cookies'
 import YnfiniteForms from './js/forms'
 
-YnfiniteCookies.setup()
+YnfiniteConsents.setup()
 YnfiniteForms.setup()
 
 window.$_yn = {

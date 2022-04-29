@@ -1,36 +1,36 @@
-const YnfiniteCookies = {
+const YnfiniteConsents = {
 	setup() {
 		document.addEventListener('DOMContentLoaded', () => {
 			const manager = document.getElementById('yn-cookies')
 
 			if (manager) {
 				if (manager.dataset.hideManager !== 'true') {
-					this.ynCheckForCookieConsents()
+					this.ynCheckForConsents()
 				}
 
 				document.getElementById('yn-cookies__allow-all')?.addEventListener('click', (e) => {
 					e.preventDefault()
-					this.ynAcceptAllCookieSettings()
+					this.ynAcceptAllConsentSettings()
 				})
 
 				document.getElementById('yn-cookies__deny-all')?.addEventListener('click', (e) => {
 					e.preventDefault()
-					this.ynDenyAllCookieSettings()
+					this.ynDenyAllConsentSettings()
 				})
 
 				document.getElementById('yn-cookies__show-configuration')?.addEventListener('click', (e) => {
 					e.preventDefault()
-					this.ynCookiesShowPage('configuration')
+					this.ynConsentShowPage('configuration')
 				})
 
 				document.getElementById('yn-cookies__show-information')?.addEventListener('click', (e) => {
 					e.preventDefault()
-					this.ynCookiesShowPage('information')
+					this.ynConsentShowPage('information')
 				})
 
 				document.getElementById('yn-cookies__set-cookies')?.addEventListener('click', (e) => {
 					e.preventDefault()
-					this.ynSetCookieSettings()
+					this.ynSetConsentSettings()
 				})
 
 				const changeSelectionButton = document.getElementById('yn-cookies__change-selection')
@@ -38,8 +38,8 @@ const YnfiniteCookies = {
 				changeSelectionButton &&
 					changeSelectionButton.addEventListener('click', (e) => {
 						e.preventDefault()
-						this.ynCookiesShowPage('configuration')
-						this.showCookieConsent(true)
+						this.ynConsentShowPage('configuration')
+						this.showConsent(true)
 					})
 
 				const consentButtons = document.querySelectorAll('.yn-cookie-consent--okay')
@@ -49,14 +49,14 @@ const YnfiniteCookies = {
 					button.addEventListener('click', (e) => {
 						e.preventDefault()
 						const id = button.dataset.consentId
-						this.ynAcceptCookie(id)
+						this.ynAcceptConsent(id)
 					})
 				}
 			}
 		})
 	},
 
-	showCookieConsent(hideBackButton = false) {
+	showConsent(hideBackButton = false) {
 		const e = document.getElementById('yn-cookies')
 		e && e.classList.add('yn-cookies--show')
 
@@ -67,26 +67,26 @@ const YnfiniteCookies = {
 		}
 	},
 
-	hideCookieConsent() {
+	hideConsent() {
 		const e = document.getElementById('yn-cookies')
 		e && e.classList.remove('yn-cookies--show')
 	},
 
-	ynCookiesShowPage(e) {
+	ynConsentShowPage(e) {
 		const t = document.querySelectorAll('[data-yn-cookie-page]')
 		for (let e = 0; e < t.length; e++) t[e].classList.remove('yn-cookies__page--visible'), t[e].classList.add('yn-cookies__page--hidden')
 		const n = document.querySelector(`[data-yn-cookie-page="${e}"]`)
 		n && (n.classList.remove('yn-cookies__page--hidden'), n.classList.add('yn-cookies__page--visible'))
 	},
 
-	ynSetCookie(e, t, n) {
+	ynSetConsent(e, t, n) {
 		const o = new Date()
 		o.setTime(o.getTime() + 24 * n * 60 * 60 * 1e3)
 		const i = `expires=${o.toUTCString()}`
 		document.cookie = `${e}=${t};${i};path=/`
 	},
 
-	ynGetCookie(e) {
+	ynGetConsent(e) {
 		const t = `${e}=`,
 			n = decodeURIComponent(document.cookie).split(';')
 		for (let e = 0; e < n.length; e++) {
@@ -106,23 +106,27 @@ const YnfiniteCookies = {
 		}
 	},
 
-	ynCheckForCookieConsents() {
-		let e = this.ynGetCookie('ynfinite-cookies')
+	ynCheckForConsents() {
+		let e = this.ynGetConsent('ynfinite-cookies')
 
 		if (e) {
 			e = JSON.parse(e)
+			let oldConsents = e.consents
+			if (oldConsents == undefined){
+				 oldConsents = e.activeScripts
+			}
 			const manager = document.getElementById('yn-cookies')
 			const consents = JSON.parse(manager.getAttribute('data-consents') || '[]')
-			const diff = consents.filter((x) => !e.consents.includes(x))
+			const diff = consents.filter((x) => !oldConsents.includes(x))
 			if (diff.length == 0) {
-				this.hideCookieConsent()
+				this.hideConsent()
 			} else {
-				this.showCookieConsent()
+				this.showConsent()
 			}
-		} else this.showCookieConsent()
+		} else this.showConsent()
 	},
 
-	ynSetCookieSettings() {
+	ynSetConsentSettings() {
 		const manager = document.getElementById('yn-cookies')
 		const consents = JSON.parse(manager.getAttribute('data-consents') || '[]')
 		const e = document.querySelector('#yn-cookies-form'),
@@ -132,33 +136,33 @@ const YnfiniteCookies = {
 			t.givenConsents = n.getAll('givenConsents[]')
 			t.consents = consents
 		}
-		;(t.done = !0), this.ynSetCookie('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
+		;(t.done = !0), this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
 	},
 
-	ynAcceptAllCookieSettings() {
+	ynAcceptAllConsentSettings() {
 		const manager = document.getElementById('yn-cookies')
 		const consents = JSON.parse(manager.getAttribute('data-consents') || '[]')
 		const t = { done: true, givenConsents: consents, consents: consents }
-		this.ynSetCookie('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
+		this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
 	},
 
-	ynDenyAllCookieSettings() {
+	ynDenyAllConsentSettings() {
 		const manager = document.getElementById('yn-cookies')
 		const consents = JSON.parse(manager.getAttribute('data-consents') || '[]')
 		const t = { done: true, givenConsents: [], consents: consents }
-		this.ynSetCookie('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
+		this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
 	},
 
-	ynAcceptCookie(e) {
-		let t = this.ynGetCookie('ynfinite-cookies')
-		;-1 === (t = JSON.parse(t)).givenConsents.findIndex((t) => t === e) && t.givenConsents.push(e), this.ynSetCookie('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
+	ynAcceptConsent(e) {
+		let t = this.ynGetConsent('ynfinite-cookies')
+		;-1 === (t = JSON.parse(t)).givenConsents.findIndex((t) => t === e) && t.givenConsents.push(e), this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
 	},
 
-	ynDeclineCookie(e) {
-		let t = this.ynGetCookie('ynfinite-cookies')
+	ynDeclineConsent(e) {
+		let t = this.ynGetConsent('ynfinite-cookies')
 		const n = (t = JSON.parse(t)).givenConsents.findIndex((t) => t === e)
-		n > -1 && t.givenConsents.splice(n, 1), this.ynSetCookie('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
+		n > -1 && t.givenConsents.splice(n, 1), this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
 	},
 }
 
-export default YnfiniteCookies
+export default YnfiniteConsents
