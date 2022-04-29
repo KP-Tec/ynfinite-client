@@ -1,6 +1,10 @@
 {% set config = cookies.config %}
+{% set consents = [] %}
+{% for item in cookies.available %}
+	{% set consents = consents|merge(['"' ~ item._id ~ '"']) %}
+{% endfor %}
 
-<div id="yn-cookies" class='yn-cookies' data-hide-manager="{{hideConsentManager ? "true" : "false"}}">
+<div id="yn-cookies" class='yn-cookies' data-hide-manager="{{hideConsentManager ? "true" : "false"}}" data-consents="[{{ consents|join(',') }}]">
 	<div class='yn-cookies__inner'>
 		<div class='yn-cookies__page yn-cookies__page--visible' data-yn-cookie-page='information'>
 			<div class='yn-cookies__header'>
@@ -63,7 +67,7 @@
 										<li>
 											<div class="yn-cookies__settings__switch" data-yn-default="{{cookie.default}}">
 												<div class="yn-cookies__switch">
-													<input name="activatedScripts[]" type="checkbox" id="{{cookie._id}}" value="{{cookie._id}}" {% if cookie._id in cookies.active %} checked {% endif %}>
+													<input name="givenConsents[]" type="checkbox" id="{{cookie._id}}" value="{{cookie._id}}" {% if cookie._id in cookies.active %} checked {% endif %}>
 													<span class="yn-cookies__slider"></span>
 												</div>
 											</div>
