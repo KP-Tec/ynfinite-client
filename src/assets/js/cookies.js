@@ -1,174 +1,168 @@
-const YnfiniteCookies = {
-  setup() {
-    document.addEventListener("DOMContentLoaded", () => {
-      const manager = document.getElementById("yn-cookies");
+const YnfiniteConsents = {
+	setup() {
+		document.addEventListener('DOMContentLoaded', () => {
+			const manager = document.getElementById('yn-cookies')
 
-      if (manager) {
-        if (manager.dataset.hideManager !== "true") {
-          this.ynCheckForCookieConsents();
-        }
+			if (manager) {
+				if (manager.dataset.hideManager !== 'true') { 
+					this.ynCheckForConsents()
+				}
 
-        document
-          .getElementById("yn-cookies__allow-all")
-          ?.addEventListener("click", (e) => {
-            e.preventDefault();
-            this.ynSetDefaultCookieSettings();
-          });
+				document.getElementById('yn-cookies__allow-all')?.addEventListener('click', (e) => {
+					e.preventDefault()
+					this.ynAcceptAllConsentSettings()
+				})
 
-        document
-          .getElementById("yn-cookies__show-configuration")
-          ?.addEventListener("click", (e) => {
-            e.preventDefault();
-            this.ynCookiesShowPage("configuration");
-          });
+				document.getElementById('yn-cookies__deny-all')?.addEventListener('click', (e) => {
+					e.preventDefault()
+					this.ynDenyAllConsentSettings()
+				})
 
-        document
-          .getElementById("yn-cookies__show-information")
-          ?.addEventListener("click", (e) => {
-            e.preventDefault();
-            this.ynCookiesShowPage("information");
-          });
+				document.getElementById('yn-cookies__show-configuration')?.addEventListener('click', (e) => {
+					e.preventDefault()
+					this.ynConsentShowPage('configuration')
+				})
 
-        document
-          .getElementById("yn-cookies__set-cookies")
-          ?.addEventListener("click", (e) => {
-            e.preventDefault();
-            this.ynSetCookieSettings();
-          });
+				document.getElementById('yn-cookies__show-information')?.addEventListener('click', (e) => {
+					e.preventDefault()
+					this.ynConsentShowPage('information')
+				})
 
-        const changeSelectionButton = document.getElementById(
-          "yn-cookies__change-selection"
-        );
+				document.getElementById('yn-cookies__set-cookies')?.addEventListener('click', (e) => {
+					e.preventDefault()
+					this.ynSetConsentSettings()
+				})
 
-        changeSelectionButton &&
-          changeSelectionButton.addEventListener("click", (e) => {
-            e.preventDefault();
-            this.ynCookiesShowPage("configuration");
-            this.showCookieConsent(true);
-          });
+				const changeSelectionButton = document.getElementById('yn-cookies__change-selection')
 
-        const consentButtons = document.querySelectorAll(
-          ".yn-cookie-consent--okay"
-        );
+				changeSelectionButton &&
+					changeSelectionButton.addEventListener('click', (e) => {
+						e.preventDefault()
+						this.ynConsentShowPage('configuration')
+						this.showConsent(true)
+					})
 
-        for (let i = 0; i < consentButtons.length; i++) {
-          let button = consentButtons[i];
-          button.addEventListener("click", (e) => {
-            e.preventDefault();
-            const id = button.dataset.consentId;
-            this.ynAcceptCookie(id);
-          });
-        }
-      }
-    });
-  },
+				const consentButtons = document.querySelectorAll('.yn-cookie-consent--okay')
 
-  showCookieConsent(hideBackButton = false) {
-    const e = document.getElementById("yn-cookies");
-    e && e.classList.add("yn-cookies--show");
+				for (let i = 0; i < consentButtons.length; i++) {
+					let button = consentButtons[i]
+					button.addEventListener('click', (e) => {
+						e.preventDefault()
+						const id = button.dataset.consentId
+						this.ynAcceptConsent(id)
+					})
+				}
+			}
+		})
+	},
 
-    if (hideBackButton) {
-      document.getElementById("yn-cookies__show-information").style.display =
-        "none";
-    } else {
-      document.getElementById("yn-cookies__show-information").style.display =
-        "block";
-    }
-  },
+	showConsent(hideBackButton = false) {
+		const e = document.getElementById('yn-cookies')
+		e && e.classList.add('yn-cookies--show')
 
-  hideCookieConsent() {
-    const e = document.getElementById("yn-cookies");
-    e && e.classList.remove("yn-cookies--show");
-  },
+		if (hideBackButton) {
+			document.getElementById('yn-cookies__show-information').style.display = 'none'
+		} else {
+			document.getElementById('yn-cookies__show-information').style.display = 'block'
+		}
+	},
 
-  ynCookiesShowPage(e) {
-    const t = document.querySelectorAll("[data-yn-cookie-page]");
-    for (let e = 0; e < t.length; e++)
-      t[e].classList.remove("yn-cookies__page--visible"),
-        t[e].classList.add("yn-cookies__page--hidden");
-    const n = document.querySelector(`[data-yn-cookie-page="${e}"]`);
-    n &&
-      (n.classList.remove("yn-cookies__page--hidden"),
-      n.classList.add("yn-cookies__page--visible"));
-  },
+	hideConsent() {
+		const e = document.getElementById('yn-cookies')
+		e && e.classList.remove('yn-cookies--show')
+	},
 
-  ynSetCookie(e, t, n) {
-    const o = new Date();
-    o.setTime(o.getTime() + 24 * n * 60 * 60 * 1e3);
-    const i = `expires=${o.toUTCString()}`;
-    document.cookie = `${e}=${t};${i};path=/`;
-  },
+	ynConsentShowPage(e) {
+		const t = document.querySelectorAll('[data-yn-cookie-page]')
+		for (let e = 0; e < t.length; e++) t[e].classList.remove('yn-cookies__page--visible'), t[e].classList.add('yn-cookies__page--hidden')
+		const n = document.querySelector(`[data-yn-cookie-page="${e}"]`)
+		n && (n.classList.remove('yn-cookies__page--hidden'), n.classList.add('yn-cookies__page--visible'))
+	},
 
-  ynGetCookie(e) {
-    const t = `${e}=`,
-      n = decodeURIComponent(document.cookie).split(";");
-    for (let e = 0; e < n.length; e++) {
-      let o = n[e];
-      for (; " " === o.charAt(0); ) o = o.substring(1);
-      if (0 === o.indexOf(t)) return o.substring(t.length, o.length);
-    }
-    return "";
-  },
+	ynSetConsent(e, t, n) {
+		const o = new Date()
+		o.setTime(o.getTime() + 24 * n * 60 * 60 * 1e3)
+		const i = `expires=${o.toUTCString()}`
+		document.cookie = `${e}=${t};${i};path=/`
+	},
 
-  addScripts(e, t) {
-    for (let n = 0; n < t.length; n++) {
-      if (!document.querySelector(`script[src="${t[n]}"]`)) {
-        const o = document.createElement("script");
-        (o.src = t[n]), e.appendChild(o);
-      }
-    }
-  },
+	ynGetConsent(e) {
+		const t = `${e}=`,
+			n = decodeURIComponent(document.cookie).split(';')
+		for (let e = 0; e < n.length; e++) {
+			let o = n[e]
+			for (; ' ' === o.charAt(0); ) o = o.substring(1)
+			if (0 === o.indexOf(t)) return o.substring(t.length, o.length)
+		}
+		return ''
+	},
 
-  ynCheckForCookieConsents() {
-    const e = this.ynGetCookie("ynfinite-cookies");
-    if (e) {
-      !0 === JSON.parse(e).done
-        ? this.hideCookieConsent()
-        : this.showCookieConsent();
-    } else this.showCookieConsent();
-  },
+	addScripts(e, t) {
+		for (let n = 0; n < t.length; n++) {
+			if (!document.querySelector(`script[src="${t[n]}"]`)) {
+				const o = document.createElement('script')
+				;(o.src = t[n]), e.appendChild(o)
+			}
+		}
+	},
 
-  ynSetCookieSettings() {
-    const e = document.querySelector("#yn-cookies-form"),
-      t = {};
-    if (e) {
-      const n = new FormData(e);
-      t.activeScripts = n.getAll("activatedScripts[]");
-    }
-    (t.done = !0),
-      this.ynSetCookie("ynfinite-cookies", JSON.stringify(t), 365),
-      window.location.reload();
-  },
+	ynCheckForConsents() {
+		let e = this.ynGetConsent('ynfinite-cookies')
 
-  ynSetDefaultCookieSettings() {
-    const e = document.querySelectorAll("[data-yn-cookie-settings-id] input"),
-      t = { done: false, activeScripts: [] };
+		if (e) {
+			e = JSON.parse(e)
+			let oldConsents = e.consents
+			if (oldConsents == undefined){
+				 oldConsents = e.activeScripts
+			}
+			const manager = document.getElementById('yn-cookies')
+			const consents = JSON.parse(manager.getAttribute('data-consents') || '[]')
+			const diff = consents.filter((x) => !oldConsents.includes(x))
+			if (diff.length == 0) { 
+				this.hideConsent() 
+			} else { 
+				this.showConsent()
+			}
+		} else this.showConsent()
+	},
 
-    if (e.length > 0) {
-      const n = [];
-      for (let t = 0; t < e.length; t += 1) n.push(e[t].value);
-      t.activeScripts = n;
-    }
-    (t.done = !0),
-      this.ynSetCookie("ynfinite-cookies", JSON.stringify(t), 365),
-      window.location.reload();
-  },
+	ynSetConsentSettings() {
+		const manager = document.getElementById('yn-cookies')
+		const consents = JSON.parse(manager.getAttribute('data-consents') || '[]')
+		const e = document.querySelector('#yn-cookies-form'),
+			t = {}
+		if (e) {
+			const n = new FormData(e)
+			t.givenConsents = n.getAll('givenConsents[]')
+			t.consents = consents
+		}
+		;(t.done = !0), this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
+	},
 
-  ynAcceptCookie(e) {
-    let t = this.ynGetCookie("ynfinite-cookies");
-    -1 === (t = JSON.parse(t)).activeScripts.findIndex((t) => t === e) &&
-      t.activeScripts.push(e),
-      this.ynSetCookie("ynfinite-cookies", JSON.stringify(t), 365),
-      window.location.reload();
-  },
+	ynAcceptAllConsentSettings() {
+		const manager = document.getElementById('yn-cookies')
+		const consents = JSON.parse(manager.getAttribute('data-consents') || '[]')
+		const t = { done: true, givenConsents: consents, consents: consents }
+		this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
+	},
 
-  ynDeclineCookie(e) {
-    let t = this.ynGetCookie("ynfinite-cookies");
-    const n = (t = JSON.parse(t)).activeScripts.findIndex((t) => t === e);
-    n > -1 && t.activeScripts.splice(n, 1),
-      this.ynSetCookie("ynfinite-cookies", JSON.stringify(t), 365),
-      window.location.reload();
-  },
-};
+	ynDenyAllConsentSettings() {
+		const manager = document.getElementById('yn-cookies')
+		const consents = JSON.parse(manager.getAttribute('data-consents') || '[]')
+		const t = { done: true, givenConsents: [], consents: consents }
+		this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
+	},
 
-export default YnfiniteCookies
+	ynAcceptConsent(e) {
+		let t = this.ynGetConsent('ynfinite-cookies')
+		;-1 === (t = JSON.parse(t)).givenConsents.findIndex((t) => t === e) && t.givenConsents.push(e), this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
+	},
+
+	ynDeclineConsent(e) {
+		let t = this.ynGetConsent('ynfinite-cookies')
+		const n = (t = JSON.parse(t)).givenConsents.findIndex((t) => t === e)
+		n > -1 && t.givenConsents.splice(n, 1), this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
+	},
+}
+
+export default YnfiniteConsents
