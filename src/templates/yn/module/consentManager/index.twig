@@ -67,7 +67,7 @@
 										<li>
 											<div class="yn-cookies__settings__switch" data-yn-default="{{cookie.default}}">
 												<div class="yn-cookies__switch">
-													<input name="givenConsents[]" type="checkbox" id="{{cookie._id}}" value="{{cookie._id}}" {% if cookie._id in cookies.active %} checked {% endif %}>
+													<input name="activeScripts[]" type="checkbox" id="{{cookie._id}}" value="{{cookie._id}}" {% if cookie._id in cookies.active %} checked {% endif %}>
 													<span class="yn-cookies__slider"></span>
 												</div>
 											</div>
