@@ -222,14 +222,10 @@ li.link-left {
 }
 @media only screen and (max-width: 900px) {
 	.yn-cookies__footer ul {
-		flex-wrap: wrap;
+		flex-wrap: wrap !important;
 
-		li {
-			width: 100%;
-
-			&:nth-last-child(-n + 2) {
-				width: calc(50% - 0.25rem);
-			}
+		.link-left {
+			flex-basis: 100% !important;
 		}
 	}
 }
@@ -254,7 +250,7 @@ li.link-left {
 	}
 
 	.yn-cookies__footer li {
-		width: 100% !important;
+		flex-basis: 100% !important;
 	}
 }
 
