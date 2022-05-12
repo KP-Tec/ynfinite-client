@@ -78,8 +78,8 @@
 	background-color: var(--bg-pri, #fff);
 	max-height: 75vh;
 	border-radius: var(--cookie-radius, 12px);
-	z-index: 10000;
-	overflow: scroll;
+	z-index: 10000; 
+	overflow: auto; 
 }
 
 .yn-cookies__page {
