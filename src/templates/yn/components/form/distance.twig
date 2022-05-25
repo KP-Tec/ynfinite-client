@@ -19,7 +19,7 @@
 		<div class="item">
 			<select data-ynfield="true" name="fields{{parent}}[{{field.alias}}][distance]" value="{{field.value['distance']}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}>
 				{% if field.emptyLabel %}
-					<option value="" {% if field.required %} disabled {% endif %}>{{field.emptyLabel}}</option>
+					<option value="">{{field.emptyLabel}}</option>
 				{% endif %}
 				{% set items = field.stepList|split(",") %}
 				{% for item in items %}

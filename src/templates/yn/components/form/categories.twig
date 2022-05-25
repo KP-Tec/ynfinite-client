@@ -15,7 +15,7 @@
 {% block field %}
 	<select data-ynfield="true" name="fields{{parent}}[{{field.alias}}]" {% if field.value %}value="{field.value}"{% endif %} {% if field.required %} required {% endif %} {{field.attributes|raw}}>
 		{% if field.emptyLabel %}
-			<option value="" {% if field.required %} disabled {% endif %}>{{field.emptyLabel}}</option>
+			<option value="">{{field.emptyLabel}}</option>
 		{% endif %}
 
 		{{_self.menuItems(field, field.options)}}
