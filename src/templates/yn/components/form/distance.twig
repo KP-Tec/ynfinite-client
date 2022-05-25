@@ -1,18 +1,18 @@
 {% extends "yn/components/form/basic.twig" %}
 
 {% block field %}
-	<div class="distace-wrapper">
+	<div class="distance-wrapper">
 		<div class="item">
-			<input data-ynfield="true" 
-				type="text" 
-				name="fields{{parent}}[{{field.alias}}][loc]" 
+			<input data-ynfield="true"
+				type="text"
+				name="fields{{parent}}[{{field.alias}}][loc]"
 				value="{{field.value['loc']|default(addValue|default(field.defaultValue))}}"
 
-				{% if field.minLength %} minlength="{{field.minLength}}" {% endif %} 
-				{% if field.maxLength %} maxlength="{{field.maxLength}}" {% endif %} 
-				{% if field.placeholder %} placeholder="{{field.placeholder}}" {% endif %} 
-				{% if field.required %} required {% endif %} 
-				
+				{% if field.minLength %} minlength="{{field.minLength}}" {% endif %}
+				{% if field.maxLength %} maxlength="{{field.maxLength}}" {% endif %}
+				{% if field.placeholder %} placeholder="{{field.placeholder}}" {% endif %}
+				{% if field.required %} required {% endif %}
+
 				{{field.attributes|raw}}
 			/>
 		</div>

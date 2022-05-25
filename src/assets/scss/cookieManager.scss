@@ -9,8 +9,12 @@
 	align-items: center;
 	z-index: 10000;
 
-	:is(h1, h2, h3, h4, h5, h6, p, li, button, a) {
+	:is(h1, h2, h3, h4, h5, h6, p, li, button, a, label) {
 		font-family: var(--font-family-pri, system-ui);
+	}
+
+	label {
+		color: currentColor !important;
 	}
 
 	&::after {
@@ -27,6 +31,7 @@
 
 	ul {
 		padding: 0;
+		width: 100% !important;
 	}
 
 	li {
@@ -44,20 +49,22 @@
 		height: 100%;
 	}
 
-	.button--solid{
+	.button--solid {
 		border-color: transparent;
 	}
 
-	.link-left{
-		a{
+	.link-left {
+		a {
 			color: var(--font-pri, #000) !important;
 			border-color: var(--bg-sec, #000) !important;
 			background-color: transparent !important;
+			padding: var(--button-padding);
 		}
 
-		&:hover a{
-			color: var(--font-sec, #fff) !important;
-			background-color: var(--bg-sec, #000) !important;
+		&:hover a {
+			color: var(--accent-pri, #1434a4) !important;
+			background-color: unset !important;
+			border: unset !important;
 		}
 	}
 }
@@ -71,8 +78,8 @@
 	background-color: var(--bg-pri, #fff);
 	max-height: 75vh;
 	border-radius: var(--cookie-radius, 12px);
-	z-index: 10000;
-	overflow: scroll;
+	z-index: 10000; 
+	overflow: auto; 
 }
 
 .yn-cookies__page {
@@ -106,7 +113,7 @@
 .yn-cookies__footer ul li {
 	display: flex;
 	align-items: flex-end;
-	width: 33.3%;
+	flex: 1;
 
 	a {
 		width: 100%;
@@ -137,7 +144,8 @@ li.link-left {
 		align-items: center;
 		gap: 0.5rem;
 
-		li, h4{
+		li,
+		h4 {
 			height: fit-content;
 		}
 	}
@@ -214,14 +222,10 @@ li.link-left {
 }
 @media only screen and (max-width: 900px) {
 	.yn-cookies__footer ul {
-		flex-wrap: wrap;
+		flex-wrap: wrap !important;
 
-		li {
-			width: 100%;
-
-			&:nth-last-child(-n + 2) {
-				width: calc(50% - 0.25rem);
-			}
+		.link-left {
+			flex-basis: 100% !important;
 		}
 	}
 }
@@ -246,7 +250,7 @@ li.link-left {
 	}
 
 	.yn-cookies__footer li {
-		width: 100% !important;
+		flex-basis: 100% !important;
 	}
 }
 
@@ -271,7 +275,7 @@ li.link-left {
 
 .yn-cookie-consent--inner {
 	width: 80%;
-	margin: 0 auto; 
+	margin: 0 auto;
 }
 
 .yn-cookie-consent h5 {
