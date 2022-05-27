@@ -27,6 +27,7 @@ class TwigUtils
             'article:video' => 'yn/components/article/video.twig',
             'images:image' => 'yn/components/image.twig',
             'images:figure' => 'yn/components/figure.twig',
+            'link:link' => 'yn/components/link.twig',
             'form:form' => 'yn/components/form.twig',
             'form:fields.select' => 'yn/components/form/select.twig',
             'form:fields.radio' => 'yn/components/form/radio.twig',
@@ -130,6 +131,13 @@ class TwigUtils
             'height' => $sizes[0]["h"],
             'width' => $sizes[0]["w"]
         ];
+    }
+
+    public function renderLink($context, $link, $classes) {
+        return $this->twig->render(
+            $this->getTemplate("link:link"),
+            ["link" => $link, "classes" => $classes]
+        );
     }
 
     public function printImage($context, $image, $sizes = [], $classes = '', $nolazy = '')

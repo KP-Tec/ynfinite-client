@@ -1,0 +1,11 @@
+<a
+    href="{{ link.href }}"
+    {%- if classes %}
+        class="{{ classes }}"
+    {% endif -%}
+	{%- if link.title %}
+        title="{{ link.title }}"
+    {% endif -%}
+>
+	{{link.text}}
+</a>
