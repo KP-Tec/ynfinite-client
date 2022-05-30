@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     zlib1g \
     zlib1g-dev \
+    libicu-dev \
+    g++ \
     unzip \
     curl \
     git \
@@ -17,7 +19,14 @@ RUN pecl install apcu
 
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install gettext
+
+RUN docker-php-ext-configure intl
+RUN docker-php-ext-install intl
+RUN docker-php-ext-enable intl
+
 RUN docker-php-ext-enable apcu
+
+
 
 RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf
 

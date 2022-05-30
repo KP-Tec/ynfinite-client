@@ -133,13 +133,6 @@ class TwigUtils
         ];
     }
 
-    public function renderLink($context, $link, $classes) {
-        return $this->twig->render(
-            $this->getTemplate("link:link"),
-            ["link" => $link, "classes" => $classes]
-        );
-    }
-
     public function printImage($context, $image, $sizes = [], $classes = '', $nolazy = '')
     {
         $sources = $this->getSizes($image, $sizes);
@@ -377,6 +370,13 @@ class TwigUtils
         return $this->twig->render(
             $this->getTemplate('listing:perPageDropdown'),
             ['uriData' => $this->uriData]
+        );
+    }
+
+    public function printLink($context, $link, $classes) {
+        return $this->twig->render(
+            $this->getTemplate("link:link"),
+            ["link" => $link, "classes" => $classes]
         );
     }
 

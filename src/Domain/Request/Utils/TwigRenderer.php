@@ -50,6 +50,7 @@ final class TwigRenderer
 
         // $loader = new ArrayLoader($this->templates);
         $this->twig = new Environment($loader, ['debug' => true, /* 'cache' =>6 getcwd().'/../tmp/twig_cache', */]);
+
         $this->twig->addExtension(new IntlExtension());
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addExtension(new SlugifyExtension(Slugify::create()));
