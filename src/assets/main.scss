@@ -1,3 +1,10 @@
+// media queries ===============================================================
+$screen-xs:  30rem;
+$screen-sm:  48rem;
+$screen-md:  64rem;
+$screen-lg:  75rem;
+
+// imports =====================================================================
 @import 'scss/article';
 @import 'scss/cookieManager';
 @import 'scss/formGrid';

@@ -1,10 +1,7 @@
 <div class="yn-cookie-consent">
-    <div class="yn-cookie-consent--inner">
-        <h5>{{cookie.headline}}</h5>
-        {{cookie.consent_text|raw}}
-        <div class="yn-cookie-consent--controlls">
-        <a class="yn-cookie-consent--okay" href="" data-consent-id="{{cookie._id}}">{{"ConsentManager_GiveConsent"|trans}}</a>
-        </div>
-    </div>
+	<div class="yn-cookie-consent__inner">
+		<h3 class="h4">{{ cookie.headline }}</h3>
+		{{ cookie.consent_text|raw }}
+		<button class="yn-cookie-consent--okay button button--solid button--pri" data-consent-id="{{ cookie._id }}">{{ "ConsentManager_GiveConsent"|trans }}</button>
+	</div>
 </div>
-
