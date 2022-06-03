@@ -13,12 +13,19 @@ $yn-gap: 1.5rem;
 	z-index: 10000;
 
 	:is(h1, h2, h3, h4, h5, h6, p, li, button, a, label) {
+		margin-right: unset;
+		margin-left: unset;
 		font-family: var(--font-family-pri, system-ui);
+		text-align: left;
+		text-transform: none;
 	}
 
-	label {color: currentColor;}
+	label {
+		color: currentColor;
+		text-transform: none;
+	}
 
-	// dimm background
+	// dim background
 	&::after {
 		content: '';
 		position: absolute;
@@ -34,10 +41,6 @@ $yn-gap: 1.5rem;
 		padding: 0;
 		list-style: none;
 	}
-
-	.button--solid {
-		border-color: transparent;
-	}
 }
 
 .yn-cookies--show {
@@ -51,7 +54,7 @@ $yn-gap: 1.5rem;
 	width: 90%;
 	overflow: auto;
 	border-radius: var(--cookie-radius, 12px);
-	background-color: #fff;
+	background-color: var(--cookie-modal-background, #fff);
 	z-index: 10000;
 }
 
