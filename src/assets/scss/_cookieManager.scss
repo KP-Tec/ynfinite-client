@@ -12,9 +12,7 @@ $yn-gap: 1.5rem;
 	width: 100%;
 	z-index: 10000;
 
-	:is(h1, h2, h3, h4, h5, h6, p, li, button, a, label) {
-		margin-right: unset;
-		margin-left: unset;
+	:is(h1, h2, h3, h4, h5, h6) {
 		font-family: var(--font-family-pri, system-ui);
 		text-align: left;
 		text-transform: none;
