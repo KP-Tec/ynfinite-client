@@ -10,7 +10,7 @@
 {% set seoDescription = _ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.description) %}
 {% set seoKeywords = _ynfinite.content.settings.seo.keywords|default(_ynfinite.page.meta.keywords) %}
 <meta charset="UTF-8" />
-<title>{{ seoTitle }}</title>
+<title>{{ overrideTitle ?: seoTitle }}</title>
 <meta name="description" content="{{ seoDescription }}" />
 <meta name="keyword" content="{{ seoKeywords }}" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
