@@ -4,7 +4,7 @@
 			<div class="yn-form-grid-row">
 				{% for field in row %}
 					<div class="yn-form-grid-field yn-form-grid-field-{{field['grid']['w']}}">
-						{{ _yfunc("formField", field, true, addValues[field.alias], parent) }}
+						{{ _yfunc("formField", field, true, true, addValues[field.alias], parent) }}
 					</div>
 				{% endfor %}
 			</div>
@@ -12,5 +12,5 @@
 	</div>
 {% endfor %}
 {% for field in hiddenFields %}
-	{{ _yfunc("formField", field, false, addValues[field.alias]) }}
+	{{ _yfunc("formField", field, false, false, addValues[field.alias]) }}
 {% endfor %}

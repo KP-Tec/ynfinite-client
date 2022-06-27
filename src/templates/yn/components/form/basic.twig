@@ -1,22 +1,24 @@
-{% if renderWidget != false %}
-	<div class='widget widget--{{field.type}}' data-ynformuid="{{field.uid}}">
-		<label class="widget__label" for="{{field.alias}}">{%if field.label %}{{field.label}}{% else %}{{field.name}}{% endif %}
-			{% if(field.required) %}
-				<span class="required">*</span>
-			{% endif %}
-		</label>
+{% block widget %}
+	{% if renderWidget != false %}
+		<div class='widget widget--{{field.type}}' data-ynformuid="{{field.uid}}">
+			<label class="widget__label" for="{{field.alias}}">{%if field.label %}{{field.label}}{% else %}{{field.name}}{% endif %}
+				{% if(field.required) %}
+					<span class="required">*</span>
+				{% endif %}
+			</label>
 
-		<div class="widget__input-container">
-		{% endif %}
-		{% block field %}
-			<input type="{{field.type}}" name="fields{{parent}}[{{field.alias}}]" {% if field.value or addValue %} value="{{field.value|default(addValue)}}" {% endif %} {%if field.placeholder %} placeholder="{{field.placeholder}}" {% endif %} {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
-		{% endblock field %}
-		{% block hint %}
-			{% if field.hint %}
-				<small class="widget__hint">{{field.hint}}</small>
+			<div class="widget__input-container">
 			{% endif %}
-		{% endblock hint %}
-		{% if renderWidget != false %}
+			{% block field %}
+				<input type="{{field.type}}" name="fields{{parent}}[{{field.alias}}]" {% if field.value or addValue %} value="{{field.value|default(addValue)}}" {% endif %} {%if field.placeholder %} placeholder="{{field.placeholder}}" {% endif %} {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
+			{% endblock field %}
+			{% block hint %}
+				{% if renderHint and field.hint %}
+					<small class="widget__hint">{{field.hint}}</small>
+				{% endif %}
+			{% endblock hint %}
+			{% if renderWidget != false %}
+			</div>
 		</div>
-	</div>
-{% endif %}
+	{% endif %}
+{% endblock %}

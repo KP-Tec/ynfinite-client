@@ -56,6 +56,7 @@ class TwigUtils
             'form:fields.basic' => 'yn/components/form/basic.twig',
             'form:fields.categories' => 'yn/components/form/categories.twig',
             'form:fields.distance' => 'yn/components/form/distance.twig',
+            'form:fields.team' => 'yn/components/form/team.twig',
             "gdpr:request" => "yn/module/gdpr/request.twig",
             "gdpr:update" => "yn/module/gdpr/update.twig",
             'listing:pagination' => 'yn/components/pagination.twig',
@@ -329,6 +330,7 @@ class TwigUtils
         $context, 
         $formField,
         $renderWidget = true,
+        $renderHint = true,
         $valueOverride = '',
         $parent = ''
     ) {
@@ -345,6 +347,7 @@ class TwigUtils
                 'field' => $formField,
                 'parent' => $parent,
                 'renderWidget' => $renderWidget,
+                'renderHint' => $renderHint,
                 'form' => $this->currentForm,
                 'addValue' => $valueOverride,
             ]);
