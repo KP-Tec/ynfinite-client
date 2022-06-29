@@ -25,6 +25,10 @@ final class SendFormService extends RequestService
     {
         $jsonResponse = true;
         $path = $request->getUri()->getPath();
+    
+        if(!$this->securityCheck($request)) {
+            return $this->securityError;
+        }
         
         $postBody = $this->getBody($request);
         $postBody["referer"] = $_SERVER['HTTP_REFERER'];
@@ -32,5 +36,21 @@ final class SendFormService extends RequestService
         $response = $this->request(trim($path), $this->settings["services"]["form"], $postBody, $jsonResponse);
 
         return $response;
+    }
+
+    private function securityCheck($request) 
+    {
+        $body = $request->getParsedBody();
+        if($body["confirm_email"] !== "my@email.com") {
+            $this->securityError = array(
+                "success" => false,
+                "rendered" => "<p>This server does no longer exists. Please contact your administrator!"
+            );
+            
+            return false;
+        }
+
+        return true;
+
     }
 }
