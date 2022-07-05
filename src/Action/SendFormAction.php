@@ -28,7 +28,14 @@ final class SendFormAction
     ): ResponseInterface {
         $formResponse = $this->sendFormService->sendForm($request, $_POST);
         
-        if($formResponse) {
+        if($formResponse && $formResponse["success"] === false) {
+            $response->getBody()->write((string)json_encode($formResponse));
+            
+            return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus(400);
+        } 
+        else {
             if($formResponse["activeEvent"]["asyncTemplate"]) {
                 $rendered = $this->renderPageService->renderTemplate($formResponse["templates"], $formResponse, $formResponse["activeEvent"]["asyncTemplate"]);
     
