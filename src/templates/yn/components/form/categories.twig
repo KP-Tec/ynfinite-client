@@ -2,18 +2,18 @@
 
 {% macro menuItems(field, items, level = 0) %}
 	{% for item in items %}
-    	{% if item.children|length > 0 %}
-				<optgroup class="level-{{level}}" label="{{ item.label }}"></optgroup>
-				<option class="level-{{level + 1}}" value="{{item.value}}" {% if field.value == item.value %} selected {% endif %}>{{item.label}}</option>
-				{{_self.menuItems(field, item.children, level + 1)}}
+		{% if item.children|length > 0 %}
+			<optgroup class="level-{{level}}" label="{{ item.label }}"></optgroup>
+			<option class="level-{{level + 1}}" value="{{item.value}}" {% if field.value == item.value %} selected {% endif %}>{{item.label}}</option>
+			{{_self.menuItems(field, item.children, level + 1)}}
 		{% else %}
 			<option class="level-{{level}}" value="{{item.value}}" {% if field.value == item.value %} selected {% endif %}>{{item.label}}</option>
 		{% endif %}
-    {% endfor %}
+	{% endfor %}
 {% endmacro %}
 
 {% block field %}
-	<select data-ynfield="true" name="fields{{parent}}[{{field.alias}}]" {% if field.value %}value="{field.value}"{% endif %} {% if field.required %} required {% endif %} {{field.attributes|raw}}>
+	<select data-ynfield="true" name="fields{{parent}}[{{field.alias}}]" {% if field.value %} value="{{field.value}}" {% endif %} {% if field.required %} required {% endif %} {{field.attributes|raw}}>
 		{% if field.emptyLabel %}
 			<option value="">{{field.emptyLabel}}</option>
 		{% endif %}
