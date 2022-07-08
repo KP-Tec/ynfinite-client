@@ -2,6 +2,11 @@
 
 namespace App\Utils\Twig;
 
+use Twig\Environment;
+use \Twig\Loader\ArrayLoader;
+
+use function _\get;
+
 class TwigUtils
 {
     private $data;
@@ -56,6 +61,7 @@ class TwigUtils
             'form:fields.basic' => 'yn/components/form/basic.twig',
             'form:fields.categories' => 'yn/components/form/categories.twig',
             'form:fields.distance' => 'yn/components/form/distance.twig',
+            'form:fields.team' => 'yn/components/form/team.twig',
             "gdpr:request" => "yn/module/gdpr/request.twig",
             "gdpr:update" => "yn/module/gdpr/update.twig",
             'listing:pagination' => 'yn/components/pagination.twig',
@@ -133,16 +139,31 @@ class TwigUtils
         ];
     }
 
+    public function renderAsTemplate($context, $template, $data = null) {
+        $env = new Environment(new ArrayLoader());
+        $template = $env->createTemplate($template);
+        if(!$data) {
+            return $env->render($template, $context);
+        }
+        else {
+            return $env->render($template, $data);
+        }
+        
+    }
+
     public function printImage($context, $image, $sizes = [], $classes = '', $nolazy = '')
     {
         $sources = $this->getSizes($image, $sizes);
+
+        $imageHeight = get($image, "dimensions.height");
+        $imageWidth = get($image, "dimensions.width");
 
         return $this->twig->render($this->getTemplate('images:image'), [
             'image' => $image,
             'src' => $sources['src'],
             'srcset' => $sources['srcset'],
-            'height' => $sources['height'],
-            'width' => $sources['width'],
+            'height' => $sources['height'] ? $sources['height'] : $imageHeight,
+            'width' => $sources['width'] ? $sources["width"] : $imageWidth,
             'classes' => $classes,
             'nolazy' => $nolazy,
         ]);
@@ -151,12 +172,16 @@ class TwigUtils
     public function printFigure($context, $image, $sizes = [], $classes = '', $nolazy = '')
     {
         $sources = $this->getSizes($image, $sizes);
+
+        $imageHeight = get($image, "dimensions.height");
+        $imageWidth = get($image, "dimensions.width");
+
         return $this->twig->render($this->getTemplate('images:figure'), [
             'image' => $image,
             'src' => $sources['src'],
             'srcset' => $sources['srcset'],
-            'height' => $sources['height'],
-            'width' => $sources['width'],
+            'height' => $sources['height'] ? $sources['height'] : $imageHeight,
+            'width' => $sources['width'] ? $sources["width"] : $imageWidth,
             'classes' => $classes,
             'nolazy' => $nolazy,
         ]);
@@ -329,6 +354,7 @@ class TwigUtils
         $context, 
         $formField,
         $renderWidget = true,
+        $renderHint = true,
         $valueOverride = '',
         $parent = ''
     ) {
@@ -345,6 +371,7 @@ class TwigUtils
                 'field' => $formField,
                 'parent' => $parent,
                 'renderWidget' => $renderWidget,
+                'renderHint' => $renderHint,
                 'form' => $this->currentForm,
                 'addValue' => $valueOverride,
             ]);

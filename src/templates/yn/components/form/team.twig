@@ -1,0 +1,24 @@
+{% extends "yn/components/form/basic.twig" %}
+
+{% block widget %}
+	{% set renderWidget = _ynfinite.content.settings.responsible|length > 1 %}
+	{% set renderHint = _ynfinite.content.settings.responsible|length > 1 %}
+	 {{ parent() }}
+{% endblock %}	
+
+{% block field %}
+	{% if _ynfinite.content.settings.responsible|length > 1 %}
+		<select data-ynfield="true" name="fields{{parent}}[{{field.alias}}]" {% if field.required %} required {% endif %} {{field.attributes|raw}}>
+			{% if field.emptyLabel %}
+				<option value="" {% if field.required %} disabled {% endif %}>{{field.emptyLabel}}</option>
+			{% endif %}
+			{% for option in _ynfinite.content.settings.responsible %}
+				<option value="{{option._id}}" {% if field.value == option._id %} selected {% endif %}>{{option.data[field.teamConfig.firstNameField]}} {{option.data[field.teamConfig.lastNameField]}}</option>
+			{% endfor %}
+		</select>
+	{% endif %}
+
+	{% if _ynfinite.content.settings.responsible|length == 1 %}
+		<input type="hidden" name="fields{{parent}}[{{field.alias}}]" value="{{_ynfinite.content.settings.responsible[0]._id}}" />
+	{% endif %}
+{% endblock field %}
