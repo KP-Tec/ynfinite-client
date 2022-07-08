@@ -151,19 +151,43 @@ class TwigUtils
         
     }
 
+    private function calculateImageDimensions($image, $sources) {
+        $imageHeight = get($image, "dimensions.height");
+        $imageWidth = get($image, "dimensions.width");
+
+        if(!$imageHeight || !$imageWidth || ($sources["height"] && $sources["width"])) {
+            return array($sources["width"], $sources["height"]);
+        }
+
+        if($sources["height"]) {
+            $ratio = $imageHeight / $sources["height"];
+            
+            $imageHeight = $sources["height"];
+            $imageWidth = round($imageWidth / $ratio);
+        }
+
+        if($sources["width"]) {
+            $ratio = $imageWidth / $sources["width"];
+            
+            $imageWidth = $sources["width"];
+            $imageHeight = round($imageHeight / $ratio);
+        }
+
+        return array($imageWidth, $imageHeight);
+    }
+    
     public function printImage($context, $image, $sizes = [], $classes = '', $nolazy = '')
     {
         $sources = $this->getSizes($image, $sizes);
-
-        $imageHeight = get($image, "dimensions.height");
-        $imageWidth = get($image, "dimensions.width");
+        $dimensions = $this->calculateImageDimensions($image, $sources);
+        
 
         return $this->twig->render($this->getTemplate('images:image'), [
             'image' => $image,
             'src' => $sources['src'],
             'srcset' => $sources['srcset'],
-            'height' => $sources['height'] ? $sources['height'] : $imageHeight,
-            'width' => $sources['width'] ? $sources["width"] : $imageWidth,
+            'width' => $dimensions[0],
+            'height' => $dimensions[1],
             'classes' => $classes,
             'nolazy' => $nolazy,
         ]);
@@ -172,16 +196,14 @@ class TwigUtils
     public function printFigure($context, $image, $sizes = [], $classes = '', $nolazy = '')
     {
         $sources = $this->getSizes($image, $sizes);
-
-        $imageHeight = get($image, "dimensions.height");
-        $imageWidth = get($image, "dimensions.width");
+        $dimensions = $this->calculateImageDimensions($image, $sources);
 
         return $this->twig->render($this->getTemplate('images:figure'), [
             'image' => $image,
             'src' => $sources['src'],
             'srcset' => $sources['srcset'],
-            'height' => $sources['height'] ? $sources['height'] : $imageHeight,
-            'width' => $sources['width'] ? $sources["width"] : $imageWidth,
+            'width' => $dimensions[0],
+            'height' => $dimensions[1],
             'classes' => $classes,
             'nolazy' => $nolazy,
         ]);
