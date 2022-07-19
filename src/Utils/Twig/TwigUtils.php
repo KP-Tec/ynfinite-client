@@ -5,8 +5,6 @@ namespace App\Utils\Twig;
 use Twig\Environment;
 use \Twig\Loader\ArrayLoader;
 
-use function _\get;
-
 class TwigUtils
 {
     private $data;
@@ -152,8 +150,8 @@ class TwigUtils
     }
 
     private function calculateImageDimensions($image, $sources) {
-        $imageHeight = get($image, "dimensions.height");
-        $imageWidth = get($image, "dimensions.width");
+        $imageHeight = $image["dimensions"]["height"] ?? false;
+        $imageWidth = $image["dimensions"]["width"] ?? false;
 
         if(!$imageHeight || !$imageWidth || ($sources["height"] && $sources["width"])) {
             return array($sources["width"], $sources["height"]);
