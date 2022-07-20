@@ -307,7 +307,7 @@ class TwigUtils
             'groups' => $groups,
             'parent' => $parent,
             'hiddenFields' => $hiddenFields,
-            'section' => $section,
+            "section" => $context["section"],
             'templates' => $this->templates,
             'addValues' => $addValues,
         ]);
