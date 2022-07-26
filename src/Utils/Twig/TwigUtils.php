@@ -207,7 +207,7 @@ class TwigUtils
         ]);
     }
 
-    public function form($context, $form, $section = [])
+    public function form($context, $form)
     {
         $this->currentForm = $form;
 
@@ -222,12 +222,13 @@ class TwigUtils
 
         return $this->twig->render($this->getTemplate('form:form'), [
             'form' => $form,
-            'section' => $section,
+            'section' => $context["section"],
             'templates' => $this->templates,
             "isAsync" => $isAsync ? true : false,
             "data" => implode(" ",$data)
         ]);
     }
+
 
     public function renderGdprRequestForm($context, $form) {
         return $this->twig->render($this->getTemplate('gdpr:request'), [
