@@ -1,13 +1,14 @@
-{% set classes = "" %}
-
-{% if nolazy != "nolazy" and nolazy != 1 and nolazy != true %}
-	{% set classes = classes ~ " lazyload" %}
-{% endif %}
-
+{# set classes for image orientation #}
 {% if width > height %}
-	{% set classes = classes ~ " horizontal" %}
+	{% set classes = classes ~ ' horizontal' %}
 {% else %}
-	{% set classes = classes ~ " vertical" %}
+	{% set classes = classes ~ ' vertical' %}
 {% endif %}
 
-<img data-src="{{ src }}" {%- if srcset %} data-srcset="{{ srcset }}" {% endif -%} {%- if image.metadata.title %} title="{{ image.metadata.title }}" {% endif -%} {%- if width %} width="{{width}}" {% endif -%} {%- if height %} height="{{height}}" {% endif -%} alt="{{ image.metadata.alt|default(image.metadata.filename|default(image.name)) }} {% if image.metadata.author %} &copy;{{ image.metadata.author }}{% endif %}" class="{{classes}}"/>
+<img data-src="{{ src }}"
+	{%- if (nolazy == "nolazy") or (nolazy == 1) or (nolazy == true) %} src="{{ src }}" class="{{ classes }}"{% else %} class="{{ classes }} lazyload"{% endif -%}
+	{%- if srcset %} data-srcset="{{ srcset }}"{% endif -%}
+	{%- if image.metadata.title %} title="{{ image.metadata.title }}"{% endif -%}
+	{%- if width %} width="{{width}}"{% endif -%}
+	{%- if height %} height="{{height}}" {% endif -%}
+	alt="{{ image.metadata.alt|default(image.metadata.filename|default(image.name)) }} {% if image.metadata.author %} &copy;{{ image.metadata.author }}{% endif %}" />
