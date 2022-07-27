@@ -1,17 +1,17 @@
 {% extends "yn/components/form/basic.twig" %}
 
 {% block widget %}
-	{% set notifyAll = _ynfinite.content.settings.notifyAll %}
-	{% set renderWidget = not notifyAll and _ynfinite.content.settings.responsible|length > 1 %}
-	{% set renderHint = not notifyAll and _ynfinite.content.settings.responsible|length > 1 %}
+	{% set notifyAll = _ynfinite.content.settings.responsible|length > 0 ? _ynfinite.content.settings.notifyAll : field.options.notifyAll %}
+	{% set renderWidget = not notifyAll and (_ynfinite.content.settings.responsible|length > 1 or field.options.items|length > 1) %}
+	{% set renderHint = not notifyAll and (_ynfinite.content.settings.responsible|length > 1 or field.options.items|length > 1)  %}
 
 	{{ parent() }}
 {% endblock %}
 
 {% block field %}
+	{% set teamMembers = _ynfinite.content.settings.responsible|length > 0 ? _ynfinite.content.settings.responsible : field.options.items %}
+	{% set notifyAll = _ynfinite.content.settings.responsible|length > 0 ? _ynfinite.content.settings.notifyAll : field.options.notifyAll %}
 
-
-	{% set teamMembers = _ynfinite.content.settings.responsible|length > 0 ? _ynfinite.content.settings.responsible : field.options %}
 	{% if not notifyAll and teamMembers|length > 1 %}
 		<select data-ynfield="true" name="fields{{parent}}[{{field.alias}}]" {% if field.required %} required {% endif %} {{field.attributes|raw}}>
 			{% if field.emptyLabel %}
