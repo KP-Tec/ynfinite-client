@@ -54,6 +54,9 @@ class RequestService {
         $files = $this->getFiles($request);
         
         $body = $request->getParsedBody();
+        if(!$body) {
+            $body = json_decode(file_get_contents('php://input'));
+        }
 
         $url = $request->getUri()->getScheme()."://".$request->getUri()->getHost().$request->getUri()->getPath();
         if($request->getUri()->getQuery()) {

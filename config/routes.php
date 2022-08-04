@@ -17,6 +17,8 @@ return function (App $app) {
     $app->post('/yn-gdpr/request', \App\Action\GdprRequestAction::class);
     $app->post('/yn-gdpr/update', \App\Action\GdprUpdateAction::class);
     
+    $app->post('/yn-api/content', \App\Action\ApiGetContentAction::class);
+
     $app->get('[/{params:.*}]', \App\Action\RenderPageAction::class);
     $app->post('[/{params:.*}]', \App\Action\RenderPageAction::class);
 };
