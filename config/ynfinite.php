@@ -51,6 +51,11 @@ return [
             'port' => $ynfinite_port,
             'controller' => "/v1/api/frontend/form",
         ],
+        'api/getContent' => [
+            'host' => $ynfinite_server,
+            'port' => $ynfinite_port,
+            'controller' => "/v1/api/yn-api/content",
+        ],
         'gdpr_request' => [
             'host' => $ynfinite_server,
             'port' => $ynfinite_port,

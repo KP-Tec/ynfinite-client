@@ -421,7 +421,7 @@ class TwigUtils
         );
     }
 
-    public function printLink($context, $link, $classes) {
+    public function printLink($context, $link, $classes = "") {
         return $this->twig->render(
             $this->getTemplate("link:link"),
             ["link" => $link, "classes" => $classes]
