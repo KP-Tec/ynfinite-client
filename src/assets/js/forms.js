@@ -40,11 +40,41 @@ const YnfiniteForms = {
     const ynBeforeAsyncChange = new Event("onPreAsyncChange");
     element.dispatchEvent(ynBeforeAsyncChange);
 
+    const sendButton = element.querySelector('.button')
+		const sendButton_text = sendButton.textContent
+		sendButton.style.width = sendButton.offsetWidth + 'px'
+		sendButton.style.textAlign = 'center'
+		sendButton.style.opacity = 0.5
+		sendButton.style.cursor = 'none'
+		sendButton.disabled = true;
+
+    const loading = setInterval(() => {
+        if (sendButton.textContent.length > 3) {
+            sendButton.textContent = '.'
+        } else {
+          sendButton.textContent = sendButton.textContent + ' .'
+        }
+		}, 150)
+
     const response = await fetch(action, {
       method: "POST",
       body: formData,
     });
 
+    sendButton.style.removeProperty('opacity')
+		clearInterval(loading)
+		if (response.ok) {
+        sendButton.textContent = sendButton_text
+        sendButton.style.removeProperty('width')
+        sendButton.style.removeProperty('textAlign')
+        sendButton.style.removeProperty('cursor')
+        sendButton.disabled = false
+		} else {
+        sendButton.style.backgroundColor = 'red'
+        sendButton.textContent = 'Error'
+        console.log(response)
+		}
+    
     const ynAsyncChange = new CustomEvent("onAsyncChange", {
       detail: {
         response: await response.json(),
