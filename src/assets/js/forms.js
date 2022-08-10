@@ -45,7 +45,7 @@ const YnfiniteForms = {
 		sendButton.style.width = sendButton.offsetWidth + 'px'
 		sendButton.style.textAlign = 'center'
 		sendButton.style.opacity = 0.5
-		sendButton.style.cursor = 'none'
+		sendButton.style.cursor = 'inherit'
 		sendButton.disabled = true;
 
     const loading = setInterval(() => {
