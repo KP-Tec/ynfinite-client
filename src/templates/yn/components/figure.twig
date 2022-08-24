@@ -1,4 +1,10 @@
-<figure>
+{% if width > height %}
+	{% set figure_classes = 'horizontal' %}
+{% else %}
+	{% set figure_classes = 'vertical' %}
+{% endif %}
+
+<figure class="{{ figure_classes }}">
 	{{include("yn/components/image.twig")}}
 	{%- if (image.metadata.description or image.metadata.author) -%}
 		<figcaption>
