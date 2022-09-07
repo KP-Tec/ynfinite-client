@@ -21,7 +21,7 @@ class YnfiniteException extends \Exception
 
         if($code === 308) {
             header("HTTP/1.1 301 Moved Permanently");
-            header("Location: ".$message["url"].$path);
+            header("Location: ".$message["url"]);
             die();
         }
 
