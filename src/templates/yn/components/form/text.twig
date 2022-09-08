@@ -8,8 +8,8 @@
 
 		{% if field.minLength %} minlength="{{field.minLength}}" {% endif %}
 		{% if field.maxLength %} maxlength="{{field.maxLength}}" {% endif %}
-		{% if field.pattern %} pattern="{{field.pattern}}" {% endif %}
 		{% if field.placeholder %} placeholder="{{field.placeholder}}" {% endif %}
+		{% if field.pattern %} pattern="{{field.pattern}}" {% endif %}
 		{% if field.required %} required {% endif %}
 
 		{{field.attributes|raw}}/>
