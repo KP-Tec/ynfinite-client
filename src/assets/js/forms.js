@@ -13,6 +13,15 @@ const YnfiniteForms = {
   },
 
   async submitForm(element, eventType) {
+
+    const hasProof = element.getAttribute("data-has-proof");
+    const proofenHash = element.getAttribute("data-proofen-hash");
+
+    if(!hasProof || ! proofenHash){
+      console.log("YOU ARE A BOT!");
+      return;
+    } 
+
     const ynBeforeAsyncChangeData = new Event("onPreAsyncChangeData");
     element.dispatchEvent(ynBeforeAsyncChangeData);
 
@@ -22,6 +31,8 @@ const YnfiniteForms = {
     formData.set("method", element.getAttribute("data-ynformmethod"));
     formData.set("formId", element.getAttribute("data-ynformid"));
     formData.set("formLanguage", element.getAttribute("data-language"));
+    formData.set("hasProof", hasProof)
+    formData.set("proofenHash", proofenHash)
     if (element.hasAttribute("data-ynsectionid")) {
       formData.set("sectionId", element.getAttribute("data-ynsectionid"));
     }
@@ -40,41 +51,11 @@ const YnfiniteForms = {
     const ynBeforeAsyncChange = new Event("onPreAsyncChange");
     element.dispatchEvent(ynBeforeAsyncChange);
 
-    const sendButton = element.querySelector('.button')
-		const sendButton_text = sendButton.textContent
-		sendButton.style.width = sendButton.offsetWidth + 'px'
-		sendButton.style.textAlign = 'center'
-		sendButton.style.opacity = 0.5
-		sendButton.style.cursor = 'inherit'
-		sendButton.disabled = true;
-
-    const loading = setInterval(() => {
-        if (sendButton.textContent.length > 3) {
-            sendButton.textContent = '.'
-        } else {
-          sendButton.textContent = sendButton.textContent + ' .'
-        }
-		}, 150)
-
     const response = await fetch(action, {
       method: "POST",
       body: formData,
     });
 
-    sendButton.style.removeProperty('opacity')
-		clearInterval(loading)
-		if (response.ok) {
-        sendButton.textContent = sendButton_text
-        sendButton.style.removeProperty('width')
-        sendButton.style.removeProperty('textAlign')
-        sendButton.style.removeProperty('cursor')
-        sendButton.disabled = false
-		} else {
-        sendButton.style.backgroundColor = 'var(--error, red)'
-        sendButton.textContent = 'Error'
-        console.log(response)
-		}
-    
     const ynAsyncChange = new CustomEvent("onAsyncChange", {
       detail: {
         response: await response.json(),

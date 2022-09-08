@@ -1,0 +1,36 @@
+@keyframes button-loading-spinner {
+    from {
+        transform: rotate(0turn);
+    }
+
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+form.yn-form {
+    button.waiting-for-spamprotection {
+        position: relative;
+        opacity: 0.8;
+        pointer-events: none;
+        padding-left: 44px;
+
+        &::after {
+            content: "";
+            content: "";
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            top: 0;
+            left: calc(-100% + 42px);
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border: 3px solid transparent;
+            border-top-color: var(--form-spinner, rgba(128, 0, 60, 0.875));
+            border-radius: 50%;
+            animation: button-loading-spinner 1s ease infinite;
+            transform: translateX(50%);
+        }
+    }
+}

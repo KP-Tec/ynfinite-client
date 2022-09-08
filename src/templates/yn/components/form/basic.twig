@@ -1,12 +1,16 @@
 {% block widget %}
 	{% if renderWidget != false %}
 		<div class='widget widget--{{field.type}}' data-ynformuid="{{field.uid}}">
-			<label class="widget__label" for="{{field.alias}}">{%if field.label %}{{field.label}}{% else %}{{field.name}}{% endif %}
+			<label class="widget__label" for="{{field.alias}}">
+				{%if field.label %}
+					{{field.label}}
+				{% else %}
+					{{field.name}}
+				{% endif %}
 				{% if(field.required) %}
 					<span class="required">*</span>
 				{% endif %}
 			</label>
-
 			<div class="widget__input-container">
 			{% endif %}
 			{% block field %}
