@@ -19,18 +19,25 @@ class Block {
         if (window.Worker) {
             const blockWorker = new Worker('/assets/vendor/ypsolution/js/worker.min.js');
 
+            
+
             blockWorker.onmessage = (e) => {
                 this.hash = e.data
+
                 this.data.form.dataset.hasProof = "true";
                 this.data.form.dataset.proofenHash = this.hash;
 
                 const formSubmitButton = this.data.form.querySelector("button[type=submit]");
                  
-                formSubmitButton.classList.remove("waiting-for-spamprotection")
+                formSubmitButton.classList.remove("show-form-spinner")
                 formSubmitButton.textContent = formSubmitButton.dataset.label;
 
                 blockWorker.terminate();
+                console.timeEnd();
             }
+
+            console.time();
+
             blockWorker.postMessage({form: JSON.stringify(this.data.form), previousHash: this.previousHash, timestamp: this.timestamp, difficulty})
         }
     }
@@ -79,7 +86,7 @@ const YnfiniteBotProtection = {
                         form.dataset.working = true;
 
                         formSubmitButton.dataset.label = formSubmitButton.textContent;
-                        formSubmitButton.classList.add("waiting-for-spamprotection")
+                        formSubmitButton.classList.add("show-form-spinner")
                         formSubmitButton.textContent = "Warte auf Bot-Prüfung...";
                 
                         const block = blockchain.addBlock(new Block({form: form}))

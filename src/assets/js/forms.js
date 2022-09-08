@@ -22,6 +22,11 @@ const YnfiniteForms = {
       return;
     } 
 
+    const formSubmitButton = element.querySelector("button[type=submit]");
+    formSubmitButton.dataset.label = formSubmitButton.textContent;
+    formSubmitButton.classList.add("show-form-spinner")
+    formSubmitButton.textContent = "Sende...";
+
     const ynBeforeAsyncChangeData = new Event("onPreAsyncChangeData");
     element.dispatchEvent(ynBeforeAsyncChangeData);
 
@@ -55,13 +60,24 @@ const YnfiniteForms = {
       method: "POST",
       body: formData,
     });
-
-    const ynAsyncChange = new CustomEvent("onAsyncChange", {
-      detail: {
-        response: await response.json(),
-      },
-    });
-    element.dispatchEvent(ynAsyncChange);
+ 
+    if (response.ok) {
+      const ynAsyncChange = new CustomEvent("onAsyncChange", {
+        detail: {
+          response: await response.json(),
+        },
+      });
+      element.dispatchEvent(ynAsyncChange);
+  
+      formSubmitButton.classList.remove("show-form-spinner")
+      formSubmitButton.textContent = formSubmitButton.dataset.label;
+    } else {
+      formSubmitButton.classList.remove("show-form-spinner")
+      formSubmitButton.style.backgroundColor = 'var(--error, red)'
+      formSubmitButton.style.color = 'var(--light, white)'
+      formSubmitButton.textContent = 'Error'
+      console.error(response)
+    }
   },
 
   addAsyncChangeEvent(element) {

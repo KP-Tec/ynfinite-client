@@ -462,13 +462,13 @@
             transform: rotate(1turn);
   }
 }
-form.yn-form button.waiting-for-spamprotection {
+form.yn-form button.show-form-spinner {
   position: relative;
   opacity: 0.8;
   pointer-events: none;
   padding-left: 44px;
 }
-form.yn-form button.waiting-for-spamprotection::after {
+form.yn-form button.show-form-spinner::after {
   content: "";
   content: "";
   position: absolute;
