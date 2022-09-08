@@ -27,7 +27,7 @@ form.yn-form {
             bottom: 0;
             margin: auto;
             border: 3px solid transparent;
-            border-top-color: var(--form-spinner, rgba(128, 0, 60, 0.875));
+            border-top-color: var(--form-spinner, currentColor);
             border-radius: 50%;
             animation: button-loading-spinner 1s ease infinite;
             transform: translateX(50%);
