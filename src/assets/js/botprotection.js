@@ -16,15 +16,11 @@ class Block {
     }
 
     startProofOfWork(difficulty = 4) {
-        console.log("STARTING PROOF OF WORK FOR FORM", this.data.form)
-        
         if (window.Worker) {
             const blockWorker = new Worker('/assets/vendor/ypsolution/js/worker.min.js');
 
             blockWorker.onmessage = (e) => {
                 this.hash = e.data
-                console.log("FOUND HASH", e.data);
-                console.timeEnd();    
                 this.data.form.dataset.hasProof = "true";
                 this.data.form.dataset.proofenHash = this.hash;
 
@@ -35,7 +31,6 @@ class Block {
 
                 blockWorker.terminate();
             }
-            console.time();
             blockWorker.postMessage({form: JSON.stringify(this.data.form), previousHash: this.previousHash, timestamp: this.timestamp, difficulty})
         }
     }
@@ -65,14 +60,11 @@ class BlockChain {
 
 const YnfiniteBotProtection = {
     setup() {
-        console.log("SETTING UP BOT PROTECTION")
-
         document.addEventListener("DOMContentLoaded", () => {
             const blockchain = new BlockChain();
            
             const forms = document.querySelectorAll("form[data-ynform=true][method=post]");
             if(forms.length === 0) {
-                console.log("NO FORMS FOUND!")
                 return;
             }
 
