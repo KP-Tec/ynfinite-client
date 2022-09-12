@@ -19,8 +19,6 @@ class Block {
         if (window.Worker) {
             const blockWorker = new Worker('/assets/vendor/ypsolution/js/worker.min.js');
 
-            
-
             blockWorker.onmessage = (e) => {
                 this.hash = e.data
 

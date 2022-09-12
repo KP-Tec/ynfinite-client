@@ -18,7 +18,7 @@ const YnfiniteForms = {
     const proofenHash = element.getAttribute("data-proofen-hash");
 
     if(!hasProof || ! proofenHash){
-      console.log("YOU ARE A BOT!");
+      console.log("Sorry, there is no proof here that you are a human. The form can not be sent.");
       return;
     } 
 

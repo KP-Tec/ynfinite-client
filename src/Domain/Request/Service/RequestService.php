@@ -2,6 +2,7 @@
 
 namespace App\Domain\Request\Service;
 
+use Exception;
 use SlimSession\Helper as SessionHelper;
 use Psr\Container\ContainerInterface;
 
@@ -47,6 +48,19 @@ class RequestService {
         }        
 
         return $files;
+    }
+
+    protected function checkPostProof($request) {
+        $body = $request->getParsedBody();
+        if(!$body) {
+            $body = json_decode(file_get_contents('php://input'));
+        }
+
+        if(!$body["hasProof"] || !$body["proofenHash"]) {
+            throw new Exception("The form has no proof that is was sent by a human. Sorry for you inconvenience.");
+        }
+
+        return true;
     }
 
     protected function getBody($request) {
