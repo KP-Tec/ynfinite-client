@@ -27,8 +27,8 @@ final class SendFormAction
         ResponseInterface $response
     ): ResponseInterface {
         $formResponse = $this->sendFormService->sendForm($request, $_POST);
-        
-        if($formResponse && $formResponse["success"] === false) {
+
+        if($formResponse && array_key_exists("success", $formResponse) && $formResponse["success"] === false) {
             $response->getBody()->write((string)json_encode($formResponse));
             
             return $response
@@ -50,8 +50,8 @@ final class SendFormAction
         // Build the HTTP response
         $response->getBody()->write((string)json_encode(array(
             "rendered" => $rendered, 
-            "listingForm" => $formResponse["listingForm"], 
-            "pagination" => $formResponse["pagination"]
+            "listingForm" => $formResponse["listingForm"] ?? null, 
+            "pagination" => $formResponse["pagination"] ?? null
         )));
 
         return $response

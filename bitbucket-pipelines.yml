@@ -1,0 +1,26 @@
+pipelines:
+  branches:
+    master:
+      - step:
+          deployment: Production
+          script:
+             - pipe: 'atlassian/ftp-deploy:0.3.7'
+               variables:
+                  USER: $FTP_USER
+                  PASSWORD: $FTP_PASS
+                  SERVER: $SERVER
+                  REMOTE_PATH: $REMOTE_PATH
+                  EXTRA_ARGS: '--exclude=.env --exclude=^development/ --exclude=^vendor/'
+                  DELETE_FLAG: 'false'
+    development:
+      - step:
+          deployment: Development
+          script:
+             - pipe: 'atlassian/ftp-deploy:0.3.7'
+               variables:
+                  USER: $FTP_USER
+                  PASSWORD: $FTP_PASS
+                  SERVER: $SERVER
+                  REMOTE_PATH: $REMOTE_PATH
+                  EXTRA_ARGS: '--exclude=.env --exclude=^development/ --exclude=^vendor/'
+                  DELETE_FLAG: 'false'

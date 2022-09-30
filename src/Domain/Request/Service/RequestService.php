@@ -31,7 +31,7 @@ class RequestService {
 
         $files = array();
 
-        foreach ($uploadFields["fields"] as $key => $file) {
+        foreach ($uploadFields["fields"] ?? [] as $key => $file) {
 
             if (is_array($file)) {
                 foreach ($file as $i => $part) {

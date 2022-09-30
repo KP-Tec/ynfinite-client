@@ -4,10 +4,10 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Utils\Cache\StaticCache;
 
-$dotenv = Dotenv\Dotenv::create(__DIR__. '/../');
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__. '/../');
 $dotenv->load();
 
-if(getenv('STATIC_PAGES') !== "false" && $_SERVER['REQUEST_METHOD'] === 'GET') {
+if($_ENV['STATIC_PAGES'] !== "false" && $_SERVER['REQUEST_METHOD'] === 'GET') {
     $cachedPage = StaticCache::getCache("PAGE");
     if ($cachedPage) {
         echo $cachedPage;
@@ -15,7 +15,7 @@ if(getenv('STATIC_PAGES') !== "false" && $_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 }
 
-if(getenv('STATIC_REQUESTS') !== "false" && $_SERVER['REQUEST_METHOD'] === 'POST' && $_SERVER["REQUEST_URI"] === "/yn-form/send" && $_POST["method"] !== "post") {
+if($_ENV['STATIC_REQUESTS'] !== "false" && $_SERVER['REQUEST_METHOD'] === 'POST' && $_SERVER["REQUEST_URI"] === "/yn-form/send" && $_POST["method"] !== "post") {
     $cachedData = StaticCache::getCache("REQUEST");
     if ($cachedData) {
         header('Content-type: application/json');

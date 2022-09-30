@@ -41,7 +41,7 @@ final class TwigRenderer
         $templateFolders[] = getcwd() . '/../templates/';
         $templateFolders[] = getcwd() . '/../templates/' . $data["theme"]["namespace"];
 
-        $addNamespaces = explode(",", $data["theme"]["additionalNamespaces"]);
+        $addNamespaces = explode(",", $data["theme"]["additionalNamespaces"] ?? "");
         foreach($addNamespaces as $addNamespace) {
             $templateFolders[] = getcwd() . '/../templates/' . $addNamespace;
         }
@@ -169,7 +169,7 @@ final class TwigRenderer
     private function generateTemplateOverridesList() {
         
         $overridePathes = array();
-        $addOverrides = explode(",", $this->data["theme"]["additionalNamespaces"]);
+        $addOverrides = explode(",", $this->data["theme"]["additionalNamespaces"] ?? "");
         
         forEach( $addOverrides as $override) {
             $overridePathes[] = getcwd() . "/../" . $this->settings["ynfinite"]["templateDir"] . "/" . $override . "/tplConfig.php";
@@ -236,7 +236,7 @@ final class TwigRenderer
                 $uaArray[] = $useragent->device->model;
 
             }
-            if ($useragent->device->brand) {
+            if ($useragent->device->brand ?? null) {
                 $uaArray[] = $useragent->device->brand;
             }
 
@@ -259,6 +259,7 @@ final class TwigRenderer
         $perPageSeparator = "?";
 
         $listingURL = "";
+        $perPageURL = "";
         if ($this->data["page"]["type"] === "listing") {
             $currentPage = $this->data["pagination"]["currentPage"];
             $perPage = $this->data["pagination"]["perPage"];

@@ -31,7 +31,7 @@ class StaticCache
             return $key;
         }
 
-        if($requestUrlParts[1]) {
+        if(sizeof($requestUrlParts) > 1 && $requestUrlParts[1]) {
             $key .= "_".md5($requestUrlParts[1]);
         }
     

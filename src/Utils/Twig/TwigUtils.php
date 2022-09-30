@@ -68,8 +68,8 @@ class TwigUtils
     }
     private function getTemplate($name)
     {
-        $template = $this->standardTemplates[$name];
-        if ($this->templateOverrides[$name]) {
+        $template = $this->standardTemplates[$name] ?? null;
+        if ($this->templateOverrides[$name] ?? null) {
             $template = $this->templateOverrides[$name];
         }
 
@@ -107,18 +107,18 @@ class TwigUtils
             $path = $image['path'];
 
             $attrArray = [];
-            if ($size['w']) {
+            if ($size['w'] ?? null) {
                 $attrArray[] = 'w=' . $size['w'];
             }
-            if ($size['h']) {
+            if ($size['h'] ?? null) {
                 $attrArray[] = 'h=' . $size['h'];
             }
-            if ($sizeConfig['disableWebp'] === true) {
+            if ($sizeConfig['disableWebp'] ?? null === true) {
                 $attrArray[] = 'disableWebp=1';
             }
             $path .= '?' . implode('&', $attrArray);
 
-            if ($size['screenSize']) {
+            if ($size['screenSize'] ?? null) {
                 $srcset[] = $path . ' ' . $size['screenSize'] . 'w';
             } else {
                 $src = $path;
@@ -132,8 +132,8 @@ class TwigUtils
         return [
             'src' => $src,
             'srcset' => implode(',', $srcset),
-            'height' => $sizes[0]["h"],
-            'width' => $sizes[0]["w"]
+            'height' => $sizes[0]["h"] ?? 0,
+            'width' => $sizes[0]["w"] ?? 0
         ];
     }
 
@@ -212,8 +212,8 @@ class TwigUtils
         $this->currentForm = $form;
 
         $data = array();
+        $isAsync = "";
         foreach($form["events"] as $event) {
-            $isAsync = "";
             if($event["async"]) {
                 $isAsync = "async";
             }
@@ -224,7 +224,7 @@ class TwigUtils
             'form' => $form,
             'section' => $context["section"],
             'templates' => $this->templates,
-            "isAsync" => $isAsync ? true : false,
+            "isAsync" => $isAsync  ? true : false,
             "data" => implode(" ",$data)
         ]);
     }
@@ -277,7 +277,7 @@ class TwigUtils
         $hiddenFields = [];
 
         foreach ($form['groups'] as $key => $group) {
-            $groups[$key] = ['label' => $group['label']];
+            $groups[$key] = ['label' => $group['label'] ?? ""];
 
 
             $fieldGrid = [];
@@ -290,7 +290,7 @@ class TwigUtils
                 if ($field['type'] === 'hidden') {
                     $hiddenFields[] = $field;
                 } else {
-                    if (!is_array($fieldGrid[$grid['y']])) {
+                    if (!is_array($fieldGrid[$grid['y']] ?? null)) {
                         $fieldGrid[$grid['y']] = [];
                     }
                     $fieldGrid[$grid['y']][$grid['x']] = $field;
@@ -316,7 +316,7 @@ class TwigUtils
 
     public function renderGroupFieldsByIndex(
 		$form,
-		$section = [],
+		$section,
 		$groupIndex,
 		$addValues = [],
 		$parent = ''
@@ -430,7 +430,7 @@ class TwigUtils
 
     public function linkPage($context, $pageSlug, $slug = '')
     {
-        $route = $this->data['routes'][$pageSlug];
+        $route = $this->data['routes'][$pageSlug] ?? "";
         return str_replace('{{alias}}', $slug, $route);
     }
 
@@ -465,7 +465,7 @@ class TwigUtils
     public function withVersion($context, $path) {
         $parsed = parse_url($path);
         $separator = "?";
-        if ($parsed["query"]){
+        if ($parsed["query"] ?? null){
             $separator = "&";
         }
         $time = filemtime(getcwd().$parsed["path"]) + 60 * 60 * 2;
