@@ -84,8 +84,8 @@ class TwigUtils
         $sizeConfig = [];
 
         if (!is_array($confAlias)) {
-            $sizeConfig = $this->data['images'][$confAlias];
-            $sizes = $sizeConfig['sizes'];
+            $sizeConfig = $this->data['images'][$confAlias] ?? [];
+            $sizes = $sizeConfig['sizes'] ?? [];
         } else {
             $sizes = $confAlias;
         }
