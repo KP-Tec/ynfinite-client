@@ -81,7 +81,7 @@ class RequestService {
             "method" => $request->getMethod(),
             "url" => $url,
             "session" => json_encode($_SESSION),
-            "referer" => $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : $url
+            "referer" => array_key_exists("HTTP_REFERER", $_SERVER) ? $_SERVER['HTTP_REFERER'] : $url
         ), $files);
 
         if($body) {
