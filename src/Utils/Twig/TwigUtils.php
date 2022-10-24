@@ -26,6 +26,7 @@ class TwigUtils
             'article:article' => 'yn/components/article.twig',
             'article:headline' => 'yn/components/article/headline.twig',
             'article:text' => 'yn/components/article/text.twig',
+            'article:html' => 'yn/components/article/html.twig',
             'article:images' => 'yn/components/article/images.twig',
             'article:video' => 'yn/components/article/video.twig',
             'images:image' => 'yn/components/image.twig',

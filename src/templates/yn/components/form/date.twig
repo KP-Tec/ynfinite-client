@@ -2,62 +2,64 @@
 
 {% block field %}
 	<script>
-		window.addEventListener('load', function () {
-		var field, field2, startDate, endDate, value, value2;
+		(function (){
+			window.addEventListener('load', function () {
+			var field, field2, startDate, endDate, value, value2;
 
-		const isBetweenCompare = {% if field.compareOperation == "<==>" %}true{% else %}false{% endif %};
+			const isBetweenCompare = {% if field.compareOperation == "<==>" %}true{% else %}false{% endif %};
 
-		const data = {
-			from: {
-				unit: '{{ field.restrictions.from.unit }}',
-				value: '{{ field.restrictions.from.value }}'
-			},
-			to: {
-				unit: '{{ field.restrictions.to.unit }}',
-				value: '{{ field.restrictions.to.value }}'
-			},
-			value: '{{ field.value }}'
-		}
-
-		if(isBetweenCompare) {
-			field = document.getElementById('{{form.uid}}_{{field.alias}}_from');
-			field2 = document.getElementById('{{form.uid}}_{{field.alias}}_to');
-		}
-		else {
-			field = document.getElementById('{{form.uid}}_{{field.alias}}');
-		}
-		
-
-		if (data.from.unit && data.from.value) {
-			startDate = moment().subtract(data.from.value, data.from.unit);
-			field.setAttribute("min", startDate.format('yyyy-MM-DD'))
-			if(isBetweenCompare) {	
-				field2.setAttribute("min", startDate.format('yyyy-MM-DD'))
+			const data = {
+				from: {
+					unit: '{{ field.restrictions.from.unit }}',
+					value: '{{ field.restrictions.from.value }}'
+				},
+				to: {
+					unit: '{{ field.restrictions.to.unit }}',
+					value: '{{ field.restrictions.to.value }}'
+				},
+				value: '{{ field.value }}'
 			}
-		}
 
-		if (data.to.unit && data.to.value) {
-			endDate = moment().add(data.to.value, data.to.unit);
-			field.setAttribute("max", endDate.format('yyyy-MM-DD'))
-			if(isBetweenCompare) {	
-				field2.setAttribute("max", endDate.format('yyyy-MM-DD'))
-			}
-		}
-
-		if (data.value) {
 			if(isBetweenCompare) {
-				value = moment('{{ field.value[0] }}');
-				field.setAttribute("value", value.format('yyyy-MM-DD'))
-
-				value2 = moment('{{ field.value[1] }}');
-				field2.setAttribute("value", value2.format('yyyy-MM-DD'))
+				field = document.getElementById('{{form.uid}}_{{field.alias}}_from');
+				field2 = document.getElementById('{{form.uid}}_{{field.alias}}_to');
 			}
 			else {
-				value = moment('{{ field.value }}');
-				field.setAttribute("value", value.format('yyyy-MM-DD'))
+				field = document.getElementById('{{form.uid}}_{{field.alias}}');
 			}
-		}
-	})
+			
+
+			if (data.from.unit && data.from.value) {
+				startDate = moment().subtract(data.from.value, data.from.unit);
+				field.setAttribute("min", startDate.format('yyyy-MM-DD'))
+				if(isBetweenCompare) {	
+					field2.setAttribute("min", startDate.format('yyyy-MM-DD'))
+				}
+			}
+
+			if (data.to.unit && data.to.value) {
+				endDate = moment().add(data.to.value, data.to.unit);
+				field.setAttribute("max", endDate.format('yyyy-MM-DD'))
+				if(isBetweenCompare) {	
+					field2.setAttribute("max", endDate.format('yyyy-MM-DD'))
+				}
+			}
+
+			if (data.value) {
+				if(isBetweenCompare) {
+					value = moment('{{ field.value[0] }}');
+					field.setAttribute("value", value.format('yyyy-MM-DD'))
+
+					value2 = moment('{{ field.value[1] }}');
+					field2.setAttribute("value", value2.format('yyyy-MM-DD'))
+				}
+				else {
+					value = moment('{{ field.value }}');
+					field.setAttribute("value", value.format('yyyy-MM-DD'))
+				}
+			}
+		})
+	})()
 	</script>
 
 	{% if field.compareOperation == "<==>" %}
@@ -74,6 +76,4 @@
 	{% else %}
 		<input data-ynfield="true" id="{{form.uid}}_{{field.alias}}" type="{{field.type}}" name="fields[{{field.alias}}]" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}/>
 	{% endif %}
-
-
 {% endblock field %}

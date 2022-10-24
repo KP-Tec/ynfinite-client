@@ -1,269 +1,252 @@
 const YnfiniteForms = {
-  addChangeEvent(element) {
-    for (var i = 0; i < element.elements.length; i++) {
-      element.elements[i].addEventListener("change", function (e) {
-        e.preventDefault();
-        element.submit();
-      });
-    }
-  },
+	addChangeEvent(element) {
+		for (var i = 0; i < element.elements.length; i++) {
+			element.elements[i].addEventListener('change', function (e) {
+				e.preventDefault()
+				element.submit()
+			})
+		}
+	},
 
-  resetForm(element) {
-    element.reset();
-  },
+	resetForm(element) {
+		element.reset()
+	},
 
-  async submitForm(element, eventType) {
+	async submitForm(element, eventType) {
+		const hasProof = element.getAttribute('data-has-proof')
+		const proofenHash = element.getAttribute('data-proofen-hash')
 
-    const hasProof = element.getAttribute("data-has-proof");
-    const proofenHash = element.getAttribute("data-proofen-hash");
+		if (!hasProof || !proofenHash) {
+			console.log('Sorry, there is no proof here that you are a human. The form can not be sent.')
+			return
+		}
 
-    if(!hasProof || ! proofenHash){
-      console.log("Sorry, there is no proof here that you are a human. The form can not be sent.");
-      return;
-    } 
+		const formSubmitButton = element.querySelector('button[type=submit]')
+		formSubmitButton.dataset.label = formSubmitButton.textContent
+		formSubmitButton.classList.add('show-form-spinner')
+		formSubmitButton.textContent = 'Sende...'
 
-    const formSubmitButton = element.querySelector("button[type=submit]");
-    formSubmitButton.dataset.label = formSubmitButton.textContent;
-    formSubmitButton.classList.add("show-form-spinner")
-    formSubmitButton.textContent = "Sende...";
+		const ynBeforeAsyncChangeData = new Event('onPreAsyncChangeData')
+		element.dispatchEvent(ynBeforeAsyncChangeData)
 
-    const ynBeforeAsyncChangeData = new Event("onPreAsyncChangeData");
-    element.dispatchEvent(ynBeforeAsyncChangeData);
+		const formData = new FormData(element)
+		formData.set('eventAsync', true)
+		formData.set('eventType', eventType)
+		formData.set('method', element.getAttribute('data-ynformmethod'))
+		formData.set('formId', element.getAttribute('data-ynformid'))
+		formData.set('formLanguage', element.getAttribute('data-language'))
+		formData.set('hasProof', hasProof)
+		formData.set('proofenHash', proofenHash)
+		if (element.hasAttribute('data-ynsectionid')) {
+			formData.set('sectionId', element.getAttribute('data-ynsectionid'))
+		}
 
-    const formData = new FormData(element);
-    formData.set("eventAsync", true);
-    formData.set("eventType", eventType);
-    formData.set("method", element.getAttribute("data-ynformmethod"));
-    formData.set("formId", element.getAttribute("data-ynformid"));
-    formData.set("formLanguage", element.getAttribute("data-language"));
-    formData.set("hasProof", hasProof)
-    formData.set("proofenHash", proofenHash)
-    if (element.hasAttribute("data-ynsectionid")) {
-      formData.set("sectionId", element.getAttribute("data-ynsectionid"));
-    }
+		const action = element.getAttribute('action')
 
-    const action = element.getAttribute("action");
+		// const data = new URLSearchParams();
 
-    // const data = new URLSearchParams();
+		const params = new URLSearchParams(window.location.search)
+		const perPage = params.get('__yPerPage')
 
-    const params = new URLSearchParams(window.location.search);
-    const perPage = params.get("__yPerPage");
+		if (perPage) {
+			formData.append('__yPerPage', perPage)
+		}
 
-    if (perPage) {
-      formData.append("__yPerPage", perPage);
-    }
+		const ynBeforeAsyncChange = new Event('onPreAsyncChange')
+		element.dispatchEvent(ynBeforeAsyncChange)
 
-    const ynBeforeAsyncChange = new Event("onPreAsyncChange");
-    element.dispatchEvent(ynBeforeAsyncChange);
+		const response = await fetch(action, {
+			method: 'POST',
+			body: formData,
+		})
 
-    const response = await fetch(action, {
-      method: "POST",
-      body: formData,
-    });
- 
-    if (response.ok) {
-      const ynAsyncChange = new CustomEvent("onAsyncChange", {
-        detail: {
-          response: await response.json(),
-        },
-      });
-      element.dispatchEvent(ynAsyncChange);
-  
-      formSubmitButton.classList.remove("show-form-spinner")
-      formSubmitButton.textContent = formSubmitButton.dataset.label;
-    } else {
-      formSubmitButton.classList.remove("show-form-spinner")
-      formSubmitButton.style.backgroundColor = 'var(--error, red)'
-      formSubmitButton.style.color = 'var(--light, white)'
-      formSubmitButton.textContent = 'Error'
-      console.error(response)
-    }
-  },
+		if (response.ok) {
+			const ynAsyncChange = new CustomEvent('onAsyncChange', {
+				detail: {
+					response: await response.json(),
+				},
+			})
+			element.dispatchEvent(ynAsyncChange)
 
-  addAsyncChangeEvent(element) {
-    const formInputElements = element.querySelectorAll("select, input");
+			formSubmitButton.classList.remove('show-form-spinner')
+			formSubmitButton.textContent = formSubmitButton.dataset.label
+		} else {
+			formSubmitButton.classList.remove('show-form-spinner')
+			formSubmitButton.style.backgroundColor = 'var(--error, red)'
+			formSubmitButton.style.color = 'var(--light, white)'
+			formSubmitButton.textContent = 'Error'
+			console.error(response)
+		}
+	},
 
-    for (var i = 0; i < formInputElements.length; i++) {
-      formInputElements[i].addEventListener("change", async (e) => {
-        e.preventDefault();
-        await this.submitForm(element, "onChange");
-      });
-    }
-  },
+	addAsyncChangeEvent(element) {
+		const formInputElements = element.querySelectorAll('select, input')
 
-  addAsyncSubmitEvent(element) {
-    element.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      await this.submitForm(element, "onSubmit");
-    });
-  },
+		for (var i = 0; i < formInputElements.length; i++) {
+			formInputElements[i].addEventListener('change', async (e) => {
+				e.preventDefault()
+				await this.submitForm(element, 'onChange')
+			})
+		}
+	},
 
-  setup() {
-    document.addEventListener("DOMContentLoaded", () => {
-      const forms = document.querySelectorAll("[data-ynform=true]");
+	addAsyncSubmitEvent(element) {
+		element.addEventListener('submit', async (e) => {
+			e.preventDefault()
+			await this.submitForm(element, 'onSubmit')
+		})
+	},
 
-      forms.forEach((form) => {
-        if (form.hasAttribute("data-onchange")) {
-          if (form.dataset.onchange === "async") {
-            this.addAsyncChangeEvent(form);
-          } else {
-            this.addChangeEvent(form);
-          }
-        }
+	setup() {
+		document.addEventListener('DOMContentLoaded', () => {
+			const forms = document.querySelectorAll('[data-ynform=true]')
 
-        if (form.hasAttribute("data-onsubmit")) {
-          if (form.dataset.onsubmit === "async") {
-            this.addAsyncSubmitEvent(form);
-          }
-        }
+			forms.forEach((form) => {
+				if (form.hasAttribute('data-onchange')) {
+					if (form.dataset.onchange === 'async') {
+						this.addAsyncChangeEvent(form)
+					} else {
+						this.addChangeEvent(form)
+					}
+				}
 
-        // Handle reset action
+				if (form.hasAttribute('data-onsubmit')) {
+					if (form.dataset.onsubmit === 'async') {
+						this.addAsyncSubmitEvent(form)
+					}
+				}
 
-        const resetButton = form.querySelector("button[type='reset']");
-        if (resetButton) {
-          resetButton.addEventListener("click", async (e) => {
-            const formInputElements = form.querySelectorAll("select, input");
+				// Handle reset action
 
-            for (var i = 0; i < formInputElements.length; i++) {
-              formInputElements[i].value = "";
-            }
+				const resetButton = form.querySelector("button[type='reset']")
+				if (resetButton) {
+					resetButton.addEventListener('click', async (e) => {
+						const formInputElements = form.querySelectorAll('select, input')
 
-            await this.submitForm(form);
-          });
-        }
+						for (var i = 0; i < formInputElements.length; i++) {
+							formInputElements[i].value = ''
+						}
 
-        // Handle new form
+						await this.submitForm(form)
+					})
+				}
 
-        const newFormLink = form.querySelector(".yn-form-response__new-form");
-        if (newFormLink) {
-          newFormLink.addEventListener("click", (e) => {
-            e.preventDefault();
-            this.resetForm(form);
+				// Handle new form
 
-            newFormLink
-              .closest("form")
-              .querySelector(".form-content")
-              .classList.remove("inactive");
-            newFormLink.closest(".yn-form-response").classList.remove("active");
-          });
-        }
+				const newFormLink = form.querySelector('.yn-form-response__new-form')
+				if (newFormLink) {
+					newFormLink.addEventListener('click', (e) => {
+						e.preventDefault()
+						this.resetForm(form)
 
-        // Handle list fields
-        const listFields = form.querySelectorAll(".yn-listForm-wrapper");
+						newFormLink.closest('form').querySelector('.form-content').classList.remove('inactive')
+						newFormLink.closest('.yn-form-response').classList.remove('active')
+					})
+				}
 
-        listFields.forEach((listField) => {
-          const newAction = listField.querySelector(".yn-listForm-actions-new");
+				// Handle list fields
+				const listFields = form.querySelectorAll('.yn-listForm-wrapper')
 
-          const rowTemplate = listField.querySelector(
-            "#listField_" + listField.dataset.ynformalias
-          );
+				listFields.forEach((listField) => {
+					const newAction = listField.querySelector('.yn-listForm-actions-new')
 
-          const dataContainer = listField.querySelector(".yn-listForm-data");
+					const rowTemplate = listField.querySelector('#listField_' + listField.dataset.ynformalias)
 
-          newAction.addEventListener("click", (e) => {
-            e.preventDefault();
-            const newRow = rowTemplate.content.cloneNode(true);
-            newRow.className = "yn-listForm-row";
+					const dataContainer = listField.querySelector('.yn-listForm-data')
 
-            const deleteButton = newRow.querySelector(
-              ".yn-listForm-actions-delete"
-            );
+					newAction.addEventListener('click', (e) => {
+						e.preventDefault()
+						const newRow = rowTemplate.content.cloneNode(true)
+						newRow.className = 'yn-listForm-row'
 
-            const fields = newRow.querySelectorAll("[data-ynfield=true]");
-            fields.forEach((f) => {
-              f.setAttribute(
-                "name",
-                f.name.replace("::count::", dataContainer.childElementCount)
-              );
-            });
+						const deleteButton = newRow.querySelector('.yn-listForm-actions-delete')
 
-            dataContainer.appendChild(newRow);
+						const fields = newRow.querySelectorAll('[data-ynfield=true]')
+						fields.forEach((f) => {
+							f.setAttribute('name', f.name.replace('::count::', dataContainer.childElementCount))
+						})
 
-            deleteButton.addEventListener("click", (e) => {
-              e.preventDefault();
-              const row = e.target.closest(".yn-listForm-row");
-              dataContainer.removeChild(row);
-            });
-          });
-        });
-      });
-    });
-  },
+						dataContainer.appendChild(newRow)
 
-  enableForm(form) {
-    const fieldset = form.querySelector("fieldset");
-    fieldset.disabled = false;
-  },
+						deleteButton.addEventListener('click', (e) => {
+							e.preventDefault()
+							const row = e.target.closest('.yn-listForm-row')
+							dataContainer.removeChild(row)
+						})
+					})
+				})
+			})
+		})
+	},
 
-  disableForm(form) {
-    const fieldset = form.querySelector("fieldset");
-    fieldset.disabled = true;
-  },
+	enableForm(form) {
+		const fieldset = form.querySelector('fieldset')
+		fieldset.disabled = false
+	},
 
-  updateUrl(form) {
-    const formData = new FormData(form);
+	disableForm(form) {
+		const fieldset = form.querySelector('fieldset')
+		fieldset.disabled = true
+	},
 
-    const data = new URLSearchParams();
+	updateUrl(form) {
+		const formData = new FormData(form)
 
-    const params = new URLSearchParams(window.location.search);
-    const perPage = params.get("__yPerPage");
+		const data = new URLSearchParams()
 
-    if (perPage) {
-      data.append("__yPerPage", perPage);
-    }
+		const params = new URLSearchParams(window.location.search)
+		const perPage = params.get('__yPerPage')
 
-    for (const pair of formData) {
-      if (pair[1]) {
-        data.append(pair[0], pair[1]);
-      }
-    }
+		if (perPage) {
+			data.append('__yPerPage', perPage)
+		}
 
-    let newHref = `${window.location.protocol}//${window.location.hostname}${window.location.pathname}`;
-    if (data.toString()) {
-      newHref += `?${data.toString()}`;
-    }
+		for (const pair of formData) {
+			if (pair[1]) {
+				data.append(pair[0], pair[1])
+			}
+		}
 
-    history.pushState({}, "", newHref);
-  },
+		let newHref = `${window.location.protocol}//${window.location.hostname}${window.location.pathname}`
+		if (data.toString()) {
+			newHref += `?${data.toString()}`
+		}
 
-  repopulateForm(form, data) {
-    const keys = Object.keys(data.fields);
-    for (var i = 0; i < keys.length; i++) {
-      const element = data.fields[keys[i]];
-      const formElement = form.querySelector(
-        `[name="fields[${element.alias}]"]`
-      );
+		history.pushState({}, '', newHref)
+	},
 
-      if (!formElement) break;
+	repopulateForm(form, data) {
+		const keys = Object.keys(data.fields)
+		for (var i = 0; i < keys.length; i++) {
+			const element = data.fields[keys[i]]
+			const formElement = form.querySelector(`[name="fields[${element.alias}]"]`)
 
-      let markup = `${element.options
-        .map(
-          (option) =>
-            `<option value="${option.value}" ${
-              option.value === element.value ? "selected" : ""
-            }>${option.label}</option>`
-        )
-        .join("")}`;
-      if (!formElement.options[0].value) {
-        markup = `<option value>${formElement.options[0].text}</option>${markup}`;
-      }
+			if (!formElement) break
 
-      formElement.innerHTML = markup;
-    }
-  },
+			let markup = `${element.options.map((option) => `<option value="${option.value}" ${option.value === element.value ? 'selected' : ''}>${option.label}</option>`).join('')}`
+			if (!formElement.options[0].value) {
+				markup = `<option value>${formElement.options[0].text}</option>${markup}`
+			}
 
-  showResponse(form, data) {
-    const responseContainer = form.querySelector(".yn-form-response");
-    const formContent = form.querySelector(".form-content");
+			formElement.innerHTML = markup
+		}
+	},
 
-    const innerContainer = responseContainer.querySelector(
-      ".yn-form-response__inner"
-    );
+	showResponse(form, data) {
+		const responseContainer = form.querySelector('.yn-form-response')
+		const formContent = form.querySelector('.form-content')
 
-    formContent.classList.add("inactive");
-    innerContainer.innerHTML = data.rendered;
-    responseContainer.classList.add("active");
-  },
-};
+		const innerContainer = responseContainer.querySelector('.yn-form-response__inner')
 
-module.exports = YnfiniteForms;
+		formContent.classList.add('inactive')
+		innerContainer.innerHTML = data.rendered
+		responseContainer.classList.add('active')
+		responseContainer.scrollIntoView({
+			behavior: 'auto',
+			block: 'center',
+			inline: 'center',
+		})
+	},
+}
+
+module.exports = YnfiniteForms
