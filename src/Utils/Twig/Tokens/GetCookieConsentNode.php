@@ -3,7 +3,7 @@
 namespace App\Utils\Twig\Tokens;
 
 class GetCookieConsentNode extends \Twig\Node\Node {
-    public function __construct(\Twig\Node\Node $tests, int $lineno, string $tag = null, $cookie = array(), $twig)
+    public function __construct(\Twig\Node\Node $tests, int $lineno, string $tag = null, $twig, $cookie = array())
     {
         $nodes = ['tests' => $tests];
 
