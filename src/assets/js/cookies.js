@@ -33,14 +33,18 @@ const YnfiniteConsents = {
 					this.ynSetConsentSettings()
 				})
 
-				const changeSelectionButton = document.getElementById('yn-cookies__change-selection')
+				const changeSelectionButton = document.querySelectorAll('.yn-cookies__change-selection').length >= 1 ? document.querySelectorAll('.yn-cookies__change-selection') : document.querySelectorAll('#yn-cookies__change-selection');
 
-				changeSelectionButton &&
-					changeSelectionButton.addEventListener('click', (e) => {
+				console.log(changeSelectionButton)
+				console.log(document.getElementById('yn-cookies__change-selection'))
+
+				Array.from(changeSelectionButton).forEach(element => {
+					element.addEventListener('click', (e) => {
 						e.preventDefault()
 						this.ynConsentShowPage('configuration')
 						this.showConsent(true)
 					})
+				});
 
 				const consentButtons = document.querySelectorAll('.yn-cookie-consent--okay')
 
