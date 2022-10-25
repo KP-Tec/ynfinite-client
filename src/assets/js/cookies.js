@@ -35,9 +35,6 @@ const YnfiniteConsents = {
 
 				const changeSelectionButton = document.querySelectorAll('.yn-cookies__change-selection').length >= 1 ? document.querySelectorAll('.yn-cookies__change-selection') : document.querySelectorAll('#yn-cookies__change-selection');
 
-				console.log(changeSelectionButton)
-				console.log(document.getElementById('yn-cookies__change-selection'))
-
 				Array.from(changeSelectionButton).forEach(element => {
 					element.addEventListener('click', (e) => {
 						e.preventDefault()
