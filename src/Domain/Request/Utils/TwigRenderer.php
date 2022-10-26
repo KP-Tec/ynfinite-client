@@ -267,7 +267,7 @@ final class TwigRenderer
             $listingURL = $path[0]."?";
             $perPageURL = $path[0]."?";
 
-            if ($path[1]) {
+            if (count($path) >= 2) {
                 $paramsPagination = explode("&", $path[1]);
 
                 if (($key = array_search("__yPage=$currentPage", $paramsPagination)) !== false) {
