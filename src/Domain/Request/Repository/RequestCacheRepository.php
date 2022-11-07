@@ -24,7 +24,7 @@ class RequestCacheRepository {
 
         $cache = $this->connection->table('static_cache')->where("cache_key", "=", $cacheKey)->where("filename", "=", $filename)->first();
 
-        if($cache->id) {
+        if($cache && $cache->id) {
             return (int) $this->connection->table('static_cache')->where("cache_key", "=", $cacheKey)->where("filename", "=", $filename)->update($values);
         }
         else {
