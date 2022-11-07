@@ -101,7 +101,7 @@ final class TwigRenderer
             foreach($array as $item) {
                 $joinArray[] = $item[$field];
             }
-            return implode($joinArray, $seperator);
+            return implode($seperator, $joinArray);
         });
 
         $filterHasCategory = new \Twig\TwigFilter('hasCategory', function ($content, $searchFor) {

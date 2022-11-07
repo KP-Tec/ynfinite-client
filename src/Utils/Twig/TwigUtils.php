@@ -223,7 +223,7 @@ class TwigUtils
 
         return $this->twig->render($this->getTemplate('form:form'), [
             'form' => $form,
-            'section' => $context["section"],
+            'section' => $context["section"] ?? array(),
             'templates' => $this->templates,
             "isAsync" => $isAsync  ? true : false,
             "data" => implode(" ",$data)
@@ -234,7 +234,7 @@ class TwigUtils
     public function renderGdprRequestForm($context, $form) {
         return $this->twig->render($this->getTemplate('gdpr:request'), [
             'form' => $form,
-            "section" => $context["section"], 
+            "section" => $context["section"] ?? array(), 
             'templates' => $this->templates,
         ]);        
     }
@@ -242,8 +242,8 @@ class TwigUtils
     public function renderGdprUpdateForm($context, $form) {
         return $this->twig->render($this->getTemplate('gdpr:update'), [
             'form' => $form,
-            "section" => $context["section"], 
-            "lead" => $context["lead"],
+            "section" => $context["section"] ?? array(), 
+            "lead" => $context["lead"] ?? array(),
             'templates' => $this->templates,
         ]);        
     }
