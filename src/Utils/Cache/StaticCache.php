@@ -71,7 +71,7 @@ class StaticCache
 
 
 
-    public function createCache($type, $content)
+    public static function createCache($type, $content)
     {
         if (!file_exists(getcwd() . StaticCache::BASIC_PATH)) {
             mkdir(getcwd() . StaticCache::BASIC_PATH, 0777, true);
