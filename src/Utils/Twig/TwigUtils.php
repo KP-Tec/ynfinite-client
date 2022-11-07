@@ -105,7 +105,7 @@ class TwigUtils
         }
 
         foreach ($sizes as $size) {
-            $path = $image['path'];
+            $path = $image['path'] ?? "";
 
             $attrArray = [];
             if ($size['w'] ?? null) {
@@ -127,7 +127,7 @@ class TwigUtils
         }
 
         if (!$src) {
-            $src = $image['path'];
+            $src = $image['path'] ?? "";
         }
 
         return [
