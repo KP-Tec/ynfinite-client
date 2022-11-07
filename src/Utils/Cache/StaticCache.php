@@ -35,7 +35,7 @@ class StaticCache
             $key .= "_".md5($requestUrlParts[1]);
         }
     
-        if ($_COOKIE["ynfinite-cookies"]) {
+        if ($_COOKIE["ynfinite-cookies"] ?? false) {
             $ynCookie = json_decode($_COOKIE["ynfinite-cookies"]);
             $activeScripts = implode("-", $ynCookie->activeScripts);
             if ($activeScripts) $key .= "_" . md5($activeScripts);
@@ -89,7 +89,7 @@ class StaticCache
         $filename = StaticCache::createCacheKey($type);
 
         $path = getcwd() . StaticCache::BASIC_PATH . $filename . ".cache";
-        if (file_exists($path)) {
+        if(file_exists($path)) {
             return file_get_contents($path);
         }
         return false;
@@ -99,7 +99,11 @@ class StaticCache
     {
         $path = getcwd() . StaticCache::BASIC_PATH . $filename . ".cache";
 
-        $result = unlink($path);
+        $result = false;
+        if(file_exists($path)) {
+            $result = unlink($path);
+        }
+        
         return $result;
     }
 }

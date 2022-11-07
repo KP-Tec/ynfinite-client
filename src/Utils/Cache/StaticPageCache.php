@@ -105,7 +105,10 @@ class StaticPageCache
     {
         $path = getcwd() . StaticPageCache::BASIC_PATH . $filename;
 
-        $result = unlink($path);
+        $result = false;
+        if(file_exists($path)) {
+            $result = unlink($path);
+        }
         return $result;
     }
 }
