@@ -261,8 +261,8 @@ final class TwigRenderer
         $listingURL = "";
         $perPageURL = "";
         if ($this->data["page"]["type"] === "listing") {
-            $currentPage = $this->data["pagination"]["currentPage"];
-            $perPage = $this->data["pagination"]["perPage"];
+            $currentPage = $this->data["pagination"]["currentPage"] ?? null;
+            $perPage = $this->data["pagination"]["perPage"] ?? null;
 
             $listingURL = $path[0]."?";
             $perPageURL = $path[0]."?";

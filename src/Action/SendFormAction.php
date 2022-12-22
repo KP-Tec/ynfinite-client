@@ -42,7 +42,7 @@ final class SendFormAction
                 $formResponse["rendered"] = $rendered;
             }
     
-            if($formResponse["form"]["method"] !== "post") {
+            if($formResponse && array_key_exists("success", $formResponse) && $formResponse["success"] === false) {
                 $this->cacheService->createCache("REQUEST", json_encode($formResponse));
             }
         }
