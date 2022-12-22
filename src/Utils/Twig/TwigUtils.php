@@ -432,7 +432,10 @@ class TwigUtils
     public function linkPage($context, $pageSlug, $slug = '')
     {
         $route = $this->data['routes'][$pageSlug] ?? "";
-        return str_replace('{{alias}}', $slug, $route);
+        if($slug && $route) {
+            return str_replace('{{alias}}', $slug, $route);
+        }
+        return $route;
     }
 
     public function sectionByAlias($context, $alias)
