@@ -80,6 +80,7 @@ class TwigUtils
     private function getSizes($image, $confAlias)
     {
         $srcset = [];
+        $sizesset = [];
         $src = '';
 
         $sizeConfig = [];
@@ -118,11 +119,15 @@ class TwigUtils
                 $attrArray[] = 'disableWebp=1';
             }
             $path .= '?' . implode('&', $attrArray);
+            $sizeWidth = $size['w'] ?: $size['screenSize'] ?: $image['dimensions']['width'];
 
             if ($size['screenSize'] ?? null) {
-                $srcset[] = $path . ' ' . $size['screenSize'] . 'w';
+                $srcset[] = $path . ' ' . $sizeWidth . 'w';
+                $sizesset[] = '(max-width: ' . $size['screenSize'] . 'px) ' . $sizeWidth . 'px';
             } else {
                 $src = $path;
+                $srcset[] = $path;
+                $sizesset[] = $sizeWidth . 'px';
             }
         }
 
@@ -132,7 +137,8 @@ class TwigUtils
 
         return [
             'src' => $src,
-            'srcset' => implode(',', $srcset),
+            'srcset' => implode(', ', $srcset),
+            'sizes' => implode(', ', $sizesset),
             'height' => $sizes[0]["h"] ?? 0,
             'width' => $sizes[0]["w"] ?? 0
         ];
@@ -185,6 +191,7 @@ class TwigUtils
             'image' => $image,
             'src' => $sources['src'],
             'srcset' => $sources['srcset'],
+            'sizes' => $sources['sizes'],
             'width' => $dimensions[0],
             'height' => $dimensions[1],
             'classes' => $classes,
@@ -201,6 +208,7 @@ class TwigUtils
             'image' => $image,
             'src' => $sources['src'],
             'srcset' => $sources['srcset'],
+            'sizes' => $sources['sizes'],
             'width' => $dimensions[0],
             'height' => $dimensions[1],
             'classes' => $classes,
