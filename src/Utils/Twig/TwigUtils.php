@@ -119,15 +119,18 @@ class TwigUtils
                 $attrArray[] = 'disableWebp=1';
             }
             $path .= '?' . implode('&', $attrArray);
-            $sizeWidth = $size['w'] ?: $size['screenSize'] ?: $image['dimensions']['width'];
+            $sizeWidth = $size['w'] ?? [] ?: $size['screenSize'] ?? [] ?: $image['dimensions']['width'] ?? [] ?: null;
 
-            if ($size['screenSize'] ?? null) {
+            if ($size['screenSize'] ?? [] && $sizeWidth ?? []) {
                 $srcset[] = $path . ' ' . $sizeWidth . 'w';
                 $sizesset[] = '(max-width: ' . $size['screenSize'] . 'px) ' . $sizeWidth . 'px';
             } else {
                 $src = $path;
                 $srcset[] = $path;
-                $sizesset[] = $sizeWidth . 'px';
+
+                if ($sizeWidth ?? null) {
+                    $sizesset[] = $sizeWidth . 'px';
+                }
             }
         }
 
