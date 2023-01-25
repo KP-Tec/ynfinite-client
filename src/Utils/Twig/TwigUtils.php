@@ -440,6 +440,17 @@ class TwigUtils
         );
     }
 
+    public function printLinks($context, $links, $classes = "") {
+        $buttons = '';
+        for($i = 0; $i < count($links); $i++) {
+            $buttons .= $this->twig->render(
+                $this->getTemplate("link:link"),
+                ["link" => $links[$i], "classes" => $classes]
+            );
+         }
+        return $buttons;
+    }
+
     public function linkPage($context, $pageSlug, $slug = '')
     {
         $route = $this->data['routes'][$pageSlug] ?? "";
