@@ -5,10 +5,18 @@
 	{% set classes = classes ~ ' vertical' %}
 {% endif %}
 
-<img data-src="{{ src }}"
-	{%- if (nolazy == "nolazy") or (nolazy == 1) or (nolazy == true) %} src="{{ src }}" class="{{ classes }}"{% else %} class="{{ classes }} lazyload"{% endif -%}
-	{%- if srcset %} data-srcset="{{ srcset }}"{% endif -%}
+{# set classes for lazyloading #}
+{% if (nolazy == "nolazy") or (nolazy == 1) or (nolazy == true) %}
+	{% set classes = classes %}
+{% else %}
+	{% set classes = classes ~ ' lazyload' %}
+{% endif %}
+
+<img src="{{ src }}"
+	{%- if nolazy == '' %} data-src="{{ src }}"{% endif -%}
+	{%- if srcset %} srcset="{{ srcset }}"{%- if nolazy == '' %} data-srcset="{{ srcset }}"{% endif -%}{% endif -%}
+	class="{{ classes }}"
 	{%- if image.metadata.title %} title="{{ image.metadata.title }}"{% endif -%}
 	{%- if width %} width="{{width}}"{% endif -%}
 	{%- if height %} height="{{height}}" {% endif -%}
-	alt="{{ image.metadata.alt|default(image.metadata.filename|default(image.name)) }} {% if image.metadata.author %} &copy;{{ image.metadata.author }}{% endif %}" />
+	alt="{{ image.metadata.alt|default(image.metadata.filename|default(image.name)) }}{% if image.metadata.author %} &copy;{{ image.metadata.author }}{% endif %}" />
