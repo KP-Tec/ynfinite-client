@@ -1,5 +1,5 @@
 {% set action = form.redirectPage.route ? _ynfinite.languages.prefix ~ form.redirectPage.route : _ynfinite.currentSlug %}
-<form class="yn-form" id="form_{{form.uid}}" method="{{form.method}}" enctype="multipart/form-data" action="{{isAsync ? "/yn-form/send" :action}}" data-ynalias="{{form.alias}}" data-ynform="true" data-language="{{_ynfinite.languages.current}}" data-ynformid="{{form._id}}" data-ynformmethod="{{form.method}}" {% if(section._id) %} data-ynsectionid="{{section._id}}" {% endif %} {{data}}>
+<form class="yn-form {% if form.settings.noBotProtection %}yn-nobotprotection{% endif %}" id="form_{{form.uid}}" method="{{form.method}}" enctype="multipart/form-data" action="{{isAsync ? "/yn-form/send" :action}}" data-ynalias="{{form.alias}}" data-ynform="true" data-language="{{_ynfinite.languages.current}}" data-ynformid="{{form._id}}" data-ynformmethod="{{form.method}}" {% if(section._id) %} data-ynsectionid="{{section._id}}" {% endif %} {{data}} {% if form.settings.noBotProtection %}data-has-proof="true" data-proofen-hash="true"{% endif %}>
 	<fieldset>
 		{% if form.method != "get" %}
 			<input type="text" name="confirm_email" value="my@email.com" style="display: none !important;" tabindex="-1" autocomplete="off"/>
@@ -20,7 +20,7 @@
 		<div class="yn-form-response">
 			<div class="yn-form-response__inner"></div>
 			<div class="yn-form-response__control">
-				<a href="#" class="yn-form-response__new-form button button--solid">Neues Formular</a>
+				<a href="#" class="yn-form-response__new-form button">Neues Formular</a>
 			</div>
 		</div>
 	</fieldset>
