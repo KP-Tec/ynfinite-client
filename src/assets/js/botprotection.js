@@ -72,7 +72,7 @@ const YnfiniteBotProtection = {
         document.addEventListener('DOMContentLoaded', () => {
             const blockchain = new BlockChain();
 
-            const forms = document.querySelectorAll('form[data-ynform=true][method=post]:not(.yn-nobotprotection)');
+            const forms = document.querySelectorAll('form[data-ynform=true][method=post]:not(.yn-no-bot-protection)');
             if (forms.length === 0) {
                 return;
             }
