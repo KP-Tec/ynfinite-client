@@ -26,7 +26,7 @@ class GetCookieConsent extends \Twig\TokenParser\AbstractTokenParser
             }
         }
 
-        if(in_array($cookie["_id"], $this->data["cookies"]["active"])) {
+        if(!is_null($cookie) && in_array($cookie["_id"], $this->data["cookies"]["active"])) {
             $active = true;
         }
 
