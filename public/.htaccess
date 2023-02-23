@@ -1,6 +1,13 @@
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase /
+
+	RewriteCond %{HTTPS}s ^(on(s)|offs)$
+	RewriteRule ^ - [env=s:%2]
+
+	RewriteCond %{HTTP_HOST} ^www\.(.*)
+	RewriteRule ^.*$ http%{ENV:s}://%1/$1 [R=301,L]
+
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule . /index.php [L]
 	RewriteRule ^index\.php$ - [L]
@@ -22,21 +29,19 @@ AddOutputFilterByType DEFLATE application/x-shockwave-flash
 AddType application/x-font-woff .woff
 AddType application/x-font-woff2 .woff2
 
-
 ExpiresActive On
 ExpiresByType text/css "access plus 1 month"
 ExpiresByType text/javascript "access plus 1 month"
-ExpiresByType text/html "access plus 2 minutes"
 ExpiresByType application/javascript "access plus 1 month"
 ExpiresByType image/gif "access plus 1 month"
 ExpiresByType image/jpeg "access plus 1 month"
 ExpiresByType image/png "access plus 1 month"
 ExpiresByType image/x-icon "access plus 1 month"
 ExpiresByType application/x-font-woff "access plus 1 year"
-ExpiresByType application/x-font-woff2  "access plus 1 year"
+ExpiresByType application/x-font-woff2 "access plus 1 year"
 
 <IfModule mod_headers.c>
-	<filesmatch "\\.(ico|jpe?g|png|gif|swf)$">
+	<filesmatch "\\.(ico|jpg|jpeg|png|gif|swf)$">
 		Header set Cache-Control "max-age=2592000, public"
 	</filesmatch>
 	<filesmatch "\\.(css)$">
@@ -52,5 +57,3 @@ ExpiresByType application/x-font-woff2  "access plus 1 year"
 	ExpiresDefault "access plus 1 month"
 	SetOutputFilter DEFLATE
 </FilesMatch>
-
-
