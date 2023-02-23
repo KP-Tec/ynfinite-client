@@ -78,8 +78,12 @@ class StaticCache
         }
 
         $filename = StaticCache::createCacheKey($type);
+        $path = getcwd() . StaticCache::BASIC_PATH . $filename . ".cache";
         
-        file_put_contents(getcwd() . StaticCache::BASIC_PATH . $filename. ".cache", $content);
+        file_put_contents($path, $content);
+        $etag = filemtime($path);
+        header('ETag: ' . $etag);
+
         return $filename;
     }
 
@@ -90,6 +94,17 @@ class StaticCache
 
         $path = getcwd() . StaticCache::BASIC_PATH . $filename . ".cache";
         if(file_exists($path)) {
+            $etag = filemtime($path);
+            header('Cache-Control: max-age=15');
+            header('ETag: ' . $etag);
+            
+            if(isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
+                if($_SERVER['HTTP_IF_NONE_MATCH'] == $etag) {
+                    header('HTTP/1.1 304 Not Modified', true, 304);
+                    exit();
+                }
+            }
+
             return file_get_contents($path);
         }
         return false;

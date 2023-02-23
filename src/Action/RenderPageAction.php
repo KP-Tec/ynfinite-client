@@ -41,7 +41,9 @@ final class RenderPageAction
         catch (YnfiniteException $e) {
             return $this->handleException($e, $response);
         }
-        
+
+        $response = $response->withHeader('Cache-Control', 'max-age=15');
+
         return $response;
     }
 
