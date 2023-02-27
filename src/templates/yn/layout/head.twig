@@ -9,11 +9,13 @@
 {# seo: description, keywords #}
 {% set seoDescription = _ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.description) %}
 {% set seoKeywords = _ynfinite.content.settings.seo.keywords|default(_ynfinite.page.meta.keywords) %}
+
 <meta charset="UTF-8" />
 <title>{{ overrideTitle ?: seoTitle }}</title>
+<meta name="title" content={{ overrideTitle ?: seoTitle }}>
 <meta name="description" content="{{ seoDescription }}" />
-<meta name="keyword" content="{{ seoKeywords }}" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="keywords" content="{{ seoKeywords }}" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="robots" content="{{ _ynfinite.page.meta.robots|default("index,follow") }}" />
 
 {# favicons #}
@@ -58,29 +60,31 @@
 <meta name="twitter:url" content="{{ urlData.cleanURL }}" />
 <meta property="twitter:domain" content="{{ urlData.cleanURL }}">
 
-{% if ogImage is not null %}
+{% if ogImage and ogImageURL %}
 	{% set ogImageTitle = ogImage.metadata.title|default(null) %}
 	{% set ogImageURL = ogImage.path|default(null) %}
 	{% set ogImageType = ogImage.file_type|default(null) %}
 	{% set ogImageMetadata = ogImage.metadata.alt|default(null) %}
-	{% if ogImageURL is not null %}
 
-		{# Image #}
-		<meta property="og:image" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1" />
-		<meta name="twitter:image" content="{{ ogImageURL }}?w=1200&h=675&disableWebp=1" />
-		{# Image: Url #}
-		<meta property="og:image:url" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1" />
-		<meta property="og:image:secure_url" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1" />
-		{# Image: Title, Type #}
-		<meta property="og:image:title" content="{{ ogImageTitle }}">
-		<meta property="og:image:type" content="{{ ogImageType }}" />
-		{# Image: Alt text #}
-		<meta property="og:image:alt" content="{{ ogImageMetadata }}" />
-		<meta name="twitter:image:alt" content="{{ ogImageMetadata }}" />
-		{# Image: Size #}
-		<meta property="og:image:height" content="630" />
-		<meta property="og:image:width" content="1200" />
-	{% endif %}
+	{# Image #}
+	<meta property="og:image" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1" />
+	<meta name="twitter:image" content="{{ ogImageURL }}?w=1200&h=675&disableWebp=1" />
+
+	{# Image: Url #}
+	<meta property="og:image:url" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1" />
+	<meta property="og:image:secure_url" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1" />
+
+	{# Image: Title, Type #}
+	<meta property="og:image:title" content="{{ ogImageTitle }}">
+	<meta property="og:image:type" content="{{ ogImageType }}" />
+
+	{# Image: Alt text #}
+	<meta property="og:image:alt" content="{{ ogImageMetadata }}" />
+	<meta name="twitter:image:alt" content="{{ ogImageMetadata }}" />
+
+	{# Image: Size #}
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:width" content="1200" />
 {% endif %}
 
 {# canonicals #}
