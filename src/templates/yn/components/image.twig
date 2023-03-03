@@ -1,10 +1,10 @@
 {# set classes for image orientation #}
 {% if width * 0.9 < height and width * 1.1 > height %}
-	{% set classes = 'square ' ~ classes %}
+	{% set classes = 'format--square ' ~ classes %}
 {% elseif width > height %}
-	{% set classes = 'horizontal ' ~ classes %}
+	{% set classes = 'format--landscape ' ~ classes %}
 {% else %}
-	{% set classes = 'vertical ' ~ classes %}
+	{% set classes = 'format--portrait ' ~ classes %}
 {% endif %}
 
 <img 
