@@ -33,6 +33,7 @@ composer.phar
 prepros.cfg
 prepros-6.config
 prepros.config
+/src/assets/prepros.config
 
 ### CodeKit ====================================================================
 config.codekit
