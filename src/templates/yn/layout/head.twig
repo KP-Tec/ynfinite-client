@@ -93,10 +93,10 @@
 		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}" />
 	{% else %}
 		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}__yPage={{ _ynfinite.pagination.currentPage }}" />
-	{% endif -%}
+	{% endif %}
 {% else %}
 	<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}" />
-{% endif -%}
+{% endif %}
 
 {# prev / next #}
 {% if _ynfinite.pagination.prevPage %}
@@ -105,7 +105,7 @@
 	{% else %}
 <link rel="prev" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}__yPage={{ _ynfinite.pagination.prevPage }}" />
 	{% endif %}
-{% endif -%}
+{% endif %}
 {% if _ynfinite.pagination.nextPage %}
 <link rel="next" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}__yPage={{ _ynfinite.pagination.nextPage }}" />
 {% endif %}

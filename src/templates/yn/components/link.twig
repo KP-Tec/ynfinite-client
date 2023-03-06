@@ -9,20 +9,20 @@
         href="{{ path }}"
         {% if link.css_id %}
             id="{{ link.css_id }}"
-        {% endif -%}
+        {% endif %}
         {% if classes or link.css_class %}
             class="{{ classes }} {{ link.css_class }}"
-        {% endif -%}
+        {% endif %}
         {% if link.title %}
             title="{{ link.title }}"
-        {% endif -%}
+        {% endif %}
         {% if link.blank %}
             target="_blank"
         {% endif %}
 
         {% if link.data_attribute %}
             {{ link.data_attribute }}
-        {% endif -%}
+        {% endif %}
     >
         {{ link.text }}
     </a>
