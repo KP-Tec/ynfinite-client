@@ -1,6 +1,5 @@
 //JS Files
 import './js/general'
-import './js/lazysize'
 
 import YnfiniteConsents from './js/cookies'
 import YnfiniteForms from './js/forms'

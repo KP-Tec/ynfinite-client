@@ -3,6 +3,7 @@
 use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Factory\AppFactory;
+use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Middleware\ErrorMiddleware;
 use SlimSession\Helper;
 
@@ -28,6 +29,8 @@ use App\Domain\Request\Service\SendFormService;
 
 // Utils
 use App\Domain\Request\Utils\TwigRenderer;
+use App\Domain\Handlers\HttpErrorHandler;
+use App\Domain\Handlers\ShutdownHandler;
 
 // Repository
 use App\Domain\Request\Repository\RequestCacheRepository;
@@ -40,7 +43,21 @@ return [
     App::class => function (ContainerInterface $container) {
         AppFactory::setContainer($container);
 
-        return AppFactory::create();
+        $app = AppFactory::create();
+
+        $displayErrorDetails = true;
+        
+        $callableResolver = $app->getCallableResolver();
+        $responseFactory = $app->getResponseFactory();
+        
+        $serverRequestCreator = ServerRequestCreatorFactory::create();
+        $request = $serverRequestCreator->createServerRequestFromGlobals();
+
+        $errorHandler = new HttpErrorHandler($callableResolver, $responseFactory);
+        $shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
+        register_shutdown_function($shutdownHandler);
+
+        return $app;
     },
 
     Helper::class => function (ContainerInterface $container) {

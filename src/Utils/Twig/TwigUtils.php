@@ -69,8 +69,8 @@ class TwigUtils
     }
     private function getTemplate($name)
     {
-        $template = $this->standardTemplates[$name];
-        if ($this->templateOverrides[$name]) {
+        $template = $this->standardTemplates[$name] ?? null;
+        if ($this->templateOverrides[$name] ?? null) {
             $template = $this->templateOverrides[$name];
         }
 
@@ -80,13 +80,14 @@ class TwigUtils
     private function getSizes($image, $confAlias)
     {
         $srcset = [];
+        $sizesset = [];
         $src = '';
 
         $sizeConfig = [];
 
         if (!is_array($confAlias)) {
-            $sizeConfig = $this->data['images'][$confAlias];
-            $sizes = $sizeConfig['sizes'];
+            $sizeConfig = $this->data['images'][$confAlias] ?? [];
+            $sizes = $sizeConfig['sizes'] ?? [];
         } else {
             $sizes = $confAlias;
         }
@@ -105,36 +106,44 @@ class TwigUtils
         }
 
         foreach ($sizes as $size) {
-            $path = $image['path'];
+            $path = $image['path'] ?? "";
 
             $attrArray = [];
-            if ($size['w']) {
+            if ($size['w'] ?? null) {
                 $attrArray[] = 'w=' . $size['w'];
             }
-            if ($size['h']) {
+            if ($size['h'] ?? null) {
                 $attrArray[] = 'h=' . $size['h'];
             }
-            if ($sizeConfig['disableWebp'] === true) {
+            if ($sizeConfig['disableWebp'] ?? null === true) {
                 $attrArray[] = 'disableWebp=1';
             }
             $path .= '?' . implode('&', $attrArray);
+            $sizeWidth = $size['w'] ?? [] ?: $size['screenSize'] ?? [] ?: $image['dimensions']['width'] ?? [] ?: null;
 
-            if ($size['screenSize']) {
-                $srcset[] = $path . ' ' . $size['screenSize'] . 'w';
+            if ($size['screenSize'] ?? [] && $sizeWidth ?? []) {
+                $srcset[] = $path . ' ' . $sizeWidth . 'w';
+                $sizesset[] = '(max-width: ' . $size['screenSize'] . 'px) ' . $sizeWidth . 'px';
             } else {
                 $src = $path;
+                $srcset[] = $path;
+
+                if ($sizeWidth ?? null) {
+                    $sizesset[] = $sizeWidth . 'px';
+                }
             }
         }
 
         if (!$src) {
-            $src = $image['path'];
+            $src = $image['path'] ?? "";
         }
 
         return [
             'src' => $src,
-            'srcset' => implode(',', $srcset),
-            'height' => $sizes[0]["h"],
-            'width' => $sizes[0]["w"]
+            'srcset' => implode(', ', $srcset),
+            'sizes' => implode(', ', $sizesset),
+            'height' => $sizes[0]["h"] ?? 0,
+            'width' => $sizes[0]["w"] ?? 0
         ];
     }
 
@@ -185,6 +194,7 @@ class TwigUtils
             'image' => $image,
             'src' => $sources['src'],
             'srcset' => $sources['srcset'],
+            'sizes' => $sources['sizes'],
             'width' => $dimensions[0],
             'height' => $dimensions[1],
             'classes' => $classes,
@@ -201,6 +211,7 @@ class TwigUtils
             'image' => $image,
             'src' => $sources['src'],
             'srcset' => $sources['srcset'],
+            'sizes' => $sources['sizes'],
             'width' => $dimensions[0],
             'height' => $dimensions[1],
             'classes' => $classes,
@@ -213,8 +224,8 @@ class TwigUtils
         $this->currentForm = $form;
 
         $data = array();
+        $isAsync = "";
         foreach($form["events"] as $event) {
-            $isAsync = "";
             if($event["async"]) {
                 $isAsync = "async";
             }
@@ -223,9 +234,9 @@ class TwigUtils
 
         return $this->twig->render($this->getTemplate('form:form'), [
             'form' => $form,
-            'section' => $context["section"],
+            'section' => $context["section"] ?? array(),
             'templates' => $this->templates,
-            "isAsync" => $isAsync ? true : false,
+            "isAsync" => $isAsync  ? true : false,
             "data" => implode(" ",$data)
         ]);
     }
@@ -234,7 +245,7 @@ class TwigUtils
     public function renderGdprRequestForm($context, $form) {
         return $this->twig->render($this->getTemplate('gdpr:request'), [
             'form' => $form,
-            "section" => $context["section"], 
+            "section" => $context["section"] ?? array(), 
             'templates' => $this->templates,
         ]);        
     }
@@ -242,8 +253,8 @@ class TwigUtils
     public function renderGdprUpdateForm($context, $form) {
         return $this->twig->render($this->getTemplate('gdpr:update'), [
             'form' => $form,
-            "section" => $context["section"], 
-            "lead" => $context["lead"],
+            "section" => $context["section"] ?? array(), 
+            "lead" => $context["lead"] ?? array(),
             'templates' => $this->templates,
         ]);        
     }
@@ -278,7 +289,7 @@ class TwigUtils
         $hiddenFields = [];
 
         foreach ($form['groups'] as $key => $group) {
-            $groups[$key] = ['label' => $group['label']];
+            $groups[$key] = ['label' => $group['label'] ?? ""];
 
 
             $fieldGrid = [];
@@ -291,7 +302,7 @@ class TwigUtils
                 if ($field['type'] === 'hidden') {
                     $hiddenFields[] = $field;
                 } else {
-                    if (!is_array($fieldGrid[$grid['y']])) {
+                    if (!is_array($fieldGrid[$grid['y']] ?? null)) {
                         $fieldGrid[$grid['y']] = [];
                     }
                     $fieldGrid[$grid['y']][$grid['x']] = $field;
@@ -317,7 +328,7 @@ class TwigUtils
 
     public function renderGroupFieldsByIndex(
 		$form,
-		$section = [],
+		$section,
 		$groupIndex,
 		$addValues = [],
 		$parent = ''
@@ -429,10 +440,24 @@ class TwigUtils
         );
     }
 
+    public function printLinks($context, $links, $classes = "") {
+        $buttons = '';
+        for($i = 0; $i < count($links); $i++) {
+            $buttons .= $this->twig->render(
+                $this->getTemplate("link:link"),
+                ["link" => $links[$i], "classes" => $classes]
+            );
+         }
+        return $buttons;
+    }
+
     public function linkPage($context, $pageSlug, $slug = '')
     {
-        $route = $this->data['routes'][$pageSlug];
-        return str_replace('{{alias}}', $slug, $route);
+        $route = $this->data['routes'][$pageSlug] ?? "";
+        if($slug && $route) {
+            return str_replace('{{alias}}', $slug, $route);
+        }
+        return $route;
     }
 
     public function sectionByAlias($context, $alias)
@@ -466,7 +491,7 @@ class TwigUtils
     public function withVersion($context, $path) {
         $parsed = parse_url($path);
         $separator = "?";
-        if ($parsed["query"]){
+        if ($parsed["query"] ?? null){
             $separator = "&";
         }
         $time = filemtime(getcwd().$parsed["path"]) + 60 * 60 * 2;

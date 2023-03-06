@@ -8,7 +8,7 @@ function toBoolean($value) {
     return true;
 }
 
-$dotenv = Dotenv\Dotenv::create(__DIR__ . "/../");
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
 
 $containerBuilder = new ContainerBuilder();
@@ -18,7 +18,7 @@ $containerBuilder->addDefinitions(__DIR__ . '/container.php');
 
 // Build PHP-DI Container instance
 $containerBuilder->enableCompilation(__DIR__ . '/../tmp/cache');
-if(toBoolean(getenv("ENABLE_APCU"))) {
+if(toBoolean($_ENV["ENABLE_APCU"])) {
     $containerBuilder->enableDefinitionCache();
 }
 

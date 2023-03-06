@@ -1,22 +1,41 @@
 {# set classes for image orientation #}
-{% if width > height %}
-	{% set classes = classes ~ ' horizontal' %}
+{% if width * 0.9 < height and width * 1.1 > height %}
+	{% set classes = 'format--square ' ~ classes %}
+{% elseif width > height %}
+	{% set classes = 'format--landscape ' ~ classes %}
 {% else %}
-	{% set classes = classes ~ ' vertical' %}
+	{% set classes = 'format--portrait ' ~ classes %}
 {% endif %}
 
-{# set classes for lazyloading #}
-{% if (nolazy == "nolazy") or (nolazy == 1) or (nolazy == true) %}
-	{% set classes = classes %}
-{% else %}
-	{% set classes = classes ~ ' lazyload' %}
-{% endif %}
-
-<img src="{{ src }}"
-	{%- if nolazy == '' %} data-src="{{ src }}"{% endif -%}
-	{%- if srcset %} srcset="{{ srcset }}"{%- if nolazy == '' %} data-srcset="{{ srcset }}"{% endif -%}{% endif -%}
-	class="{{ classes }}"
-	{%- if image.metadata.title %} title="{{ image.metadata.title }}"{% endif -%}
-	{%- if width %} width="{{width}}"{% endif -%}
-	{%- if height %} height="{{height}}" {% endif -%}
-	alt="{{ image.metadata.alt|default(image.metadata.filename|default(image.name)) }}{% if image.metadata.author %} &copy;{{ image.metadata.author }}{% endif %}" />
+<img 
+	{% if nolazy %} 
+		class="{{ classes }}" 
+		fetchpriority="high"
+	{% else %}
+		loading="lazy"
+		class="{{ classes }}" 
+	{% endif %}
+	src="{{ src }}" 
+	{% if srcset %}
+		srcset="{{ srcset }}" 
+	{% endif %}
+	{% if sizes %}
+		sizes="{{ sizes }}" 
+	{% endif %}
+	{% if image.metadata.title %}
+		title="{{ image.metadata.title }}" 
+	{% endif %}
+	{% if width %}
+		width="{{ width }}" 
+	{% endif %}
+	{% if height %}
+		height="{{ height }}" 
+	{% endif %}
+	{% if image.metadata.alt or image.metadata.filename or image.name %}
+		alt="{{ image.metadata.alt ?: image.metadata.filename ?: image.name }}
+		{% if image.metadata.author %}
+			&copy;{{ image.metadata.author }}
+		{% endif %}
+		"
+	{% endif %}
+/>

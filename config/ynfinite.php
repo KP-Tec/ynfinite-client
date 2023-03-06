@@ -1,13 +1,13 @@
 <?php
 
-$dotenv = Dotenv\Dotenv::create(__DIR__ . "/../");
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
 
 $ynfinite_server = 'https://live-server.ynfinite.de';
 $ynfinite_port = 443;
 $fileservice_server = 'https://live-files.ynfinite.de';
 $fileservice_port = 443;
-if (getenv('DEV') !== "false") {
+if ($_ENV['DEV'] !== "false") {
     $ynfinite_server = 'https://ynfinite-node';
     $ynfinite_port = 4242;
     $fileservice_server = 'http://imageservice';
@@ -15,15 +15,14 @@ if (getenv('DEV') !== "false") {
 }
 
 return [
-    "debugTemplates" => toBoolean(getenv("DEBUG_TEMPLATES")),
-    'installPassword' => getenv('YN_INSTALL_PASSWORD'),
+    "debugTemplates" => toBoolean($_ENV["DEBUG_TEMPLATES"] ?? false),
     'pageTypes' => array("html", "htm"),
     "db" => array(
         'driver' => 'mysql',
-        'host' => getenv("DB_HOST"),
-        'username' => getenv("DB_USER"),
-        'database' => getenv("DB_NAME"),
-        'password' => getenv("DB_PASSWORD"),
+        'host' => $_ENV["DB_HOST"],
+        'username' => $_ENV["DB_USER"],
+        'database' => $_ENV["DB_NAME"],
+        'password' => $_ENV["DB_PASSWORD"],
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
         'prefix' => '',
@@ -90,10 +89,10 @@ return [
     ],
     "templateDir" => "templates",
     "auth" => [
-        'api_key' => getenv('YN_API_KEY'),
-        'service_id' => getenv('YN_SERVICE_ID'),    
+        'api_key' => $_ENV['YN_API_KEY'],
+        'service_id' => $_ENV['YN_SERVICE_ID'],
     ],
-    'dev' => getenv('DEV'),
-    'static_pages' => getenv('STATIC_PAGES'),
-    'static_requests' => getenv('STATIC_REQUESTS'),
+    'dev' => $_ENV['DEV'],
+    'static_pages' => $_ENV['STATIC_PAGES'],
+    'static_requests' => $_ENV['STATIC_REQUESTS'],
 ];

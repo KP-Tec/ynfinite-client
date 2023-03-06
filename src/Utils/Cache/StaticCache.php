@@ -31,11 +31,11 @@ class StaticCache
             return $key;
         }
 
-        if($requestUrlParts[1]) {
+        if(sizeof($requestUrlParts) > 1 && $requestUrlParts[1]) {
             $key .= "_".md5($requestUrlParts[1]);
         }
     
-        if ($_COOKIE["ynfinite-cookies"]) {
+        if ($_COOKIE["ynfinite-cookies"] ?? false) {
             $ynCookie = json_decode($_COOKIE["ynfinite-cookies"]);
             $activeScripts = implode("-", $ynCookie->activeScripts);
             if ($activeScripts) $key .= "_" . md5($activeScripts);
@@ -71,15 +71,19 @@ class StaticCache
 
 
 
-    public function createCache($type, $content)
+    public static function createCache($type, $content)
     {
         if (!file_exists(getcwd() . StaticCache::BASIC_PATH)) {
             mkdir(getcwd() . StaticCache::BASIC_PATH, 0777, true);
         }
 
         $filename = StaticCache::createCacheKey($type);
+        $path = getcwd() . StaticCache::BASIC_PATH . $filename . ".cache";
         
-        file_put_contents(getcwd() . StaticCache::BASIC_PATH . $filename. ".cache", $content);
+        file_put_contents($path, $content);
+        $etag = filemtime($path);
+        header('ETag: ' . $etag);
+
         return $filename;
     }
 
@@ -89,7 +93,18 @@ class StaticCache
         $filename = StaticCache::createCacheKey($type);
 
         $path = getcwd() . StaticCache::BASIC_PATH . $filename . ".cache";
-        if (file_exists($path)) {
+        if(file_exists($path)) {
+            $etag = filemtime($path);
+            header('Cache-Control: max-age=15');
+            header('ETag: ' . $etag);
+            
+            if(isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
+                if($_SERVER['HTTP_IF_NONE_MATCH'] == $etag) {
+                    header('HTTP/1.1 304 Not Modified', true, 304);
+                    exit();
+                }
+            }
+
             return file_get_contents($path);
         }
         return false;
@@ -99,7 +114,11 @@ class StaticCache
     {
         $path = getcwd() . StaticCache::BASIC_PATH . $filename . ".cache";
 
-        $result = unlink($path);
+        $result = false;
+        if(file_exists($path)) {
+            $result = unlink($path);
+        }
+        
         return $result;
     }
 }
