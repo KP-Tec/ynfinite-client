@@ -22,7 +22,7 @@ final class RenderSitemapService
     private $repository;
 
     public function __construct(ContainerInterface $container) {
-        $this->settings = $container->get("settings")["ynfinite"];
+        $this->settings = $container->get("settings");
 
         $loader = new FilesystemLoader([getcwd(). "/../src/" . $this->settings["ynfinite"]["templateDir"], getcwd() . '/../templates']);
         $this->twig = new Environment($loader, ['debug' => true, /* 'cache' => getcwd().'/../tmp/twig_cache', */]);
@@ -32,7 +32,7 @@ final class RenderSitemapService
     }
 
     public function render($sitemap) {
-        $renderedSitemap = $this->twig->render("templates/yn/module/sitemap/index.twig", array("sitemap" => $sitemap));
+        $renderedSitemap = $this->twig->render("yn/module/sitemap/index.twig", array("sitemap" => $sitemap));
         return $renderedSitemap;
     }
 

@@ -1,4 +1,4 @@
-import SHA256  from "crypto-js/sha256"
+import SHA256 from 'crypto-js/sha256';
 
 class Block {
     constructor(data, previousHash = '') {
@@ -20,38 +20,42 @@ class Block {
             const blockWorker = new Worker('/assets/vendor/ypsolution/js/worker.min.js');
 
             blockWorker.onmessage = (e) => {
-                this.hash = e.data
+                this.hash = e.data;
 
-                this.data.form.dataset.hasProof = "true";
+                this.data.form.dataset.hasProof = 'true';
                 this.data.form.dataset.proofenHash = this.hash;
 
-                const formSubmitButton = this.data.form.querySelector("button[type=submit]");
-                 
-                formSubmitButton.classList.remove("show-form-spinner")
+                const formSubmitButton = this.data.form.querySelector('button[type=submit]');
+
+                formSubmitButton.classList.remove('show-form-spinner');
                 formSubmitButton.textContent = formSubmitButton.dataset.label;
 
                 blockWorker.terminate();
                 console.timeEnd();
-            }
+            };
 
             console.time();
 
-            blockWorker.postMessage({form: JSON.stringify(this.data.form), previousHash: this.previousHash, timestamp: this.timestamp, difficulty})
+            blockWorker.postMessage({
+                form: JSON.stringify(this.data.form),
+                previousHash: this.previousHash,
+                timestamp: this.timestamp,
+                difficulty,
+            });
         }
     }
 }
-
 
 class BlockChain {
     constructor() {
         this.chain = [this.createGenesisBlock()];
     }
 
-    getLatestBlock() {  
+    getLatestBlock() {
         return this.chain[this.chain.length - 1];
     }
 
-    addBlock(newBlock){
+    addBlock(newBlock) {
         newBlock.previousHash = this.getLatestBlock().hash;
         this.chain.push(newBlock);
 
@@ -59,41 +63,41 @@ class BlockChain {
     }
 
     createGenesisBlock() {
-        return new Block("Genesis block", "0");
+        return new Block('Genesis block', '0');
     }
 }
 
 const YnfiniteBotProtection = {
     setup() {
-        document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener('DOMContentLoaded', () => {
             const blockchain = new BlockChain();
-           
-            const forms = document.querySelectorAll("form[data-ynform=true][method=post]");
-            if(forms.length === 0) {
+
+            const forms = document.querySelectorAll('form[data-ynform=true][method=post]:not(.yn-no-bot-protection)');
+            if (forms.length === 0) {
                 return;
             }
 
             forms.forEach((form) => {
-                form.dataset.hasProof = "false";
-                form.dataset.proofenHash = "";
+                form.dataset.hasProof = 'false';
+                form.dataset.proofenHash = '';
 
-                const formSubmitButton = form.querySelector("button[type=submit]");
+                const formSubmitButton = form.querySelector('button[type=submit]');
 
-                form.addEventListener('change', function() {
-                    if(form.dataset.hasProof === "false" && !form.dataset.working) {
+                form.addEventListener('change', function () {
+                    if (form.dataset.hasProof === 'false' && !form.dataset.working) {
                         form.dataset.working = true;
 
                         formSubmitButton.dataset.label = formSubmitButton.textContent;
-                        formSubmitButton.classList.add("show-form-spinner")
-                        formSubmitButton.textContent = "Warte auf Bot-Prüfung...";
-                
-                        const block = blockchain.addBlock(new Block({form: form}))
-                        block.startProofOfWork()
+                        formSubmitButton.classList.add('show-form-spinner');
+                        formSubmitButton.textContent = 'Warte auf Bot-Prüfung...';
+
+                        const block = blockchain.addBlock(new Block({ form: form }));
+                        block.startProofOfWork();
                     }
                 });
             });
-        })
+        });
     },
-}
+};
 
-export default YnfiniteBotProtection
+export default YnfiniteBotProtection;
