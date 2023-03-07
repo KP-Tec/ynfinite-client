@@ -1,6 +1,6 @@
 <div class="yn-article__video">
 	{% if component.config.provider == "youtube" %}
-		<iframe src="https://www.youtube.com/embed/{{ component.value }}" title="video" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		<iframe src="https://www.youtube-nocookie.com/embed/{{ component.value }}" title="video" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 	{% endif %}
 
 	{% if component.config.provider == "vimeo" %}
