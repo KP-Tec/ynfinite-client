@@ -36,8 +36,7 @@ class TwigUtils
             'form:fields.select' => 'yn/components/form/select.twig',
             'form:fields.radio' => 'yn/components/form/radio.twig',
             'form:fields.checkbox' => 'yn/components/form/checkbox.twig',
-            'form:fields.datetime-local' =>
-            'yn/components/form/datetime-local.twig',
+            'form:fields.datetime' => 'yn/components/form/datetime.twig',
             'form:fields.month' => 'yn/components/form/month.twig',
             'form:fields.date' => 'yn/components/form/date.twig',
             'form:fields.time' => 'yn/components/form/time.twig',
