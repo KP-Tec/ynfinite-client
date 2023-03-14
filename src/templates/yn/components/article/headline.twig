@@ -1,1 +1,11 @@
-<{{component.config.order}}>{{component.value}}</{{component.config.order}}>
+{% if component.value %}
+    <div class="yn-article__heading">
+        {% if component.overline %}
+            <p class="tagline">{{ component.overline|raw }}</p>
+        {% endif %}
+        <{{component.config.order}} class="heading">{{ component.value|raw }}</{{component.config.order}}>
+        {% if component.subline %}
+            <p class="subline">{{ component.subline|raw }}</p>
+        {% endif %}
+    </div>
+{% endif %}

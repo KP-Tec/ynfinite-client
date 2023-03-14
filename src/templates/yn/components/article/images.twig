@@ -1,5 +1,7 @@
-<div class="yn-article__images">
-	{% for image in component.value %}
-		{{ _yfunc("printFigure", image, imageConfigAlias) }}
-	{% endfor %}
-</div>
+{% if component.value %}
+	<div class="yn-article__images">
+		{% for image in component.value %}
+			{{ _yfunc("printFigure", image, imageConfigAlias) }}
+		{% endfor %}
+	</div>
+{% endif %}
