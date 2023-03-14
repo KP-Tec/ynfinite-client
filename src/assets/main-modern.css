@@ -2,8 +2,8 @@
 .yn-article > [class*=yn-article__]:not(:last-child) {
   margin-bottom: var(--gap, 1rem);
 }
-.yn-article [class*=".yn-article__"],
-.yn-article [class*=".yn-article__"] > :is(figure, iframe) {
+.yn-article [class*=yn-article__],
+.yn-article [class*=yn-article__] > :is(figure, iframe) {
   margin-inline: auto;
 }
 @supports (aspect-ratio: auto) {

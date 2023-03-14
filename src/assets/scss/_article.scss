@@ -4,8 +4,8 @@
 		margin-bottom: var(--gap, 1rem);
 	}
 
-	[class*='.yn-article__'],
-	[class*='.yn-article__'] > :is(figure, iframe) {
+	[class*='yn-article__'],
+	[class*='yn-article__'] > :is(figure, iframe) {
 		margin-inline: auto;
 	}
 
