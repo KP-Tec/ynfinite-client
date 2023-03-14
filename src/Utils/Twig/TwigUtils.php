@@ -256,7 +256,6 @@ class TwigUtils
         $this->currentForm = $form;
 
         $groups = [];
-
         $hiddenFields = [];
 
         foreach ($form['groups'] as $key => $group) {
@@ -310,7 +309,6 @@ class TwigUtils
 
 		$targetGroup = $form['groups'][$groupIndex];
 
-
 		$groups = ['label' => $targetGroup['label']];
 
 		$fieldGrid = [];
@@ -334,7 +332,6 @@ class TwigUtils
 		ksort($fieldGrid);
 
 		$groups[0]['fields'] = $fieldGrid;
-
 
 		return $this->twig->render('yn/components/renderFields.twig', [
 			'form' => $form,
@@ -438,7 +435,6 @@ class TwigUtils
         $sources = $this->getSizes($image, $sizes);
         $dimensions = $this->calculateImageDimensions($image, $sources);
         
-
         return $this->twig->render($this->getTemplate('images:image'), [
             'image' => $image,
             'src' => $sources['src'],
