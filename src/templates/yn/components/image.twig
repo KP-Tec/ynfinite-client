@@ -8,13 +8,14 @@
 {% endif %}
 
 <img 
-	{% if nolazy %} 
+	{% if classes %}
 		class="{{ classes }}" 
+	{% endif %}
+	{% if nolazy %} 
 		fetchpriority="high"
 		loading="eager"
 	{% else %}
 		loading="lazy"
-		class="{{ classes }}" 
 	{% endif %}
 	src="{{ src }}" 
 	{% if srcset %}

@@ -1,0 +1,22 @@
+{% if accordions %}
+	<div class="yn-accordions" {% if classes %}class="{{ classes }}"{% endif %}>
+		{% for item in accordions %}
+			{% set header = item.header ?: item.data.general_heading %}
+			{% set article = item.article ?: item.data.general_article %}
+			{% set text = item.data.general_text %}
+
+			{% if header and (article or text)  %}
+				<div class="yn-accordion">
+					<div class="yn-accordion__header" role="button"><span>{{ header|raw }}</span></div>
+					 <div class="yn-accordion__content">
+					 	{% if article %}
+					 		{{ _yfunc('renderArticle', article) }}
+						{% elseif text %}
+							{{ text|raw }}
+						{% endif %}
+                    </div>
+				</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+{% endif %}
