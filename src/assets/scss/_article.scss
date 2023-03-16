@@ -1,9 +1,4 @@
 .yn-article {
-	&:not(:last-of-type),
-	> [class*='yn-article__']:not(:last-child) {
-		margin-bottom: var(--text-gap-big, 2.5rem);
-	}
-
 	[class*='yn-article__'],
 	[class*='yn-article__'] > :is(figure, iframe) {
 		margin-inline: auto;
