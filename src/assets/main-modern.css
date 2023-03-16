@@ -41,6 +41,9 @@
 .yn-article__links .button + .button {
   margin-top: 0;
 }
+.yn-article .code {
+  white-space: pre-wrap;
+}
 .yn-article__heading > * {
   scroll-margin-top: calc(var(--flow, 15vh) * 0.5);
 }

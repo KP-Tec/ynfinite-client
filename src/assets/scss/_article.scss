@@ -48,6 +48,10 @@
 		}
 	}
 
+	.code {
+		white-space: pre-wrap;
+	}
+
 	&__heading {
 		> * {
 			scroll-margin-top: calc(var(--flow, 15vh) * 0.5);
