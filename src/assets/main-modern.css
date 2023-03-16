@@ -1,6 +1,6 @@
 .yn-article:not(:last-of-type),
 .yn-article > [class*=yn-article__]:not(:last-child) {
-  margin-bottom: var(--gap, 1rem);
+  margin-bottom: var(--text-gap-big, 2.5rem);
 }
 .yn-article [class*=yn-article__],
 .yn-article [class*=yn-article__] > :is(figure, iframe) {

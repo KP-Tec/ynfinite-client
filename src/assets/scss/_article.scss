@@ -1,7 +1,7 @@
 .yn-article {
 	&:not(:last-of-type),
 	> [class*='yn-article__']:not(:last-child) {
-		margin-bottom: var(--gap, 1rem);
+		margin-bottom: var(--text-gap-big, 2.5rem);
 	}
 
 	[class*='yn-article__'],
