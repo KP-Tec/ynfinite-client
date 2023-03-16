@@ -1,5 +1,7 @@
 {% block field %}
-	<div class='widget widget--{{field.type}}'>
-		{{field.text|raw}}
-	</div>
+	{% if field.text %}
+		<div class='widget widget--{{field.type}}'>
+			{{field.text|raw}}
+		</div>
+	{% endif %}
 {% endblock field %}
