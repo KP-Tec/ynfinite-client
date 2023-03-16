@@ -1,0 +1,27 @@
+{% set order = 0 %}
+
+{% if component.value %}
+    <div class="yn-article__table-of-contents">
+        {% if component.headline %}
+            <p class="h4">{{ component.headline|raw }}</p>
+        {% endif %}
+        <ul role="list">
+            {% for item in component.value %}
+                <li style="--order: {{ item.order }}"><a href="#{{ item.alias }}">{{ item.value }}</a></li>
+                {% if component.value[loop.index].order > item.order %}
+                    {% set order = order + 1 %}
+                    <ul>
+                {% elseif component.value[loop.index].order < item.order and order > 0 %}
+                    {% set diff = item.order - component.value[loop.index].order %}
+
+                    {% for i in range(1, diff) %}
+                        {% if order > 0 %}
+                            {% set order = order - 1 %}
+                    </ul>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

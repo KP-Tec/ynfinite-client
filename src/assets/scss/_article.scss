@@ -42,4 +42,20 @@
 			max-width: 100%;
 		}
 	}
+
+	&__links {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+
+		.button + .button {
+			margin-top: 0;
+		}
+	}
+
+	&__heading {
+		> * {
+			scroll-margin-top: calc(var(--flow, 15vh) * 0.5);
+		}
+	}
 }

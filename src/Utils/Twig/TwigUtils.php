@@ -31,6 +31,8 @@ class TwigUtils
             'article:images' => 'yn/components/article/images.twig',
             'article:video' => 'yn/components/article/video.twig',
             'article:accordions' => 'yn/components/article/accordions.twig',
+            'article:links' => 'yn/components/article/links.twig',
+            'article:tableOfContents' => 'yn/components/article/tableOfContents.twig',
             'accordions:accordions' => 'yn/components/accordions.twig',
             'images:image' => 'yn/components/image.twig',
             'images:figure' => 'yn/components/figure.twig',
