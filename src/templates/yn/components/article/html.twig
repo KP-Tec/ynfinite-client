@@ -1,3 +1,9 @@
-<div class="yn-article__html">
-	{{component.value | raw}}
-</div>
+{% if component.value %}
+	<div class="yn-article__html">
+		{% if component.config.showCode %}
+			<pre class="code">{{ component.value }}</pre>
+		{% else %}
+			{{ component.value|raw }}
+		{% endif %}
+	</div>
+{% endif %}
