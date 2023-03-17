@@ -4,6 +4,11 @@
 		margin-inline: auto;
 	}
 
+	&:not(:last-of-type),
+	> [class*='yn-article__']:not(:last-child) {
+		margin-bottom: var(--text-gap, 1.5rem);
+	}
+
 	// video
 	&__video {
 		iframe {

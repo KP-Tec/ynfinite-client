@@ -2,6 +2,10 @@
 .yn-article [class*=yn-article__] > :is(figure, iframe) {
   margin-inline: auto;
 }
+.yn-article:not(:last-of-type),
+.yn-article > [class*=yn-article__]:not(:last-child) {
+  margin-bottom: var(--text-gap, 1.5rem);
+}
 @supports (aspect-ratio: auto) {
   .yn-article__video iframe {
     aspect-ratio: 16/9;
