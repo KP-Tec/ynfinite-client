@@ -1,10 +1,10 @@
-.yn-article:not(:last-of-type),
-.yn-article > [class*=yn-article__]:not(:last-child) {
-  margin-bottom: var(--gap, 1rem);
-}
 .yn-article [class*=yn-article__],
 .yn-article [class*=yn-article__] > :is(figure, iframe) {
   margin-inline: auto;
+}
+.yn-article:not(:last-of-type),
+.yn-article > [class*=yn-article__]:not(:last-child) {
+  margin-bottom: var(--text-gap, 1.5rem);
 }
 @supports (aspect-ratio: auto) {
   .yn-article__video iframe {
@@ -44,6 +44,9 @@
 }
 .yn-article__links .button + .button {
   margin-top: 0;
+}
+.yn-article .code {
+  white-space: pre-wrap;
 }
 .yn-article__heading > * {
   scroll-margin-top: calc(var(--flow, 15vh) * 0.5);

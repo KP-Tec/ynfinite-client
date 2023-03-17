@@ -1,12 +1,12 @@
 .yn-article {
-	&:not(:last-of-type),
-	> [class*='yn-article__']:not(:last-child) {
-		margin-bottom: var(--gap, 1rem);
-	}
-
 	[class*='yn-article__'],
 	[class*='yn-article__'] > :is(figure, iframe) {
 		margin-inline: auto;
+	}
+
+	&:not(:last-of-type),
+	> [class*='yn-article__']:not(:last-child) {
+		margin-bottom: var(--text-gap, 1.5rem);
 	}
 
 	// video
@@ -51,6 +51,10 @@
 		.button + .button {
 			margin-top: 0;
 		}
+	}
+
+	.code {
+		white-space: pre-wrap;
 	}
 
 	&__heading {
