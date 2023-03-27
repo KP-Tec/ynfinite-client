@@ -3,38 +3,38 @@
 {% set title	= _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title %}
 {% set seoTitle	= title ?: _ynfinite.site.meta.title %}
 {% if _ynfinite.site.meta.title|length > 0 and title|length > 0 and _ynfinite.site.meta.title|lower not in title|lower %}
-	{% set seoTitle = title ~ ' | ' ~ _ynfinite.site.meta.title %}
+	{% set seoTitle = title|raw ~ ' - ' ~ _ynfinite.site.meta.title|raw %}
 {% endif %}
 
 {# seo: description, keywords #}
 {% set seoDescription = _ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.description) %}
 {% set seoKeywords = _ynfinite.content.settings.seo.keywords|default(_ynfinite.page.meta.keywords) %}
 
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>{{ overrideTitle ?: seoTitle }}</title>
 <meta name="title" content={{ overrideTitle ?: seoTitle }}>
-<meta name="description" content="{{ seoDescription }}" />
-<meta name="keywords" content="{{ seoKeywords }}" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="robots" content="{{ _ynfinite.page.meta.robots|default("index,follow") }}" />
+<meta name="description" content="{{ seoDescription }}">
+<meta name="keywords" content="{{ seoKeywords }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="{{ _ynfinite.page.meta.robots|default("index,follow") }}">
 
 {# favicons #}
 {% set favicon = _ynfinite.site.meta.favicon[0]|default(null) %}
 {% if favicon is not null %}
-	<link rel="icon" type="{{ favicon.file_type }}" sizes="192x192" href="{{ favicon.path }}?w=192&h=192" />
-	<link rel="icon" type="{{ favicon.file_type }}" sizes="32x32" href="{{ favicon.path }}?w=32&h=32" />
-	<link rel="icon" type="{{ favicon.file_type }}" sizes="96x96" href="{{ favicon.path }}?w=96&h=96" />
-	<link rel="icon" type="{{ favicon.file_type }}" sizes="16x16" href="{{ favicon.path }}?w=16&h=16" />
-	<link rel="apple-touch-icon" sizes="57x57" href="{{ favicon.path }}?w=57&h=57" />
-	<link rel="apple-touch-icon" sizes="60x60" href="{{ favicon.path }}?w=60&h=60" />
-	<link rel="apple-touch-icon" sizes="72x72" href="{{ favicon.path }}?w=72&h=72" />
-	<link rel="apple-touch-icon" sizes="76x76" href="{{ favicon.path }}?w=76&h=76" />
-	<link rel="apple-touch-icon" sizes="114x114" href="{{ favicon.path }}?w=114&h=114" />
-	<link rel="apple-touch-icon" sizes="120x120" href="{{ favicon.path }}?w=120&h=120" />
-	<link rel="apple-touch-icon" sizes="144x144" href="{{ favicon.path }}?w=144&h=144" />
-	<link rel="apple-touch-icon" sizes="152x152" href="{{ favicon.path }}?w=152&h=152" />
-	<link rel="apple-touch-icon" sizes="180x180" href="{{ favicon.path }}?w=180&h=180" />
-	<meta name="msapplication-TileImage" content="{{ favicon.path }}?w=144&h=144" />
+	<link rel="icon" type="{{ favicon.file_type }}" sizes="192x192" href="{{ favicon.path }}?w=192&h=192">
+	<link rel="icon" type="{{ favicon.file_type }}" sizes="32x32" href="{{ favicon.path }}?w=32&h=32">
+	<link rel="icon" type="{{ favicon.file_type }}" sizes="96x96" href="{{ favicon.path }}?w=96&h=96">
+	<link rel="icon" type="{{ favicon.file_type }}" sizes="16x16" href="{{ favicon.path }}?w=16&h=16">
+	<link rel="apple-touch-icon" sizes="57x57" href="{{ favicon.path }}?w=57&h=57">
+	<link rel="apple-touch-icon" sizes="60x60" href="{{ favicon.path }}?w=60&h=60">
+	<link rel="apple-touch-icon" sizes="72x72" href="{{ favicon.path }}?w=72&h=72">
+	<link rel="apple-touch-icon" sizes="76x76" href="{{ favicon.path }}?w=76&h=76">
+	<link rel="apple-touch-icon" sizes="114x114" href="{{ favicon.path }}?w=114&h=114">
+	<link rel="apple-touch-icon" sizes="120x120" href="{{ favicon.path }}?w=120&h=120">
+	<link rel="apple-touch-icon" sizes="144x144" href="{{ favicon.path }}?w=144&h=144">
+	<link rel="apple-touch-icon" sizes="152x152" href="{{ favicon.path }}?w=152&h=152">
+	<link rel="apple-touch-icon" sizes="180x180" href="{{ favicon.path }}?w=180&h=180">
+	<meta name="msapplication-TileImage" content="{{ favicon.path }}?w=144&h=144">
 {% endif %}
 
 {# OpenGraph #}
@@ -46,18 +46,18 @@
 {% set ogLocale = _ynfinite.languages.current|default("de_DE") %}
 
 {# OpenGraph Tags #}
-<meta property="og:site_name" content="{{ ogSite_name }}" />
-<meta property="og:title" content="{{ ogTitle ?: _ynfinite.page.meta.title }}" />
-<meta property="og:description" content="{{ ogDesc }}" />
-<meta property="og:url" content="{{ urlData.cleanURL }}" />
-<meta property="og:type" content="{{ ogType }}" />
-<meta property="og:locale" content="{{ ogLocale }}" />
+<meta property="og:site_name" content="{{ ogSite_name }}">
+<meta property="og:title" content="{{ ogTitle ?: _ynfinite.page.meta.title }}">
+<meta property="og:description" content="{{ ogDesc }}">
+<meta property="og:url" content="{{ urlData.cleanURL }}">
+<meta property="og:type" content="{{ ogType }}">
+<meta property="og:locale" content="{{ ogLocale }}">
 
 {# Twitter OpenGraph Tags #}
-<meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="{{ ogTitle }}" />
-<meta property="twitter:description" content="{{ ogDesc }}" />
-<meta name="twitter:url" content="{{ urlData.cleanURL }}" />
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:title" content="{{ ogTitle }}">
+<meta property="twitter:description" content="{{ ogDesc }}">
+<meta name="twitter:url" content="{{ urlData.cleanURL }}">
 <meta property="twitter:domain" content="{{ urlData.cleanURL }}">
 
 {% if ogImage and ogImageURL %}
@@ -67,45 +67,45 @@
 	{% set ogImageMetadata = ogImage.metadata.alt|default(null) %}
 
 	{# Image #}
-	<meta property="og:image" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1" />
-	<meta name="twitter:image" content="{{ ogImageURL }}?w=1200&h=675&disableWebp=1" />
+	<meta property="og:image" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1">
+	<meta name="twitter:image" content="{{ ogImageURL }}?w=1200&h=675&disableWebp=1">
 
 	{# Image: Url #}
-	<meta property="og:image:url" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1" />
-	<meta property="og:image:secure_url" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1" />
+	<meta property="og:image:url" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1">
+	<meta property="og:image:secure_url" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1">
 
 	{# Image: Title, Type #}
 	<meta property="og:image:title" content="{{ ogImageTitle }}">
-	<meta property="og:image:type" content="{{ ogImageType }}" />
+	<meta property="og:image:type" content="{{ ogImageType }}">
 
 	{# Image: Alt text #}
-	<meta property="og:image:alt" content="{{ ogImageMetadata }}" />
-	<meta name="twitter:image:alt" content="{{ ogImageMetadata }}" />
+	<meta property="og:image:alt" content="{{ ogImageMetadata }}">
+	<meta name="twitter:image:alt" content="{{ ogImageMetadata }}">
 
 	{# Image: Size #}
-	<meta property="og:image:height" content="630" />
-	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:width" content="1200">
 {% endif %}
 
 {# canonicals #}
 {% if _ynfinite.page.type == "listing" %}
 	{% if _ynfinite.pagination.currentPage == '1' %}
-		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}" />
+		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}">
 	{% else %}
-		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}__yPage={{ _ynfinite.pagination.currentPage }}" />
+		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}__yPage={{ _ynfinite.pagination.currentPage }}">
 	{% endif %}
 {% else %}
-	<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}" />
+	<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}">
 {% endif %}
 
 {# prev / next #}
 {% if _ynfinite.pagination.prevPage %}
 	{% if _ynfinite.pagination.prevPage == '1' %}
-<link rel="prev" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}" />
+<link rel="prev" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}">
 	{% else %}
-<link rel="prev" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}__yPage={{ _ynfinite.pagination.prevPage }}" />
+<link rel="prev" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}__yPage={{ _ynfinite.pagination.prevPage }}">
 	{% endif %}
 {% endif %}
 {% if _ynfinite.pagination.nextPage %}
-<link rel="next" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}__yPage={{ _ynfinite.pagination.nextPage }}" />
+<link rel="next" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}__yPage={{ _ynfinite.pagination.nextPage }}">
 {% endif %}

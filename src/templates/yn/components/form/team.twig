@@ -26,10 +26,10 @@
 
 	{% if teamMembers|length == 1 or notifyAll %}
 		{% if not notifyAll %}
-			<input type="hidden" name="fields{{parent}}[{{field.alias}}]" value="{{_ynfinite.content.settings.responsible[0]._id}}"/>
+			<input type="hidden" name="fields{{parent}}[{{field.alias}}]" value="{{_ynfinite.content.settings.responsible[0]._id}}">
 		{% else %}
 			{% for item in _ynfinite.content.settings.responsible %}
-				<input type="hidden" name="fields{{parent}}[{{field.alias}}][]" value="{{item._id}}"/>
+				<input type="hidden" name="fields{{parent}}[{{field.alias}}][]" value="{{item._id}}">
 			{% endfor %}
 		{% endif %}
 	{% endif %}

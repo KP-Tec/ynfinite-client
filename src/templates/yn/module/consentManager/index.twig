@@ -35,7 +35,7 @@
 						{# necessary cookies #}
 						<li class="yn-cookies__settings__item">
 							<label for="yn-necessary-cookies">
-								<h4>{{ config.necessary.headline }}</h4>
+								<strong>{{ config.necessary.headline }}</strong>
 								<div class="yn-cookies__settings__switch">
 									<div class="yn-cookies__switch">
 										<input name="necessary" type="checkbox" id="yn-necessary-cookies" checked disabled>
@@ -49,7 +49,7 @@
 						{% for cookie in cookies.available %}
 							<li data-yn-cookie-settings-id="{{ cookie._id }}" class="yn-cookies__settings__item">
 								<label for="{{ cookie._id }}">
-									<h4>{{ cookie.headline }}</h4>
+									<strong>{{ cookie.headline }}</strong>
 									<div class="yn-cookies__settings__switch" data-yn-default="{{ cookie.default }}">
 										<div class="yn-cookies__switch">
 											<input name="activeScripts[]" type="checkbox" id="{{ cookie._id }}" value="{{ cookie._id }}" {% if cookie._id in cookies.active %}checked{% endif %}>

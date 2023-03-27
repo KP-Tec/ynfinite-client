@@ -18,7 +18,7 @@
 				{{field.attributes|raw}}
 			/>
 			<label class="widget__label" for="{{form.uid}}_{{field.alias}}_{{option.value}}">
-				<div class="ynfinite-field-text">{{option.label}}</div>
+				{{option.label|raw}}
 			</label>
 		</div>
 	{% endfor %}

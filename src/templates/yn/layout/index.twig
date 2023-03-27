@@ -7,7 +7,7 @@
 		{% endblock %}
 	</head>
 
-	<body class="{% block body_classes %}{% endblock body_classes %} {{_ynfinite.page.css_classes}}" id="{{_ynfinite.page.css_id}}">
+	<body class="{% block body_classes %}{% endblock body_classes %} {{_ynfinite.page.css_classes}}" {% if _ynfinite.page.css_id %}id="{{_ynfinite.page.css_id}}"{% endif %}>
 		{% if templateList['header'] %}
 			{% block header %}
 				{{ include(templateList['header'], {template: _templates["header"]}) }}
@@ -27,10 +27,10 @@
 		{% endif %}
 
 		{% block footer_scripts %}
-			<script language="javascript" type="text/javascript" src="{{ _yfunc("withVersion", "/assets/vendor/ynfinite/js/app.min.js") }}"></script>
+			<script src="{{ _yfunc("withVersion", "/assets/vendor/ynfinite/js/app.min.js") }}"></script>
 
 			{% isScriptActive "form:dates" %}
-			<script language="javascript" type="text/javascript" src="{{ _yfunc("withVersion", "/assets/vendor/ynfinite/js/moment.min.js") }}"></script>
+			<script src="{{ _yfunc("withVersion", "/assets/vendor/ynfinite/js/moment.min.js") }}"></script>
 			{% endIsScriptActive %}
 		{% endblock footer_scripts %}
 

@@ -198,7 +198,9 @@
       -ms-flex-align: center;
           align-items: center;
   margin: 0;
-  padding: 0 0 0.75rem;
+}
+.yn-cookies__settings__item label + p {
+  margin-top: 0.75rem;
 }
 
 .yn-cookies__switch {

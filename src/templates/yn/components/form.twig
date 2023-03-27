@@ -2,13 +2,13 @@
 <form class="yn-form {% if form.settings.noBotProtection %}yn-no-bot-protection{% endif %}" id="form_{{form.uid}}" method="{{form.method}}" enctype="multipart/form-data" action="{{isAsync ? "/yn-form/send" :action}}" data-ynalias="{{form.alias}}" data-ynform="true" data-language="{{_ynfinite.languages.current}}" data-ynformid="{{form._id}}" data-ynformmethod="{{form.method}}" {% if(section._id) %} data-ynsectionid="{{section._id}}" {% endif %} {{data}} {% if form.settings.noBotProtection %}data-has-proof="true" data-proofen-hash="true"{% endif %}>
 	<fieldset>
 		{% if form.method != "get" %}
-			<input type="text" name="confirm_email" value="my@email.com" style="display: none !important;" tabindex="-1" autocomplete="off"/>
+			<input type="text" name="confirm_email" value="my@email.com" style="display: none !important;" tabindex="-1" autocomplete="off">
 		{% endif %}
-		<input type="hidden" value="{{form.method}}" name="method"/>
-		<input type="hidden" value="{{form._id}}" name="formId"/>
-		<input type="hidden" value="{{_ynfinite.languages.current}}" name="formLanguage"/>
+		<input type="hidden" value="{{form.method}}" name="method">
+		<input type="hidden" value="{{form._id}}" name="formId">
+		<input type="hidden" value="{{_ynfinite.languages.current}}" name="formLanguage">
 		{% if section._id %}
-			<input type="hidden" value="{{section._id}}" name="sectionId"/>
+			<input type="hidden" value="{{section._id}}" name="sectionId">
 		{% endif %}
 
 		<div class="yn-error"></div>

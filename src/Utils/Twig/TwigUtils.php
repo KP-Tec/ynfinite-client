@@ -168,21 +168,21 @@ class TwigUtils
     }
 
     private function calculateImageDimensions($image, $sources) {
-        $imageHeight = $image["dimensions"]["height"] ?? false;
-        $imageWidth = $image["dimensions"]["width"] ?? false;
+        $imageHeight = $image["dimensions"]["height"] ?? null;
+        $imageWidth = $image["dimensions"]["width"] ?? null;
 
         if(!$imageHeight || !$imageWidth || ($sources["height"] && $sources["width"])) {
             return array($sources["width"], $sources["height"]);
         }
 
-        if($sources["height"]) {
+        if($sources["height"] && $imageHeight) {
             $ratio = $imageHeight / $sources["height"];
             
             $imageHeight = $sources["height"];
             $imageWidth = round($imageWidth / $ratio);
         }
 
-        if($sources["width"]) {
+        if($sources["width"] &&  $imageWidth) {
             $ratio = $imageWidth / $sources["width"];
             
             $imageWidth = $sources["width"];
@@ -417,77 +417,89 @@ class TwigUtils
     }
 
     public function withVersion($context, $path) {
-        $path = trim($path);
-        $parsed = parse_url($path);
-        $separator = "?";
-        if ($parsed["query"] ?? null){
-            $separator = "&";
+        if($path){
+            $path = trim($path);
+            $parsed = parse_url($path);
+            $separator = "?";
+            if ($parsed["query"] ?? null){
+                $separator = "&";
+            }
+            
+            $time = filemtime(getcwd().$parsed["path"]) + 60 * 60 * 2;
+            $pathWithVersion = $path.$separator."v=".$time;
+            return($pathWithVersion);
         }
-
-        $time = filemtime(getcwd().$parsed["path"]) + 60 * 60 * 2;
-        $pathWithVersion = $path.$separator."v=".$time;
-        return($pathWithVersion);
     }
 
     // ================================================== PRINT FUNCTIONS ================================================== //
 
-     public function printImage($context, $image, $sizes = [], $classes = '', $nolazy = '')
+     public function printImage($context, $image, $sizes = [], $classes = "", $nolazy = "")
     {
-        $sources = $this->getSizes($image, $sizes);
-        $dimensions = $this->calculateImageDimensions($image, $sources);
-        
-        return $this->twig->render($this->getTemplate('images:image'), [
-            'image' => $image,
-            'src' => $sources['src'],
-            'srcset' => $sources['srcset'],
-            'sizes' => $sources['sizes'],
-            'width' => $dimensions[0],
-            'height' => $dimensions[1],
-            'classes' => $classes,
-            'nolazy' => $nolazy,
-        ]);
+        if($image){
+            $sources = $this->getSizes($image, $sizes);
+            $dimensions = $this->calculateImageDimensions($image, $sources);
+            
+            return $this->twig->render($this->getTemplate('images:image'), [
+                'image' => $image,
+                'src' => $sources['src'],
+                'srcset' => $sources['srcset'],
+                'sizes' => $sources['sizes'],
+                'width' => intval($dimensions[0]),
+                'height' => intval($dimensions[1]),
+                'classes' => $classes,
+                'nolazy' => $nolazy,
+            ]);
+        }
     }
 
-    public function printFigure($context, $image, $sizes = [], $classes = '', $nolazy = '')
+    public function printFigure($context, $image, $sizes = [], $classes = "", $nolazy = "")
     {
-        $sources = $this->getSizes($image, $sizes);
-        $dimensions = $this->calculateImageDimensions($image, $sources);
+        if($image){
+            $sources = $this->getSizes($image, $sizes);
+            $dimensions = $this->calculateImageDimensions($image, $sources);
 
-        return $this->twig->render($this->getTemplate('images:figure'), [
-            'image' => $image,
-            'src' => $sources['src'],
-            'srcset' => $sources['srcset'],
-            'sizes' => $sources['sizes'],
-            'width' => $dimensions[0],
-            'height' => $dimensions[1],
-            'classes' => $classes,
-            'nolazy' => $nolazy,
-        ]);
+            return $this->twig->render($this->getTemplate('images:figure'), [
+                'image' => $image,
+                'src' => $sources['src'],
+                'srcset' => $sources['srcset'],
+                'sizes' => $sources['sizes'],
+                'width' => $dimensions[0],
+                'height' => $dimensions[1],
+                'classes' => $classes,
+                'nolazy' => $nolazy,
+            ]);
+        }
     }
 
-    public function printLink($context, $link, $classes = "", $params) {
-        return $this->twig->render(
-            $this->getTemplate("link:link"),
-            ["link" => $link, "classes" => $classes, "params" => $params]
-        );
-    }
-
-    public function printLinks($context, $links, $classes = "", $params) {
-        $buttons = '';
-        for($i = 0; $i < count($links); $i++) {
-            $buttons .= $this->twig->render(
+    public function printLink($context, $link, $classes = "", $params = "") {
+        if($link){
+            return $this->twig->render(
                 $this->getTemplate("link:link"),
-                ["link" => $links[$i], "classes" => $classes, "params" => $params]
+                ["link" => $link, "classes" => $classes, "params" => $params]
             );
+        }
+    }
+
+    public function printLinks($context, $links, $classes = "", $params = "") {
+        if($links){
+            $buttons = '';
+            for($i = 0; $i < count($links); $i++) {
+                $buttons .= $this->twig->render(
+                    $this->getTemplate("link:link"),
+                    ["link" => $links[$i], "classes" => $classes, "params" => $params]
+                );
+            }
          }
         return $buttons;
     }
 
-    public function printAccordions($context, $accordions, $classes = "", $params) {
-        return $this->twig->render(
-            $this->getTemplate("accordions:accordions"),
-            ["accordions" => $accordions, "classes" => $classes, "params" => $params]
-        );
+    public function printAccordions($context, $accordions, $classes = "", $params = "") {
+        if($accordions){
+            return $this->twig->render(
+                $this->getTemplate("accordions:accordions"),
+                ["accordions" => $accordions, "classes" => $classes, "params" => $params]
+            );
+        }
     }
 
     public function printCookieSettingsButton()

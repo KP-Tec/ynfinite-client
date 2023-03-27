@@ -14,7 +14,7 @@
 			{% if field.required %} required {% endif %} 
 			
 			{{field.attributes|raw}} 
-		/>
+		>
 
 	{% else %}
 		<div class="yn-form__form-group">
@@ -29,7 +29,7 @@
 				{% if field.required %} required {% endif %} 
 				
 				{{field.attributes|raw}} 
-			/>
+			>
 			<input data-ynfield="true" 
 				type="{{field.type}}" 
 				name="fields{{parent}}[{{field.alias}}][1]" 
@@ -41,7 +41,7 @@
 				{% if field.required %} required {% endif %} 
 				
 				{{field.attributes|raw}} 
-			/>
+			>
 		</div>
 	{% endif %}
 
