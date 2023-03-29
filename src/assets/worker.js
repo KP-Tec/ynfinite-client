@@ -20,11 +20,7 @@ onmessage = (e) => {
 		chancesArray.push(String(i).repeat(difficulty))
 	}
 
-	let x
-
-	while (!chancesArray.includes(x)) {
-		x = hash.substring(0, difficulty)
-		console.log(x)
+	while (!chancesArray.includes(hash.substring(0, difficulty))) {
 		nonce++
 		hash = calculateHash(previousHash, timestamp, nonce, form)
 	}
