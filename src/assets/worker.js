@@ -1,23 +1,33 @@
-import SHA256  from "crypto-js/sha256"
+import SHA256 from 'crypto-js/sha256'
 
-let nonce = 0;
+let nonce = 0
 
 function calculateHash(previousHash, timestamp, nonce, form) {
-    return SHA256(previousHash + timestamp + form + nonce).toString();
+	return SHA256(previousHash + timestamp + form + nonce).toString()
 }
 
 onmessage = (e) => {
-    const difficulty = e.data.difficulty;
-    const form = e.data.form;
-    const timestamp = e.data.timestamp;
-    const previousHash = e.data.previousHash;
+	const difficulty = e.data.difficulty
+	const chances = Math.min(Math.max(e.data.chances, 0), 9)
+	const form = e.data.form
+	const timestamp = e.data.timestamp
+	const previousHash = e.data.previousHash
 
-    let hash = "";
-    while (hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) {
-        nonce++;
-        hash = calculateHash(previousHash, timestamp, nonce, form);
-    }
-    
-    postMessage(hash)
+	let chancesArray = []
+	let hash = ''
+
+	for (let i = 0; i <= chances; i++) {
+		chancesArray.push(String(i).repeat(difficulty))
+	}
+
+	let x
+
+	while (!chancesArray.includes(x)) {
+		x = hash.substring(0, difficulty)
+		console.log(x)
+		nonce++
+		hash = calculateHash(previousHash, timestamp, nonce, form)
+	}
+
+	postMessage(hash)
 }
-

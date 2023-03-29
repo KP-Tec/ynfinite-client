@@ -15,7 +15,8 @@ class Block {
 		return SHA256(this.previousHash + this.timestamp + JSON.stringify(this.data)).toString()
 	}
 
-	startProofOfWork(difficulty = 4) {
+	// chances can be between 0 and 9
+	startProofOfWork(difficulty = 5, chances = 9) {
 		if (window.Worker) {
 			const blockWorker = new Worker('/assets/vendor/ynfinite/js/worker.min.js')
 
@@ -41,6 +42,7 @@ class Block {
 				previousHash: this.previousHash,
 				timestamp: this.timestamp,
 				difficulty,
+				chances,
 			})
 		}
 	}
