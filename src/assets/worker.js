@@ -22,7 +22,9 @@ onmessage = (e) => {
 
 	while (!chancesArray.includes(hash.substring(0, difficulty))) {
 		nonce++
-		hash = calculateHash(previousHash, timestamp, nonce, form)
+		if (timestamp + 3000 < Date.now()) {
+			hash = calculateHash(previousHash, timestamp, nonce, form)
+		}
 	}
 
 	postMessage(hash)
