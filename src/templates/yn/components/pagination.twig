@@ -2,25 +2,15 @@
 
 {% if pagination.totalPages > 1 %}
 	<ul class='yn-pagination'>
-		{% if pagination.currentPage > 1 %}
-			<li class='yn-pagination__control yn-pagination__first'>
-				<a href='{{uriData.listingURL}}__yPage=1'>&lt;&lt;</a>
-			</li>
-		{% endif %}
+		<li class='yn-pagination__control yn-pagination__first {% if pagination.currentPage == 1 %}yn-disabled{% endif %}'>
+			<a href='{{uriData.listingURL}}__yPage=1'>&lt;&lt;</a>
+		</li>
 
-		{% if pagination.currentPage > 1 %}
-			<li class='yn-pagination__control yn-pagination__prev'>
-				<a href='{{uriData.listingURL}}__yPage={{pagination.currentPage-1}}'>&lt;</a>
-			</li>
-		{% endif %}
+		<li class='yn-pagination__control yn-pagination__prev {% if pagination.currentPage == 1 %}yn-disabled{% endif %}'>
+			<a href='{{uriData.listingURL}}__yPage={{pagination.currentPage-1}}'>&lt;</a>
+		</li>
 
-		{% if pagination.currentPage-5 > 1 %}
-			<li class='yn-pagination__more'>
-				<span>...</span>
-			</li>
-		{% endif %}
-
-		{% for page in max(1, pagination.currentPage-5)..min(pagination.currentPage+5, pagination.totalPages) %}
+		{% for page in max(1, pagination.currentPage-2)..min(pagination.currentPage+2, pagination.totalPages) %}
 			<li class='yn-pagination__page{% if page == pagination.currentPage %} yn-pagination__page--active{% endif %}'>
 				{% if page == pagination.currentPage %}
 					<span>{{page}}</span>
@@ -30,22 +20,12 @@
 			</li>
 		{% endfor %}
 
-		{% if pagination.currentPage+5 < pagination.totalPages %}
-			<li class='yn-pagination__more'>
-				<span>...</span>
-			</li>
-		{% endif %}
+		<li class='yn-pagination__control yn-pagination__next {% if pagination.currentPage == pagination.totalPages %}yn-disabled{% endif %}'>
+			<a href='{{uriData.listingURL}}__yPage={{pagination.currentPage+1}}'>&gt;</a>
+		</li>
 
-		{% if pagination.currentPage < pagination.totalPages %}
-			<li class='yn-pagination__control yn-pagination__next'>
-				<a href='{{uriData.listingURL}}__yPage={{pagination.currentPage+1}}'>&gt;</a>
-			</li>
-		{% endif %}
-
-		{% if pagination.currentPage < pagination.totalPages %}
-			<li class='yn-pagination__control yn-pagination__last'>
-				<a href='{{uriData.listingURL}}__yPage={{pagination.totalPages}}'>&gt;&gt;</a>
-			</li>
-		{% endif %}
+		<li class='yn-pagination__control yn-pagination__last {% if pagination.currentPage == pagination.totalPages %}yn-disabled{% endif %}'>
+			<a href='{{uriData.listingURL}}__yPage={{pagination.totalPages}}'>&gt;&gt;</a>
+		</li>
 	</ul>
 {% endif %}
