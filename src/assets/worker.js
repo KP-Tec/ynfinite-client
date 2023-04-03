@@ -12,18 +12,27 @@ onmessage = (e) => {
 	const form = e.data.form
 	const timestamp = e.data.timestamp
 	const previousHash = e.data.previousHash
+	const minRunTime = e.data.minRunTime
 
 	let chancesArray = []
 	let hash = ''
+	let hashFound = false
+	let runTimeOver = false
 
 	for (let i = 0; i <= chances; i++) {
 		chancesArray.push(String(i).repeat(difficulty))
 	}
 
-	while (!chancesArray.includes(hash.substring(0, difficulty))) {
-		nonce++
-		if (timestamp + 3000 < Date.now()) {
+	while (hashFound === false || runTimeOver === false) {
+		if (hashFound === false) {
+			nonce++
 			hash = calculateHash(previousHash, timestamp, nonce, form)
+
+			if (chancesArray.includes(hash.substring(0, difficulty))) {
+				hashFound = true
+			}
+		} else if (hashFound === true && Date.now() - timestamp > minRunTime) {
+			runTimeOver = true
 		}
 	}
 
