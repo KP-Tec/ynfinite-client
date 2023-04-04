@@ -11,6 +11,7 @@ use App\Domain\Request\Service\CacheService;
 use SlimSession\Helper as SessionHelper;
 
 use App\Exception\YnfiniteException;
+use Exception;
 
 final class RenderPageAction
 {
@@ -25,6 +26,11 @@ final class RenderPageAction
         ResponseInterface $response
     ): ResponseInterface {
         try {
+            $formRequest = $request->getParsedBody();
+            if($formRequest && $formRequest["method"] == "post" && !isset($formRequest["hasProof"])){
+                throw new Exception("The form has no proof that is was sent by a human. Sorry for you inconvenience.". $formRequest["hasProof"]);
+            }
+
             $data = $this->requestPageService->getPage($request);
 
             if (is_array($data)) {                
