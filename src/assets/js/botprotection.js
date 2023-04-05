@@ -5,9 +5,7 @@ class Block {
 		this.previousHash = previousHash
 		this.timestamp = Date.now()
 		this.data = data
-
 		this.hash = this.calculateHash()
-
 		this.nonce = 0
 	}
 
@@ -15,13 +13,14 @@ class Block {
 		return SHA256(this.previousHash + this.timestamp + JSON.stringify(this.data)).toString()
 	}
 
-	startProofOfWork(difficulty = 4) {
+	// difficulty = size of number (4 = 0000)
+	// chances = number of chances (2 = 0000, 1111, 2222)
+	startProofOfWork(difficulty = 4, chances = 0, minRunTime = 1000) {
 		if (window.Worker) {
 			const blockWorker = new Worker('/assets/vendor/ynfinite/js/worker.min.js')
 
 			blockWorker.onmessage = (e) => {
 				this.hash = e.data
-
 				this.data.form.dataset.hasProof = 'true'
 				this.data.form.dataset.proofenHash = this.hash
 
@@ -41,6 +40,8 @@ class Block {
 				previousHash: this.previousHash,
 				timestamp: this.timestamp,
 				difficulty,
+				chances,
+				minRunTime,
 			})
 		}
 	}

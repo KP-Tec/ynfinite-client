@@ -1,13 +1,27 @@
 <IfModule mod_rewrite.c>
 	RewriteEngine On
+
+	# Leitet http zu https weiter
+	# RewriteCond %{HTTP_HOST} !=localhost
+	# RewriteCond %{HTTPS} !=on
+	# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+	# Fügt "www" zur Domain hinzu wenn es keine Subdomain ist
+	# RewriteCond %{HTTP_HOST} !=localhost
+	# RewriteCond %{HTTP_HOST} !^www\.
+	# RewriteCond %{HTTP_HOST} ^[^.]+\.[^.]+$
+	# RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [L,R=301]
+
+	# Löscht die Subdomain "www"
+	# RewriteCond %{HTTP_HOST} !=localhost
+	# RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+	# RewriteRule ^(.*)$ https://%1%{REQUEST_URI} [R=301,QSA,NC,L]
+
+	# Löscht Trailing Slash
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)/$ /$1 [L,R=301]
+
 	RewriteBase /
-
-	RewriteCond %{HTTPS}s ^(on(s)|offs)$
-	RewriteRule ^ - [env=s:%2]
-
-	RewriteCond %{HTTP_HOST} ^www\.(.*)
-	RewriteRule ^.*$ http%{ENV:s}://%1/$1 [R=301,L]
-
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule . /index.php [L]
 	RewriteRule ^index\.php$ - [L]
