@@ -1,7 +1,6 @@
 {% extends "yn/components/form/basic.twig" %}
 
 {% block field %}
-
 	<script>
 		window.addEventListener('load', function () {
 		var field, field2, startDate, endDate, value, value2;
@@ -10,22 +9,22 @@
 
 		const data = {
 			from: {
-				unit: '{{ field.dateRestrictions.from.unit }}',
-				value: '{{ field.dateRestrictions.from.value }}'
+				unit: '{{ field.restrictions.from.unit }}',
+				value: '{{ field.restrictions.from.value }}'
 			},
 			to: {
-				unit: '{{ field.dateRestrictions.to.unit }}',
-				value: '{{ field.dateRestrictions.to.value }}'
+				unit: '{{ field.restrictions.to.unit }}',
+				value: '{{ field.restrictions.to.value }}'
 			},
-			value: '{{ field.value }}'
+			value: '{{ field.defaultValue }}'
 		}
 
 		if(isBetweenCompare) {
-			field = document.getElementById('{{form.uid}}_{{field.alias}}_from');
-			field2 = document.getElementById('{{form.uid}}_{{field.alias}}_to');
+			field = document.getElementById('{{ form.uid }}_{{ field.alias }}_from');
+			field2 = document.getElementById('{{ form.uid }}_{{ field.alias }}_to');
 		}
 		else {
-			field = document.getElementById('{{form.uid}}_{{field.alias}}');
+			field = document.getElementById('{{ form.uid }}_{{ field.alias }}');
 		}
 		
 
@@ -38,6 +37,8 @@
 		}
 
 		if (data.to.unit && data.to.value) {
+			console.log(data.to.value)
+			console.log(data.to.unit)
 			endDate = moment().add(data.to.value, data.to.unit);
 			field.setAttribute("max", endDate.format('hh:mm'))
 			if(isBetweenCompare) {	
@@ -54,7 +55,7 @@
 				field2.setAttribute("value", value2.format('hh:mm'))
 			}
 			else {
-				value = moment('{{ field.value }}');
+				value = moment('{{ field.defaultValue }}');
 				field.setAttribute("value", value.format('hh:mm'))
 			}
 		}
@@ -64,16 +65,16 @@
 	{% if field.compareOperation == "<==>" %}
 		<div class="yn-form-grid-row">
 			<div class="yn-form-grid-field">
-				{% if field.placeholder %}<small>{{field.placeholder}}</small>{% endif %}
-				<input data-ynfield="true" id="{{form.uid}}_{{field.alias}}_from" type="{{field.type}}" name="fields{{parent}}[{{field.alias}}][]" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}>
+				{% if field.placeholder %}<small>{{ field.placeholder }}</small>{% endif %}
+				<input data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}][]" {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw}}/>
 			</div>
 			<div class="yn-form-grid-field">
-				{% if field.placeholder %}<small>{{field.placeholderRange}}</small>{% endif %}
-				<input data-ynfield="true" id="{{form.uid}}_{{field.alias}}_to" type="{{field.type}}" name="fields{{parent}}[{{field.alias}}][]" placeholder="{{field.placeholderRange}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}>
+				{% if field.placeholderRange %}<small>{{ field.placeholderRange}}</small>{% endif %}
+				<input data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_to" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}][]" {% if field.placeholderRange %}placeholder="{{ field.placeholderRange }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw}}/>
 			</div>
 		</div>
 	{% else %}
-		<input data-ynfield="true" id="{{form.uid}}_{{field.alias}}" type="{{field.type}}" name="fields{{parent}}[{{field.alias}}]" placeholder="{{field.placeholder}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}>
+		<input data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}]" {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw}}/>
 	{% endif %}
 
 
