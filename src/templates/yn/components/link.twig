@@ -1,6 +1,6 @@
 {% if link.type == 'file' %}
     {% set path = link.file[0].path %}
-{% elseif link.type == 'link' %}
+{% else %}
     {% set path = link.href %}
 {% endif %}
 
