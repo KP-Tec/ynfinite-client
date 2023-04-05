@@ -2,16 +2,16 @@
 
 {% block field %}
 	<input data-ynfield="true" 
-		type="{{field.type}}" 
-		name="fields{{parent}}[{{field.alias}}]"
-		value="{{field.value|default(addValue|default(field.defaultValue))}}"
+		type="{{ field.type }}" 
+		name="fields{{ parent }}[{{ field.alias }}]"
+		value="{{ field.value|default(addValue|default(field.defaultValue)) }}"
 		
-		{% if field.pattern %} pattern="{{field.pattern}}" {% endif %} 
-		{% if field.minLength %} minlength="{{field.minLength}}" {% endif %} 
-		{% if field.maxLength %} maxlength="{{field.maxLength}}" {% endif %} 
-		{% if field.placeholder %} placeholder="{{field.placeholder}}" {% endif %} 
+		{% if field.pattern %} pattern="{{ field.pattern }}" {% endif %} 
+		{% if field.minLength %} minlength="{{ field.minLength }}" {% endif %} 
+		{% if field.maxLength %} maxlength="{{ field.maxLength }}" {% endif %} 
+		{% if field.placeholder %} placeholder="{{ field.placeholder }}" {% endif %} 
 		{% if field.required %} required {% endif %} 
 		
-		{{field.attributes|raw}}
+		{{ field.attributes|raw }}
 	>
 {% endblock field %}

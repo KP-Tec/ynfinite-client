@@ -73,6 +73,4 @@
 	{% else %}
 		<input data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}]" {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
 	{% endif %}
-
-
 {% endblock field %}
