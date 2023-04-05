@@ -14,7 +14,7 @@
 				{% if field.required %} required {% endif %}
 
 				{{field.attributes|raw}}
-			/>
+			>
 		</div>
 		<div class="item">
 			<select data-ynfield="true" name="fields{{parent}}[{{field.alias}}][distance]" value="{{field.value['distance']}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}>

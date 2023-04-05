@@ -1,0 +1,145 @@
+// ynfinite pagination =========================================================
+.yn-perPage__list,
+.yn-pagination {
+	li {
+		display: inline-block;
+		text-align: center;
+		list-style: none;
+		margin: 4px;
+
+		&:only-child {
+			display: none;
+		}
+	}
+
+	a,
+	li.yn-pagination__page--active span {
+		display: inline-block;
+		color: currentColor;
+		padding: 0 4px;
+		min-width: 40px;
+		min-height: 40px;
+		aspect-ratio: 1;
+	}
+}
+
+// per-page
+.yn.yn-perPage {
+	color: var(--bg-pri);
+}
+
+.yn-perPage__current {
+	display: none;
+}
+
+.yn-perPage__list {
+	text-align: right;
+	margin: 0 0 var(--gap-pri);
+
+	ul {
+		font-size: 0.875rem;
+		font-weight: 400;
+		padding: 0;
+		margin: 0;
+
+		&::before {
+			content: 'Zeige: ';
+			display: inline-block;
+			margin-right: 0.5rem;
+		}
+	}
+}
+
+// pagination
+.yn-pagination {
+	font-size: 1rem;
+	font-weight: 600;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: calc(var(--gap, 1.5rem) / 2);
+	padding-top: calc(var(--flow, 15vh) / 2);
+
+	a,
+	span {
+		cursor: pointer;
+		transition: var(--atime, 0.4s) ease;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		line-height: 40px;
+		text-align: center;
+		border-radius: var(--border-radius, 90px);
+	}
+
+	li {
+		&.yn-pagination__first,
+		&.yn-pagination__last,
+		&.yn-pagination__prev,
+		&.yn-pagination__next {
+			a,
+			span {
+				position: relative;
+				text-indent: -9999rem;
+				padding: 0;
+				background: none;
+
+				&::before {
+					content: '\f054';
+					position: absolute;
+					inset: 0;
+					margin: auto;
+					display: inline-block;
+					font-family: var(--fa-version, 'Font Awesome 6 Free');
+					font-weight: 600;
+					text-indent: 0;
+					font-size: 1rem;
+					color: currentColor;
+					width: 100%;
+					height: 100%;
+					border-radius: var(--border-radius, 90px);
+					z-index: 10;
+				}
+			}
+		}
+
+		&.yn-pagination__first {
+			a,
+			span {
+				&::before {
+					content: '\f053 \f053';
+				}
+			}
+		}
+		&.yn-pagination__last {
+			a,
+			span {
+				&::before {
+					content: '\f054 \f054';
+				}
+			}
+		}
+		&.yn-pagination__prev {
+			a,
+			span {
+				&::before {
+					content: '\f053';
+				}
+			}
+		}
+
+		&.yn-pagination__page--active {
+			a,
+			span {
+				color: var(--accent-pri-font, #fff);
+				display: inline-block;
+				background: var(--accent-pri, #000);
+			}
+		}
+	}
+}
