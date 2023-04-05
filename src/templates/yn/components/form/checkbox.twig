@@ -16,7 +16,7 @@
 				{% if field.value == option.value or option.selected %} checked {% endif %} 
 				{% if field.required %} required {% endif %}
 				{{field.attributes|raw}}
-			/>
+			>
 			<label class="widget__label" for="{{form.uid}}_{{field.alias}}_{{option.value}}">
 				{{option.label|raw}}
 			</label>

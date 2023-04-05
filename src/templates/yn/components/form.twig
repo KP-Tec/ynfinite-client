@@ -1,4 +1,5 @@
 {% set action = form.redirectPage.route ? _ynfinite.languages.prefix ~ form.redirectPage.route : _ynfinite.currentSlug %}
+
 <form class="yn-form {% if form.settings.noBotProtection %}yn-no-bot-protection{% endif %}" id="form_{{form.uid}}" method="{{form.method}}" enctype="multipart/form-data" action="{{isAsync ? "/yn-form/send" :action}}" data-ynalias="{{form.alias}}" data-ynform="true" data-language="{{_ynfinite.languages.current}}" data-ynformid="{{form._id}}" data-ynformmethod="{{form.method}}" {% if(section._id) %} data-ynsectionid="{{section._id}}" {% endif %} {{data}} {% if form.settings.noBotProtection %}data-has-proof="true" data-proofen-hash="true"{% endif %}>
 	<fieldset>
 		{% if form.method != "get" %}
@@ -33,6 +34,15 @@
 				form.addEventListener("onAsyncChange", function (e) {
 				window.$_yn.forms.showResponse(this, e.detail.response)
 				})
+			})()
+		</script>
+	{% endif %}
+
+	{% if form.events|filter((x) => x.async == false) %}
+		<script>
+			(function () {
+				const fieldset = document.querySelector("#form_{{ form.uid }} fieldset");
+				fieldset.innerHTML = '<input type="hidden" value="true" name="hasProof">' +  fieldset.innerHTML
 			})()
 		</script>
 	{% endif %}

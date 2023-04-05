@@ -63,15 +63,15 @@
 		<div class="yn-form-grid-row">
 			<div class="yn-form-grid-field">
 				{% if field.placeholder %}<small>{{ field.placeholder }}</small>{% endif %}
-				<input data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}][]" {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}/>
+				<input data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}][]" {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
 			</div>
 			<div class="yn-form-grid-field">
 				{% if field.placeholderRange %}<small>{{ field.placeholderRange }}</small>{% endif %}
-				<input data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_to" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}][]" {% if field.placeholderRange %}placeholder="{{ field.placeholderRange }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}/>
+				<input data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_to" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}][]" {% if field.placeholderRange %}placeholder="{{ field.placeholderRange }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
 			</div>
 		</div>
 	{% else %}
-		<input data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}]" {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}/>
+		<input data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}]" {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
 	{% endif %}
 
 
