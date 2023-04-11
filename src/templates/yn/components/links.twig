@@ -1,0 +1,43 @@
+{% for link in links %}
+    {% if link.type == 'file' %}
+        {% set path = link.file[0].path %}
+    {% else %}
+        {% set path = link.href %}
+    {% endif %}
+
+    {% if loop.index == loop.first %}
+        <div class="buttons">
+    {% endif %}
+
+        {% if path %}
+            <a
+                href="{{ path }}"
+                {% if link.css_id %}
+                    id="{{ link.css_id }}"
+                {% endif %}
+                {% if classes or link.css_class %}
+                    class="{{ classes }} {{ link.css_class }}"
+                {% endif %}
+                {% if link.title %}
+                    title="{{ link.title }}"
+                {% endif %}
+                {% if link.blank %}
+                    target="_blank" rel="noopener noreferrer"
+                {% endif %}
+
+                {% if link.data_attribute %}
+                    {{ link.data_attribute }}
+                {% endif %}
+
+                {% if link.type == 'file' %}
+                    download="{{ link.file[0].name ?: link.title }}"
+                {% endif %}
+            >
+            {{ link.text }}
+        </a>
+    {% endif %}
+
+    {% if loop.index == loop.last %}
+        </div>
+    {% endif %}
+{% endfor %}

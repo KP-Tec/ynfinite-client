@@ -36,7 +36,7 @@ class TwigUtils
             'accordions:accordions' => 'yn/components/accordions.twig',
             'images:image' => 'yn/components/image.twig',
             'images:figure' => 'yn/components/figure.twig',
-            'link:link' => 'yn/components/link.twig',
+            'links:links' => 'yn/components/links.twig',
             'form:form' => 'yn/components/form.twig',
             'form:fields.select' => 'yn/components/form/select.twig',
             'form:fields.radio' => 'yn/components/form/radio.twig',
@@ -473,15 +473,10 @@ class TwigUtils
 
     public function printLinks($context, $links, $classes = "", $params = "") {
         if($links){
-            $buttons = '';
-            for($i = 0; $i < count($links); $i++) {
-                $buttons .= $this->twig->render(
-                    $this->getTemplate("link:link"),
-                    ["link" => $links[$i], "classes" => $classes, "params" => $params]
-                );
-            }
-         }
-        return $buttons;
+            return $this->twig->render($this->getTemplate("links:links"),
+                ["links" => $links, "classes" => $classes, "params" => $params]
+            );
+        }
     }
 
     public function printAccordions($context, $accordions, $classes = "", $params = "") {
