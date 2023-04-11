@@ -471,15 +471,6 @@ class TwigUtils
         }
     }
 
-    public function printLink($context, $link, $classes = "", $params = "") {
-        if($link){
-            return $this->twig->render(
-                $this->getTemplate("link:link"),
-                ["link" => $link, "classes" => $classes, "params" => $params]
-            );
-        }
-    }
-
     public function printLinks($context, $links, $classes = "", $params = "") {
         if($links){
             $buttons = '';
