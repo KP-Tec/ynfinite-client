@@ -6,7 +6,7 @@
     {% endif %}
 
     {% if loop.index == loop.first %}
-        <div class="buttons">
+        <div class="yn-buttons buttons">
     {% endif %}
 
         {% if path %}
@@ -16,7 +16,7 @@
                     id="{{ link.css_id }}"
                 {% endif %}
                 {% if classes or link.css_class %}
-                    class="{{ classes }} {{ link.css_class }}"
+                    class="yn-button {{ classes }} {{ link.css_class }}"
                 {% endif %}
                 {% if link.title %}
                     title="{{ link.title }}"
