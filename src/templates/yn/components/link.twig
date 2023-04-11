@@ -23,6 +23,10 @@
         {% if link.data_attribute %}
             {{ link.data_attribute }}
         {% endif %}
+
+        {% if link.type == 'file' %}
+            download="{{ link.title }}"
+        {% endif %}
     >
         {{ link.text }}
     </a>
