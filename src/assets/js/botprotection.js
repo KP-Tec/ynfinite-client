@@ -10,12 +10,14 @@ class Block {
 	}
 
 	calculateHash() {
-		return SHA256(this.previousHash + this.timestamp + JSON.stringify(this.data)).toString()
+		if (this.data['form'] != undefined) {
+			return SHA256(this.previousHash + this.timestamp + this.data['form'].id).toString()
+		}
 	}
 
 	// difficulty = size of number (4 = 0000)
 	// chances = number of chances (2 = 0000, 1111, 2222)
-	startProofOfWork(difficulty = 4, chances = 0, minRunTime = 1000) {
+	startProofOfWork(difficulty = 4, chances = 0, minRunTime = 2500) {
 		if (window.Worker) {
 			const blockWorker = new Worker('/assets/vendor/ynfinite/js/worker.min.js')
 
@@ -36,7 +38,7 @@ class Block {
 			console.time()
 
 			blockWorker.postMessage({
-				form: JSON.stringify(this.data.form),
+				form: this.data['form'].id,
 				previousHash: this.previousHash,
 				timestamp: this.timestamp,
 				difficulty,

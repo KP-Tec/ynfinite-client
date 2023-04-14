@@ -9,8 +9,8 @@
 	"dependencies": {
 		"accordion-js": "^3.3.4",
 		"crypto-js": "^4.1.1",
-		"flatpickr": "^4.6.13",
-		"moment": "^2.29.4"
+		"dayjs": "^1.11.7",
+		"flatpickr": "^4.6.13"
 	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
