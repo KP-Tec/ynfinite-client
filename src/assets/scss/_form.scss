@@ -1,36 +1,36 @@
 @keyframes button-loading-spinner {
-    from {
-        transform: rotate(0turn);
-    }
+	from {
+		transform: rotate(0turn);
+	}
 
-    to {
-        transform: rotate(1turn);
-    }
+	to {
+		transform: rotate(1turn);
+	}
 }
 
 form.yn-form {
-    button.show-form-spinner {
-        position: relative;
-        opacity: 0.8;
-        pointer-events: none;
-        padding-left: 44px;
+	button.show-form-spinner {
+		position: relative;
+		opacity: 0.8;
+		pointer-events: none;
+		padding-right: 56px !important;
 
-        &::after {
-            content: "";
-            content: "";
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            top: 0;
-            left: calc(-100% + 42px);
-            right: 0;
-            bottom: 0;
-            margin: auto;
-            border: 3px solid transparent;
-            border-top-color: var(--form-spinner, currentColor);
-            border-radius: 50%;
-            animation: button-loading-spinner 1s ease infinite;
-            transform: translateX(50%);
-        }
-    }
+		&::after {
+			content: '';
+			content: '';
+			position: absolute;
+			width: 24px;
+			height: 24px;
+			top: 0;
+			right: calc(-100% + 56px);
+			left: 0;
+			bottom: 0;
+			margin: auto;
+			border: 3px solid transparent;
+			border-top-color: var(--form-spinner, currentColor);
+			border-radius: 50%;
+			animation: button-loading-spinner 1s ease infinite;
+			transform: translateX(50%);
+		}
+	}
 }

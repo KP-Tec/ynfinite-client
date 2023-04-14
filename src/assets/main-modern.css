@@ -182,7 +182,7 @@
 .yn-cookies__settings__item {
   margin: 0;
 }
-.yn-cookies__settings__item label {
+.yn-cookies__settings__item > div {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -199,7 +199,7 @@
           align-items: center;
   margin: 0;
 }
-.yn-cookies__settings__item label + p {
+.yn-cookies__settings__item > div + p {
   margin-top: 0.75rem;
 }
 
@@ -495,7 +495,7 @@ form.yn-form button.show-form-spinner {
   position: relative;
   opacity: 0.8;
   pointer-events: none;
-  padding-left: 44px;
+  padding-right: 56px !important;
 }
 form.yn-form button.show-form-spinner::after {
   content: "";
@@ -504,8 +504,8 @@ form.yn-form button.show-form-spinner::after {
   width: 24px;
   height: 24px;
   top: 0;
-  left: calc(-100% + 42px);
-  right: 0;
+  right: calc(-100% + 56px);
+  left: 0;
   bottom: 0;
   margin: auto;
   border: 3px solid transparent;

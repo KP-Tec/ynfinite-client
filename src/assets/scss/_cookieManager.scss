@@ -127,7 +127,7 @@ $yn-gap: 1.5rem;
 .yn-cookies__settings__item {
 	margin: 0;
 
-	label {
+	> div {
 		display: flex;
 		flex-direction: row;
 		gap: 0.5rem;
