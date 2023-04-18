@@ -13,8 +13,9 @@ const YnfiniteForms = {
 	},
 
 	async submitForm(element, eventType) {
-		const hasProof = element.getAttribute('data-has-proof')
-		const proofenHash = element.getAttribute('data-proofen-hash')
+		const method = element.getAttribute('data-ynformmethod')
+		const hasProof = method == 'get' ? true : element.getAttribute('data-has-proof')
+		const proofenHash = method == 'get' ? true : element.getAttribute('data-proofen-hash')
 
 		if (!hasProof || !proofenHash) {
 			console.log('Sorry, there is no proof here that you are a human. The form can not be sent.')
@@ -32,7 +33,7 @@ const YnfiniteForms = {
 		const formData = new FormData(element)
 		formData.set('eventAsync', true)
 		formData.set('eventType', eventType)
-		formData.set('method', element.getAttribute('data-ynformmethod'))
+		formData.set('method', method)
 		formData.set('formId', element.getAttribute('data-ynformid'))
 		formData.set('formLanguage', element.getAttribute('data-language'))
 		formData.set('hasProof', hasProof)

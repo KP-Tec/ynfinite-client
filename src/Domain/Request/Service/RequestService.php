@@ -28,7 +28,6 @@ class RequestService {
 
     protected function getFiles($request) {
         $uploadFields = $request->getUploadedFiles();
-
         $files = array();
 
         foreach ($uploadFields["fields"] ?? [] as $key => $file) {
@@ -52,6 +51,7 @@ class RequestService {
 
     protected function checkPostProof($request) {
         $body = $request->getParsedBody();
+        
         if(!$body) {
             $body = json_decode(file_get_contents('php://input'));
         }
