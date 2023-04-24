@@ -23,9 +23,7 @@ const YnfiniteForms = {
 		}
 
 		const formSubmitButton = element.querySelector('button[type=submit]')
-		formSubmitButton.dataset.label = formSubmitButton.textContent
-		formSubmitButton.classList.add('show-form-spinner')
-		formSubmitButton.textContent = 'Sende...'
+		formSubmitButton.classList.add('yn-loader')
 
 		const ynBeforeAsyncChangeData = new Event('onPreAsyncChangeData')
 		element.dispatchEvent(ynBeforeAsyncChangeData)
@@ -69,10 +67,9 @@ const YnfiniteForms = {
 			})
 			element.dispatchEvent(ynAsyncChange)
 
-			formSubmitButton.classList.remove('show-form-spinner')
-			formSubmitButton.textContent = formSubmitButton.dataset.label
+			formSubmitButton.classList.remove('yn-loader')
 		} else {
-			formSubmitButton.classList.remove('show-form-spinner')
+			formSubmitButton.classList.remove('yn-loader')
 			formSubmitButton.style.backgroundColor = 'var(--error, red)'
 			formSubmitButton.style.color = 'var(--light, white)'
 			formSubmitButton.textContent = 'Error'

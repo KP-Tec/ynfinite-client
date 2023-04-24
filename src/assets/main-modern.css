@@ -2,10 +2,6 @@
 .yn-article [class*=yn-article__] > :is(figure, iframe) {
   margin-inline: auto;
 }
-.yn-article:not(:last-of-type),
-.yn-article > [class*=yn-article__]:not(:last-child) {
-  margin-bottom: var(--text-gap, 1.5rem);
-}
 @supports (aspect-ratio: auto) {
   .yn-article__video iframe {
     aspect-ratio: 16/9;
@@ -491,30 +487,17 @@
             transform: rotate(1turn);
   }
 }
-form.yn-form button.show-form-spinner {
+form.yn-form button.yn-loader {
   position: relative;
   opacity: 0.8;
   pointer-events: none;
   padding-right: 56px !important;
 }
-form.yn-form button.show-form-spinner::after {
-  content: "";
-  content: "";
-  position: absolute;
-  width: 24px;
-  height: 24px;
+form.yn-form button.yn-loader::after {
   top: 0;
   right: calc(-100% + 56px);
   left: 0;
   bottom: 0;
-  margin: auto;
-  border: 3px solid transparent;
-  border-top-color: var(--form-spinner, currentColor);
-  border-radius: 50%;
-  -webkit-animation: button-loading-spinner 1s ease infinite;
-          animation: button-loading-spinner 1s ease infinite;
-  -webkit-transform: translateX(50%);
-          transform: translateX(50%);
 }
 
 .yn-accordion {
@@ -717,6 +700,55 @@ form.yn-form button.show-form-spinner::after {
 .yn-disabled {
   pointer-events: none;
   opacity: 0.4;
+}
+
+.yn-loader {
+  position: relative;
+}
+@-webkit-keyframes spinLoader {
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes spinLoader {
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+span.yn-loader,
+button.yn-loader::after {
+  margin: auto;
+  border-radius: 50%;
+  border-top: var(--loader-border, 3px) solid var(--loader-color, currentColor);
+  border-left: var(--loader-border, 3px) solid var(--loader-color, currentColor);
+  border-right: var(--loader-border, 3px) solid rgba(255, 255, 255, 0);
+  aspect-ratio: 1;
+  -webkit-animation: spinLoader 0.75s infinite linear;
+          animation: spinLoader 0.75s infinite linear;
+}
+
+span.yn-loader {
+  display: block;
+  width: var(--loader-size, 20px);
+  height: var(--loader-size, 20px);
+}
+
+button.yn-loader {
+  opacity: 0.8;
+  pointer-events: none;
+  padding-right: 24px !important;
+}
+button.yn-loader::after {
+  content: "";
+  height: var(--loader-size, 16px);
+  width: var(--loader-size, 16px);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin-left: 8px;
 }
 
 :root {

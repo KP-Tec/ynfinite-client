@@ -28,7 +28,7 @@ class Block {
 
 				const formSubmitButton = this.data.form.querySelector('button[type=submit]')
 
-				formSubmitButton.classList.remove('show-form-spinner')
+				formSubmitButton.classList.remove('yn-loader')
 				formSubmitButton.textContent = formSubmitButton.dataset.label
 
 				blockWorker.terminate()
@@ -91,8 +91,8 @@ const YnfiniteBotProtection = {
 						form.dataset.working = true
 
 						formSubmitButton.dataset.label = formSubmitButton.textContent
-						formSubmitButton.classList.add('show-form-spinner')
-						formSubmitButton.textContent = 'Warte auf Bot-Prüfung...'
+						formSubmitButton.classList.add('yn-loader')
+						formSubmitButton.textContent = 'Bot-Prüfung'
 
 						const block = blockchain.addBlock(new Block({ form: form }))
 						block.startProofOfWork()

@@ -495,6 +495,13 @@ class TwigUtils
         );
     }
 
+    public function printLoader()
+    {
+        return $this->twig->render(
+            'yn/components/loader.twig'
+        );
+    }
+
     public function printString ($context, $data){
         $intro_title = array();
         foreach($data as $entry){

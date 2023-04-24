@@ -1,4 +1,48 @@
-.yn-disabled{
-    pointer-events: none;
-    opacity: .4;
+.yn-disabled {
+	pointer-events: none;
+	opacity: 0.4;
+}
+
+.yn-loader {
+	position: relative;
+
+	@keyframes spinLoader {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+}
+
+span.yn-loader,
+button.yn-loader::after {
+	margin: auto;
+	border-radius: 50%;
+	border-top: var(--loader-border, 3px) solid var(--loader-color, currentColor);
+	border-left: var(--loader-border, 3px) solid var(--loader-color, currentColor);
+	border-right: var(--loader-border, 3px) solid rgba(255, 255, 255, 0);
+	aspect-ratio: 1;
+
+	animation: spinLoader 0.75s infinite linear;
+}
+
+span.yn-loader {
+	display: block;
+	width: var(--loader-size, 20px);
+	height: var(--loader-size, 20px);
+}
+
+button.yn-loader {
+	opacity: 0.8;
+	pointer-events: none;
+	padding-right: 24px !important;
+
+	&::after {
+		content: '';
+		height: var(--loader-size, 16px);
+		width: var(--loader-size, 16px);
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		margin-left: 8px;
+	}
 }
