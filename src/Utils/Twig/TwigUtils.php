@@ -465,14 +465,14 @@ class TwigUtils
         ]);
     }
 
-    public function printLink($context, $link, $classes = "", $params) {
+    public function printLink($context, $link, $classes = "", $params = "") {
         return $this->twig->render(
             $this->getTemplate("link:link"),
             ["link" => $link, "classes" => $classes, "params" => $params]
         );
     }
 
-    public function printLinks($context, $links, $classes = "", $params) {
+    public function printLinks($context, $links, $classes = "", $params = "") {
         $buttons = '';
         for($i = 0; $i < count($links); $i++) {
             $buttons .= $this->twig->render(
@@ -483,7 +483,7 @@ class TwigUtils
         return $buttons;
     }
 
-    public function printAccordions($context, $accordions, $classes = "", $params) {
+    public function printAccordions($context, $accordions, $classes = "", $params = "") {
         return $this->twig->render(
             $this->getTemplate("accordions:accordions"),
             ["accordions" => $accordions, "classes" => $classes, "params" => $params]
