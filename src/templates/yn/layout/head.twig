@@ -100,7 +100,7 @@
 	{% if _ynfinite.pagination.currentPage == '1' %}
 		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}">
 	{% else %}
-		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}__yPage={{ _ynfinite.pagination.currentPage }}">
+		<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}?__yPage={{ _ynfinite.pagination.currentPage }}">
 	{% endif %}
 {% else %}
 	<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}">

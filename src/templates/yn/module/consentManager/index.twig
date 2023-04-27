@@ -17,10 +17,10 @@
 			</div>
 			<div class='yn-cookies__footer'>
 				{% if cookies.available|length > 0 %}
-					<button id="yn-cookies__show-configuration" class='yn-cookies__link yn-cookies__button button'>{{ "ConsentManager_ChangeSettings"|trans }}</button>
+					<a id="yn-cookies__show-configuration" class='yn-cookies__link yn-cookies__button button'>{{ "ConsentManager_ChangeSettings"|trans }}</a>
 				{% endif %}
-				<button id="yn-cookies__deny-all" class='yn-cookies__button button button--solid button--pri'>{{ "ConsentManager_DenyAll"|trans }}</button>
-				<button id="yn-cookies__allow-all" class='yn-cookies__button button button--solid button--pri'>{{ "ConsentManager_AcceptAll"|trans }}</button>
+				<a id="yn-cookies__deny-all" class='yn-cookies__button button button--solid button--pri'>{{ "ConsentManager_DenyAll"|trans }}</a>
+				<a id="yn-cookies__allow-all" class='yn-cookies__button button button--solid button--pri'>{{ "ConsentManager_AcceptAll"|trans }}</a>
 			</div>
 		</div>
 
@@ -64,8 +64,8 @@
 				</form>
 			</div>
 			<div class="yn-cookies__footer">
-				<button id="yn-cookies__show-information" class="yn-cookies__link button">{{ "ConsentManager_Back"|trans }}</button>
-				<button id="yn-cookies__set-cookies" class="yn-cookies__button button button--solid button--pri">{{ "ConsentManager_SaveSettings"|trans }}</button>
+				<a id="yn-cookies__show-information" class="yn-cookies__link button">{{ "ConsentManager_Back"|trans }}</a>
+				<a id="yn-cookies__set-cookies" class="yn-cookies__button button button--solid button--pri">{{ "ConsentManager_SaveSettings"|trans }}</a>
 			</div>
 		</div>
 	</div>
