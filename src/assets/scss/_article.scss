@@ -4,6 +4,10 @@
 		margin-inline: auto;
 	}
 
+	&__intro-text {
+		font-size: var(--font-size-intro, 1.25rem);
+	}
+
 	// video
 	&__video {
 		iframe {
