@@ -1,5 +1,5 @@
 {% if accordions %}
-	<div class="yn-accordions" {% if classes %}class="{{ classes }}"{% endif %}>
+	<div class="yn-accordions" {% if classes %}class="{{ classes }}"{% endif %}{% if params %}{{ params }}{% endif %}>
 		{% for item in accordions %}
 			{% set header = item.header ?: item.data.general_heading %}
 			{% set article = item.article ?: item.data.general_article %}
