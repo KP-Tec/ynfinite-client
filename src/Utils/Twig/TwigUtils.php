@@ -10,7 +10,7 @@ class TwigUtils
     private $data;
 
     public function __construct(
-        $twig,
+        $twig, 
         $data,
         $templates,
         $templateOverrides,
