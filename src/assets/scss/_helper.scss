@@ -21,7 +21,7 @@ button.yn-loader::after {
 	border-left: var(--loader-border, 3px) solid var(--loader-color, currentColor);
 	border-right: var(--loader-border, 3px) solid rgba(255, 255, 255, 0);
 	aspect-ratio: 1;
-
+	box-sizing: border-box !important;
 	animation: spinLoader 0.75s infinite linear;
 }
 
@@ -34,7 +34,6 @@ span.yn-loader {
 button.yn-loader {
 	opacity: 0.8;
 	pointer-events: none;
-	padding-right: 24px !important;
 
 	&::after {
 		content: '';

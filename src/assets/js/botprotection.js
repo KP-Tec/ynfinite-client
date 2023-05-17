@@ -29,6 +29,7 @@ class Block {
 				const formSubmitButton = this.data.form.querySelector('button[type=submit]')
 
 				formSubmitButton.classList.remove('yn-loader')
+				formSubmitButton.style.removeProperty('padding-left')
 				formSubmitButton.textContent = formSubmitButton.dataset.label
 
 				blockWorker.terminate()
@@ -90,7 +91,10 @@ const YnfiniteBotProtection = {
 					if (form.dataset.hasProof === 'false' && !form.dataset.working) {
 						form.dataset.working = true
 
+						const pos = 'var(--loader-size,16px) + ' + getComputedStyle(formSubmitButton).paddingLeft
 						formSubmitButton.dataset.label = formSubmitButton.textContent
+						formSubmitButton.style.paddingLeft = formSubmitButton.style.paddingLeft = 'calc(' + pos + ')'
+						formSubmitButton.style.setProperty('--yn-loader-pos', 'calc((' + pos + ' - var(--loader-size,16px)) / 2);')
 						formSubmitButton.classList.add('yn-loader')
 						formSubmitButton.textContent = 'Bot-Prüfung'
 

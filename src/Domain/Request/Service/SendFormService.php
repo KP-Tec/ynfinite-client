@@ -48,11 +48,9 @@ final class SendFormService extends RequestService
                 "success" => false,
                 "rendered" => "<p>This server does no longer exists. Please contact your administrator!"
             );
-            
+               
             return false;
         }
-
         return true;
-
     }
 }

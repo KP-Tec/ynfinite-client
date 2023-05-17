@@ -185,7 +185,7 @@ $yn-gap: 1.5rem;
 // switches
 .yn-cookies__switch input {
 	&:checked + .yn-cookies__slider {
-		background-color: var(--accent-ui, #1434a4);
+		background-color: var(--accent-ui, #e91e64);
 	}
 	&:focus + .yn-cookies__slider {
 		box-shadow: unset;

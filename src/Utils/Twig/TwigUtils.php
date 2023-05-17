@@ -491,10 +491,9 @@ class TwigUtils
     public function printTeaserText($context, $article, $classes = "", $params = ""){
         if($article){
             $intro_text = array_filter($article, function ($i) {return ($i['type'] == 'introText' or $i['type'] == 'text');});
-            return($intro_text[0]['value']);
+            return($intro_text[array_key_first($intro_text)]['value']);
         }
     }
-
 
     public function printCookieSettingsButton()
     {

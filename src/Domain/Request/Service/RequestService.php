@@ -31,13 +31,11 @@ class RequestService {
         $files = array();
 
         foreach ($uploadFields["fields"] ?? [] as $key => $file) {
-
             if (is_array($file)) {
                 foreach ($file as $i => $part) {
                     if($part->getFilePath()) {
                         $files["files.".$key.'['.$i.']'] = curl_file_create($part->getFilePath(), $part->getClientMediaType(), $part->getClientFilename());
                     }
-                    
                 }
             } else {
                 if($file->getFilePath()) {
@@ -64,10 +62,9 @@ class RequestService {
     }
 
     protected function getBody($request) {
-
         $files = $this->getFiles($request);
-        
         $body = $request->getParsedBody();
+
         if(!$body) {
             $body = json_decode(file_get_contents('php://input'));
         }

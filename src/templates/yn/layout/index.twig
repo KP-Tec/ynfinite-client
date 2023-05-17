@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="de" class="{% block html_classes %}{% endblock html_classes %}" style="{% block html_style %}{% endblock html_style %}">
 	<head>
+		{% isScriptActive "form:dates" %}
+			<link href="{{ _yfunc("withVersion", "/assets/vendor/ynfinite/css/flatpickr.min.css") }}" rel="stylesheet">
+		{% endIsScriptActive %}
 		<link href="{{ _yfunc("withVersion", "/assets/vendor/ynfinite/css/main.css") }}" rel="stylesheet">
 		{% block head %}
 			{% include 'yn/layout/head.twig' %}

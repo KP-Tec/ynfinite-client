@@ -2,6 +2,9 @@
 .yn-article [class*=yn-article__] > :is(figure, iframe) {
   margin-inline: auto;
 }
+.yn-article__intro-text {
+  --font-size: var(--font-size-intro, 1.25rem);
+}
 @supports (aspect-ratio: auto) {
   .yn-article__video iframe {
     aspect-ratio: 16/9;
@@ -46,6 +49,9 @@
 }
 .yn-article__heading > * {
   scroll-margin-top: calc(var(--flow, 15vh) * 0.5);
+}
+.yn-article__table-of-contents li {
+  text-decoration: underline;
 }
 
 .yn-cookies {
@@ -238,7 +244,7 @@
 }
 
 .yn-cookies__switch input:checked + .yn-cookies__slider {
-  background-color: var(--accent-ui, #1434a4);
+  background-color: var(--accent-ui, #e91e64);
 }
 .yn-cookies__switch input:focus + .yn-cookies__slider {
   -webkit-box-shadow: unset;
@@ -491,12 +497,11 @@ form.yn-form button.yn-loader {
   position: relative;
   opacity: 0.8;
   pointer-events: none;
-  padding-right: 56px !important;
 }
 form.yn-form button.yn-loader::after {
   top: 0;
-  right: calc(-100% + 56px);
-  left: 0;
+  right: auto;
+  left: var(--yn-loader-pos, 4px);
   bottom: 0;
 }
 
@@ -541,12 +546,6 @@ form.yn-form button.yn-loader::after {
   overflow: hidden;
   -webkit-transition: height var(--atime, 0.33s) ease, visibility var(--atime, 0.33s) ease;
   transition: height var(--atime, 0.33s) ease, visibility var(--atime, 0.33s) ease;
-}
-.yn-accordion .yn-accordion__content > :first-child {
-  padding-top: var(--gap, 1.5rem);
-}
-.yn-accordion .yn-accordion__content > :last-child {
-  padding-bottom: var(--gap, 1.5rem);
 }
 .yn-accordion.is-active .yn-accordion__header::after {
   -webkit-transform: translateY(-50%) rotate(90deg) scaleX(0);
@@ -726,6 +725,8 @@ button.yn-loader::after {
   border-left: var(--loader-border, 3px) solid var(--loader-color, currentColor);
   border-right: var(--loader-border, 3px) solid rgba(255, 255, 255, 0);
   aspect-ratio: 1;
+  -webkit-box-sizing: border-box !important;
+          box-sizing: border-box !important;
   -webkit-animation: spinLoader 0.75s infinite linear;
           animation: spinLoader 0.75s infinite linear;
 }
@@ -739,7 +740,6 @@ span.yn-loader {
 button.yn-loader {
   opacity: 0.8;
   pointer-events: none;
-  padding-right: 24px !important;
 }
 button.yn-loader::after {
   content: "";

@@ -5,7 +5,7 @@
 	}
 
 	&__intro-text {
-		font-size: var(--font-size-intro, 1.25rem);
+		--font-size: var(--font-size-intro, 1.25rem);
 	}
 
 	// video
@@ -59,6 +59,12 @@
 	&__heading {
 		> * {
 			scroll-margin-top: calc(var(--flow, 15vh) * 0.5);
+		}
+	}
+
+	&__table-of-contents {
+		li {
+			text-decoration: underline;
 		}
 	}
 }

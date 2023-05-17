@@ -13,12 +13,11 @@ form.yn-form {
 		position: relative;
 		opacity: 0.8;
 		pointer-events: none;
-		padding-right: 56px !important;
 
 		&::after {
 			top: 0;
-			right: calc(-100% + 56px);
-			left: 0;
+			right: auto;
+			left: var(--yn-loader-pos, 4px);
 			bottom: 0;
 		}
 	}
