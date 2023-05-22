@@ -5,29 +5,31 @@ class Block {
 		this.previousHash = previousHash
 		this.timestamp = Date.now()
 		this.data = data
-
 		this.hash = this.calculateHash()
-
 		this.nonce = 0
 	}
 
 	calculateHash() {
-		return SHA256(this.previousHash + this.timestamp + JSON.stringify(this.data)).toString()
+		if (this.data['form'] != undefined) {
+			return SHA256(this.previousHash + this.timestamp + this.data['form'].id).toString()
+		}
 	}
 
-	startProofOfWork(difficulty = 4) {
+	// difficulty = size of number (4 = 0000)
+	// chances = number of chances (2 = 0000, 1111, 2222)
+	startProofOfWork(difficulty = 4, chances = 0, minRunTime = 2500) {
 		if (window.Worker) {
 			const blockWorker = new Worker('/assets/vendor/ynfinite/js/worker.min.js')
 
 			blockWorker.onmessage = (e) => {
 				this.hash = e.data
-
 				this.data.form.dataset.hasProof = 'true'
 				this.data.form.dataset.proofenHash = this.hash
 
 				const formSubmitButton = this.data.form.querySelector('button[type=submit]')
 
-				formSubmitButton.classList.remove('show-form-spinner')
+				formSubmitButton.classList.remove('yn-loader')
+				formSubmitButton.style.removeProperty('padding-left')
 				formSubmitButton.textContent = formSubmitButton.dataset.label
 
 				blockWorker.terminate()
@@ -37,10 +39,12 @@ class Block {
 			console.time()
 
 			blockWorker.postMessage({
-				form: JSON.stringify(this.data.form),
+				form: this.data['form'].id,
 				previousHash: this.previousHash,
 				timestamp: this.timestamp,
 				difficulty,
+				chances,
+				minRunTime,
 			})
 		}
 	}
@@ -87,9 +91,12 @@ const YnfiniteBotProtection = {
 					if (form.dataset.hasProof === 'false' && !form.dataset.working) {
 						form.dataset.working = true
 
+						const pos = 'var(--loader-size,16px) + ' + getComputedStyle(formSubmitButton).paddingLeft
 						formSubmitButton.dataset.label = formSubmitButton.textContent
-						formSubmitButton.classList.add('show-form-spinner')
-						formSubmitButton.textContent = 'Warte auf Bot-Prüfung...'
+						formSubmitButton.style.paddingLeft = formSubmitButton.style.paddingLeft = 'calc(' + pos + ')'
+						formSubmitButton.style.setProperty('--yn-loader-pos', 'calc((' + pos + ' - var(--loader-size,16px)) / 2);')
+						formSubmitButton.classList.add('yn-loader')
+						formSubmitButton.textContent = 'Bot-Prüfung'
 
 						const block = blockchain.addBlock(new Block({ form: form }))
 						block.startProofOfWork()

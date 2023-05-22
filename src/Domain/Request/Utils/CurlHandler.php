@@ -9,12 +9,10 @@ final class CurlHandler
 {
     public function __construct($settings) {
         $this->settings = $settings;
-
         $this->uploadFiles = array();
-
-        
         $this->ch = new Curl\Curl();
         $this->path = "";
+        $this->url = "";
 
         $cookieArray = array();
         foreach ($_COOKIE as $key => $cookie) {

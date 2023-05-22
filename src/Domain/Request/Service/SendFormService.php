@@ -26,13 +26,13 @@ final class SendFormService extends RequestService
         $jsonResponse = true;
         $path = $request->getUri()->getPath();
     
-        if(!$this->securityCheck($request)) {
+        $postBody = $this->getBody($request);
+        $postBody["referer"] = $_SERVER['HTTP_REFERER'];
+        
+        if($postBody['method'] === "post" && !$this->securityCheck($request)) {
             return $this->securityError;
         }
         
-        $postBody = $this->getBody($request);
-        $postBody["referer"] = $_SERVER['HTTP_REFERER'];
-
         $this->checkPostProof($request);
 
         $response = $this->request(trim($path), $this->settings["services"]["form"], $postBody, $jsonResponse);
@@ -48,11 +48,9 @@ final class SendFormService extends RequestService
                 "success" => false,
                 "rendered" => "<p>This server does no longer exists. Please contact your administrator!"
             );
-            
+               
             return false;
         }
-
         return true;
-
     }
 }

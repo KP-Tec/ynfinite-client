@@ -1,7 +1,7 @@
 {% if field.items|length > 1 %}
 <div class="widget-group widget-group--checkbox">
 {% endif %}
-	<p class="widget-group-header">{{field.label}}
+	<p class="widget-group-header">{{ field.label }}
 		{% if(field.required) %}
 			<span class="required">*</span>
 		{% endif %}
@@ -10,15 +10,15 @@
 		<div class="widget widget--checkbox">
 			<input data-ynfield="true" 
 				type="checkbox" 
-				id="{{form.uid}}_{{field.alias}}_{{option.value}}" 
-				name="fields{{parent}}[{{field.alias}}][]" 
-				value="{{option.value}}" 
-				{% if field.value == option.value or option.selected %} checked {% endif %} 
-				{% if field.required %} required {% endif %}
-				{{field.attributes|raw}}
-			/>
-			<label class="widget__label" for="{{form.uid}}_{{field.alias}}_{{option.value}}">
-				<div class="ynfinite-field-text">{{option.label}}</div>
+				id="{{ form.uid }}_{{ field.alias }}_{{ option.value }}" 
+				name="fields{{ parent }}[{{ field.alias }}][]" 
+				value="{{ option.value }}" 
+				{% if field.value == option.value or option.selected %}checked{% endif %} 
+				{% if field.required %}required{% endif %}
+				{{ field.attributes|raw }}
+			>
+			<label class="widget__label" for="{{ form.uid }}_{{ field.alias }}_{{ option.value }}">
+				{{ option.label|raw }}
 			</label>
 		</div>
 	{% endfor %}

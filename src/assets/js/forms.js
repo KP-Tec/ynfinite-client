@@ -13,8 +13,9 @@ const YnfiniteForms = {
 	},
 
 	async submitForm(element, eventType) {
-		const hasProof = element.getAttribute('data-has-proof')
-		const proofenHash = element.getAttribute('data-proofen-hash')
+		const method = element.getAttribute('data-ynformmethod')
+		const hasProof = method == 'get' ? true : element.getAttribute('data-has-proof')
+		const proofenHash = method == 'get' ? true : element.getAttribute('data-proofen-hash')
 
 		if (!hasProof || !proofenHash) {
 			console.log('Sorry, there is no proof here that you are a human. The form can not be sent.')
@@ -22,9 +23,10 @@ const YnfiniteForms = {
 		}
 
 		const formSubmitButton = element.querySelector('button[type=submit]')
-		formSubmitButton.dataset.label = formSubmitButton.textContent
-		formSubmitButton.classList.add('show-form-spinner')
-		formSubmitButton.textContent = 'Sende...'
+		const pos = 'var(--loader-size,16px) + ' + getComputedStyle(formSubmitButton).paddingLeft
+		formSubmitButton.classList.add('yn-loader')
+		formSubmitButton.style.paddingLeft = formSubmitButton.style.paddingLeft = 'calc(' + pos + ')'
+		formSubmitButton.style.setProperty('--yn-loader-pos', 'calc((' + pos + ' - var(--loader-size,16px)) / 2);')
 
 		const ynBeforeAsyncChangeData = new Event('onPreAsyncChangeData')
 		element.dispatchEvent(ynBeforeAsyncChangeData)
@@ -32,7 +34,7 @@ const YnfiniteForms = {
 		const formData = new FormData(element)
 		formData.set('eventAsync', true)
 		formData.set('eventType', eventType)
-		formData.set('method', element.getAttribute('data-ynformmethod'))
+		formData.set('method', method)
 		formData.set('formId', element.getAttribute('data-ynformid'))
 		formData.set('formLanguage', element.getAttribute('data-language'))
 		formData.set('hasProof', hasProof)
@@ -68,10 +70,11 @@ const YnfiniteForms = {
 			})
 			element.dispatchEvent(ynAsyncChange)
 
-			formSubmitButton.classList.remove('show-form-spinner')
-			formSubmitButton.textContent = formSubmitButton.dataset.label
+			formSubmitButton.classList.remove('yn-loader')
+			formSubmitButton.style.removeProperty('padding-left')
 		} else {
-			formSubmitButton.classList.remove('show-form-spinner')
+			formSubmitButton.classList.remove('yn-loader')
+			formSubmitButton.style.removeProperty('padding-left')
 			formSubmitButton.style.backgroundColor = 'var(--error, red)'
 			formSubmitButton.style.color = 'var(--light, white)'
 			formSubmitButton.textContent = 'Error'

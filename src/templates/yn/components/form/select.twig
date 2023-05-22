@@ -1,12 +1,27 @@
 {% extends "yn/components/form/basic.twig" %}
 
 {% block field %}
-	<select data-ynfield="true" name="fields{{parent}}[{{field.alias}}]" {% if field.required %} required {% endif %} {{field.attributes|raw}} {% if form.alias == 'search_markets' %} onchange="if (this.options[this.selectedIndex].innerHTML != '{{ field.emptyLabel }}') {console.log(this.options[this.selectedIndex].value); location.href = '{{ _yfunc('linkPage', 'listing_maerkte') }}/' + this.options[this.selectedIndex].value}" {% endif %}>
+	<select data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" name="fields{{ parent }}[{{ field.alias }}]" {% if field.required %}required{% endif %} {% if field.multiple %}multiple{% endif %} {{ field.attributes|raw }} {% if field.disabled %}disabled{% endif %}>
 		{% if field.emptyLabel %}
-			<option value="" selected {% if field.required %} disabled {% endif %}>{{field.emptyLabel}}</option>
+			<option value=""selected{% if field.required %} disabled {% endif %}>{{ field.emptyLabel }}</option>
 		{% endif %}
 		{% for option in field.options %}
-			<option value="{{ option.value }}" {% if field.value == option.value or option.selected %} selected {% endif %}>{{option.label}}</option>
+			<option value="{{ option.value }}" {% if field.value == option.value or option.value in field.value or option.selected %}selected{% endif %}>{{ option.label }}</option>
 		{% endfor %}
 	</select>
+
+	{% if field.multiple %}
+		<script>
+			setTimeout(function(){
+				document.querySelectorAll("[id='{{ form.uid }}_{{ field.alias }}_from'] option").forEach((option) => {
+					option.addEventListener('mousedown', function (e) {
+						e.preventDefault();
+						option.parentElement.focus();
+						this.selected = !this.selected;
+						return false;
+					}, false );
+				});
+			}, 500);
+		</script>
+	{% endif %}
 {% endblock field %}

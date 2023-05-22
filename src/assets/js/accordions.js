@@ -7,7 +7,7 @@ const YnfiniteAccordions = {
 		accordions.forEach((accordion) => {
 			accordion._accordion = new Accordion(accordion, {
 				duration: 400,
-				showMultiple: true,
+				showMultiple: false,
 				elementClass: 'yn-accordion',
 				triggerClass: 'yn-accordion__header',
 				panelClass: 'yn-accordion__content',

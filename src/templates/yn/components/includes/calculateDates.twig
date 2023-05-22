@@ -1,0 +1,68 @@
+<script>
+    window.addEventListener('load', function () {
+        function calcDate(unit, value) {
+            if(unit && (value >= 0 || unit == 'now')){
+                if (unit == 'now') return dayjs().toISOString()
+                else if (unit == 'days') return dayjs().add(value, 'day').toISOString()
+                else if (unit == 'months') return dayjs().add(value, 'month').toISOString()
+                else if (unit == 'years') return dayjs().add(value, 'year').toISOString()
+                else if (unit == 'hours') return dayjs().add(value, 'hour').toISOString()
+                else if (unit == 'minutes') return dayjs().add(value, 'minute').toISOString()
+            }
+        }
+
+        const data = {
+            type: '{{ field.type }}',
+            fromDate: {
+                unit: '{{ field.restrictions.from.unit }}',
+                value: 'field.restrictions.from.unit' == 'now' ? '{{ field.restrictions.from.value|default(0) }}' : '{{ field.restrictions.from.value }}',
+            },
+            toDate: {
+                unit: '{{ field.restrictions.to.unit }}',
+                value: '{{ field.restrictions.to.value }}',
+            },
+            disabledDays: JSON.parse('{{ field.restrictions.disabledDays|json_encode|raw }}'),
+            // disabledHours: JSON.parse('{{ field.restrictions.disabledHours|json_encode|raw }}'),
+            value: '{{ field.defaultValue }}' ? dayjs('{{ field.defaultValue }}').toISOString() : calcDate('{{ field.restrictions.from.unit }}', '{{ field.restrictions.from.value }}')
+        }
+
+        // ================================================== DEBUGGING ==================================================
+        // if(data.type == 'date'){
+        //     console.log('type: ', data.type)
+        //     console.log('default: ', '{{ field.defaultValue }}')
+        //     console.log('default: ', data.value)
+        //     console.log('fromDate: ', data.fromDate.unit, ' ', data.fromDate.value)
+        //     console.log('fromDate: ', calcDate(data.fromDate.unit, data.fromDate.value))
+        //     console.log('toDate: ', data.toDate.unit, ' ', data.toDate.value)
+        //     console.log('toDate: ', calcDate(data.toDate.unit, data.toDate.value))
+        //     console.log(data.value ? data.type == 'time' ? dayjs(data.value).format('HH:mm') : data.value : 'null')
+        // }
+
+        flatpickr('.flatpickr[id="{{ form.uid }}_{{ field.alias }}"]', {
+            // Settings
+            enableTime: data.type == 'time' || data.type == 'datetime' ? true : false,
+	        noCalendar: data.type == 'time' ? true : false,
+            altFormat: data.type == 'time' ? 'H:i' : data.type == 'datetime' ? 'd.m.Y - H:i' : 'j F Y',
+            dateFormat: data.type == 'date' ? 'Y-m-d' : data.type == 'time' ? 'H:i' : 'Z',
+            
+            // Content
+            defaultDate: data.value ? data.type == 'time' ? dayjs(data.value).format('HH:mm') : data.value : null,
+            minDate: data.type == 'date' || data.type == 'datetime' ? calcDate(data.fromDate.unit, data.fromDate.value) : null,
+            maxDate: data.type == 'date' || data.type == 'datetime' ? calcDate(data.toDate.unit, data.toDate.value) : null,
+            disable: [
+                function (date) {
+                    if(data.disabledDays) return data.disabledDays.map((x) => (x > 6 ? 0 : x)).includes(date.getDay())
+                    // if(data.disabledHours){
+                    //     console.log(data.disabledHours)
+                    //     console.log(date.getHours())
+                    //     return data.disabledHours.includes(date.getHours())
+                    // }
+                },
+            ],
+        })
+
+        document.querySelector('.flatpickr[id="{{ form.uid }}_{{ field.alias }}"]').removeAttribute('type')
+        document.querySelector('.flatpickr[id="{{ form.uid }}_{{ field.alias }}"]').setAttribute('flatpickr-hidden-input', true)
+        document.querySelector('.flatpickr[id="{{ form.uid }}_{{ field.alias }}"]').setAttribute('type', data.type)
+    })
+</script>

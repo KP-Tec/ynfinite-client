@@ -40,14 +40,6 @@
 	.yn-accordion__content {
 		overflow: hidden;
 		transition: height var(--atime, 0.33s) ease, visibility var(--atime, 0.33s) ease;
-
-		> :first-child {
-			padding-top: var(--gap, 1.5rem);
-		}
-
-		> :last-child {
-			padding-bottom: var(--gap, 1.5rem);
-		}
 	}
 
 	&.is-active {

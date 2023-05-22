@@ -2,30 +2,26 @@
 
 {% block field %}
 	<div class="distance-wrapper">
-		<div class="item">
-			<input data-ynfield="true"
-				type="text"
-				name="fields{{parent}}[{{field.alias}}][loc]"
-				value="{{field.value['loc']|default(addValue|default(field.defaultValue))}}"
+		<input data-ynfield="true"
+			type="text"
+			name="fields{{ parent }}[{{ field.alias }}][loc]"
+			value="{{ field.value['loc']|default(addValue|default(field.defaultValue)) }}"
 
-				{% if field.minLength %} minlength="{{field.minLength}}" {% endif %}
-				{% if field.maxLength %} maxlength="{{field.maxLength}}" {% endif %}
-				{% if field.placeholder %} placeholder="{{field.placeholder}}" {% endif %}
-				{% if field.required %} required {% endif %}
+			{% if field.minLength %} minlength="{{ field.minLength }}" {% endif %}
+			{% if field.maxLength %} maxlength="{{ field.maxLength }}" {% endif %}
+			{% if field.placeholder %} placeholder="{{ field.placeholder }}" {% endif %}
+			{% if field.required %} required {% endif %}
 
-				{{field.attributes|raw}}
-			/>
-		</div>
-		<div class="item">
-			<select data-ynfield="true" name="fields{{parent}}[{{field.alias}}][distance]" value="{{field.value['distance']}}" {% if field.required %} required {% endif %} {{field.attributes|raw}}>
-				{% if field.emptyLabel %}
-					<option value="">{{field.emptyLabel}}</option>
-				{% endif %}
-				{% set items = field.stepList|split(",") %}
-				{% for item in items %}
-					<option value="{{item}}" {% if field.value['distance'] == item %} selected {% endif %}>{{item}} {{field.stepListUnit}}</option>
-    			{% endfor %}
-			</select>
-		</div>
+			{{ field.attributes|raw }}
+		>
+		<select data-ynfield="true" name="fields{{ parent }}[{{ field.alias }}][distance]" value="{{ field.value['distance'] }}" {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
+			{% if field.emptyLabel %}
+				<option value="">{{ field.emptyLabel }}</option>
+			{% endif %}
+			{% set items = field.stepList|split(",") %}
+			{% for item in items %}
+				<option value="{{ item }}" {% if field.value['distance'] == item %}selected{% endif %}>{{ item }} {{ field.stepListUnit }}</option>
+			{% endfor %}
+		</select>
 	</div>
 {% endblock field %}

@@ -4,9 +4,8 @@
 		margin-inline: auto;
 	}
 
-	&:not(:last-of-type),
-	> [class*='yn-article__']:not(:last-child) {
-		margin-bottom: var(--text-gap, 1.5rem);
+	&__intro-text {
+		--font-size: var(--font-size-intro, 1.25rem);
 	}
 
 	// video
@@ -60,6 +59,12 @@
 	&__heading {
 		> * {
 			scroll-margin-top: calc(var(--flow, 15vh) * 0.5);
+		}
+	}
+
+	&__table-of-contents {
+		li {
+			text-decoration: underline;
 		}
 	}
 }

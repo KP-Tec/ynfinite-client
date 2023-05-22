@@ -4,7 +4,7 @@ const YnfiniteConsents = {
 			const manager = document.getElementById('yn-cookies')
 
 			if (manager) {
-				if (manager.dataset.hideManager !== 'true') { 
+				if (manager.dataset.hideManager !== 'true') {
 					this.ynCheckForConsents()
 				}
 
@@ -33,15 +33,21 @@ const YnfiniteConsents = {
 					this.ynSetConsentSettings()
 				})
 
-				const changeSelectionButton = document.querySelectorAll('.yn-cookies__change-selection').length >= 1 ? document.querySelectorAll('.yn-cookies__change-selection') : document.querySelectorAll('#yn-cookies__change-selection');
+				document.querySelectorAll('.toggleConsent').forEach(function (item) {
+					item.addEventListener('click', function () {
+						item.querySelector('[id="' + item.getAttribute('for') + '"]').checked = !item.querySelector('[id="' + item.getAttribute('for') + '"]').checked
+					})
+				})
 
-				Array.from(changeSelectionButton).forEach(element => {
+				const changeSelectionButton = document.querySelectorAll('.yn-cookies__change-selection').length >= 1 ? document.querySelectorAll('.yn-cookies__change-selection') : document.querySelectorAll('#yn-cookies__change-selection')
+
+				Array.from(changeSelectionButton).forEach((element) => {
 					element.addEventListener('click', (e) => {
 						e.preventDefault()
 						this.ynConsentShowPage('configuration')
 						this.showConsent(true)
 					})
-				});
+				})
 
 				const consentButtons = document.querySelectorAll('.yn-cookie-consent--okay')
 
@@ -113,15 +119,15 @@ const YnfiniteConsents = {
 		if (e) {
 			e = JSON.parse(e)
 			let oldConsents = e.consents
-			if (oldConsents == undefined){
-				 oldConsents = e.activeScripts
+			if (oldConsents == undefined) {
+				oldConsents = e.activeScripts
 			}
 			const manager = document.getElementById('yn-cookies')
 			const consents = JSON.parse(manager.getAttribute('data-consents') || '[]')
 			const diff = consents.filter((x) => !oldConsents.includes(x))
-			if (diff.length == 0) { 
-				this.hideConsent() 
-			} else { 
+			if (diff.length == 0) {
+				this.hideConsent()
+			} else {
 				this.showConsent()
 			}
 		} else this.showConsent()

@@ -127,14 +127,17 @@ $yn-gap: 1.5rem;
 .yn-cookies__settings__item {
 	margin: 0;
 
-	label {
+	> div {
 		display: flex;
 		flex-direction: row;
 		gap: 0.5rem;
 		justify-content: space-between;
 		align-items: center;
 		margin: 0;
-		padding: 0 0 0.75rem;
+
+		& + p {
+			margin-top: 0.75rem;
+		}
 	}
 }
 
@@ -182,7 +185,7 @@ $yn-gap: 1.5rem;
 // switches
 .yn-cookies__switch input {
 	&:checked + .yn-cookies__slider {
-		background-color: var(--accent-ui, #1434a4);
+		background-color: var(--accent-ui, #e91e64);
 	}
 	&:focus + .yn-cookies__slider {
 		box-shadow: unset;
