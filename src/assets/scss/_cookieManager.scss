@@ -139,6 +139,16 @@ $yn-gap: 1.5rem;
 			margin-top: 0.75rem;
 		}
 	}
+
+	label {
+		display: flex;
+		flex-direction: row;
+		gap: 0.5rem;
+		justify-content: space-between;
+		align-items: center;
+		margin: 0;
+		padding: 0 0 0.75rem;
+	}
 }
 
 .yn-cookies__switch {
