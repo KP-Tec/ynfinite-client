@@ -247,53 +247,50 @@ final class TwigRenderer
     }
 
     private function getURIData($overrideUrl)
-    {
-        $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        if($overrideUrl) {
-            $baseUrl = $overrideUrl;
-        }
+	{
+		$baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		if($overrideUrl) {
+			$baseUrl = $overrideUrl;
+		}
 
-        $path = explode('?', $baseUrl, 2);
+		$path = explode('?', $baseUrl, 2);
 
-        $listingSeparator = "?";
-        $perPageSeparator = "?";
+		$listingURL = "";
+		$perPageURL = "";
+		if ($this->data["page"]["type"] === "listing") {
+			$currentPage = $this->data["pagination"]["currentPage"] ?? null;
+			$perPage = $this->data["pagination"]["perPage"] ?? null;
 
-        $listingURL = "";
-        $perPageURL = "";
-        if ($this->data["page"]["type"] === "listing") {
-            $currentPage = $this->data["pagination"]["currentPage"] ?? null;
-            $perPage = $this->data["pagination"]["perPage"] ?? null;
+			$listingURL = $path[0]."?";
+			$perPageURL = $path[0]."?";
 
-            $listingURL = $path[0]."?";
-            $perPageURL = $path[0]."?";
+			if (count($path) >= 2) {
+				parse_str($path[1], $listingParams);
+				unset($listingParams["__yPage"]);
+				if (count($listingParams) > 0) {
+					$listingURL .= http_build_query($listingParams);
+					if(count($listingParams) >= 1) {
+						$listingURL .= "&";
+					}
+				}
 
-            if (count($path) >= 2) {
-                $paramsPagination = explode("&", $path[1]);
+				parse_str($path[1], $perPageParams);
+				unset($perPageParams["__yPerPage"]);
+				if (count($perPageParams) > 0) {
+					$perPageURL .= http_build_query($perPageParams);
+					if(count($perPageParams) >= 1) {
+						$perPageURL .= "&";
+					}
+				}
 
-                if (($key = array_search("__yPage=$currentPage", $paramsPagination)) !== false) {
-                    array_splice($paramsPagination, $key, 1);
-                }
+			}
+		}
 
-                if (count($paramsPagination) > 0) {
-                    $listingURL .= implode("&", $paramsPagination) . "&";
-                }
-
-                if (($key = array_search("__yPerPage=$perPage", $paramsPagination)) !== false) {
-                    array_splice($paramsPagination, $key, 1);
-                }
-
-                if (count($paramsPagination) > 0) {
-                    $perPageURL .= implode("&", $paramsPagination) . "&";
-                }
-            } 
-        }
-
-        return array(
-            "cleanURL" => $path[0],
-            "URL" => $_SERVER['REQUEST_URI'],
-            "listingURL" => $listingURL,
-            "perPageURL" => $perPageURL
-        );
-    }
-
+		return array(
+			"cleanURL" => $path[0],
+			"URL" => $_SERVER['REQUEST_URI'],
+			"listingURL" => $listingURL,
+			"perPageURL" => $perPageURL
+		);
+	}
 }
