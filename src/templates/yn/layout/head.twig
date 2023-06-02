@@ -1,4 +1,9 @@
 {% set title	= _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title %}
+
+{% if _ynfinite.pagination.currentPage %}
+	{% set title = title ~ ' - ' ~ "Listings_PagePrefix"|trans ~ ' ' ~ _ynfinite.pagination.currentPage %}
+{% endif %}
+
 {% set seoTitle	= title ?: _ynfinite.site.meta.title %}
 {% if _ynfinite.site.meta.title|length > 0 and title|length > 0 and _ynfinite.site.meta.title|lower not in title|lower %}
 	{% set seoTitle = title|raw ~ ' - ' ~ _ynfinite.site.meta.title|raw %}
