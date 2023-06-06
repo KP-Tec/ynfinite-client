@@ -53,6 +53,9 @@
 .yn-article__table-of-contents li {
   text-decoration: underline;
 }
+.yn-article :is(h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6) > :is(.subheading, .subline) {
+  font-size: 70%;
+}
 
 .yn-cookies {
   position: fixed;
@@ -203,6 +206,24 @@
 }
 .yn-cookies__settings__item > div + p {
   margin-top: 0.75rem;
+}
+.yn-cookies__settings__item label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  gap: 0.5rem;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0;
+  padding: 0 0 0.75rem;
 }
 
 .yn-cookies__switch {
