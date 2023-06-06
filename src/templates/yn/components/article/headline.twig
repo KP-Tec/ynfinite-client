@@ -1,13 +1,15 @@
 {% if component.value %}
-    <div class="yn-article__heading {{ component.config.size ?: component.config.order }}">
+    <div class="yn-article__heading">
         {% if component.overline %}
             <{{component.config.order}} class="tagline">{{ component.overline|raw }}</{{component.config.order}}>
-            <p class="heading" id="{{ component.alias }}">{{ component.value|raw }}</p>
+            <h{{ component.config.order|last + 1 <= 6 ? component.config.order|last + 1 : component.config.order|last }} class="heading {{ component.config.size ?: component.config.order }}" id="{{ component.alias }}">{{ component.value|raw }}</h{{ component.config.order|last + 1 <= 6 ? component.config.order|last + 1 : component.config.order|last }}>
         {% else %}
-            <{{component.config.order}} class="heading" id="{{ component.alias }}">{{ component.value|raw }}</{{component.config.order}}>
+            <{{component.config.order}} class="heading {{ component.config.size ?: component.config.order }}" id="{{ component.alias }}">{{ component.value|raw }}</{{component.config.order}}>
         {% endif %}
         {% if component.subline %}
-            <p class="subline">{{ component.subline|raw }}</p>
+            <span class="{{ component.config.size ?: component.config.order }}">
+                <p class="subline">{{ component.subline|raw }}</p>
+            </span>
         {% endif %}
     </div>
 {% endif %}
