@@ -23,7 +23,7 @@
             },
             disabledDays: JSON.parse('{{ field.restrictions.disabledDays|json_encode|raw }}'),
             // disabledHours: JSON.parse('{{ field.restrictions.disabledHours|json_encode|raw }}'),
-            value: '{{ field.defaultValue }}' ? dayjs('{{ field.defaultValue }}').toISOString() : calcDate('{{ field.restrictions.from.unit }}', '{{ field.restrictions.from.value }}')
+            value: '{{ field.defaultValue }}' ? dayjs('{{ field.defaultValue }}').toISOString() : calcDate('{{ field.restrictions.from.unit }}', '{{ field.restrictions.from.value }}'),
         }
 
         // ================================================== DEBUGGING ==================================================
@@ -42,8 +42,9 @@
             // Settings
             enableTime: data.type == 'time' || data.type == 'datetime' ? true : false,
 	        noCalendar: data.type == 'time' ? true : false,
-            altFormat: data.type == 'time' ? 'H:i' : data.type == 'datetime' ? 'd.m.Y - H:i' : 'j F Y',
-            dateFormat: data.type == 'date' ? 'Y-m-d' : data.type == 'time' ? 'H:i' : 'Z',
+            altFormat: data.type == 'time' ? 'H:i' : data.type == 'datetime' ? 'd.m.Y - H:i' : data.type == 'week' ? 'W Y' : 'j F Y',
+            dateFormat: data.type == 'date' ? 'Y-m-d' : data.type == 'time' ? 'H:i' : data.type == 'week' ? 'Y-W' : 'Z',
+            weekNumbers: data.type != 'week' ? false : true,
             
             // Content
             defaultDate: data.value ? data.type == 'time' ? dayjs(data.value).format('HH:mm') : data.value : null,
@@ -52,13 +53,17 @@
             disable: [
                 function (date) {
                     if(data.disabledDays) return data.disabledDays.map((x) => (x > 6 ? 0 : x)).includes(date.getDay())
-                    // if(data.disabledHours){
-                    //     console.log(data.disabledHours)
-                    //     console.log(date.getHours())
-                    //     return data.disabledHours.includes(date.getHours())
-                    // }
                 },
             ],
+            "plugins": data.type == 'week' ? [new window.weekSelect({})] : data.type == 'month' ? [new window.monthSelect({shorthand: true, dateFormat: "m.y", altFormat: "F Y"})] : false,
+            "onChange": [function(){
+                    if(data.type == 'week'){
+                        const weekNumber = this.selectedDates[0]
+                        ? this.config.getWeek(this.selectedDates[0])
+                        : null;
+                        this.element.value = this.currentYear + "-W" + weekNumber
+                    } 
+                }],
         })
 
         document.querySelector('.flatpickr[id="{{ form.uid }}_{{ field.alias }}"]').removeAttribute('type')

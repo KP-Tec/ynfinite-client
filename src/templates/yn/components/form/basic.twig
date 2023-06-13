@@ -11,7 +11,8 @@
 					<span class="required">*</span>
 				{% endif %}
 			</label>
-	{% endif %}
+			<div class="widget__input-container">
+		{% endif %}
 	{% block field %}
 		<input type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}]" {% if field.value or addValue %}value="{{ field.value ?: addValue }}"{% endif %} {% if field.placeholder %} placeholder="{{ field.placeholder }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
 	{% endblock field %}
@@ -21,6 +22,7 @@
 		{% endif %}
 	{% endblock hint %}
 	{% if renderWidget != false %}
+		</div>
 		</div>
 	{% endif %}
 {% endblock %}

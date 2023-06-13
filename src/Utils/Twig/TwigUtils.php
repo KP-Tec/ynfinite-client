@@ -36,6 +36,7 @@ class TwigUtils
             'accordions:accordions' => 'yn/components/accordions.twig',
             'images:image' => 'yn/components/image.twig',
             'images:figure' => 'yn/components/figure.twig',
+            'link:link' => 'yn/components/link.twig',
             'links:links' => 'yn/components/links.twig',
             'form:form' => 'yn/components/form.twig',
             'form:fields.select' => 'yn/components/form/select.twig',
@@ -468,6 +469,15 @@ class TwigUtils
                 'classes' => $classes,
                 'nolazy' => $nolazy,
             ]);
+        }
+    }
+
+    public function printLink($context, $link, $classes = "", $params = "") {
+        if($link){
+            return $this->twig->render(
+                $this->getTemplate("link:link"),
+                ["link" => $link, "classes" => $classes, "params" => $params]
+            );
         }
     }
 

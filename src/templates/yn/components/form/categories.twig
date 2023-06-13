@@ -24,10 +24,10 @@
 	{% endfor %}
 {% endmacro %}
 
-{# {% block field %}
-	{% if 'list' in field.attributes %}
+{% block field %}
+	{# {% if 'list' in field.attributes %}
 		{% set type = 'list' %}
-	{% endif %}
+	{% endif %} #}
 
 	<select data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" name="fields{{ parent }}[{{ field.alias }}]" {% if field.value %}value="{{ field.value }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
 		{% if field.emptyLabel %}
@@ -37,7 +37,7 @@
 		{{ _self.menuItems(field, field.options, 'select') }}
 	</select>
 
-	{% if type == 'list' %}
+	{# {% if type == 'list' %}
 		<ul id="{{ form.uid }}_{{ field.alias }}_list">
 			{% if field.emptyLabel %}
 				<li value="">{{ field.emptyLabel }}</li>
@@ -77,5 +77,5 @@
 
 			updateList()
 		</script>
-	{% endif %}
-{% endblock field %} #}
+	{% endif %} #}
+{% endblock field %}
