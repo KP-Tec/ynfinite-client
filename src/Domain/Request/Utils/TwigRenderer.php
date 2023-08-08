@@ -172,7 +172,7 @@ final class TwigRenderer
         $addOverrides = explode(",", $this->data["theme"]["additionalNamespaces"] ?? "");
         
         forEach( $addOverrides as $override) {
-            $overridePathes[] = getcwd() . "/../" . $this->settings["ynfinite"]["templateDir"] . "/" . $override . "/tplConfig.php";
+            $overridePathes[] = getcwd() . "/../" . $this->settings["ynfinite"]["templateDir"] . "/" . trim($override) . "/tplConfig.php";
         }
         $overridePathes[] = getcwd() . "/../" . $this->settings["ynfinite"]["templateDir"] . "/" . $this->data["theme"]["namespace"] . "/tplConfig.php";
         
