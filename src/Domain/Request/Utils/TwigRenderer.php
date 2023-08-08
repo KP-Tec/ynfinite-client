@@ -43,7 +43,7 @@ final class TwigRenderer
 
         $addNamespaces = explode(",", $data["theme"]["additionalNamespaces"] ?? "");
         foreach($addNamespaces as $addNamespace) {
-            $templateFolders[] = getcwd() . '/../templates/' . $addNamespace;
+            $templateFolders[] = getcwd() . '/../templates/' . trim($addNamespace);
         }
 
         $loader = new FileSystemLoader($templateFolders, null, boolval($this->settings["ynfinite"]["debugTemplates"]));
