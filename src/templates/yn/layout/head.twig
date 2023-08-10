@@ -1,7 +1,9 @@
-{% set title	= _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title %}
+{% if not title %}
+	{% set title	= _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title %}
 
-{% if _ynfinite.pagination.currentPage %}
-	{% set title = title ~ ' - ' ~ "Listings_PagePrefix"|trans ~ ' ' ~ _ynfinite.pagination.currentPage %}
+	{% if _ynfinite.pagination.currentPage %}
+		{% set title = title ~ ' - ' ~ "Listings_PagePrefix"|trans ~ ' ' ~ _ynfinite.pagination.currentPage %}
+	{% endif %}
 {% endif %}
 
 {% set seoTitle	= title ?: _ynfinite.site.meta.title %}
@@ -10,8 +12,8 @@
 {% endif %}
 
 <!-- Seo Meta Tags -->
-{% set seoDescription = _ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.description) %}
-{% set seoKeywords = _ynfinite.content.settings.seo.keywords|default(_ynfinite.page.meta.keywords) %}
+{% set seoDescription = description ?: _ynfinite.content.settings.seo.description|default(_ynfinite.page.meta.description) %}
+{% set seoKeywords = keywords ?: _ynfinite.content.settings.seo.keywords|default(_ynfinite.page.meta.keywords) %}
 
 <meta charset="UTF-8">
 <title>{{ overrideTitle ?: seoTitle }}</title>
