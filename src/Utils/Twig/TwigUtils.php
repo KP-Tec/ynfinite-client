@@ -502,7 +502,11 @@ class TwigUtils
         if($article){
             $intro_text = array_filter($article, function ($i) {return ($i['type'] == 'introText' or $i['type'] == 'text');});
             if($intro_text){
-                return($intro_text[array_key_first($intro_text)]['value']);
+                // Filtert alles raus was nicht in <p> Tags steht
+                $pattern = '/<p\b[^>]*>(.*?)<\/p\b>/s';
+                preg_match_all($pattern, $intro_text[array_key_first($intro_text)]['value'], $matches);
+                $result = '<p>' . implode("\n", $matches[1]) . '</p>';
+                return($result);
             }
         }
     }
