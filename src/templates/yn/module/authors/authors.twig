@@ -1,0 +1,7 @@
+{% if authors %}
+    {% for author in authors %}
+        <li><a {% if author[0].authorUrl %}href="{{author[0].authorUrl}}"{% endif %}>{{ author[0].author }} 
+        ({% for image in author %}<ul><li>{{ image.filename|raw }}</ul></li>{% endfor %})
+        </a></li>
+    {% endfor %}
+{% endif %}

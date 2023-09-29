@@ -68,6 +68,7 @@ class TwigUtils
             'form:fields.team' => 'yn/components/form/team.twig',
             "gdpr:request" => "yn/module/gdpr/request.twig",
             "gdpr:update" => "yn/module/gdpr/update.twig",
+            "authors:authors" => "yn/module/authors/authors.twig",
             'listing:pagination' => 'yn/components/pagination.twig',
             'listing:perPageDropdown' => 'yn/components/perPageDropdown.twig',
         ];
@@ -165,7 +166,6 @@ class TwigUtils
         else {
             return $env->render($template, $data);
         }
-        
     }
 
     private function calculateImageDimensions($image, $sources) {
@@ -432,12 +432,62 @@ class TwigUtils
         }
     }
 
-    // ================================================== PRINT FUNCTIONS ================================================== //
+// ================================================== OLD PRINT FUNCTIONS ================================================== //
 
-     public function printImage($context, $image, $sizes = [], $classes = "", $nolazy = "")
+    public function printImage($context, $image, $sizes = [], $classes = "", $nolazy = "")
     {
+        return $this->image($context, $image, array('sizes' => $sizes, 'classes' => $classes, 'nolazy' => $nolazy));
+    }
+
+    public function printFigure($context, $image, $sizes = [], $classes = "", $nolazy = "")
+    {
+        return $this->figure($context, $image, array('sizes' => $sizes, 'classes' => $classes, 'nolazy' => $nolazy));
+    }
+
+    public function printLink($context, $link, $classes = "", $params = "") {
+        return $this->link($context, $link, array('classes' => $classes, 'params' => $params));
+    }
+
+    public function printLinks($context, $links, $classes = "", $params = "") {
+        return $this->link($context, $links, array('classes' => $classes, 'params' => $params));
+    }
+
+    public function printAccordions($context, $accordions, $classes = "", $params = "") {
+        return $this->accordions($context, $accordions, array('classes' => $classes, 'params' => $params));
+    }
+    
+    public function printTeaserText($context, $article, $classes = "", $params = ""){
+        return $this->teaserText($context, $article, array('classes' => $classes, 'params' => $params));
+    }
+    
+    public function printCookieSettingsButton()
+    {
+        return $this->cookieSettingsButton();
+    }
+
+    public function printLoader()
+    {
+        return $this->loader();
+    }
+
+    public function printString ($context, $data){
+        return $this->string($context, $data);
+    }
+
+// ================================================== NEW GET FUNCTIONS ================================================== //
+
+    public function authorlist($context, $authors) {
+        if($authors){
+             return $this->twig->render(
+                $this->getTemplate("authors:authors"),
+                ["authors" => $authors]
+            );
+        }
+    }
+
+    public function image($context, $image, $options) {
         if($image){
-            $sources = $this->getSizes($image, $sizes);
+            $sources = $this->getSizes($image, $options['sizes'] ?? "");
             $dimensions = $this->calculateImageDimensions($image, $sources);
             
             return $this->twig->render($this->getTemplate('images:image'), [
@@ -447,58 +497,64 @@ class TwigUtils
                 'sizes' => $sources['sizes'],
                 'width' => intval($dimensions[0]),
                 'height' => intval($dimensions[1]),
-                'classes' => $classes,
-                'nolazy' => $nolazy,
+                'classes' => $options['classes'] ?? "",
+                'nolazy' => $options['nolazy'] ?? "",
+                'title' => $options['title'] ?? $image['metadata']['title'] ?? "",
+                'description' => $options['description'] ?? $image['metadata']['description'] ?? "",
+                'alt' => $options['alt'] ?? $image['metadata']['alt'] ?? $options['description'] ?? $image['metadata']['description'] ?? "",
             ]);
         }
     }
 
-    public function printFigure($context, $image, $sizes = [], $classes = "", $nolazy = "")
-    {
+    public function figure($context, $image, $options) {
         if($image){
-            $sources = $this->getSizes($image, $sizes);
+            $sources = $this->getSizes($image, $options['sizes'] ?? "");
             $dimensions = $this->calculateImageDimensions($image, $sources);
-
+            
             return $this->twig->render($this->getTemplate('images:figure'), [
                 'image' => $image,
                 'src' => $sources['src'],
                 'srcset' => $sources['srcset'],
                 'sizes' => $sources['sizes'],
-                'width' => $dimensions[0],
-                'height' => $dimensions[1],
-                'classes' => $classes,
-                'nolazy' => $nolazy,
+                'width' => intval($dimensions[0]),
+                'height' => intval($dimensions[1]),
+                'classes' => $options['classes'] ?? "",
+                'nolazy' => $options['nolazy'] ?? "",
+                'title' => $options['title'] ?? $image['metadata']['title'] ?? "",
+                'description' => $options['description'] ?? $image['metadata']['description'] ?? "",
+                'alt' => $options['alt'] ?? $image['metadata']['alt'] ?? $options['description'] ?? $image['metadata']['description'] ?? "",
             ]);
         }
     }
 
-    public function printLink($context, $link, $classes = "", $params = "") {
+    public function link($context, $link, $options) {
         if($link){
             return $this->twig->render(
                 $this->getTemplate("link:link"),
-                ["link" => $link, "classes" => $classes, "params" => $params]
+                ["link" => $link, "classes" => $options['classes'], "params" => $options['params']]
             );
         }
     }
 
-    public function printLinks($context, $links, $classes = "", $params = "") {
+    public function links($context, $links, $options) {
         if($links){
-            return $this->twig->render($this->getTemplate("links:links"),
-                ["links" => $links, "classes" => $classes, "params" => $params]
+            return $this->twig->render(
+                $this->getTemplate("links:links"),
+                ["links" => $links, "classes" => $options['classes'], "params" => $options['params']]
             );
         }
     }
 
-    public function printAccordions($context, $accordions, $classes = "", $params = "") {
+    public function accordions($context, $accordions, $options) {
         if($accordions){
             return $this->twig->render(
                 $this->getTemplate("accordions:accordions"),
-                ["accordions" => $accordions, "classes" => $classes, "params" => $params]
+                ["accordions" => $accordions, "classes" => $options['classes'], "params" => $options['params']]
             );
         }
     }
 
-    public function printTeaserText($context, $article, $classes = "", $params = ""){
+    public function teaserText($context, $article, $options) {
         if($article){
             $intro_text = array_filter($article, function ($i) {return ($i['type'] == 'introText' or $i['type'] == 'text');});
             if($intro_text){
@@ -511,21 +567,7 @@ class TwigUtils
         }
     }
 
-    public function printCookieSettingsButton()
-    {
-        return $this->twig->render(
-            'yn/module/consentManager/settingsButton.twig'
-        );
-    }
-
-    public function printLoader()
-    {
-        return $this->twig->render(
-            'yn/components/loader.twig'
-        );
-    }
-
-    public function printString ($context, $data){
+    public function string($context, $data, $options) {
         $intro_title = array();
         foreach($data as $entry){
             if (is_array($entry)){
@@ -540,4 +582,17 @@ class TwigUtils
         }
         return implode('', $intro_title);
     }
+
+     public function cookieSettingsButton() {
+        return $this->twig->render(
+            'yn/module/consentManager/settingsButton.twig'
+        );
+    }
+
+    public function loader() {
+        return $this->twig->render(
+            'yn/components/loader.twig'
+        );
+    }
+
 }
