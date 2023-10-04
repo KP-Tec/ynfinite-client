@@ -1,7 +1,7 @@
 <div class="yn-article">
 	{% for component in article %}
 		{% if component.config.published %}
-			{{_yfunc("renderArticleComponent", component, imageConfigAlias)}}
+			{{_yfunc("renderArticleComponent", component, imgConfig)}}
 		{% endif %}
 	{% endfor %}
 </div>

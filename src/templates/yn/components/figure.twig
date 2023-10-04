@@ -3,8 +3,8 @@
 		{{include("yn/components/image.twig")}}
 		{% if (image.metadata.description or image.metadata.author) %}
 			<figcaption>
-				{% if image.metadata.description %}
-					<span class="figure-description" itemprop="abstract">{{image.metadata.description}}</span>
+				{% if description %}
+					<span class="figure-description" itemprop="abstract">{{description}}</span>
 				{% endif %}
 			</figcaption>
 		{% endif %}

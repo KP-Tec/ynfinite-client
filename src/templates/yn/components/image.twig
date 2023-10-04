@@ -11,7 +11,7 @@
 	{% if classes %}
 		class="yn-image {{ classes }}" 
 	{% endif %}
-	{% if nolazy %} 
+	{% if noLazy == true %} 
 		fetchpriority="high"
 		loading="eager"
 	{% else %}
