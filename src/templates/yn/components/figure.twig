@@ -1,7 +1,7 @@
 {% if src %}
 	<figure class="yn-figure">
 		{{include("yn/components/image.twig")}}
-		{% if (description or author) %}
+		{% if description or author %}
 			<figcaption>
 				<span class="figure-description" itemprop="abstract">{{ description|raw }}{% if description %} - {% endif %}&copy;{{ author|raw }}</span>
 			</figcaption>
