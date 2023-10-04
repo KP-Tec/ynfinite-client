@@ -24,8 +24,8 @@
 	{% if sizes %}
 		sizes="{{ sizes }}" 
 	{% endif %}
-	{% if image.metadata.title %}
-		title="{{ image.metadata.title }}" 
+	{% if title %}
+		title="{{ title }}" 
 	{% endif %}
 	{% if width %}
 		width="{{ width }}" 
@@ -33,11 +33,7 @@
 	{% if height %}
 		height="{{ height }}" 
 	{% endif %}
-	{% if image.metadata.alt or image.metadata.filename or image.name %}
-		alt="{{ image.metadata.alt ?: image.metadata.filename ?: image.name }}
-		{% if image.metadata.author %}
-			&copy;{{ image.metadata.author }}
-		{% endif %}
-		"
+	{% if alt %}
+		alt="{{ alt }}{% if author %} - &copy;{{ author }}{% endif %}"
 	{% endif %}
 >
