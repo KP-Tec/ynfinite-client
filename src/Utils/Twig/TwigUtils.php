@@ -380,12 +380,12 @@ class TwigUtils
 
     public function printImage($context, $image, $sizes = [], $classes = "", $nolazy = "") {
         if($nolazy){$noLazy = true;};
-        return $this->image($context, $image, array('imgConfig' => $sizes, 'classes' => $classes, 'noLazy' => $noLazy));
+        return $this->image($context, $image, array('imgConfig' => $sizes, 'classes' => $classes, 'noLazy' => $noLazy = false));
     }
 
     public function printFigure($context, $image, $sizes = [], $classes = "", $nolazy = "") {
         if($nolazy){$noLazy = true;};
-        return $this->figure($context, $image, array('imgConfig' => $sizes, 'classes' => $classes, 'noLazy' => $noLazy));
+        return $this->figure($context, $image, array('imgConfig' => $sizes, 'classes' => $classes, 'noLazy' => $noLazy = false));
     }
 
     public function printLink($context, $link, $classes = "", $params = "") {
