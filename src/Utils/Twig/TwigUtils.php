@@ -476,15 +476,6 @@ class TwigUtils
 
 // ================================================== NEW GET FUNCTIONS ================================================== //
 
-    public function authorlist($context, $authors) {
-        if($authors){
-             return $this->twig->render(
-                $this->getTemplate("authors:authors"),
-                ["authors" => $authors]
-            );
-        }
-    }
-
     public function image($context, $image, $options) {
         if($image){
             $sources = $this->getSizes($image, $options['sizes'] ?? "");
@@ -567,6 +558,15 @@ class TwigUtils
         }
     }
 
+    public function authorlist($context, $authors) {
+        if($authors){
+             return $this->twig->render(
+                $this->getTemplate("authors:authors"),
+                ["authors" => $authors]
+            );
+        }
+    }
+
     public function string($context, $data, $options) {
         $intro_title = array();
         foreach($data as $entry){
@@ -594,5 +594,4 @@ class TwigUtils
             'yn/components/loader.twig'
         );
     }
-
 }
