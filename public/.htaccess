@@ -2,9 +2,9 @@
 	RewriteEngine On
 
 	# Leitet http zu https weiter
-	# RewriteCond %{HTTP_HOST} !=localhost
-	# RewriteCond %{HTTPS} !=on
-	# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+	RewriteCond %{HTTP_HOST} !=localhost
+	RewriteCond %{HTTPS} !=on
+	RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 	# Fügt "www" zur Domain hinzu wenn es keine Subdomain ist
 	# RewriteCond %{HTTP_HOST} !=localhost
