@@ -565,10 +565,10 @@ class TwigUtils
     }
 
     public function asTemplate($context, $template, $options = []) {
-        if($template || $options['data']){
+        if($template){
             $env = new Environment(new ArrayLoader());
             $template = $env->createTemplate($template);
-            if(!array_key_exists('data', $options = [])) {
+            if(!array_key_exists('data', $options)) {
                 return $env->render($template, $context);
             }
             else {
