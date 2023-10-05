@@ -424,7 +424,7 @@ class TwigUtils
         return $this->articleComponent($context, $component, array('imgConfig' => $imageConfigAlias));
     }
 
-    public function renderAsTemplate($context, $template, $data = null) {
+    public function renderAsTemplate($context, $template, $data = []) {
         return $this->asTemplate($context, $template, array('data' => $data));
     }
 
@@ -568,11 +568,11 @@ class TwigUtils
         if($template){
             $env = new Environment(new ArrayLoader());
             $template = $env->createTemplate($template);
-            if(!array_key_exists('data', $options)) {
-                return $env->render($template, $context);
+            if(array_key_exists('data', $options) && !empty($options['data'])) {
+                return $env->render($template, $options['data']);
             }
             else {
-                return $env->render($template, $options['data']);
+                return $env->render($template, $context);
             }
         };
     }
