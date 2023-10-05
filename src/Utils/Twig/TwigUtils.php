@@ -565,14 +565,16 @@ class TwigUtils
     }
 
     public function asTemplate($context, $template, $options = []) {
-        $env = new Environment(new ArrayLoader());
-        $template = $env->createTemplate($template);
-        if(!array_key_exists('data', $options = [])) {
-            return $env->render($template, $context);
-        }
-        else {
-            return $env->render($template, $options['data']);
-        }
+        if($template || $options['data']){
+            $env = new Environment(new ArrayLoader());
+            $template = $env->createTemplate($template);
+            if(!array_key_exists('data', $options = [])) {
+                return $env->render($template, $context);
+            }
+            else {
+                return $env->render($template, $options['data']);
+            }
+        };
     }
 
     public function form($context, $form, $options = []) {
