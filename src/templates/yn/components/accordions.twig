@@ -10,7 +10,7 @@
 					<div class="yn-accordion__header" role="button"><span>{{ header|raw }}</span></div>
 					 <div class="yn-accordion__content">
 					 	{% if article %}
-					 		{{ _yfunc('renderArticle', article) }}
+					 		{{ _yfunc('article', article) }}
 						{% elseif text %}
 							{{ text|raw }}
 						{% endif %}
