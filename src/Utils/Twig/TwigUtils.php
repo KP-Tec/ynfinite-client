@@ -483,7 +483,6 @@ class TwigUtils
     }
 
     public function links($context, $links, $options = []) {
-        var_dump($options['classes']);
         if($links){
             return $this->twig->render(
                 $this->getTemplate("links:links"),
