@@ -477,7 +477,7 @@ class TwigUtils
         if($link){
             return $this->twig->render(
                 $this->getTemplate("link:link"),
-                ["link" => $link, "classes" => $options['classes'] = "", "params" => $options['params'] = ""]
+                ["link" => $link, "classes" => $options['classes'] ?? "", "params" => $options['params'] ?? ""]
             );
         }
     }
@@ -486,7 +486,7 @@ class TwigUtils
         if($links){
             return $this->twig->render(
                 $this->getTemplate("links:links"),
-                ["links" => $links, "classes" => $options['classes'] = "", "params" => $options['params'] = ""]
+                ["links" => $links, "classes" => $options['classes'] ?? "", "params" => $options['params'] ?? ""]
             );
         }
     }
@@ -495,7 +495,7 @@ class TwigUtils
         if($accordions){
             return $this->twig->render(
                 $this->getTemplate("accordions:accordions"),
-                ["accordions" => $accordions, "classes" => $options['classes'] = "", "params" => $options['params'] = ""]
+                ["accordions" => $accordions, "classes" => $options['classes'] ?? "", "params" => $options['params'] ?? ""]
             );
         }
     }
@@ -553,14 +553,14 @@ class TwigUtils
     public function article($context, $article, $options = []) {
         return $this->twig->render($this->getTemplate('article:article'), [
             'article' => $article,
-            'imgConfig' => $options['imgConfig'] = "",
+            'imgConfig' => $options['imgConfig'] ?? "",
         ]);
     }
 
     public function articleComponent($context, $component, $options = []) {
         return $this->twig->render(
             $this->getTemplate('article:' . $component['type']),
-            ['component' => $component, 'imgConfig' => $options['imgConfig'] = ""]
+            ['component' => $component, 'imgConfig' => $options['imgConfig'] ?? ""]
         );
     }
 
