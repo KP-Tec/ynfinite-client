@@ -28,6 +28,6 @@
             download="{{ link.file[0].name ?: link.title }}"
         {% endif %}
     >
-        {{ link.text }}
+        {{ link.text ?: link.title }}
     </a>
 {% endif %}
