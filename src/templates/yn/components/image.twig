@@ -7,6 +7,12 @@
 	{% set classes = 'yn-format--portrait ' ~ classes %}
 {% endif %}
 
+{% if filename and filename != image.metadata.filename %}
+	{% set filetyp = image.metadata.filename|split('.')|last %}
+	{% set src = src|replace({(image.metadata.filename): (filename ~ '.' ~ filetyp)|replace({' ': '_'})|lower }) %}
+	{% set srcset = srcset|replace({(image.metadata.filename): (filename ~ '.' ~ filetyp)|replace({' ': '_'})|lower }) %}
+{% endif %}
+
 <img 
 	{% if classes %}
 		class="yn-image {{ classes }}" 
