@@ -447,6 +447,7 @@ class TwigUtils
                 'title' => $options['title'] ?? $image['metadata']['title'] ?? "",
                 'alt' => $options['alt'] ?? $image['metadata']['alt'] ?? $options['description'] ?? $image['metadata']['description'] ?? "",
                 'author' => $image['metadata']['author'] ?? "",
+                'filename' => $options['filename'] ?? $image['metadata']['filename'] ?? "",
             ]);
         }
     }
@@ -469,6 +470,7 @@ class TwigUtils
                 'description' => $options['description'] ?? $image['metadata']['description'] ?? "",
                 'alt' => $options['alt'] ?? $image['metadata']['alt'] ?? $options['description'] ?? $image['metadata']['description'] ?? "",
                 'author' => $image['metadata']['author'] ?? "",
+                'filename' => $options['filename'] ?? $image['metadata']['filename'] ?? "",
             ]);
         }
     }
