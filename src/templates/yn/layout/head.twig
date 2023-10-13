@@ -1,7 +1,7 @@
 {% if not title %}
 	{% set title	= _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title %}
 	
-	{% if _ynfinite.pagination.currentPage %}
+	{% if _ynfinite.pagination.currentPage > 1 %}
 		{% set title = title ~ ' - ' ~ "Listings_PagePrefix"|trans ~ ' ' ~ _ynfinite.pagination.currentPage %}
 	{% endif %}
 {% endif %}
