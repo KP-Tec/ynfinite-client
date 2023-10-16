@@ -1,6 +1,6 @@
 {% if not title %}
 	{% set title	= _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title %}
-	
+
 	{% if _ynfinite.pagination.currentPage > 1 %}
 		{% set title = title ~ ' - ' ~ "Listings_PagePrefix"|trans ~ ' ' ~ _ynfinite.pagination.currentPage %}
 	{% endif %}
@@ -22,6 +22,7 @@
 <meta name="keywords" content="{{ seoKeywords }}">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="{{ _ynfinite.page.meta.robots|default("index,follow") }}">
+<base href="{{ _ynfinite.currentDomain }}">
 
 <!-- General Open Graph Tags -->
 {% set ogSite_name = _ynfinite.site.meta.title ?: _ynfinite.page.meta.title %}
@@ -51,7 +52,7 @@
 		{# Image: Url #}
 		<meta property="og:image:url" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1">
 		<meta property="og:image:secure_url" content="{{ ogImageURL }}?w=1200&h=630&disableWebp=1">
-		
+
 		{# Image: Size #}
 		<meta property="og:image:height" content="630">
 		<meta property="og:image:width" content="1200">
