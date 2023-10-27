@@ -393,7 +393,7 @@ class TwigUtils
     }
 
     public function printLinks($context, $links, $classes = "", $params = "") {
-        return $this->link($context, $links, array('classes' => $classes, 'params' => $params));
+        return $this->links($context, $links, array('classes' => $classes, 'params' => $params));
     }
 
     public function printAccordions($context, $accordions, $classes = "", $params = "") {
