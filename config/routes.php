@@ -4,7 +4,7 @@ use Slim\App;
 
 return function (App $app) {
     $app->get('/yn-updater/update', \App\Action\UpdateToVersionAction::class);
-    $app->get('/yn-cache/invalidate', \App\Action\InvalidateCacheAction::class);
+    $app->post('/yn-cache/invalidate', \App\Action\InvalidateCacheAction::class);
     $app->get('/yn-cache/invalidateAll', \App\Action\InvalidateAllCacheAction::class);
 
     $app->get("/yn-gdpr/request", \App\Action\GdprRequestAction::class);
