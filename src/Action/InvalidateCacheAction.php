@@ -31,8 +31,8 @@ final class InvalidateCacheAction
         $result = false;
 
         $cacheKeys = $parsedBody->cacheKey;
-        if($query["cacheKey"]) {
-            $cacheKeys = $query["cacheKey"];
+        if($query && $query["cacheKey"]) {
+            $cacheKeys = $query["cacheKey"]; 
         }
 
         if($cacheKeys) {
