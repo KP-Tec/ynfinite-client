@@ -3,7 +3,7 @@
 		{% if component.config.showCode %}
 			<pre class="code">{{ component.value }}</pre>
 		{% else %}
-			{{ component.value|raw }}
+			{{ _yfunc('asTemplate', component.value|raw)}}
 		{% endif %}
 	</div>
 {% endif %}
