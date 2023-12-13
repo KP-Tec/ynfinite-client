@@ -24,4 +24,20 @@ final class RequestPageService extends RequestService
 
         return $this->request(trim($path), $this->settings["services"]["frontend"], $postBody, $jsonResponse);
     }
+
+    public function isValidUrl(){
+        $allowedFileTypes = ['html', 'htm'];
+        $currentURL = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        // Parse URL to get query parameters
+        $parsedUrl = parse_url($currentURL);
+        $path_parts = pathinfo($parsedUrl['path']);
+        $queryString = isset($parsedUrl['query']) ? $parsedUrl['query'] : '';
+
+        // Parse query string manually and check for duplicate parameters
+        $parameters = array_count_values(array_map(function ($pair) {
+            return explode('=', $pair)[0];
+        }, explode('&', $queryString)));
+
+        return !(max($parameters) > 1) && (!array_key_exists('extension', $path_parts) || (array_key_exists('extension', $path_parts) && in_array($path_parts['extension'], $allowedFileTypes)));
+    }
 }
