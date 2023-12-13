@@ -26,6 +26,11 @@ final class RenderPageAction
         ResponseInterface $response
     ): ResponseInterface {
         try {
+            if(!$this->requestPageService->isValidUrl()){
+                http_response_code(404);
+                die();
+            }
+
             $formRequest = $request->getParsedBody();
             if($formRequest && $formRequest["method"] == "post" && !isset($formRequest["hasProof"])){
                 throw new Exception("The form has no proof that is was sent by a human. Sorry for you inconvenience.". $formRequest["hasProof"]);
