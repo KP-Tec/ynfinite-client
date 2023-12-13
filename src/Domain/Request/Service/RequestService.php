@@ -77,9 +77,18 @@ class RequestService {
             $url .= "?".$request->getUri()->getQuery();
         }
 
+        $ip = $request->getHeader('X-Forwarded-For');
+        if (empty($ip)) {
+            $ip = $request->getHeader('Client-Ip'); 
+        }
+        if (empty($ip)) {
+            $ip = $request->getServerParams()['REMOTE_ADDR'];
+        }
+
         $postBody = array_merge(array(
             "method" => $request->getMethod(),
             "url" => $url,
+            "ip" => $ip,
             "session" => json_encode($_SESSION),
             "referer" => $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : $url
         ), $files);

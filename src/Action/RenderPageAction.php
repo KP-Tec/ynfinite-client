@@ -25,6 +25,11 @@ final class RenderPageAction
         ResponseInterface $response
     ): ResponseInterface {
         try {
+            if(!$this->requestPageService->isValidUrl()){
+                http_response_code(404);
+                die();
+            }
+
             $data = $this->requestPageService->getPage($request);
 
             if (is_array($data)) {                
