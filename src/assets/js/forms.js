@@ -224,14 +224,14 @@ const YnfiniteForms = {
 			const element = data.fields[keys[i]]
 			const formElement = form.querySelector(`[name="fields[${element.alias}]"]`)
 
-			if (!formElement) break
+			if (formElement && element && element.options) {
+				let markup = `${element.options.map((option) => `<option value="${option.value}" ${option.value === element.value ? 'selected' : ''}>${option.label}</option>`).join('')}`
+				if (!formElement.options[0].value) {
+					markup = `<option value>${formElement.options[0].text}</option>${markup}`
+				}
 
-			let markup = `${element.options.map((option) => `<option value="${option.value}" ${option.value === element.value ? 'selected' : ''}>${option.label}</option>`).join('')}`
-			if (!formElement.options[0].value) {
-				markup = `<option value>${formElement.options[0].text}</option>${markup}`
+				formElement.innerHTML = markup
 			}
-
-			formElement.innerHTML = markup
 		}
 	},
 

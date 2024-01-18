@@ -581,22 +581,30 @@ class TwigUtils
 
     public function form($context, $form, $options = []) {
         $this->currentForm = $form;
+        
+        $action = isset($form["redirectPage"]["route"]) ? isset($context["languages"]["prefix"]) ? $context["languages"]["prefix"] . $form["redirectPage"]["route"] : $form["redirectPage"]["route"] : $context["currentSlug"];
 
         $data = array();
         $isAsync = "";
-        foreach($form["events"] as $event) {
+
+        foreach($form["events"] as $key => $event) {
             if($event["async"]) {
-                $isAsync = "async";
+                if($context["currentSlug"] !== $action){
+                    $form["events"][$key]["type"] = 'onSubmit'; 
+                } else{
+                    $isAsync = "async";
+                }
             }
             $data[] = "data-".strtolower($event["type"])."=".$isAsync;
-        }
+        } 
 
         return $this->twig->render($this->getTemplate('form:form'), [
             'form' => $form,
             'section' => $context["section"] ?? array(),
             'templates' => $this->templates,
-            "isAsync" => $isAsync  ? true : false,
-            "data" => implode(" ",$data)
+            "isAsync" => $isAsync ? true : false,
+            "data" => implode(" ",$data),
+            "action" => $action
         ]);
     }
 }
