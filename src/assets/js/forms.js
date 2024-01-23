@@ -8,23 +8,26 @@ const YnfiniteForms = {
 		}
 	},
 
-	resetForm(element) {
+	resetForm(element) { 
 		element.reset()
-	},
+	}, 
 
 	async submitForm(element, eventType) {
-		const hasProof = element.getAttribute('data-has-proof')
-		const proofenHash = element.getAttribute('data-proofen-hash')
+		const method = element.getAttribute('data-ynformmethod')
+		const hasProof = method == 'get' ? true : element.getAttribute('data-has-proof')
+		const proofenHash = method == 'get' ? true : element.getAttribute('data-proofen-hash')
 
 		if (!hasProof || !proofenHash) {
 			console.log('Sorry, there is no proof here that you are a human. The form can not be sent.')
 			return
 		}
 
-		const formSubmitButton = element.querySelector('button[type=submit]')
-		formSubmitButton.dataset.label = formSubmitButton.textContent
-		formSubmitButton.classList.add('show-form-spinner')
-		formSubmitButton.textContent = 'Sende...'
+		if(method == 'post'){
+			const formSubmitButton = element.querySelector('button[type=submit]')
+			formSubmitButton.dataset.label = formSubmitButton.textContent
+			formSubmitButton.classList.add('show-form-spinner')
+			formSubmitButton.textContent = 'Sende...'
+		}
 
 		const ynBeforeAsyncChangeData = new Event('onPreAsyncChangeData')
 		element.dispatchEvent(ynBeforeAsyncChangeData)
@@ -68,13 +71,17 @@ const YnfiniteForms = {
 			})
 			element.dispatchEvent(ynAsyncChange)
 
-			formSubmitButton.classList.remove('show-form-spinner')
-			formSubmitButton.textContent = formSubmitButton.dataset.label
+			if(method == 'post'){ 
+				formSubmitButton.classList.remove('show-form-spinner')
+				formSubmitButton.textContent = formSubmitButton.dataset.label
+			}
 		} else {
-			formSubmitButton.classList.remove('show-form-spinner')
-			formSubmitButton.style.backgroundColor = 'var(--error, red)'
-			formSubmitButton.style.color = 'var(--light, white)'
-			formSubmitButton.textContent = 'Error'
+			if(method == 'post'){
+				formSubmitButton.classList.remove('show-form-spinner')
+				formSubmitButton.style.backgroundColor = 'var(--error, red)'
+				formSubmitButton.style.color = 'var(--light, white)'
+				formSubmitButton.textContent = 'Error'
+			}
 			console.error(response)
 		}
 	},

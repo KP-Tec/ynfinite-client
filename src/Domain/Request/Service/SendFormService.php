@@ -26,7 +26,7 @@ final class SendFormService extends RequestService
         $jsonResponse = true;
         $path = $request->getUri()->getPath();
     
-        if(!$this->securityCheck($request)) {
+        if($postBody['method'] === "post" && !$this->securityCheck($request)) {
             return $this->securityError;
         }
         

@@ -17,7 +17,7 @@ class Block {
 
     startProofOfWork(difficulty = 4) {
         if (window.Worker) {
-            const blockWorker = new Worker('/assets/vendor/ypsolution/js/worker.min.js');
+            const blockWorker = new Worker('/assets/vendor/ynfinite/js/worker.min.js');
 
             blockWorker.onmessage = (e) => {
                 this.hash = e.data
@@ -68,7 +68,7 @@ const YnfiniteBotProtection = {
         document.addEventListener("DOMContentLoaded", () => {
             const blockchain = new BlockChain();
            
-            const forms = document.querySelectorAll("form[data-ynform=true][method=post]");
+            const forms = document.querySelectorAll('form[data-ynform=true][method=post]:not(.yn-no-bot-protection)')
             if(forms.length === 0) {
                 return;
             }
