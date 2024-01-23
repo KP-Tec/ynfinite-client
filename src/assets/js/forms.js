@@ -22,8 +22,9 @@ const YnfiniteForms = {
 			return
 		}
 
+		let formSubmitButton
 		if(method == 'post'){
-			const formSubmitButton = element.querySelector('button[type=submit]')
+			formSubmitButton = element.querySelector('button[type=submit]')
 			formSubmitButton.dataset.label = formSubmitButton.textContent
 			formSubmitButton.classList.add('show-form-spinner')
 			formSubmitButton.textContent = 'Sende...'
