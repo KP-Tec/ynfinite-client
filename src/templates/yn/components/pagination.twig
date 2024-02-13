@@ -3,29 +3,29 @@
 {% if pagination.totalPages > 1 %}
 	<ul class='yn-pagination'>
 		<li class='yn-pagination__control yn-pagination__first {% if pagination.currentPage == 1 %}yn-disabled{% endif %}'>
-			<a href='{% if pagination.currentPage == 1 %}#{% else %}{{uriData.listingURL}}__yPage=1{% endif %}'>&lt;&lt;</a>
+			<a href='{% if pagination.currentPage == 1 %}#{% else %}{{uriData.listingURL}}__yPage=1{% endif %}'><span>&#xab;</span></a>
 		</li>
 
 		<li class='yn-pagination__control yn-pagination__prev {% if pagination.currentPage == 1 %}yn-disabled{% endif %}'>
-			<a href='{% if pagination.currentPage == 1 %}#{% else %}{{uriData.listingURL}}__yPage={{pagination.currentPage-1}}{% endif %}'>&lt;</a>
+			<a href='{% if pagination.currentPage == 1 %}#{% else %}{{uriData.listingURL}}__yPage={{pagination.currentPage-1}}{% endif %}'><span>&#8249;</span></a>
 		</li>
 
 		{% for page in max(1, pagination.currentPage-2)..min(pagination.currentPage+2, pagination.totalPages) %}
 			<li class='yn-pagination__page{% if page == pagination.currentPage %} yn-pagination__page--active{% endif %}'>
 				{% if page == pagination.currentPage %}
-					<span>{{page}}</span>
+					<span><span>{{page}}</span></span>
 				{% else %}
-					<a href='{{uriData.listingURL}}__yPage={{page}}'>{{page}}</a>
+					<a href='{{uriData.listingURL}}__yPage={{page}}'><span>{{page}}</span></a>
 				{% endif %}
 			</li>
 		{% endfor %}
 
 		<li class='yn-pagination__control yn-pagination__next {% if pagination.currentPage == pagination.totalPages %}yn-disabled{% endif %}'>
-			<a href='{% if pagination.currentPage == pagination.totalPages %}#{% else %}{{uriData.listingURL}}__yPage={{pagination.currentPage+1}}{% endif %}'>&gt;</a>
+			<a href='{% if pagination.currentPage == pagination.totalPages %}#{% else %}{{uriData.listingURL}}__yPage={{pagination.currentPage+1}}{% endif %}'><span>&#x203A;</span></a>
 		</li>
 
 		<li class='yn-pagination__control yn-pagination__last {% if pagination.currentPage == pagination.totalPages %}yn-disabled{% endif %}'>
-			<a href='{% if pagination.currentPage == pagination.totalPages %}#{% else %}{{uriData.listingURL}}__yPage={{pagination.totalPages}}{% endif %}'>&gt;&gt;</a>
+			<a href='{% if pagination.currentPage == pagination.totalPages %}#{% else %}{{uriData.listingURL}}__yPage={{pagination.totalPages}}{% endif %}'><span>&#xbb;</span></a>
 		</li>
 	</ul>
 {% endif %}
