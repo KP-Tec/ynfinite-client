@@ -7,6 +7,8 @@
 	"license": "MIT",
 	"devDependencies": {},
 	"dependencies": {
+		"@justinribeiro/lite-youtube": "^1.5.0",
+		"@slightlyoff/lite-vimeo": "^0.1.2",
 		"accordion-js": "^3.3.4",
 		"crypto-js": "^4.1.1",
 		"dayjs": "^1.11.7",

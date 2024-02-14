@@ -1,15 +1,11 @@
 {% if component.value %}
 	<div class="yn-article__video">
-		{% if component.config.provider == "youtube" %}
-			<iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/{{ component.value }}" title="video" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-		{% endif %}
-
-		{% if component.config.provider == "vimeo" %}
-			<iframe loading="lazy" src="https://player.vimeo.com/video/{{ component.value }}{% if '?' in component.value %}&{% else %}?{% endif %}dnt=1" width="640" height="480" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-		{% endif %}
-
 		{% if component.config.provider == "other" %}
 			{{ component.value|raw }}
+		{% elseif component.config.provider == "youtube" %}
+			{{ _yfunc('video', component.value, { provider: 'youtube' }) }}
+		{% elseif component.config.provider == "vimeo" %}
+			{{ _yfunc('video', component.value, { provider: 'vimeo' }) }}
 		{% endif %}
 	</div>
-{% endif %}
+{% endif %} 
