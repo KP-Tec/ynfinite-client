@@ -1,1 +1,1 @@
-import './node_modules/@slightlyoff/lite-vimeo'
+import '../node_modules/@slightlyoff/lite-vimeo'

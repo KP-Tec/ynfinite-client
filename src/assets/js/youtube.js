@@ -1,1 +1,1 @@
-import './node_modules/@justinribeiro/lite-youtube'
+import '../node_modules/@justinribeiro/lite-youtube'
