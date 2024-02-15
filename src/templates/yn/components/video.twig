@@ -1,0 +1,60 @@
+{% if '?' in id %}
+    {% set id = id|split('?')[0] %}
+{% endif %}
+
+{% if id %}
+	<div class="yn-video">
+		{% if provider == "youtube" %}
+            {% if not attributes %}
+                {% set attributes = 'frameborder="0" allowfullscreen allow="fullscreen; picture-in-picture"' %}
+            {% endif %}
+            
+            {% if noLazy == true %}
+			    <iframe src="https://www.youtube-nocookie.com/embed/{{ id }}{{ parameter }}" title="{{ title }}" {% if width %}width="{{ width }}"{% endif %} {% if height %}height="{{ height }}"{% endif %} {{ attributes }}></iframe>
+            {% else %}
+                <lite-youtube videoid="{{ id }}" style="background-image: url('https://i.ytimg.com/vi/{{ id }}/maxresdefault.jpg?w=1280&h=720'); width: 100%; height: auto; max-width: 100%; aspect-ratio: 16/9; display: block; padding: 0;" params="{{ params }}" title="{{ title }}" width="{{ width }}" height="{{ height }}" {{ attributes }}></lite-youtube>
+                <script>
+                    window.addEventListener('load', () =>{
+                        if (!window.addedScripts.includes('video--youtube')){
+                            let script = document.createElement('script')
+                            let style = document.createElement('link')
+
+                            script.setAttribute('src', "/assets/vendor/ynfinite/js/youtube/youtube-lite.js") 
+                            style.setAttribute('src', "/assets/vendor/ynfinite/css/youtube/youtube-lite.css") 
+
+                            document.body.appendChild(script) 
+                            document.body.appendChild(style)
+
+                            window.addedScripts.push('video--youtube')
+                        } 
+                    }) 
+                </script>
+            {% endif %}
+		{% elseif provider == "vimeo" %}
+            {% if not parameter %}
+                {% set parameter = 'dnt=1' %}
+            {% endif %} 
+            {% if parameter and not '?' in parameter %}
+                {% set parameter = '?' ~ parameter %}
+            {% endif %}
+            {% if not attributes %}
+                {% set attributes = 'frameborder="0" allowfullscreen allow="fullscreen; picture-in-picture"' %}
+            {% endif %}
+            {% if noLazy == true %}
+			    <iframe src="https://player.vimeo.com/video/{{ id }}{{ parameter }}" title="{{ title }}" width="{{ width }}" height="{{ height }}" {{ attributes }}></iframe>
+            {% else %}
+                <lite-vimeo videoid="{{ id }}" style="background-image: url('https://i.vimeocdn.com/video/{{ id }}.webp?mw=1280&mh=720&q=70'); width: 100%; height: auto; max-width: 100%; aspect-ratio: 16/9; display: block; padding: 0;" params="{{ params }}" title="{{ title }}" width="{{ width }}" height="{{ height }}" {{ attributes }}></lite-vimeo>
+                 <script>
+                    window.addEventListener('load', () =>{
+                        if (!window.addedScripts.includes('video--vimeo')){
+                            let script = document.createElement('script')
+                            script.setAttribute('src', "/assets/vendor/ynfinite/js/vimeo/vimeo-lite.js") 
+                            document.body.appendChild(script)
+                            window.addedScripts.push('video--vimeo')
+                        } 
+                    }) 
+                </script>
+            {% endif %}
+		{% endif %}
+	</div>
+{% endif %} 

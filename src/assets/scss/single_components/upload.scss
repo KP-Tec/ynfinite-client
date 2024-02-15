@@ -1,0 +1,43 @@
+// UPLOAD
+input[type='file'] {
+	display: none;
+}
+
+.widget--file {
+	li {
+		border: unset !important;
+	}
+
+	i {
+		font-size: 100% !important;
+	}
+
+	.widget__label {
+		cursor: pointer;
+		border: var(--input-border-width) solid var(--input-border-color) !important;
+		padding: 0.5rem 0.65rem;
+		font-size: var(--font-site);
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		border-radius: var(--border-radius);
+
+		&:has(ul, ol) {
+			flex-direction: column;
+			justify-content: center;
+			align-items: flex-start;
+		}
+
+		ul {
+			list-style: none;
+			padding: 0.3rem 0 0 0 !important;
+			margin-top: 0.3rem !important;
+			border-top: var(--border-width) solid currentColor;
+		}
+
+		li {
+			list-style: none;
+			font-size: 0.75rem;
+		}
+	}
+}

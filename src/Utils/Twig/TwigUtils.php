@@ -39,6 +39,7 @@ class TwigUtils
             'link:link' => 'yn/components/link.twig',
             'links:links' => 'yn/components/links.twig',
             'form:form' => 'yn/components/form.twig',
+            'video:video' => 'yn/components/video.twig',
             'form:fields.select' => 'yn/components/form/select.twig',
             'form:fields.radio' => 'yn/components/form/radio.twig',
             'form:fields.checkbox' => 'yn/components/form/checkbox.twig',
@@ -585,16 +586,15 @@ class TwigUtils
         $action = isset($form["redirectPage"]["route"]) ? isset($context["languages"]["prefix"]) ? $context["languages"]["prefix"] . $form["redirectPage"]["route"] : $form["redirectPage"]["route"] : $context["currentSlug"];
 
         $data = array();
-        $isAsync = "";
+        $isAsync = "sync";
 
         foreach($form["events"] as $key => $event) {
-            if($event["async"]) {
-                if($context["currentSlug"] !== $action){
-                    $form["events"][$key]["type"] = 'onSubmit'; 
-                } else{
-                    $isAsync = "async";
-                }
+        	$isAsync = $event["async"] ? "async" : "sync";
+
+            if($event["async"] && $context["currentSlug"] !== $action) {
+                $isAsync = "sync";
             }
+
             $data[] = "data-".strtolower($event["type"])."=".$isAsync;
         } 
 
@@ -602,9 +602,21 @@ class TwigUtils
             'form' => $form,
             'section' => $context["section"] ?? array(),
             'templates' => $this->templates,
-            "isAsync" => $isAsync ? true : false,
+            "isAsync" => $isAsync === "async" ? true : false,
             "data" => implode(" ",$data),
             "action" => $action
+        ]);
+    }
+
+    public function video($context, $id, $options = []) {
+        return $this->twig->render($this->getTemplate('video:video'), [
+            'id' => $id,
+            'provider' => $options['provider'] ?? "", 
+            'noLazy' => $options['noLazy'] ?? false,
+            'title' => $options['title'] ?? 'video',
+            'height' => $options['height'] ?? '',
+            'width' => $options['width'] ?? '',
+            'parameter' => $options['parameter'] ?? "",
         ]);
     }
 }
