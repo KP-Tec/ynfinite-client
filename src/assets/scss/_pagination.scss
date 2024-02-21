@@ -70,7 +70,6 @@
 		> a,
 		> span {
 			cursor: pointer;
-			padding: 0 4px;
 			transition: var(--atime, 0.4s) ease;
 			position: relative;
 			height: 100%;
@@ -98,9 +97,11 @@
 	.yn-pagination__control {
 		> a,
 		> span {
-			> span {
-				font-size: 1.5rem;
-				transform: translateY(-2px);
+			font-size: 1.5rem;
+			transform: translateY(-3px);
+
+			&::before {
+				transform: translateY(3px);
 			}
 		}
 	}

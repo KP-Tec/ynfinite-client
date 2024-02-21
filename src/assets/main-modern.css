@@ -663,7 +663,6 @@ form.yn-form button.yn-loader::after {
 .yn-pagination .yn-pagination__control > a,
 .yn-pagination .yn-pagination__control > span {
   cursor: pointer;
-  padding: 0 4px;
   -webkit-transition: var(--atime, 0.4s) ease;
   transition: var(--atime, 0.4s) ease;
   position: relative;
@@ -696,11 +695,16 @@ form.yn-form button.yn-loader::after {
 .yn-pagination .yn-pagination__control.yn-pagination__page--active span {
   color: var(--accent-pri-font, #fff);
 }
-.yn-pagination .yn-pagination__control > a > span,
-.yn-pagination .yn-pagination__control > span > span {
+.yn-pagination .yn-pagination__control > a,
+.yn-pagination .yn-pagination__control > span {
   font-size: 1.5rem;
-  -webkit-transform: translateY(-2px);
-          transform: translateY(-2px);
+  -webkit-transform: translateY(-3px);
+          transform: translateY(-3px);
+}
+.yn-pagination .yn-pagination__control > a::before,
+.yn-pagination .yn-pagination__control > span::before {
+  -webkit-transform: translateY(3px);
+          transform: translateY(3px);
 }
 
 .yn-disabled {
