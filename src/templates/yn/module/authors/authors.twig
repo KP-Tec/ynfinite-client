@@ -1,7 +1,15 @@
 {% if authors %}
-    {% for author in authors %}
-        <li><a {% if author[0].authorUrl %}href="{{author[0].authorUrl}}"{% endif %}>{{ author[0].author }} 
-        ({% for image in author %}<ul><li>{{ image.filename|raw }}</ul></li>{% endfor %})
-        </a></li>
-    {% endfor %}
+    <ul class="yn-authors">
+        {% for author in authors %}
+            <li>
+                {% if author[0].authorUrl %}
+                    <a href="{{ author[0].authorUrl }}">
+                {% endif %}
+                {{ author[0].author }} - [{% for image in author %}{{ image.filename|raw }}{% if not loop.last %}, {% endif %}{% endfor %}]
+                {% if author[0].authorUrl %}
+                    </a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
 {% endif %}
