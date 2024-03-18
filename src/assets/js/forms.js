@@ -22,8 +22,8 @@ const YnfiniteForms = {
 			return
 		}
 
-		if (method == 'post') {
-			const formSubmitButton = element.querySelector('button[type=submit]')
+		const formSubmitButton = element.querySelector('button[type=submit]')
+		if (method == 'post' && formSubmitButton) {
 			const pos = 'var(--loader-size,16px) + ' + getComputedStyle(formSubmitButton).paddingLeft
 			formSubmitButton.classList.add('yn-loader')
 			formSubmitButton.style.paddingLeft = formSubmitButton.style.paddingLeft = 'calc(' + pos + ')'
@@ -72,12 +72,12 @@ const YnfiniteForms = {
 			})
 			element.dispatchEvent(ynAsyncChange)
 
-			if (method == 'post') {
+			if (method == 'post' && formSubmitButton) {
 				formSubmitButton.classList.remove('yn-loader')
 				formSubmitButton.style.removeProperty('padding-left')
 			}
 		} else {
-			if (method == 'post') {
+			if (method == 'post' && formSubmitButton) {
 				formSubmitButton.classList.remove('yn-loader')
 				formSubmitButton.style.removeProperty('padding-left')
 				formSubmitButton.style.backgroundColor = 'var(--error, red)'
