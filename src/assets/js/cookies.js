@@ -33,6 +33,29 @@ const YnfiniteConsents = {
 					this.ynSetConsentSettings()
 				})
 
+				const cookieStateInputs = document.querySelectorAll('.yn-cookies__switch__input')
+
+				cookieStateInputs.forEach((cookieStateInput) => {
+					cookieStateInput.addEventListener('change', () => {
+						const finalConsent = { id: cookieStateInput.getAttribute('id'), alias: cookieStateInput.getAttribute('alias'), title: cookieStateInput.getAttribute('title') }
+						if (cookieStateInput.checked) {
+							const ynOnConsentAccept = new CustomEvent('onConsentAccept', {
+								detail: {
+									consent: finalConsent,
+								},
+							})
+							manager.dispatchEvent(ynOnConsentAccept)
+						} else {
+							const ynOnConsentDecline = new CustomEvent('onConsentDecline', {
+								detail: {
+									consent: finalConsent,
+								},
+							})
+							manager.dispatchEvent(ynOnConsentDecline)
+						}
+					})
+				})
+
 				document.querySelectorAll('.toggleConsent').forEach(function (item) {
 					item.addEventListener('click', function () {
 						item.querySelector('[id="' + item.getAttribute('for') + '"]').checked = !item.querySelector('[id="' + item.getAttribute('for') + '"]').checked
@@ -136,19 +159,43 @@ const YnfiniteConsents = {
 	ynSetConsentSettings() {
 		const manager = document.getElementById('yn-cookies')
 		const consents = JSON.parse(manager.getAttribute('data-consents') || '[]')
-		const e = document.querySelector('#yn-cookies-form'),
-			t = {}
+		const consentAlias = JSON.parse(manager.getAttribute('data-consent-alias') || '[]')
+		const consentTitles = JSON.parse(manager.getAttribute('data-consent-titles') || '[]')
+		const finalConsents = []
+
+		const e = document.querySelector('#yn-cookies-form')
+		const n = new FormData(e)
+		const t = {}
 		if (e) {
-			const n = new FormData(e)
 			t.activeScripts = n.getAll('activeScripts[]')
 			t.consents = consents
+			t.done = true
 		}
-		;(t.done = !0), this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
+		for (let i = 0; i < t.activeScripts.length; i++) {
+			const consentIndex = consents.indexOf(t.activeScripts[i])
+			const consent = { id: consents[consentIndex], alias: consentAlias[consentIndex], id: consentTitles[consentIndex] }
+			finalConsents.push(consent)
+		}
+		const ynOnConsentSubmit = new CustomEvent('onConsentSubmit', {
+			detail: { consents: finalConsents },
+		})
+		manager.dispatchEvent(ynOnConsentSubmit)
+		this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
 	},
 
 	ynAcceptAllConsentSettings() {
 		const manager = document.getElementById('yn-cookies')
 		const consents = JSON.parse(manager.getAttribute('data-consents') || '[]')
+		const consentAlias = JSON.parse(manager.getAttribute('data-consent-alias') || '[]')
+		const consentTitles = JSON.parse(manager.getAttribute('data-consent-titles') || '[]')
+		const finalConsents = []
+		for (let i = 0; i < consents.length; i++) {
+			finalConsents.push({ id: consents[i], alias: consentAlias[i], title: consentTitles[i] })
+		}
+		const ynOnConsentSubmit = new CustomEvent('onConsentSubmit', {
+			detail: { consents: finalConsents },
+		})
+		manager.dispatchEvent(ynOnConsentSubmit)
 		const t = { done: true, activeScripts: consents, consents: consents }
 		this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
 	},
@@ -156,6 +203,11 @@ const YnfiniteConsents = {
 	ynDenyAllConsentSettings() {
 		const manager = document.getElementById('yn-cookies')
 		const consents = JSON.parse(manager.getAttribute('data-consents') || '[]')
+		const finalConsents = []
+		const ynOnConsentSubmit = new CustomEvent('onConsentSubmit', {
+			detail: { consents: finalConsents },
+		})
+		manager.dispatchEvent(ynOnConsentSubmit)
 		const t = { done: true, activeScripts: [], consents: consents }
 		this.ynSetConsent('ynfinite-cookies', JSON.stringify(t), 365), window.location.reload()
 	},
