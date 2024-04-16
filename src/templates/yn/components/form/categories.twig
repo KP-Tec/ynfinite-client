@@ -3,79 +3,19 @@
 {% macro menuItems(field, items, type = 'select', level = 0) %}
 	{% for item in items %}
 		{% if item.children|length > 0 %}
-			{% if type == 'list' %}
-				<li class="level-{{ level }}" value="{{ item.value }}">{{ item.label }}
-					<ul>
-						{{ _self.menuItems(field, item.children, type, level + 1) }}
-					</ul>
-				</li>
-			{% else %}
-				<optgroup class="level-{{ level }}" label="{{ item.label }}"></optgroup>
-				<option class="level-{{ level + 1 }}" value="{{ item.value }}" {% if field.value == item.value %}selected{% endif %}>{{ item.label }}</option>
-				{{ _self.menuItems(field, item.children, type, level + 1) }}
-			{% endif %}
-		{% else %}
-			{% if type == 'list' %}
-				<li class="level-{{ level }}" value="{{ item.value }}">{{ item.label }}</li>
-			{% else %}
-				<option class="level-{{ level }}" value="{{ item.value }}" {% if field.value == item.value %}selected{% endif %}>{{ item.label }}</option>
-			{% endif %}
+			<optgroup class="level-{{ level }}" label="{{ item.label }}"></optgroup>
+			<option class="level-{{ level + 1 }}" value="{{ item.value }}" {% if item.value in field.value %}selected{% endif %}>{{ item.label }}</option>
+			{{ _self.menuItems(field, item.children, type, level + 1) }}
 		{% endif %}
 	{% endfor %}
 {% endmacro %}
 
 {% block field %}
-	{# {% if 'list' in field.attributes %}
-		{% set type = 'list' %}
-	{% endif %} #}
-
-	<select data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" name="fields{{ parent }}[{{ field.alias }}]" {% if field.value %}value="{{ field.value }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
+	<select data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" name="fields{{ parent }}[{{ field.alias }}]{% if field.multiple %}[]{% endif %}" {% if field.value %}value="{{ field.value }}"{% endif %} {% if field.required %}required{% endif %} {% if field.multiple %}multiple{% endif %} {{ field.attributes|raw }}>
 		{% if field.emptyLabel %}
 			<option value="">{{ field.emptyLabel }}</option>
 		{% endif %}
 	
 		{{ _self.menuItems(field, field.options, 'select') }}
 	</select>
-
-	{# {% if type == 'list' %}
-		<ul id="{{ form.uid }}_{{ field.alias }}_list">
-			{% if field.emptyLabel %}
-				<li value="">{{ field.emptyLabel }}</li>
-			{% endif %}
-			{{ _self.menuItems(field, field.options|filter(x => x.level == 0), type) }}
-		</ul>
-
-		<script>
-			const select = document.querySelector('[id="{{ form.uid }}_{{ field.alias }}_from"]')
-			const selectOptions = document.querySelector('option')
-			const list = document.querySelector('[id="{{ form.uid }}_{{ field.alias }}_list"]')
-			const listOptions = list.querySelectorAll('li')
-			select.style.visibility = 'hidden';
-			select.style.pointerEvents = 'none';
-			select.style.position = 'absolute';
-
-			listOptions.forEach(listOption => {
-				listOption.addEventListener('click', (e) => {
-					e.preventDefault();
-            		e.stopPropagation()
-					select.value = select.querySelector(`[value="${listOption.getAttribute('value')}"]`).getAttribute('value')
-					updateList()
-					select.dispatchEvent(new Event("change"));
-				})
-			});
-
-			function updateList() {
-				if(list.querySelectorAll('.active')){
-					list.querySelectorAll('.active').forEach(activeOption => {
-						activeOption.classList.remove('active')
-					})
-				}
-				if(list.querySelector(`[value="${select.value}"]`)){
-					list.querySelector(`[value="${select.value}"]`).classList.add('active')
-				}
-			}
-
-			updateList()
-		</script>
-	{% endif %} #}
 {% endblock field %}
