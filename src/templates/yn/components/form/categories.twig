@@ -25,57 +25,11 @@
 {% endmacro %}
 
 {% block field %}
-	{# {% if 'list' in field.attributes %}
-		{% set type = 'list' %}
-	{% endif %} #}
-
-	<select data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" name="fields{{ parent }}[{{ field.alias }}]" {% if field.value %}value="{{ field.value }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
+	<select data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" name="fields{{ parent }}[{{ field.alias }}]{% if field.multiple %}[]{% endif %}" {% if field.value %}value="{{ field.value }}"{% endif %} {% if field.required %}required{% endif %} {% if field.multiple %}multiple{% endif %} {{ field.attributes|raw }}>
 		{% if field.emptyLabel %}
 			<option value="">{{ field.emptyLabel }}</option>
 		{% endif %}
 	
 		{{ _self.menuItems(field, field.options, 'select') }}
 	</select>
-
-	{# {% if type == 'list' %}
-		<ul id="{{ form.uid }}_{{ field.alias }}_list">
-			{% if field.emptyLabel %}
-				<li value="">{{ field.emptyLabel }}</li>
-			{% endif %}
-			{{ _self.menuItems(field, field.options|filter(x => x.level == 0), type) }}
-		</ul>
-
-		<script>
-			const select = document.querySelector('[id="{{ form.uid }}_{{ field.alias }}_from"]')
-			const selectOptions = document.querySelector('option')
-			const list = document.querySelector('[id="{{ form.uid }}_{{ field.alias }}_list"]')
-			const listOptions = list.querySelectorAll('li')
-			select.style.visibility = 'hidden';
-			select.style.pointerEvents = 'none';
-			select.style.position = 'absolute';
-
-			listOptions.forEach(listOption => {
-				listOption.addEventListener('click', (e) => {
-					e.preventDefault();
-            		e.stopPropagation()
-					select.value = select.querySelector(`[value="${listOption.getAttribute('value')}"]`).getAttribute('value')
-					updateList()
-					select.dispatchEvent(new Event("change"));
-				})
-			});
-
-			function updateList() {
-				if(list.querySelectorAll('.active')){
-					list.querySelectorAll('.active').forEach(activeOption => {
-						activeOption.classList.remove('active')
-					})
-				}
-				if(list.querySelector(`[value="${select.value}"]`)){
-					list.querySelector(`[value="${select.value}"]`).classList.add('active')
-				}
-			}
-
-			updateList()
-		</script>
-	{% endif %} #}
 {% endblock field %}
