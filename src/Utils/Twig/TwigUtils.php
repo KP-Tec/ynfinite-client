@@ -503,13 +503,21 @@ class TwigUtils
         }
     }
 
-    public function teaserText($context, $article, $options = []) {
+       public function teaserText($context, $article, $options = []) {
         if($article){
             $intro_text = array_filter($article, function ($i) {return ($i['type'] == 'introText' or $i['type'] == 'text');});
             if($intro_text){
+                // Sucht den ersten <p> Tag im Artikel
                 // Filtert alles raus was nicht in <p> Tags steht
                 $pattern = '/<p\b[^>]*>(.*?)<\/p\b>/s';
-                preg_match_all($pattern, $intro_text[array_key_first($intro_text)]['value'], $matches);
+                $foundText = 0;
+                $i = 0;
+                while(!$foundText > 0){
+                    if(preg_match_all($pattern, $intro_text[$i]['value'], $matches) > 0 && isset($intro_text[$i])){
+                        $foundText = preg_match_all($pattern, $intro_text[$i]['value'], $matches);
+                    }
+                    $i++;
+                }
                 $result = '<p>' . implode("\n", $matches[1]) . '</p>';
                 return($result);
             }
