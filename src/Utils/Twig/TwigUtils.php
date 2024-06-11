@@ -513,7 +513,7 @@ class TwigUtils
                 $foundText = 0;
                 $i = 0;
                 while(!$foundText > 0){
-                    if(preg_match_all($pattern, $intro_text[$i]['value'], $matches) > 0 && isset($intro_text[$i])){
+                    if(isset($intro_text[$i]) && preg_match_all($pattern, $intro_text[$i]['value'], $matches) > 0){
                         $foundText = preg_match_all($pattern, $intro_text[$i]['value'], $matches);
                     }
                     $i++;
