@@ -69,16 +69,32 @@ class StaticCache
         return $key;
     }
 
+    public static function getCachePath($type)
+    {
+        $dirname = StaticCache::createCacheKey($type);
+        if (!file_exists(getcwd() . StaticCache::BASIC_PATH . '/' . $dirname)) {
+            mkdir(getcwd() . StaticCache::BASIC_PATH . '/' . $dirname, 0777, true);
+        }
 
+        $name = 'loggedout';
+        if (isset($_COOKIE['leadGroupIds'])) {
+            $leadGroupIds = $_COOKIE['leadGroupIds'];
+            if ($leadGroupIds == 'empty') {
+                $name = 'loggedin';
+            } else {
+                $name = $leadGroupIds;
+            }
+        }
+
+        $filename = "/$dirname/$name.html";
+
+        return $filename;
+    }
 
     public static function createCache($type, $content)
     {
-        if (!file_exists(getcwd() . StaticCache::BASIC_PATH)) {
-            mkdir(getcwd() . StaticCache::BASIC_PATH, 0777, true);
-        }
-
-        $filename = StaticCache::createCacheKey($type);
-        $path = getcwd() . StaticCache::BASIC_PATH . $filename . ".cache";
+        $filename = StaticCache::getCachePath($type);
+        $path = getcwd() . StaticCache::BASIC_PATH . $filename;
         
         file_put_contents($path, $content);
         $etag = filemtime($path);
@@ -87,12 +103,11 @@ class StaticCache
         return $filename;
     }
 
-
     public static function getCache($type)
     {
-        $filename = StaticCache::createCacheKey($type);
+        $filename = StaticCache::getCachePath($type);
+        $path = getcwd() . StaticCache::BASIC_PATH . $filename;
 
-        $path = getcwd() . StaticCache::BASIC_PATH . $filename . ".cache";
         if(file_exists($path)) {
             $etag = filemtime($path);
             header('Cache-Control: max-age=15');
@@ -104,7 +119,6 @@ class StaticCache
                     exit();
                 }
             }
-
             return file_get_contents($path);
         }
         return false;
@@ -112,8 +126,7 @@ class StaticCache
 
     public static function invalidateCache($filename)
     {
-        $path = getcwd() . StaticCache::BASIC_PATH . $filename . ".cache";
-
+        $path = getcwd() . StaticCache::BASIC_PATH . $filename;
         $result = false;
         if(file_exists($path)) {
             $result = unlink($path);

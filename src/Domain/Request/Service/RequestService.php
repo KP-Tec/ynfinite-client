@@ -10,6 +10,11 @@ use App\Domain\Request\Utils\CurlHandler;
 
 class RequestService {
 
+    private $repository;
+    public $settings;
+    public $session;
+    public $curlHandler;
+
     public function __construct(SessionHelper $session, ContainerInterface $container) {
         $this->session = $session;
 
@@ -100,13 +105,14 @@ class RequestService {
     protected function request($path, $service, $body = array(), $json = true)
     {
         $this->curlHandler->setUrl($service, $path);
-    
-        $response = $this->curlHandler->exec($body);    
-
+        
+        $response = $this->curlHandler->exec($body);  
+        $body = $response["body"];
+        $statusCode = $response["statusCode"];
         if ($json) {
-            $response = json_decode($response, true);
+            $body = json_decode($body, true);
         }
 
-        return $response;
+        return array("body" => $body, "statusCode" => $statusCode);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Utils\Twig\Tokens;
 
 use App\Utils\Twig\Tokens\IsCookieActiveNode;
 
+#[YieldReady]
 class IsCookieActive extends \Twig\TokenParser\AbstractTokenParser
 {
 
@@ -16,6 +17,10 @@ class IsCookieActive extends \Twig\TokenParser\AbstractTokenParser
 
     private function findCookie($name) {
         $cookie = null;
+
+        if(count($this->data["cookies"]["available"]) === 0) {
+            return array();
+        };
 
         foreach($this->data["cookies"]["available"] as $c) {
             if($c["alias"] === $name) {

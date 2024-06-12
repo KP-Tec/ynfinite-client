@@ -11,6 +11,8 @@ use SlimSession\Helper as SessionHelper;
 
 final class GetRobotsTxtAction
 {
+    public $getRobotsTxtService;
+
     public function __construct(GetRobotsTxtService $getRobotsTxtService) {
         $this->getRobotsTxtService = $getRobotsTxtService;
     }

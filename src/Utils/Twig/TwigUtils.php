@@ -8,6 +8,12 @@ use \Twig\Loader\ArrayLoader;
 class TwigUtils
 {
     private $data;
+    public $twig;
+    public $templates;
+    public $templateOverrides;
+    public $uriData;
+    public $standardTemplates;
+    public $currentForm;
 
     public function __construct(
         $twig, 
@@ -503,7 +509,7 @@ class TwigUtils
         }
     }
 
-       public function teaserText($context, $article, $options = []) {
+    public function teaserText($context, $article, $options = []) {
         if($article){
             $intro_text = array_filter($article, function ($i) {return ($i['type'] == 'introText' or $i['type'] == 'text');});
             if($intro_text){
@@ -590,29 +596,17 @@ class TwigUtils
 
     public function form($context, $form, $options = []) {
         $this->currentForm = $form;
-        
-        $action = isset($form["redirectPage"]["route"]) ? isset($context["languages"]["prefix"]) ? $context["languages"]["prefix"] . $form["redirectPage"]["route"] : $form["redirectPage"]["route"] : $context["currentSlug"];
 
         $data = array();
-        $isAsync = "sync";
-
         foreach($form["events"] as $key => $event) {
-        	$isAsync = $event["async"] ? "async" : "sync";
-
-            if($event["async"] && $context["currentSlug"] !== $action) {
-                $isAsync = "sync";
-            }
-
-            $data[] = "data-".strtolower($event["type"])."=".$isAsync;
+            $data[] = "data-".strtolower($event["type"]);
         } 
 
         return $this->twig->render($this->getTemplate('form:form'), [
             'form' => $form,
             'section' => $context["section"] ?? array(),
             'templates' => $this->templates,
-            "isAsync" => $isAsync === "async" ? true : false,
             "data" => implode(" ",$data),
-            "action" => $action
         ]);
     }
 

@@ -7,6 +7,14 @@ use Curl;
 
 final class CurlHandler
 {
+    public $settings;
+    public $uploadFiles;
+    public $ch;
+    public $path;
+    public $url;
+    public $headers;
+
+
     public function __construct($settings) {
         $this->settings = $settings;
         $this->uploadFiles = array();
@@ -80,18 +88,9 @@ final class CurlHandler
         $response = $this->ch->getResponse();
         $header_size = curl_getinfo($this->ch->curl, CURLINFO_HEADER_SIZE);
         $body = substr($response, $header_size);
-        $httpcode = $this->ch->getHttpStatus();
+        $httpCode = $this->ch->getHttpStatus();
         
-        if ($this->ch->error) {
-            throw new YnfiniteException($body, $httpcode);
-        }
 
-        if ($httpcode != 200 && $httpcode != 201 && $httpcode != 206) {
-            throw new YnfiniteException($body, $httpcode, true, $this->path);
-        }
-
-        return $body;
+        return array("body" => $body, "statusCode" => $httpCode);
     }
-
-
 }

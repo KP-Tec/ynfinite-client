@@ -1,4 +1,33 @@
-<form class="yn-form {% if form.settings.noBotProtection %}yn-no-bot-protection{% endif %}" id="form_{{form.uid}}" method="{{form.method}}" enctype="multipart/form-data" action="{{isAsync ? "/yn-form/send" :action}}" data-ynalias="{{form.alias}}" data-ynform="true" data-language="{{_ynfinite.languages.current}}" data-ynformid="{{form._id}}" data-ynformmethod="{{form.method}}" {% if(section._id) %} data-ynsectionid="{{section._id}}" {% endif %} {{data}} {% if form.settings.noBotProtection %}data-has-proof="true" data-proofen-hash="true"{% endif %}>
+{% if form.errors %}
+<script>
+	{% if form.type == "resetPasswordForm" %}
+		const resetPwdParam = new URLSearchParams({
+			hash: '{{_ynfinite.params.hash}}',
+		})
+		history.pushState({}, null, '{{_ynfinite.currentSlug}}' + '?' + resetPwdParam);
+	{% else %}
+		history.pushState({}, null, '{{_ynfinite.currentSlug}}');
+	{% endif %}
+</script>
+{% endif %}
+
+<form class="yn-form 
+	{% if form.settings.noBotProtection %}yn-no-bot-protection{% endif %}" 
+	id="form_{{form.uid}}" 
+	name="{{form.name}}" 
+	method="{{form.method}}" 
+	enctype="multipart/form-data" 
+	action="/yn-form/send" 
+	data-ynalias="{{form.alias}}" 
+	data-ynform="true" 
+	data-language="{{_ynfinite.languages.current}}" 
+	data-ynformid="{{form._id}}" 
+	data-ynformmethod="{{form.method}}" 
+	data-events="{{form.events|map((x) => x._id)|json_encode}}"
+	{% if(section._id) %} data-ynsectionid="{{section._id}}" {% endif %} 
+	{{data}} 
+	{% if form.settings.noBotProtection %}data-has-proof="true" data-proofen-hash="true"{% endif %}
+>
 	<fieldset>
 		{% if form.method != "get" %}
 			<input type="text" name="confirm_email" value="my@email.com" style="display: none !important;" tabindex="-1" autocomplete="off"> 
@@ -10,7 +39,7 @@
 			<input type="hidden" value="{{section._id}}" name="sectionId">
 		{% endif %}
 
-		<div class="yn-error"></div>
+		<div class="yn-error">{{form.errors[0]}}</div>
 		<div class="form-content">
 			{% if templates[form.template] %}
 				{{include(templates[form.template], {"form": form})}}
@@ -23,7 +52,27 @@
 			</div>
 		</div>
 	</fieldset>
+	{% if form.type == "resetPasswordForm" or form.type == "registrationForm" %} {# //! DEV CHECK #}
+	<script>
+		const form = document.querySelector("#form_{{ form.uid }}");
+		form.addEventListener("submit", function (e) {
+			const data = new FormData(form);
+			const passwords = [];
+			for (const [name,value] of data) {
+				if(name.toLowerCase().includes('password')) {
+					passwords.push(value)
+				}
+			}
+			if(!passwords.every(element => element === passwords[0])) {
+				const resetErrorContainer = document.querySelector('.yn-error');
+				resetErrorContainer.innerHTML = 'Password does not match.';
+				resetErrorContainer.style.color = 'red';
+				e.preventDefault();
+			}
+		});
 
+	</script>
+	{% endif %}
 	{% if form.method == "post" %}
 		<script>
 			(function () {
@@ -45,3 +94,11 @@
 		</script>
 	{% endif %}
 </form>
+
+{% if form.errors %}
+<script>
+	document.querySelectorAll('.yn-error').forEach(error => {
+		error.style.color = 'red';
+	});
+</script>
+{% endif %}

@@ -1,0 +1,49 @@
+<script>
+    const scrollEvents = window.scrollEvents
+    if(scrollEvents){
+        const sectionIsActive = (e) => {
+            const bodyHeight = document.body.offsetHeight;
+            const filteredObservers = e.filter((x) => x.target.offsetTop !== lastSectionOffset)
+            filteredObservers.forEach(filteredObserver => {
+                if (filteredObserver.intersectionRatio > 0) {
+                    const section = filteredObserver.target
+                    const name = section.querySelector('h1, h2, h3, h4, h5, h6')?.textContent || section.classList.value || ""
+                    const offsetTop = section.offsetTop
+                    lastSectionOffset = offsetTop
+                    const depth = round((offsetTop + section.offsetHeight) / bodyHeight * 100, 10)
+   
+                    if(offsetTop > 100){
+                        if(debug){
+                            const eventName = 'scroll'
+                            console.log('Tracked scroll - ', eventName, name, depth)
+                        }
+                        scrollEvents.forEach((event) => {
+                            event(name, depth)
+                        })
+                    }
+                }
+            });
+        }
+
+        const config = {
+            rootMargin: '-50% 0% -50% 0%',
+            threshold: 0
+        };
+
+        function round(number, increment) {
+            return Math.ceil(number / increment ) * increment;
+        }
+
+        const sections = document.querySelectorAll('section')
+        const observer = new IntersectionObserver(sectionIsActive, config);
+        let lastSectionOffset;
+
+        sections.forEach((section) => {
+            observer.observe(section);
+        })
+
+        if(simpleDebug || debug){
+            console.log(`%c-> Scroll tracking added for ${scrollEvents.length} event(s) <-`,  'color: #e91f63')
+        }
+    }
+</script>

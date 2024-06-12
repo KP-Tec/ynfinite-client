@@ -3,6 +3,8 @@
 namespace App\Utils\Twig\Tokens;
 
 class IsScriptActiveNode extends \Twig\Node\Node {
+    public $script;
+    
     public function __construct(\Twig\Node\Node $tests, int $lineno, string $tag = null, $script = null)
     {
         $nodes = ['tests' => $tests];
