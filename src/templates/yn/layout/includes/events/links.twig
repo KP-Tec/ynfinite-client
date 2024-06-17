@@ -17,7 +17,7 @@
         {% endif %}
 
         if(simpleDebug || debug){
-            console.log(`%c-> Link tracking added for ${linkEvents.length} event(s) - ${links.length} link(s) found [${externalLinks.length} external link(s), ${mailLinks.length} mail link(s), ${telLinks.length} tel link(s), ${downloadLinks.length} download link(s)] (maybe not all links have tracking active) <-`,  'color: #e91f63')
+            console.log(`%c-> Link tracking added for ${linkEvents.length} event(s) - ${links.length} link(s) found [${externalLinks.length} external link(s), ${mailLinks.length} mail link(s), ${telLinks.length} tel link(s), ${downloadLinks.length} download link(s)] (Internal links will not be tracked when clicked, but will be tracked through pageView tracking) <-`,  'color: #e91f63')
         }
 
         const handleLinks = (links, eventName) => {

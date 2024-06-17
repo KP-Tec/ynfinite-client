@@ -90,7 +90,6 @@ final class CurlHandler
         $body = substr($response, $header_size);
         $httpCode = $this->ch->getHttpStatus();
         
-
         return array("body" => $body, "statusCode" => $httpCode);
     }
 }

@@ -1,32 +1,82 @@
 {% if _yn_tracking_tool %}
-	{% isCookieActiveSeo findCookie(_yn_tracking_tool.consent.alias) %}
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id={{_yn_tracking_tool.key}}"></script>
-		<script>
-			if(!window.addedScripts.includes('google-analytics')){
-				// ==================================================
-				// Start Tracking
-				// ==================================================
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id={{_yn_tracking_tool.key}}"></script>
+	<script>
+		if(!window.addedScripts.includes('google-analytics')){
+			// ==================================================
+			// Start Tracking
+			// ==================================================
 
-				window.dataLayer = window.dataLayer || [];
-				function gtag(){
-					dataLayer.push(arguments);
-				}
-				gtag('js', new Date());
-				gtag('config', '{{_yn_tracking_tool.key}}', {sendBeacon: true});
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){
+				dataLayer.push(arguments);
+			}
 
-				if(simpleDebug || debug){
-					console.log('%c-> Google Analytics added <-',  'color: #e91f63')
-				}	
-				
+			let analytics_storage = 'denied'
+			let personalization_storage = 'denied'
+			let functionality_storage = 'denied'
+			let security_storage = 'denied'
+			let ad_storage = 'denied'
+			let ad_user_data = 'denied'
+			let ad_personalization = 'denied'
+
+			{% isCookieActiveSeo findCookie(_yn_tracking_tool.analytics_storage_consent.alias) %}
+				analytics_storage = 'granted'
+			{% endIsCookieActiveSeo %}
+			{% isCookieActiveSeo findCookie(_yn_tracking_tool.personalization_storage_consent.alias) %}
+				personalization_storage = 'granted'
+			{% endIsCookieActiveSeo %}
+			{% isCookieActiveSeo findCookie(_yn_tracking_tool.functionality_storage_consent.alias) %}
+				functionality_storage = 'granted'
+			{% endIsCookieActiveSeo %}
+			{% isCookieActiveSeo findCookie(_yn_tracking_tool.security_storage_consent.alias) %}
+				security_storage = 'granted'
+			{% endIsCookieActiveSeo %}
+			{% isCookieActiveSeo findCookie(_yn_tracking_tool.ad_storage_consent.alias) %}
+				ad_storage = 'granted'
+			{% endIsCookieActiveSeo %}
+			{% isCookieActiveSeo findCookie(_yn_tracking_tool.ad_user_data_consent.alias) %}
+				ad_user_data = 'granted'
+			{% endIsCookieActiveSeo %}
+			{% isCookieActiveSeo findCookie(_yn_tracking_tool.ad_personalization_consent.alias) %}
+				ad_personalization = 'granted'
+			{% endIsCookieActiveSeo %}
+
+			if(simpleDebug || debug){
+				console.log('Google Analytics Consent: analytics_storage', analytics_storage)
+				console.log('Google Analytics Consent: personalization_storage', personalization_storage)
+				console.log('Google Analytics Consent: functionality_storage', functionality_storage)
+				console.log('Google Analytics Consent: security_storage', security_storage)
+				console.log('Google Analytics Consent: ad_storage', ad_storage)
+				console.log('Google Analytics Consent: ad_user_data', ad_user_data)
+				console.log('Google Analytics Consent: ad_personalization', ad_personalization)
+			}	
+
+			gtag('consent', 'default', {
+				'analytics_storage': analytics_storage,
+				'personalization_storage': personalization_storage,
+				'functionality_storage': functionality_storage,
+				'security_storage': security_storage,
+				'ad_storage': ad_storage,
+				'ad_user_data': ad_user_data,
+				'ad_personalization': ad_personalization
+			});
+
+			gtag('js', new Date());
+			gtag('config', '{{_yn_tracking_tool.key}}', {sendBeacon: true});
+
+			if(simpleDebug || debug){
+				console.log('%c-> Google Analytics added <-',  'color: #e91f63')
+			}	
+			
+			{% isCookieActiveSeo findCookie(_yn_tracking_tool.analytics_storage_consent.alias) %}
 				// ==================================================
 				// Page View Tracking
 				// ==================================================
-
 				{% if _yn_tracking_pageViews %}
 					const trackPageView = () => {
 						const eventName = 'page_view'
-		
+
 						gtag('event', eventName, {
 							page_title: '{{ _ynfinite.page.name }}',
 							page_referrer: '{{ _ynfinite.domain.referrer }}',
@@ -117,7 +167,7 @@
 				
 				{% if _yn_tracking_pageScroll %}
 					const scrollTracking = (name, depth) => {
-            			const eventName = 'scroll'
+						const eventName = 'scroll'
 						gtag('event', eventName, {
 							page_title: '{{ _ynfinite.page.name }}',
 							page_referrer: '{{ _ynfinite.domain.referrer }}',
@@ -132,9 +182,9 @@
 				// ==================================================
 				// End Tracking
 				// ==================================================
+			{% endIsCookieActiveSeo %}
 
-				window.addedScripts.push('google-analytics')
-			}
-		</script>
-	{% endIsCookieActiveSeo %}
+			window.addedScripts.push('google-analytics')
+		}
+	</script>
 {% endif %}

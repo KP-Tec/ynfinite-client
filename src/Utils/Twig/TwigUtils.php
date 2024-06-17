@@ -46,6 +46,7 @@ class TwigUtils
             'links:links' => 'yn/components/links.twig',
             'form:form' => 'yn/components/form.twig',
             'video:video' => 'yn/components/video.twig',
+            'login:userDropdown' => 'yn/components/login/userDropdown.twig',
             'form:fields.select' => 'yn/components/form/select.twig',
             'form:fields.radio' => 'yn/components/form/radio.twig',
             'form:fields.checkbox' => 'yn/components/form/checkbox.twig',
@@ -513,13 +514,12 @@ class TwigUtils
         if($article){
             $intro_text = array_filter($article, function ($i) {return ($i['type'] == 'introText' or $i['type'] == 'text');});
             if($intro_text){
-                // Sucht den ersten <p> Tag im Artikel
                 // Filtert alles raus was nicht in <p> Tags steht
                 $pattern = '/<p\b[^>]*>(.*?)<\/p\b>/s';
                 $foundText = 0;
                 $i = 0;
                 while(!$foundText > 0){
-                    if(isset($intro_text[$i]) && preg_match_all($pattern, $intro_text[$i]['value'], $matches) > 0){
+                    if(preg_match_all($pattern, $intro_text[$i]['value'], $matches) > 0 && isset($intro_text[$i])){
                         $foundText = preg_match_all($pattern, $intro_text[$i]['value'], $matches);
                     }
                     $i++;
@@ -619,6 +619,13 @@ class TwigUtils
             'height' => $options['height'] ?? '',
             'width' => $options['width'] ?? '',
             'parameter' => $options['parameter'] ?? "",
+        ]);
+    }
+
+    public function userDropdown($context, $options = []) {
+        return $this->twig->render($this->getTemplate('login:userDropdown'), [
+            'form' => $options['form'] ?? null,
+            'links' => $options['links'] ?? null,
         ]);
     }
 }

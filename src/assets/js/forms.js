@@ -58,7 +58,6 @@ const YnfiniteForms = {
 
 		if (response.ok) {
 			const jsonResponse = await response.json()
-			console.log("jsonResponse['type']", jsonResponse['type'])
 			switch (jsonResponse['type']) {
 				case 'page':
 					element.dispatchEvent(
@@ -75,7 +74,7 @@ const YnfiniteForms = {
 					break
 				case '404':
 				case 'error':
-					console.log('case error', jsonResponse['message'])
+					console.log('404/Error: ', jsonResponse['message'])
 					break
 			}
 
@@ -118,9 +117,6 @@ const YnfiniteForms = {
 			const forms = document.querySelectorAll('[data-ynform=true]')
 
 			forms.forEach((form) => {
-				console.log('form.dataset.onsubmit', form.dataset.onsubmit)
-				console.log('form.dataset.onchange', form.dataset.onchange)
-
 				if (form.hasAttribute('data-onchange')) {
 					this.addChangeEvent(form)
 				}
@@ -130,7 +126,6 @@ const YnfiniteForms = {
 				}
 
 				// Handle reset action
-
 				const resetButton = form.querySelector("button[type='reset']")
 				if (resetButton) {
 					resetButton.addEventListener('click', async (e) => {

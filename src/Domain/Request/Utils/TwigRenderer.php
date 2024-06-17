@@ -91,7 +91,7 @@ final class TwigRenderer
                 }
             }
     
-            return in_array($cookie["_id"], $this->data["cookies"]["active"]);
+            return !is_null($cookie) && in_array($cookie["_id"], $this->data["cookies"]["active"]);
         });
 
         $this->twig->addFunction($function);
@@ -142,7 +142,7 @@ final class TwigRenderer
                 }
             }
     
-            return in_array($cookie["_id"], $this->data["cookies"]["active"]);
+            return !is_null($cookie) && in_array($cookie["_id"], $this->data["cookies"]["active"]);
         });
 
         $filterHasCategory = new \Twig\TwigFilter('hasCategory', function ($content, $searchFor) {

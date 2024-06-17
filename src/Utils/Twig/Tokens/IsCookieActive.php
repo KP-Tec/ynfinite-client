@@ -29,7 +29,7 @@ class IsCookieActive extends \Twig\TokenParser\AbstractTokenParser
             }
         }
 
-        return in_array($cookie["_id"], $this->data["cookies"]["active"]);
+        return !is_null($cookie) && in_array($cookie["_id"], $this->data["cookies"]["active"]);
     }
 
     public function parse(\Twig\Token $token)

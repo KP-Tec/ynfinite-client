@@ -19,7 +19,6 @@ const YnfiniteYoutube = {
 				if (attributes) {
 					attributes.forEach((attr) => {
 						const attrSplit = attr.split('=')
-						console.log('attr', attrSplit[0], attrSplit[1] || '')
 						iframe.setAttribute(attrSplit[0], attrSplit[1] || '')
 					})
 				}

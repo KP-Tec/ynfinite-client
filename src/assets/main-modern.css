@@ -1061,3 +1061,109 @@ button.yn-loader::after {
 .yn-video.loaded::before, .yn-video.loaded::after {
   opacity: 0;
 }
+
+.yn-dropdown {
+  height: 100%;
+  width: auto;
+  aspect-ratio: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: relative;
+}
+
+.yn-user {
+  padding: 3px;
+  cursor: pointer;
+}
+
+.yn-user__info {
+  border-bottom: var(--border-width, 1px) solid currentColor;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.yn-dropdown__popup {
+  position: absolute;
+  background-color: var(--bg, #fff);
+  color: var(--font, #000);
+  margin: auto;
+  top: 100%;
+  bottom: auto;
+  left: auto;
+  right: 0;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  min-width: 20rem;
+  z-index: 200;
+  padding: 1.5rem;
+  -webkit-box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 10px, rgba(17, 17, 26, 0.1) 0px 0px 20px;
+          box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 10px, rgba(17, 17, 26, 0.1) 0px 0px 20px;
+}
+.yn-dropdown__popup .yn-dropdown__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 6px;
+}
+.yn-dropdown__popup .small-label {
+  font-size: 12px;
+  line-height: 1;
+  opacity: 0.7;
+}
+.yn-dropdown__popup > * {
+  margin-block: 0 !important;
+}
+.yn-dropdown__popup form {
+  min-width: min(90vw, 22rem);
+}
+.yn-dropdown__popup form,
+.yn-dropdown__popup form button {
+  margin-top: 0.5rem;
+}
+
+.close-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  gap: 0.5rem;
+}
+.close-wrapper > *:not(.close) {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.close {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  width: 100%;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  -ms-flex-preferred-size: 1.5rem;
+      flex-basis: 1.5rem;
+  cursor: pointer;
+}
