@@ -15,6 +15,8 @@ require_once(__DIR__."/../Updater/updater_functions.php");
 
 final class UpdateToVersionAction
 {
+    public $getRobotsTxtService;
+
     public function __construct(GetRobotsTxtService $getRobotsTxtService) {
         $this->getRobotsTxtService = $getRobotsTxtService;
     }

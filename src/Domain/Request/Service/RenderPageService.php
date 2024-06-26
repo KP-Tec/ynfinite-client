@@ -14,6 +14,8 @@ final class RenderPageService
 {
 
     private $repository;
+    public $settings;
+    public $twig;
 
     public function __construct(TwigRenderer $twig, RequestCacheRepository $repository, ContainerInterface $container) {
         $this->repository = $repository;

@@ -11,6 +11,7 @@ use Cocur\Slugify\Slugify;
 use Psr\Container\ContainerInterface;
 
 use App\Utils\Twig\Tokens\IsCookieActive;
+use App\Utils\Twig\Tokens\IsCookieActiveSeo;
 use App\Utils\Twig\Tokens\GetCookieConsent;
 use App\Utils\Twig\Tokens\IsScriptActive;
 use App\Utils\Twig\TwigUtils;
@@ -18,10 +19,17 @@ use App\Utils\Twig\I18nUtils;
 
 use App\Utils\Twig\FileSystemLoader;
 
-
 final class TwigRenderer
 {
     private $container;
+    public $settings;
+    public $twig;
+    public $data;
+    public $templates;
+    public $templateList;
+    public $templateOverrides;
+    public $twigFunc;
+    public $uriData;
 
     public function __construct(ContainerInterface $container) {        
         $this->container = $container;
@@ -50,7 +58,7 @@ final class TwigRenderer
         $rootPath = realpath(__DIR__);
 
         // $loader = new ArrayLoader($this->templates);
-        $this->twig = new Environment($loader, ['debug' => true, /* 'cache' =>6 getcwd().'/../tmp/twig_cache', */]);
+        $this->twig = new Environment($loader, ['debug' => true, "use_yield" => true/* 'cache' =>6 getcwd().'/../tmp/twig_cache', */]);
 
         $this->twig->addExtension(new IntlExtension());
         $this->twig->addExtension(new DebugExtension());
@@ -69,7 +77,27 @@ final class TwigRenderer
         
         $this->uriData = $this->getURIData($overrideUrl);
         
+        $function = new \Twig\TwigFunction('findCookie', function ($name) {
+            $cookie = null;
+
+            if(count($this->data["cookies"]["available"]) === 0) {
+                return array();
+            };
+
+            foreach($this->data["cookies"]["available"] as $c) {
+                if($c["alias"] === $name) {
+                    $cookie = $c;
+                    break;
+                }
+            }
+    
+            return !is_null($cookie) && in_array($cookie["_id"], $this->data["cookies"]["active"]);
+        });
+
+        $this->twig->addFunction($function);
+
         $this->twig->addTokenParser(new IsCookieActive($data));
+        $this->twig->addTokenParser(new IsCookieActiveSeo($data));
         $this->twig->addTokenParser(new IsScriptActive($data));
         $this->twig->addTokenParser(new GetCookieConsent($data, $this->twig));
 
@@ -102,6 +130,19 @@ final class TwigRenderer
                 $joinArray[] = $item[$field];
             }
             return implode($seperator, $joinArray);
+        });
+
+        $filterJoinBy = new \Twig\TwigFilter('activeCookie', function ($name) {
+            $cookie = null;
+
+            foreach($this->data["cookies"]["available"] as $c) {
+                if($c["alias"] === $name) {
+                    $cookie = $c;
+                    break;
+                }
+            }
+    
+            return !is_null($cookie) && in_array($cookie["_id"], $this->data["cookies"]["active"]);
         });
 
         $filterHasCategory = new \Twig\TwigFilter('hasCategory', function ($content, $searchFor) {

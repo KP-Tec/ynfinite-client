@@ -8,6 +8,12 @@ use \Twig\Loader\ArrayLoader;
 class TwigUtils
 {
     private $data;
+    public $twig;
+    public $templates;
+    public $templateOverrides;
+    public $uriData;
+    public $standardTemplates;
+    public $currentForm;
 
     public function __construct(
         $twig, 
@@ -40,6 +46,7 @@ class TwigUtils
             'links:links' => 'yn/components/links.twig',
             'form:form' => 'yn/components/form.twig',
             'video:video' => 'yn/components/video.twig',
+            'login:userDropdown' => 'yn/components/login/userDropdown.twig',
             'form:fields.select' => 'yn/components/form/select.twig',
             'form:fields.radio' => 'yn/components/form/radio.twig',
             'form:fields.checkbox' => 'yn/components/form/checkbox.twig',
@@ -503,17 +510,16 @@ class TwigUtils
         }
     }
 
-       public function teaserText($context, $article, $options = []) {
+    public function teaserText($context, $article, $options = []) {
         if($article){
             $intro_text = array_filter($article, function ($i) {return ($i['type'] == 'introText' or $i['type'] == 'text');});
             if($intro_text){
-                // Sucht den ersten <p> Tag im Artikel
                 // Filtert alles raus was nicht in <p> Tags steht
                 $pattern = '/<p\b[^>]*>(.*?)<\/p\b>/s';
                 $foundText = 0;
                 $i = 0;
                 while(!$foundText > 0){
-                    if(isset($intro_text[$i]) && preg_match_all($pattern, $intro_text[$i]['value'], $matches) > 0){
+                    if(preg_match_all($pattern, $intro_text[$i]['value'], $matches) > 0 && isset($intro_text[$i])){
                         $foundText = preg_match_all($pattern, $intro_text[$i]['value'], $matches);
                     }
                     $i++;
@@ -590,29 +596,17 @@ class TwigUtils
 
     public function form($context, $form, $options = []) {
         $this->currentForm = $form;
-        
-        $action = isset($form["redirectPage"]["route"]) ? isset($context["languages"]["prefix"]) ? $context["languages"]["prefix"] . $form["redirectPage"]["route"] : $form["redirectPage"]["route"] : $context["currentSlug"];
 
         $data = array();
-        $isAsync = "sync";
-
         foreach($form["events"] as $key => $event) {
-        	$isAsync = $event["async"] ? "async" : "sync";
-
-            if($event["async"] && $context["currentSlug"] !== $action) {
-                $isAsync = "sync";
-            }
-
-            $data[] = "data-".strtolower($event["type"])."=".$isAsync;
+            $data[] = "data-".strtolower($event["type"]);
         } 
 
         return $this->twig->render($this->getTemplate('form:form'), [
             'form' => $form,
             'section' => $context["section"] ?? array(),
             'templates' => $this->templates,
-            "isAsync" => $isAsync === "async" ? true : false,
             "data" => implode(" ",$data),
-            "action" => $action
         ]);
     }
 
@@ -625,6 +619,13 @@ class TwigUtils
             'height' => $options['height'] ?? '',
             'width' => $options['width'] ?? '',
             'parameter' => $options['parameter'] ?? "",
+        ]);
+    }
+
+    public function userDropdown($context, $options = []) {
+        return $this->twig->render($this->getTemplate('login:userDropdown'), [
+            'form' => $options['form'] ?? null,
+            'links' => $options['links'] ?? null,
         ]);
     }
 }

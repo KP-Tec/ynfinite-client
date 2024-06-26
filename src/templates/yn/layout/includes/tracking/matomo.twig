@@ -1,0 +1,118 @@
+{% if _yn_tracking_tool %}
+	{% isCookieActiveSeo findCookie(_yn_tracking_tool.consent.alias) %}
+		<!-- Matomo -->
+		<script>
+			let url = '{{_yn_tracking_tool.url}}'
+			if(url.slice(-1) !== '/'){
+				url += '/'
+			}
+			var _paq = window._paq = window._paq || [];
+			/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+			_paq.push(['enableLinkTracking']);
+			(function() {
+				var u=`//${url}`;
+				_paq.push(['setTrackerUrl', u+'matomo.php']);
+				_paq.push(['setSiteId', '1']);
+				_paq.push(['setDomains', ["*.{{_ynfinite.domain.hostname}}"]]);
+				var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+				g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+			})();
+		</script>
+		<!-- End Matomo Code -->
+
+		<script>
+			if(!window.addedScripts.includes('matomo')){
+				// ==================================================
+				// Start Tracking
+				// ==================================================
+
+				if(simpleDebug || debug){
+					console.log('%c-> Matomo added <-', 'color: #e91f63')
+				}	
+				
+				// ==================================================
+				// Page View Tracking
+				// ==================================================
+
+				{% if _yn_tracking_pageViews %}
+					const trackPageView = () => {
+						_paq.push(['trackPageView']);
+					}
+					window.pageViewEvents.push(trackPageView);
+				{% endif %}
+
+				// ==================================================
+				// Form Tracking
+				// ==================================================
+
+				{% if _yn_tracking_submit_form %}
+					function formTracking(name) {
+						_paq.push(['trackEvent', 'Form Submit', name]);
+					}
+					window.formEvents.push(formTracking);
+				{% endif %}
+
+				// ==================================================
+				// Video Tracking
+				// ==================================================
+
+				{% if _yn_tracking_video %}
+					const videoTracking = (video) => {
+						const videoState = video.state;
+						const videoUrl = video.url;
+						const videoPercent = Math.round(video.percent * 100) + '%';
+
+						switch (videoState) {
+							case 0: 
+							console.log()
+								_paq.push(['trackEvent', 'Video complete', videoUrl]);
+								break;
+							case 1: 
+								_paq.push(['trackEvent', 'Video start', videoUrl]);
+								break;
+							case 2: 
+								_paq.push(['trackEvent', 'Video pause', videoUrl, videoPercent]);
+								break;
+							default:
+						}
+					}
+				
+					window.videoEvents.push(videoTracking);
+				{% endif %}
+
+				// ==================================================
+				// Add Link Tracking
+				// ==================================================
+
+				{% if _yn_tracking_external or _yn_tracking_downloads or _yn_tracking_email or _yn_tracking_tel %}
+					const linkTracking = (eventName = 'click', url) => {
+						if(eventName === 'click') eventName = 'External Link Click'
+						if(eventName === 'click_mail') eventName = 'Mail Link Click'
+						if(eventName === 'click_phone') eventName = 'Phone Link Click'
+						if(eventName === 'click_download') eventName = 'Download Link Click'
+						_paq.push(['trackEvent', 'Link Click', eventName, url]);
+					}
+					window.linkEvents.push(linkTracking)
+				{% endif %}
+
+				// ==================================================
+				// Scroll Tracking
+				// ==================================================
+
+				{% if _yn_tracking_pageScroll %}
+					const scrollTracking = (name, depth) => {
+						_paq.push(['trackEvent', 'Scroll', 'Section', name]);
+						_paq.push(['trackEvent', 'Scroll depth', depth + '%']);
+					}
+					window.scrollEvents.push(scrollTracking)
+				{% endif %}
+
+				// ==================================================
+				// End Tracking
+				// ==================================================
+
+				window.addedScripts.push('matomo')
+			}
+		</script>
+	{% endIsCookieActiveSeo %}
+{% endif %}

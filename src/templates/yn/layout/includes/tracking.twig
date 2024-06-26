@@ -1,0 +1,36 @@
+{# * Tracking #}
+{% set _yn_tracking = _ynfinite.site.seo.tracking.active %}
+{% set _yn_tracking_tools = _ynfinite.site.seo.tracking.tools %}
+
+{% if _yn_tracking and _yn_tracking_tools %}
+    {% set _yn_tracking_pageViews = _ynfinite.site.seo.events.pageViews %}
+    {% set _yn_tracking_pageScroll = _ynfinite.site.seo.events.pageScroll %}
+    {% set _yn_tracking_video = _ynfinite.site.seo.events.watchVideo %}
+    {% set _yn_tracking_submit_form = _ynfinite.site.seo.events.submitForm %}
+    {% set _yn_tracking_external = _ynfinite.site.seo.events.clickExternalLink %}
+    {% set _yn_tracking_downloads = _ynfinite.site.seo.events.clickDownloadsLink %}
+    {% set _yn_tracking_email = _ynfinite.site.seo.events.clickEmailLink %}
+    {% set _yn_tracking_tel = _ynfinite.site.seo.events.clickTelLink %}
+    {% set _yn_seo_debug = _ynfinite.site.seo.general.debug %}
+
+    <script>
+        const simpleDebug = false; // only log for added events
+        const debug = "{{_yn_seo_debug|default(false)}}"; // logs for every event
+        window.pageViewEvents = []
+        window.scrollEvents = []
+        window.videoEvents = []
+        window.formEvents = []
+        window.linkEvents = []
+    </script>
+
+    {% for _yn_tracking_tool in _yn_tracking_tools %}
+        {% if _yn_tracking_tool.type %}
+            {% include "yn/layout/includes/tracking/" ~ _yn_tracking_tool.type|raw ~ ".twig" %}
+        {% endif %}
+    {% endfor %}
+
+    {% if _yn_tracking_pageViews %}{% include "yn/layout/includes/events/pageViews.twig" %}{% endif %}
+    {% if _yn_tracking_submit_form %}{% include "yn/layout/includes/events/forms.twig" %}{% endif %}
+    {% if _yn_tracking_external or _yn_tracking_downloads or _yn_tracking_email or _yn_tracking_tel %}{% include "yn/layout/includes/events/links.twig" %}{% endif %}
+    {% if _yn_tracking_pageScroll %}{% include "yn/layout/includes/events/scroll.twig" %}{% endif %}
+{% endif %}

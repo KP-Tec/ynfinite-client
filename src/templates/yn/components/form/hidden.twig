@@ -1,1 +1,25 @@
-<input data-ynfield="true" type="{{ field.type }}" name="fields[{{ field.alias }}]" {% if field.value or addValue %} value="{{ field.value|default(addValue) }}" {% endif %} {%if field.placeholder %} placeholder="{{ field.placeholder }}" {% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
+{%if field.defaultValue == "{{params.hash}}" %}
+<div class="yn-form-page">
+{% endif %} 
+
+<input data-ynfield="true" 
+    type="{{ field.type }}" 
+    name="fields[{{ field.alias }}]" 
+    value="{{ field.value|default(addValue|default(field.defaultValue)) }}"
+    
+    {%if field.placeholder %} placeholder="{{ field.placeholder }}" {% endif %} 
+    {% if field.required %}required{% endif %} 
+    {{ field.attributes|raw }}
+>
+
+{%if field.defaultValue == "{{params.hash}}" %}
+	<script>
+	const hiddenParams = new URLSearchParams(location.search);
+	const hiddenFields = document.getElementsByName("fields[{{ field.alias }}]");
+	hiddenFields[0].value = hiddenParams.get('hash');
+	</script>
+{% endif %}
+
+{%if field.defaultValue == "{{params.hash}}" %}
+</div>
+{% endif %} 

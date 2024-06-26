@@ -8,6 +8,7 @@ class GetCookieConsent extends \Twig\TokenParser\AbstractTokenParser
 {
 
     private $data;
+    public $twig;
 
     public function __construct($data, $twig)
     {

@@ -14,7 +14,8 @@ use App\Domain\Request\Utils\CurlHandler;
 
 final class ApiGetContentService extends RequestService
 {
-    private $respository;
+    private $repository;
+    public $settings;
 
     public function __construct(SessionHelper $session, RequestCacheRepository $repository, ContainerInterface $container) {
         parent::__construct($session, $container);

@@ -16,6 +16,10 @@ use SlimSession\Helper as SessionHelper;
 
 final class GdprUpdateAction
 {
+    public $gdprRequestService;
+    public $renderPageService;
+    public $cacheService;
+
     public function __construct(GdprUpdateService $gdprUpdateService, RenderPageService $renderPageService, CacheService $cacheService) {
         $this->gdprUpdateService = $gdprUpdateService;
         $this->renderPageService = $renderPageService;

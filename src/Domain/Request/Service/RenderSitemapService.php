@@ -20,6 +20,7 @@ final class RenderSitemapService
 {
 
     private $repository;
+    public $settings;
 
     public function __construct(ContainerInterface $container) {
         $this->settings = $container->get("settings");

@@ -11,7 +11,14 @@
 		{% if field.pattern %} pattern="{{ field.pattern }}" {% endif %} 
 		{% if field.placeholder %} placeholder="{{ field.placeholder }}" {% endif %} 
 		{% if field.required %} required {% endif %} 
-		
+		{% if field.disabled %} disabled {% endif %} 
 		{{ field.attributes|raw }}
 	>
+	{% if field.defaultValue == "params.email" %}
+		<script>
+			const emailParams = new URLSearchParams(location.search);
+			const emailFields = document.getElementsByName("fields{{ parent }}[{{ field.alias }}]");
+			emailFields[0].value = emailParams.get('email');
+		</script>
+	{% endif %} 
 {% endblock field %}

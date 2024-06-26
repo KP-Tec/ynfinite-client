@@ -20,7 +20,7 @@
 			{% endif %}
 			{% set items = field.stepList|split(",") %}
 			{% for item in items %}
-				<option value="{{ item }}" {% if field.value['distance'] == item %}selected{% endif %}>{{ item }} {{ field.stepListUnit }}</option>
+				<option value="{{ item }}" {% if field.value['distance'] == item or (field.value['distance'] not in items and (items|length / 2)|round == loop.index ) %}selected{% endif %}>{{ item }} {{ field.stepListUnit }}</option>
 			{% endfor %}
 		</select>
 	</div>

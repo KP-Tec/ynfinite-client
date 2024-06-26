@@ -11,6 +11,9 @@ use App\Domain\Request\Service\RequestService;
 
 final class GetSitemapService extends RequestService
 {
+    private $repository;
+    public $settings;
+
     public function __construct(SessionHelper $session, ContainerInterface $container) {
         parent::__construct($session, $container);    
     }

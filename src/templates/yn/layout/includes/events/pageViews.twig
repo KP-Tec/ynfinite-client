@@ -1,0 +1,14 @@
+<script>
+    const pageViewEvents = window.pageViewEvents
+    if(pageViewEvents){
+        if(simpleDebug || debug){
+            console.log(`%c-> Page view added for ${pageViewEvents.length} event(s) <-`,  'color: #e91f63')
+        }
+        window.pageViewEvents.forEach((event) => {
+            if(debug){
+                console.log('Tracked pageView')
+            }
+            event()
+        })
+    }
+</script>

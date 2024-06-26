@@ -15,6 +15,10 @@ use Exception;
 
 final class RenderPageAction
 {
+    public $requestPageService;
+    public $renderPageService;
+    public $cacheService;
+
     public function __construct(RequestPageService $requestPageService, RenderPageService $renderPageService, CacheService $cacheService) {
         $this->requestPageService = $requestPageService;
         $this->renderPageService = $renderPageService;
@@ -31,19 +35,44 @@ final class RenderPageAction
                 die();
             }
 
+            if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] == '/logout') {
+                if (isset($_COOKIE['leadGroupIds'])) {
+                    $expires = time() - 3600;
+                    setcookie('leadGroupIds', '', $expires, '/');
+                    setcookie('ynfinite-session', '', $expires, '/');
+                    unset($_COOKIE['leadGroupIds']);
+                    unset($_COOKIE['ynfinite-session']);
+                }
+                header('Location: /');
+                die();
+            }
+            
             $formRequest = $request->getParsedBody();
             if($formRequest && $formRequest["method"] == "post" && !isset($formRequest["hasProof"])){
-                throw new Exception("The form has no proof that is was sent by a human. Sorry for you inconvenience.". $formRequest["hasProof"]);
+                throw new Exception("The form has no proof that is was sent by a human. Sorry for you inconvenience.");
             }
-
+            
             $data = $this->requestPageService->getPage($request);
-
-            if (is_array($data)) {                
+            
+            if (is_array($data)) {
+                if (isset($data['data']['leadGroupIds'])) {
+                    $leadGroupIds = $data['data']['leadGroupIds'];
+                    setcookie('leadGroupIds', $leadGroupIds, time() + (86400 * 30), "/");
+                }
+                if (isset($_COOKIE["loginToken"])) {
+                    $_SESSION["loginToken"] = $_COOKIE["loginToken"];
+                }
+                if (!isset($data["data"]["errors"]) && isset($_POST['fields'])
+                    && isset($_POST['fields']['general_e-mail'])
+                    && isset($_POST['fields']['general_password'])) {
+                    header('Location: ' . $_SERVER['REQUEST_URI']);
+                    die();
+                }
                 $renderedTemplate = $this->renderPageService->render($data["templates"], $data["data"]);
                 if($data["data"]["page"]["type"] !== "404") {
                     $this->cacheService->createCache("PAGE", $renderedTemplate);
                 }
-                
+
                 $response->getBody()->write($renderedTemplate);
             } else {
                 $response->getBody()->write($data);
@@ -52,8 +81,6 @@ final class RenderPageAction
         catch (YnfiniteException $e) {
             return $this->handleException($e, $response);
         }
-
-        $response = $response->withHeader('Cache-Control', 'max-age=15');
 
         return $response;
     }
