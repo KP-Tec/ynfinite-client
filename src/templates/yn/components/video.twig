@@ -1,60 +1,146 @@
+{% set randomKey = random(0, 999999999) %}
+
 {% if '?' in id %}
     {% set id = id|split('?')[0] %}
 {% endif %}
 
+
 {% if id %}
-	<div class="yn-video">
-		{% if provider == "youtube" %}
-            {% if not attributes %}
-                {% set attributes = 'frameborder="0" allowfullscreen allow="fullscreen; picture-in-picture"' %}
-            {% endif %}
+    {% if provider == "youtube" %}
+        {% if not attributes %}
+            {% set attributes = 'rel="0" modestbranding="0" frameborder="0" allowfullscreen allow="fullscreen; picture-in-picture"' %}
+        {% endif %}
+
+        <div class="yn-video" id="yn-video-youtube-{{randomKey}}" style="background-image: url('https://i.ytimg.com/vi/{{ id }}/maxresdefault.jpg?w=1280&h=720'); aspect-ratio: 16/9; width: 100%; height: auto; background-size: cover; background-position: center;"></div>
+        <script>
+            window.addEventListener('load', () => {
+                if (!window.addedScripts.includes('video--youtube')){
+                    let script = document.createElement('script')
+                    script.setAttribute('src', "https://www.youtube.com/iframe_api")
+                    document.head.appendChild(script)
+                    window.addedScripts.push('video--youtube')
+                }
             
-            {% if noLazy == true %}
-			    <iframe src="https://www.youtube-nocookie.com/embed/{{ id }}{{ parameter }}" title="{{ title }}" {% if width %}width="{{ width }}"{% endif %} {% if height %}height="{{ height }}"{% endif %} {{ attributes }}></iframe>
-            {% else %}
-                <lite-youtube videoid="{{ id }}" style="background-image: url('https://i.ytimg.com/vi/{{ id }}/maxresdefault.jpg?w=1280&h=720'); width: 100%; height: auto; max-width: 100%; aspect-ratio: 16/9; display: block; padding: 0;" params="{{ params }}" title="{{ title }}" width="{{ width }}" height="{{ height }}" {{ attributes }}></lite-youtube>
-                <script>
-                    window.addEventListener('load', () =>{
-                        if (!window.addedScripts.includes('video--youtube')){
-                            let script = document.createElement('script')
-                            let style = document.createElement('link')
+                const trackVideo = (event) => {
+                    const videoEvents = window.videoEvents
+                    if(videoEvents){
+                        const video = {
+                            title: event.target.videoTitle,
+                            url: event.target.getVideoUrl(),
+                            state: event.target.getPlayerState(),
+                            percent: Math.round(event.target.getCurrentTime() / event.target.getDuration() * 100),
+                            duration: event.target.getDuration().toFixed(0),
+                            currentTime: event.target.getCurrentTime().toFixed(0),
+                            provider: 'Youtube'
+                        }
 
-                            script.setAttribute('src', "/assets/vendor/ynfinite/js/youtube/youtube-lite.js") 
-                            style.setAttribute('src', "/assets/vendor/ynfinite/css/youtube/youtube-lite.css") 
+                        if(debug){
+                            const eventName = 'video'
+                            console.log('Youtube Video - ', eventName, video)
+                        }
 
-                            document.body.appendChild(script) 
-                            document.body.appendChild(style)
+                        window.videoEvents.forEach((script) => script(video));
+                    }
+                }
 
-                            window.addedScripts.push('video--youtube')
-                        } 
-                    }) 
-                </script>
-            {% endif %}
-		{% elseif provider == "vimeo" %}
-            {% if not parameter %}
-                {% set parameter = 'dnt=1' %}
-            {% endif %} 
-            {% if parameter and not '?' in parameter %}
-                {% set parameter = '?' ~ parameter %}
-            {% endif %}
-            {% if not attributes %}
-                {% set attributes = 'frameborder="0" allowfullscreen allow="fullscreen; picture-in-picture"' %}
-            {% endif %}
-            {% if noLazy == true %}
-			    <iframe src="https://player.vimeo.com/video/{{ id }}{{ parameter }}" title="{{ title }}" width="{{ width }}" height="{{ height }}" {{ attributes }}></iframe>
-            {% else %}
-                <lite-vimeo videoid="{{ id }}" style="background-image: url('https://i.vimeocdn.com/video/{{ id }}.webp?mw=1280&mh=720&q=70'); width: 100%; height: auto; max-width: 100%; aspect-ratio: 16/9; display: block; padding: 0;" params="{{ params }}" title="{{ title }}" width="{{ width }}" height="{{ height }}" {{ attributes }}></lite-vimeo>
-                 <script>
-                    window.addEventListener('load', () =>{
-                        if (!window.addedScripts.includes('video--vimeo')){
-                            let script = document.createElement('script')
-                            script.setAttribute('src', "/assets/vendor/ynfinite/js/vimeo/vimeo-lite.js") 
-                            document.body.appendChild(script)
-                            window.addedScripts.push('video--vimeo')
-                        } 
-                    }) 
-                </script>
-            {% endif %}
-		{% endif %}
-	</div>
+                function getAttributes(string) {
+                    const attributesArray = string.split(/(?<!;)\s+/);
+
+                    const cleanedAttributes = attributesArray.map(attribute => {
+                        if(attribute.includes('=')){
+                            const splittedAttribute = attribute.split('=')
+                            return([splittedAttribute[0], splittedAttribute[1].slice(1,-1)])
+                        }
+                        return([attribute, ''])
+                    });
+
+                    return(cleanedAttributes)
+                }
+
+                const cleanedAttributes = getAttributes("{{ attributes|replace({'"': "'"})|raw }}")
+                const video = document.querySelector('#yn-video-youtube-{{randomKey}}')
+                const tempVars = {};
+                cleanedAttributes.forEach((attribute) => {
+                    tempVars[attribute[0]] = attribute[1];
+                });
+
+                video.addEventListener('click', (e) => {
+                    e.target.classList.add('loaded')
+                    new YT.Player(e.target.id, {
+                        {% if height %}
+                        height: "{{ height }}",
+                        {% endif %}
+                        {% if width %}
+                        width: "{{ width }}",
+                        {% endif %}
+                        videoId: "{{id}}",
+                        {% if attributes %}
+                        playerVars: tempVars,
+                        {% endif %}
+                        events: {
+                            "onReady": (event) => {event.target.playVideo()},
+                            "onStateChange": (event) => {trackVideo(event)}
+                        }
+                    });
+                })
+            })
+        </script>
+
+    {% elseif provider == "vimeo" %}
+            <div class="yn-video" id="yn-video-vimeo-{{randomKey}}" data-vimeo-id-temp="{{id}}" {% if height %}data-vimeo-height="{{ height }}"{% endif %} {% if width %}data-vimeo-width="{{ width }}"{% endif %} style="background-image: url('https://i.vimeocdn.com/video/{{ id }}.webp?mw=1280&mh=720&q=70'); aspect-ratio: 16/9; width: 100%; height: auto; background-size: cover"></div>
+            <script>
+                window.addEventListener('load', () => {
+                    if (!window.addedScripts.includes('video--vimeo')){
+                        let script = document.createElement('script')
+                        script.setAttribute('src', "https://player.vimeo.com/api/player.js")
+                        document.head.appendChild(script)
+                        window.addedScripts.push('video--vimeo')
+                    }
+
+                    const trackVideo = (video) => {
+                        const videoEvents = window.videoEvents
+                        if(videoEvents){
+                            if(debug){
+                                const eventName = 'video'
+                                console.log('Vimeo Video - ', eventName, video)
+                            }
+
+                            window.videoEvents.forEach((script) => script(video));
+                        }
+                    }
+
+                    const video = document.querySelector('#yn-video-vimeo-{{randomKey}}')
+                    function getVimeoThumbnails(videoid) {
+                        fetch(`https://vimeo.com/api/v2/video/${videoid}.json`)
+                        .then(response => {
+                            return response.text();
+                        })
+                        .then(data => {
+                            const { thumbnail_large } = JSON.parse(data)[0];
+                            video.style.backgroundImage = `url(${thumbnail_large})`;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                    }
+                    getVimeoThumbnails('{{id}}')
+
+                    video.addEventListener('click', (e) => {
+                        e.target.classList.add('loaded')
+                        e.target.setAttribute('data-vimeo-id', '{{id}}')
+                        const player = new Vimeo.Player(e.target.id)
+
+                        player.getVideoTitle().then(title => {
+                            player.getVideoUrl().then(url => {
+                                player.on('play', (event) => {trackVideo({title: title, url: url, state : 1, percent: event.percent, duration: event.duration , currentTime: event.seconds})})
+                                player.on('ended', (event) => {trackVideo({title: title, url: url, state : 0, percent: event.percent, duration: event.duration , currentTime: event.seconds})})
+                                player.on('pause', (event) => {trackVideo({title: title, url: url, state : 2, percent: event.percent, duration: event.duration , currentTime: event.seconds})})
+                                player.on('progress', (event) => {trackVideo({title: title, url: url, state : 3, percent: event.percent, duration: event.duration , currentTime: event.seconds})})
+                                player.play()
+                            })
+                        })
+                    })
+                })
+            </script>
+    {% endif %}
 {% endif %} 

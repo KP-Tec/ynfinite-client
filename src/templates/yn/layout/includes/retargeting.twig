@@ -1,0 +1,16 @@
+{# * Retargeting #}
+{% set _yn_retargeting = _ynfinite.site.seo.retargeting.active %}
+{% set _yn_retargeting_tools = _ynfinite.site.seo.retargeting.tools %}
+
+{% if _yn_retargeting and _yn_retargeting_tools %}
+    <script>
+        const simpleDebug = true; // only log for added events
+        const debug = true; // logs for every event
+    </script>
+
+    {% for _yn_retargeting_tool in _yn_retargeting_tools %}
+        {% if _yn_retargeting_tool.type %}
+            {% include "yn/layout/includes/retargeting/" ~ _yn_retargeting_tool.type|raw ~ ".twig" %}
+        {% endif %}
+    {% endfor %}
+{% endif %}

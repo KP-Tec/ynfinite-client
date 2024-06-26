@@ -1,0 +1,42 @@
+<script>
+    const linkEvents = window.linkEvents
+    if(linkEvents){
+        const links = Array.from(document.links)
+        let externalLinks = links.filter((x) => x.href.includes('://') && !(x.href.includes('{{_ynfinite.domain.origin}}') || x.href.includes('mailto:')  || x.href.includes('tel:') || x.getAttribute('download')))
+        const mailLinks = links.filter((x) => x.href.includes('mailto:'));
+        {% if not _yn_tracking_email %}
+            externalLinks = externalLinks.concat(mailLinks)
+        {% endif %}
+        const telLinks = links.filter((x) => x.href.includes('tel:'))
+        {% if not _yn_tracking_tel %}
+            externalLinks = externalLinks.concat(telLinks)
+        {% endif %}
+        const downloadLinks = links.filter((x) => x.getAttribute('download'))
+        {% if not _yn_tracking_downloads %}
+            externalLinks = externalLinks.concat(downloadLinks)
+        {% endif %}
+
+        if(simpleDebug || debug){
+            console.log(`%c-> Link tracking added for ${linkEvents.length} event(s) - ${links.length} link(s) found [${externalLinks.length} external link(s), ${mailLinks.length} mail link(s), ${telLinks.length} tel link(s), ${downloadLinks.length} download link(s)] (Internal links will not be tracked when clicked, but will be tracked through pageView tracking) <-`,  'color: #e91f63')
+        }
+
+        const handleLinks = (links, eventName) => {
+            links.forEach(link => {
+                const url = link.href.replace('mailto:', '').replace('tel:', '')
+                link.addEventListener('click', () => {
+                    linkEvents.forEach(event => {
+                        event(eventName, url)
+                         if(debug){
+                            console.log('Tracked link - ', eventName, url)
+                        }
+                    });
+                })
+            });
+        }
+
+        {% if _yn_tracking_external %}handleLinks(externalLinks, 'click');{% endif %}
+        {% if _yn_tracking_email %}handleLinks(mailLinks, 'click_mail');{% endif %}
+        {% if _yn_tracking_tel %}handleLinks(telLinks, 'click_phone');{% endif %}
+        {% if _yn_tracking_downloads %}handleLinks(downloadLinks, 'click_download');{% endif %}
+    }
+</script>

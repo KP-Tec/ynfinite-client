@@ -1,5 +1,5 @@
 {% for group in groups %}
-	<div class="yn-form-page" data-ynformpagelabel="{{group.label}}">
+	<div class="yn-form-page" data-ynformpagelabel="{{group.label}}" style="margin-bottom: 16px;">
 		{% for row in group["fields"] %}
 			<div class="yn-form-grid-row">
 				{% for field in row %}

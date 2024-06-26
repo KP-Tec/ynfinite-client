@@ -1,19 +1,17 @@
 const YnfiniteForms = {
-	addChangeEvent(element) {
-		for (var i = 0; i < element.elements.length; i++) {
-			element.elements[i].addEventListener('change', function (e) {
-				e.preventDefault()
-				element.submit()
-			})
-		}
-	},
-
 	resetForm(element) {
 		element.reset()
 	},
 
 	async submitForm(element, eventType) {
-		const method = element.getAttribute('data-ynformmethod')
+		const redirect = element.getAttribute('redirect')
+
+		if (redirect === 'true') {
+			element.submit()
+			return
+		}
+
+		const method = element.getAttribute('method')
 		const hasProof = method == 'get' ? true : element.getAttribute('data-has-proof')
 		const proofenHash = method == 'get' ? true : element.getAttribute('data-proofen-hash')
 
@@ -34,8 +32,7 @@ const YnfiniteForms = {
 		element.dispatchEvent(ynBeforeAsyncChangeData)
 
 		const formData = new FormData(element)
-		formData.set('eventAsync', true)
-		formData.set('eventType', eventType)
+		formData.set('events', element.getAttribute('data-events'))
 		formData.set('method', method)
 		formData.set('formId', element.getAttribute('data-ynformid'))
 		formData.set('formLanguage', element.getAttribute('data-language'))
@@ -65,12 +62,25 @@ const YnfiniteForms = {
 		})
 
 		if (response.ok) {
-			const ynAsyncChange = new CustomEvent('onAsyncChange', {
-				detail: {
-					response: await response.json(),
-				},
-			})
-			element.dispatchEvent(ynAsyncChange)
+			const jsonResponse = await response.json()
+			switch (jsonResponse['type']) {
+				case 'page':
+					element.dispatchEvent(
+						new CustomEvent('onAsyncChange', {
+							detail: {
+								response: jsonResponse,
+							},
+						})
+					)
+					break
+				case 'redirect':
+					window.location.replace(jsonResponse['url'])
+					break
+				case '404':
+				case 'error':
+					console.log('404/Error: ', jsonResponse['message'])
+					break
+			}
 
 			if (method == 'post' && formSubmitButton) {
 				formSubmitButton.classList.remove('yn-loader')
@@ -88,7 +98,7 @@ const YnfiniteForms = {
 		}
 	},
 
-	addAsyncChangeEvent(element) {
+	addChangeEvent(element) {
 		const formInputElements = element.querySelectorAll('select, input')
 
 		for (var i = 0; i < formInputElements.length; i++) {
@@ -99,7 +109,7 @@ const YnfiniteForms = {
 		}
 	},
 
-	addAsyncSubmitEvent(element) {
+	addSubmitEvent(element) {
 		element.addEventListener('submit', async (e) => {
 			e.preventDefault()
 			await this.submitForm(element, 'onSubmit')
@@ -112,21 +122,14 @@ const YnfiniteForms = {
 
 			forms.forEach((form) => {
 				if (form.hasAttribute('data-onchange')) {
-					if (form.dataset.onchange === 'async') {
-						this.addAsyncChangeEvent(form)
-					} else {
-						this.addChangeEvent(form)
-					}
+					this.addChangeEvent(form)
 				}
 
-				if (form.hasAttribute('data-onsubmit')) {
-					if (form.dataset.onsubmit === 'async') {
-						this.addAsyncSubmitEvent(form)
-					}
+				if (form.hasAttribute('data-onsubmit') || !form.hasAttribute('data-onchange')) {
+					this.addSubmitEvent(form)
 				}
 
 				// Handle reset action
-
 				const resetButton = form.querySelector("button[type='reset']")
 				if (resetButton) {
 					resetButton.addEventListener('click', async (e) => {

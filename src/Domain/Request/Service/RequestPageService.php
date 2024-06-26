@@ -11,6 +11,9 @@ use App\Domain\Request\Service\RequestService;
 
 final class RequestPageService extends RequestService
 { 
+    private $repository;
+    public $settings;
+    
     public function __construct(SessionHelper $session, ContainerInterface $container) {
         parent::__construct($session, $container);
     }
@@ -22,7 +25,29 @@ final class RequestPageService extends RequestService
 
         $postBody = $this->getBody($request);
 
-        return $this->request(trim($path), $this->settings["services"]["frontend"], $postBody, $jsonResponse);
+        $request = $this->request(trim($path), $this->settings["services"]["frontend"], $postBody, $jsonResponse);
+        $statusCode = $request["statusCode"];
+        $body = $request["body"];
+        if(in_array($statusCode, [200, 201, 206], true)){
+            // Page render
+            $body["type"] = 'page';
+            return $body;
+        }
+        else if(in_array($statusCode, [301, 302, 307, 308], true)){
+            // Redirect
+            if($body["loginToken"] && strlen($body["loginToken"] > 0)){
+                $_SESSION["loginToken"] = $body["loginToken"];
+            };
+            return array("type" => 'redirect', "statusCode" => $statusCode, "url" => $body["url"]);
+        } else if ($statusCode === 404){
+            // 404 render
+            $body = $body['message'];
+            $body["type"] = '404';
+            return $body;
+        } else {
+            // Error
+            return array("type" => 'error', 'message' => $body["message"]);
+        }
     }
 
     public function isValidUrl(){

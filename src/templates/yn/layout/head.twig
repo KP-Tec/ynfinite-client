@@ -124,3 +124,9 @@
 {% if _ynfinite.pagination.nextPage %}
 <link rel="next" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}__yPage={{ _ynfinite.pagination.nextPage }}">
 {% endif %}
+
+<!-- Google Site Verification -->
+{% if _ynfinite.site.seo.general.google_search_console %}
+	<meta name="google-site-verification" content="{{_ynfinite.site.seo.general.google_search_console}}" />
+{% endif %}
+

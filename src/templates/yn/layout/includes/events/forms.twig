@@ -1,0 +1,26 @@
+<script>
+    const formEvents = window.formEvents
+    if(formEvents){
+        const forms = document.querySelectorAll('form')
+        if(forms){
+            forms.forEach((form) => {
+                form.addEventListener('submit', () => {
+                    const name = form.getAttribute('name');
+                    const id = form.getAttribute('id');
+
+                    window.formEvents.forEach((event) => {
+                        event(name, id)
+                        if(debug){
+                            const eventName = 'form_start'
+                            console.log('Tracked form - ', eventName, name, id)
+                        }
+                    })
+                })
+            })
+
+            if(simpleDebug || debug){
+                console.log(`%c-> Form tracking added for ${window.formEvents.length} event(s) - ${forms.length} form(s) found <-`,  'color: #e91f63')
+            }
+        }
+    }
+</script>

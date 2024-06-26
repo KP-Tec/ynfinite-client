@@ -9,8 +9,8 @@ use App\Utils\Cache\StaticCache;
 
 final class CacheService
 {
-
     private $repository;
+    public $settings;
 
     public function __construct(RequestCacheRepository $repository, ContainerInterface $container) {
         $this->repository = $repository;

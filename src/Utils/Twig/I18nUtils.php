@@ -5,6 +5,12 @@ namespace App\Utils\Twig;
 use App\Utils\I18n\I18n;
 
 class I18nUtils {
+
+    public $data;
+    public $twig;
+
+    public $i18n;
+
     public function __construct($twig, $data)
     {
       $this->data = $data;

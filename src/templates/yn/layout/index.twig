@@ -45,6 +45,8 @@
 			{% isScriptActive "form:file" %}
 				<script src='{{ _yfunc("withVersion", "/assets/vendor/ynfinite/js/upload/upload.js") }}'></script>
 			{% endIsScriptActive %}
+			{% include "yn/layout/includes/tracking.twig" %}
+			{% include "yn/layout/includes/retargeting.twig" %}
 		{% endblock footer_scripts %}
  
 		{% block cookies %}

@@ -1,0 +1,50 @@
+{% set user = _ynfinite.user %}
+
+{% if user or form %}
+    <div class="yn-dropdown yn-dropdown--profile">
+        <svg class="yn-dropdown__button yn-user" width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-linecap="round"/>
+            <circle cx="12" cy="12" r="9" stroke="currentColor"/>
+            <path d="M18 18.7059C17.6461 17.6427 16.8662 16.7033 15.7814 16.0332C14.6966 15.3632 13.3674 15 12 15C10.6326 15 9.30341 15.3632 8.21858 16.0332C7.13375 16.7033 6.35391 17.6427 6 18.7059" stroke="currentColor" stroke-linecap="round"/>
+        </svg>
+        <div class="yn-dropdown__popup hidden">
+            <div class="yn-dropdown__content">
+                {% if user %}
+                    <div data-ynfield class="yn-user__info">
+                        <div class="close-wrapper">
+                            <div>
+                                <label class="small-label" data-ynfield>Mail</label>
+                                <p data-ynfield class="small">{{ user.email }}</p>
+                            </div>
+                            <svg class="yn-dropdown__button close" width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g id="Menu / Close_MD">
+                                <path id="Vector" d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    {% if links %}
+                        {% for link in links %}
+                            <a data-ynfield href="{{link.href}}" aria-label="{{link.title}}">{{link.text}}</a>
+                        {% endfor %}
+                    {% endif %}
+                    <a data-ynfield href="/profile" aria-label="Profil">Profil</a>
+                    <a data-ynfield href="/logout" aria-label="Logout">Logout</a>
+                {% elseif form %}
+                    <div class="close-wrapper">
+                        <div>
+                            <h4>Login</h4>
+                            <label>Noch kein Konto? <a href="/registration">Jetzt registrieren.</a></label>
+                        </div>
+                        <svg class="yn-dropdown__button close" width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="Menu / Close_MD">
+                            <path id="Vector" d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </g>
+                        </svg>
+                    </div>
+                    {{ _yfunc("form", form) }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}

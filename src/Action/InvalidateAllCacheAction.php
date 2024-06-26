@@ -11,6 +11,9 @@ use SlimSession\Helper as SessionHelper;
 
 final class InvalidateAllCacheAction
 {
+
+    public $repository;
+
     public function __construct(RequestCacheRepository $repository) {
         $this->repository = $repository;
     }

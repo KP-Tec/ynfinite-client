@@ -12,6 +12,10 @@ use SlimSession\Helper as SessionHelper;
 
 final class GetSitemapAction
 {
+
+    public $getSitemapService;
+    public $renderSitemapService;
+
     public function __construct(GetSitemapService $getSitemapService, RenderSitemapService $renderSitemapService) {
         $this->getSitemapService = $getSitemapService;
         $this->renderSitemapService = $renderSitemapService;

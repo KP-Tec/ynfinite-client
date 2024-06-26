@@ -14,7 +14,9 @@ use App\Domain\Request\Utils\CurlHandler;
 
 final class SendFormService extends RequestService
 {
-    private $respository;
+    private $repository;
+    public $settings;
+    public $securityError;
 
     public function __construct(SessionHelper $session, RequestCacheRepository $repository, ContainerInterface $container) {
         parent::__construct($session, $container);
@@ -36,8 +38,24 @@ final class SendFormService extends RequestService
         $this->checkPostProof($request);
 
         $response = $this->request(trim($path), $this->settings["services"]["form"], $postBody, $jsonResponse);
+        $statusCode = $response["statusCode"];
+        $body = $response["body"];
 
-        return $response;
+        if(in_array($statusCode, [200, 201, 206], true)){
+            // Page render
+            $body["type"] = 'page';
+            return $body;
+        }
+        else if(in_array($statusCode, [301, 302, 307, 308], true)){
+            // Redirect
+            if(isset($body["loginToken"]) && strlen($body["loginToken"] > 0)){
+                $_SESSION["loginToken"] = $body["loginToken"];
+            };
+            return array("type" => 'redirect', "statusCode" => $statusCode, "url" => $body["url"]);
+        } else {
+            // Error
+            return array("type" => 'error', 'message' => $body["message"]);
+        }
     }
 
     private function securityCheck($request) 
