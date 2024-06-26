@@ -48,7 +48,7 @@ return [
         'form' => [
             'host' => $ynfinite_server,
             'port' => $ynfinite_port,
-            'controller' => "/v1/api/frontend/form",
+            'controller' => "/v1/api/frontend/form_new",
         ],
         'api/getContent' => [
             'host' => $ynfinite_server,
