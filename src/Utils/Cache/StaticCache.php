@@ -71,42 +71,43 @@ class StaticCache
 
     public static function getCachePath($type)
     {
-        $dirname = StaticCache::createCacheKey($type);
-        if (!file_exists(getcwd() . StaticCache::BASIC_PATH . '/' . $dirname)) {
-            mkdir(getcwd() . StaticCache::BASIC_PATH . '/' . $dirname, 0777, true);
-        }
-
+        $dirname = StaticCache::createCacheKey($type);        
+        
         $name = 'loggedout';
         if (isset($_COOKIE['leadGroupIds'])) {
             $leadGroupIds = $_COOKIE['leadGroupIds'];
-            if ($leadGroupIds == 'empty') {
+            if ($leadGroupIds == 'empty') { 
                 $name = 'loggedin';
             } else {
                 $name = $leadGroupIds;
             }
         }
+        
+        $filename = "$dirname/$name.html";
+        $path = getcwd() . StaticCache::BASIC_PATH . $filename;
 
-        $filename = "/$dirname/$name.html";
-
-        return $filename;
+        return $path;
     }
 
     public static function createCache($type, $content)
     {
-        $filename = StaticCache::getCachePath($type);
-        $path = getcwd() . StaticCache::BASIC_PATH . $filename;
+        $path = StaticCache::getCachePath($type);
+
+        $dirname = dirname($path);
+        if (!file_exists($dirname)) {
+            mkdir($dirname, 0777, true);
+        }
         
         file_put_contents($path, $content);
         $etag = filemtime($path);
         header('ETag: ' . $etag);
 
-        return $filename;
+        return $path;
     }
 
     public static function getCache($type)
     {
-        $filename = StaticCache::getCachePath($type);
-        $path = getcwd() . StaticCache::BASIC_PATH . $filename;
+        $path = StaticCache::getCachePath($type);
 
         if(file_exists($path)) {
             $etag = filemtime($path);
@@ -124,12 +125,16 @@ class StaticCache
         return false;
     }
 
-    public static function invalidateCache($filename)
+    public static function invalidateCache($path)
     {
-        $path = getcwd() . StaticCache::BASIC_PATH . $filename;
         $result = false;
         if(file_exists($path)) {
             $result = unlink($path);
+        }
+
+        $dir = dirname($path);
+        if(is_dir($dir) && count(scandir($dir)) == 2){
+            rmdir($dir);
         }
         
         return $result;

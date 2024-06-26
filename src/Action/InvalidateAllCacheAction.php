@@ -27,8 +27,6 @@ final class InvalidateAllCacheAction
  
         $response->getBody()->write((string)json_encode(array("success" => $result)));
 
-        
-
         return $response
             ->withHeader('Content-Type', 'application/json')
             ->withStatus(200);
