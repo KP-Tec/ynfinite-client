@@ -21,6 +21,7 @@ final class RenderSitemapService
 
     private $repository;
     public $settings;
+    public $twig;
 
     public function __construct(ContainerInterface $container) {
         $this->settings = $container->get("settings");

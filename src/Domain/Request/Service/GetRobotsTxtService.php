@@ -22,7 +22,8 @@ final class GetRobotsTxtService extends RequestService
         $path = $request->getUri()->getPath();
 
         $postBody = $this->getBody($request);
+        $result = $this->request(trim($path), $this->settings["services"]["robots"], $postBody, false);
 
-        return $this->request(trim($path), $this->settings["services"]["robots"], $postBody, false);
+        return $result["body"];
     }
 }

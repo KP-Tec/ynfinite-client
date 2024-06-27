@@ -24,7 +24,8 @@ final class GetSitemapService extends RequestService
         $path = $request->getUri()->getPath();
 
         $postBody = $this->getBody($request);
+        $result = $this->request(trim($path), $this->settings["services"]["sitemap"], $postBody, $jsonResponse);
 
-        return $this->request(trim($path), $this->settings["services"]["sitemap"], $postBody, $jsonResponse);
+        return $result["body"];
     }
 }
