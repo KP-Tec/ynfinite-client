@@ -80,11 +80,17 @@ class RequestService {
         }
 
         $ip = $request->getHeader('X-Forwarded-For');
+
         if (empty($ip)) {
             $ip = $request->getHeader('Client-Ip'); 
         }
+
         if (empty($ip)) {
             $ip = $request->getServerParams()['REMOTE_ADDR'];
+        }
+
+        if (is_array($ip)) {
+            $ip = $ip[0];
         }
 
         $postBody = array_merge(array(
