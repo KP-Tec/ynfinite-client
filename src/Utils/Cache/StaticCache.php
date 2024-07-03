@@ -128,11 +128,13 @@ class StaticCache
     public static function invalidateCache($path)
     {
         $result = false;
-        if(file_exists($path)) {
-            $result = unlink($path);
+        $realPath = realpath($path);
+
+        if(file_exists($realPath)) {
+            $result = unlink($realPath);
         }
 
-        $dir = dirname($path);
+        $dir = dirname($realPath);
         if(is_dir($dir) && count(scandir($dir)) == 2){
             rmdir($dir);
         }
