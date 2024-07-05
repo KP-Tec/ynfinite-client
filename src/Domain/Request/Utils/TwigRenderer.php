@@ -132,7 +132,7 @@ final class TwigRenderer
             return implode($seperator, $joinArray);
         });
 
-        $filterJoinBy = new \Twig\TwigFilter('activeCookie', function ($name) {
+        $filterActiveCookie = new \Twig\TwigFilter('activeCookie', function ($name) {
             $cookie = null;
 
             foreach($this->data["cookies"]["available"] as $c) {
@@ -179,6 +179,7 @@ final class TwigRenderer
  
          $this->twig->addFilter($filterTrans);
          $this->twig->addFilter($filterJoinBy);
+         $this->twig->addFilter($filterActiveCookie);
          $this->twig->addFilter($filterHasCategory);
          $this->twig->addFilter($filterSome); 
 
