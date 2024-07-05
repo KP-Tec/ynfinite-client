@@ -123,6 +123,7 @@ const YnfiniteForms = {
 			forms.forEach((form) => {
 				if (form.hasAttribute('data-onchange')) {
 					this.addChangeEvent(form)
+					form.addEventListener('submit', async (e) => e.preventDefault()) // if we dont remove the submit event here, the second time you send the same formdata a submit will be triggert
 				}
 
 				if (form.hasAttribute('data-onsubmit') || !form.hasAttribute('data-onchange')) {
