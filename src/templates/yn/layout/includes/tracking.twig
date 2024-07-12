@@ -14,13 +14,13 @@
     {% set _yn_seo_debug = _ynfinite.site.seo.general.debug %}
 
     <script>
-        const simpleDebug = false; // only log for added events
-        const debug = "{{_yn_seo_debug|default(false)}}"; // logs for every event
-        window.pageViewEvents = []
-        window.scrollEvents = []
-        window.videoEvents = []
-        window.formEvents = []
-        window.linkEvents = []
+        const _yn_simpleDebug = false; // only log for added events
+        const _yn_debug = "{{_yn_seo_debug|default(false)}}"; // logs for every event
+        window._yn_pageViewEvents = []
+        window._yn_scrollEvents = []
+        window._yn_videoEvents = []
+        window._yn_formEvents = []
+        window._yn_linkEvents = []
     </script>
 
     {% for _yn_tracking_tool in _yn_tracking_tools %}

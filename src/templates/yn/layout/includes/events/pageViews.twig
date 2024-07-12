@@ -1,14 +1,14 @@
 <script>
-    const pageViewEvents = window.pageViewEvents
-    if(pageViewEvents){
-        if(simpleDebug || debug){
-            console.log(`%c-> Page view added for ${pageViewEvents.length} event(s) <-`,  'color: #e91f63')
+    const _yn_pageViewEvents = window._yn_pageViewEvents
+    if(_yn_pageViewEvents){
+        if(_yn_simpleDebug || _yn_debug){
+            console.log(`%c-> Page view added for ${_yn_pageViewEvents.length} event(s) <-`,  'color: #e91f63')
         }
-        window.pageViewEvents.forEach((event) => {
-            if(debug){
+        _yn_pageViewEvents.forEach((_yn_event) => {
+            if(_yn_debug){
                 console.log('Tracked pageView')
             }
-            event()
+            _yn_event()
         })
     }
 </script>

@@ -12,60 +12,60 @@
 				dataLayer.push(arguments);
 			}
 
-			let analytics_storage = 'denied'
-			let personalization_storage = 'denied'
-			let functionality_storage = 'denied'
-			let security_storage = 'denied'
-			let ad_storage = 'denied'
-			let ad_user_data = 'denied'
-			let ad_personalization = 'denied'
+			let _yn_analytics_storage = 'denied'
+			let _yn_personalization_storage = 'denied'
+			let _yn_functionality_storage = 'denied'
+			let _yn_security_storage = 'denied'
+			let _yn_ad_storage = 'denied'
+			let _yn_ad_user_data = 'denied'
+			let _yn_ad_personalization = 'denied'
 
 			{% isCookieActiveSeo findCookie(_yn_tracking_tool.analytics_storage_consent.alias) %}
-				analytics_storage = 'granted'
+				_yn_analytics_storage = 'granted'
 			{% endIsCookieActiveSeo %}
 			{% isCookieActiveSeo findCookie(_yn_tracking_tool.personalization_storage_consent.alias) %}
-				personalization_storage = 'granted'
+				_yn_personalization_storage = 'granted'
 			{% endIsCookieActiveSeo %}
 			{% isCookieActiveSeo findCookie(_yn_tracking_tool.functionality_storage_consent.alias) %}
-				functionality_storage = 'granted'
+				_yn_functionality_storage = 'granted'
 			{% endIsCookieActiveSeo %}
 			{% isCookieActiveSeo findCookie(_yn_tracking_tool.security_storage_consent.alias) %}
-				security_storage = 'granted'
+				_yn_security_storage = 'granted'
 			{% endIsCookieActiveSeo %}
 			{% isCookieActiveSeo findCookie(_yn_tracking_tool.ad_storage_consent.alias) %}
-				ad_storage = 'granted'
+				_yn_ad_storage = 'granted'
 			{% endIsCookieActiveSeo %}
 			{% isCookieActiveSeo findCookie(_yn_tracking_tool.ad_user_data_consent.alias) %}
-				ad_user_data = 'granted'
+				_yn_ad_user_data = 'granted'
 			{% endIsCookieActiveSeo %}
 			{% isCookieActiveSeo findCookie(_yn_tracking_tool.ad_personalization_consent.alias) %}
-				ad_personalization = 'granted'
+				_yn_ad_personalization = 'granted'
 			{% endIsCookieActiveSeo %}
 
-			if(simpleDebug || debug){
-				console.log('Google Analytics Consent: analytics_storage', analytics_storage)
-				console.log('Google Analytics Consent: personalization_storage', personalization_storage)
-				console.log('Google Analytics Consent: functionality_storage', functionality_storage)
-				console.log('Google Analytics Consent: security_storage', security_storage)
-				console.log('Google Analytics Consent: ad_storage', ad_storage)
-				console.log('Google Analytics Consent: ad_user_data', ad_user_data)
-				console.log('Google Analytics Consent: ad_personalization', ad_personalization)
+			if(_yn_simpleDebug || _yn_debug){
+				console.log('Google Analytics Consent: analytics_storage', _yn_analytics_storage)
+				console.log('Google Analytics Consent: personalization_storage', _yn_personalization_storage)
+				console.log('Google Analytics Consent: functionality_storage', _yn_functionality_storage)
+				console.log('Google Analytics Consent: security_storage', _yn_security_storage)
+				console.log('Google Analytics Consent: ad_storage', _yn_ad_storage)
+				console.log('Google Analytics Consent: ad_user_data', _yn_ad_user_data)
+				console.log('Google Analytics Consent: ad_personalization', _yn_ad_personalization)
 			}	
 
 			gtag('consent', 'default', {
-				'analytics_storage': analytics_storage,
-				'personalization_storage': personalization_storage,
-				'functionality_storage': functionality_storage,
-				'security_storage': security_storage,
-				'ad_storage': ad_storage,
-				'ad_user_data': ad_user_data,
-				'ad_personalization': ad_personalization
+				'analytics_storage': _yn_analytics_storage,
+				'personalization_storage': _yn_personalization_storage,
+				'functionality_storage': _yn_functionality_storage,
+				'security_storage': _yn_security_storage,
+				'ad_storage': _yn_ad_storage,
+				'ad_user_data': _yn_ad_user_data,
+				'ad_personalization': _yn_ad_personalization
 			});
 
 			gtag('js', new Date());
 			gtag('config', '{{_yn_tracking_tool.key}}', {sendBeacon: true});
 
-			if(simpleDebug || debug){
+			if(_yn_simpleDebug || _yn_debug){
 				console.log('%c-> Google Analytics added <-',  'color: #e91f63')
 			}	
 			
@@ -74,16 +74,16 @@
 				// Page View Tracking
 				// ==================================================
 				{% if _yn_tracking_pageViews %}
-					const trackPageView = () => {
-						const eventName = 'page_view'
+					const _yn_trackPageView = () => {
+						const _yn_eventName = 'page_view'
 
-						gtag('event', eventName, {
+						gtag('event', _yn_eventName, {
 							page_title: '{{ _ynfinite.page.name }}',
 							page_referrer: '{{ _ynfinite.domain.referrer }}',
 							page_location: '{{ _ynfinite.domain.href }}',
 						});
 					}
-					window.pageViewEvents.push(trackPageView);
+					window._yn_pageViewEvents.push(_yn_trackPageView);
 				{% endif %}
 
 				// ==================================================
@@ -91,18 +91,18 @@
 				// ==================================================
 
 				{% if _yn_tracking_submit_form %}
-					function formTracking(name, id) {
-						const eventName = 'form_start'
+					function _yn_formTracking(_yn_name, _yn_id) {
+						const _yn_eventName = 'form_start'
 
-						gtag('event', eventName, {
+						gtag('event', _yn_eventName, {
 							page_title: '{{ _ynfinite.page.name }}',
 							page_referrer: '{{ _ynfinite.domain.referrer }}',
 							page_location: '{{ _ynfinite.domain.href }}',
-							form_name: name,
-							form_id: id
+							form_name: _yn_name,
+							form_id: _yn_id
 						});
 					}
-					window.formEvents.push(formTracking);
+					window._yn_formEvents.push(_yn_formTracking);
 				{% endif %}
 
 				// ==================================================
@@ -110,39 +110,39 @@
 				// ==================================================
 
 				{% if _yn_tracking_video %}
-					const videoTracking = (video) => {
-						let eventName
-						switch (video.state) {
+					const _yn_videoTracking = (_yn_video) => {
+						let _yn_eventName
+						switch (_yn_video.state) {
 							case 0: 
-								eventName = 'video_complete'
+								_yn_eventName = 'video_complete'
 								break;
 							case 1: 
-								eventName = 'video_start'
+								_yn_eventName = 'video_start'
 								break;
 							case 2: 
-								eventName = 'video_pause'
+								_yn_eventName = 'video_pause'
 								break;
 							default:
-								eventName = undefined
+								_yn_eventName = undefined
 						}
 
-						if(eventName !== undefined && (video.state === 1 || video.currentTime > 1)){
-							gtag('event', eventName, {
+						if(_yn_eventName !== undefined && (_yn_video.state === 1 || _yn_video.currentTime > 1)){
+							gtag('event', _yn_eventName, {
 								page_title: '{{ _ynfinite.page.name }}',
 								page_referrer: '{{ _ynfinite.domain.referrer }}',
 								page_location: '{{ _ynfinite.domain.href }}',
-								video_title: video.title,
-								video_url: video.url,
-								video_state: video.state,
-								video_percent: video.percent,
-								video_duration: video.duration,
-								video_currentTime: video.currentTime,
-								video_provider: video.provider
+								video_title: _yn_video.title,
+								video_url: _yn_video.url,
+								video_state: _yn_video.state,
+								video_percent: _yn_video.percent,
+								video_duration: _yn_video.duration,
+								video_currentTime: _yn_video.currentTime,
+								video_provider: _yn_video.provider
 							});
 						}
 					}
 				
-					window.videoEvents.push(videoTracking);
+					window._yn_videoEvents.push(_yn_videoTracking);
 				{% endif %}
 
 				// ==================================================
@@ -150,15 +150,15 @@
 				// ==================================================
 
 				{% if _yn_tracking_external or _yn_tracking_downloads or _yn_tracking_email or _yn_tracking_tel %}
-					const linkTracking = (eventName = 'click', url) => {
-						gtag('event', eventName, {
+					const _yn_linkTracking = (_yn_eventName = 'click', _yn_url) => {
+						gtag('event', _yn_eventName, {
 							page_title: '{{ _ynfinite.page.name }}',
 							page_referrer: '{{ _ynfinite.domain.referrer }}',
 							page_location: '{{ _ynfinite.domain.href }}',
-							link_url: url
+							link_url: _yn_url
 						});
 					}
-					window.linkEvents.push(linkTracking)
+					window._yn_linkEvents.push(_yn_linkTracking)
 				{% endif %}
 
 				// ==================================================
@@ -166,17 +166,17 @@
 				// ==================================================
 				
 				{% if _yn_tracking_pageScroll %}
-					const scrollTracking = (name, depth) => {
-						const eventName = 'scroll'
-						gtag('event', eventName, {
+					const _yn_scrollTracking = (_yn_name, _yn_depth) => {
+						const _yn_eventName = 'scroll'
+						gtag('event', _yn_eventName, {
 							page_title: '{{ _ynfinite.page.name }}',
 							page_referrer: '{{ _ynfinite.domain.referrer }}',
 							page_location: '{{ _ynfinite.domain.href }}',
-							page_section: name,
-							percent_scrolled: depth,
+							page_section: _yn_name,
+							percent_scrolled: _yn_depth,
 						});
 					}
-					window.scrollEvents.push(scrollTracking)
+					window._yn_scrollEvents.push(_yn_scrollTracking)
 				{% endif %}
 
 				// ==================================================

@@ -1,49 +1,49 @@
 <script>
-    const scrollEvents = window.scrollEvents
-    if(scrollEvents){
-        const sectionIsActive = (e) => {
-            const bodyHeight = document.body.offsetHeight;
-            const filteredObservers = e.filter((x) => x.target.offsetTop !== lastSectionOffset)
-            filteredObservers.forEach(filteredObserver => {
-                if (filteredObserver.intersectionRatio > 0) {
-                    const section = filteredObserver.target
-                    const name = section.querySelector('h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6')?.textContent || section.classList.value || ""
-                    const offsetTop = section.offsetTop
-                    lastSectionOffset = offsetTop
-                    const depth = round((offsetTop + section.offsetHeight) / bodyHeight * 100, 10)
+    const _yn_scrollEvents = window._yn_scrollEvents
+    if(_yn_scrollEvents){
+        const _yn_sectionIsActive = (e) => {
+            const _yn_bodyHeight = document.body.offsetHeight;
+            const _yn_filteredObservers = e.filter((x) => x.target.offsetTop !== _yn_lastSectionOffset)
+            _yn_filteredObservers.forEach(_yn_filteredObserver => {
+                if (_yn_filteredObserver.intersectionRatio > 0) {
+                    const _yn_section = _yn_filteredObserver.target
+                    const _yn_name = _yn_section.querySelector('h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6')?.textContent || _yn_section.classList.value || ""
+                    const _yn_offsetTop = _yn_section.offsetTop
+                    _yn_lastSectionOffset = _yn_offsetTop
+                    const _yn_depth = _yn_round((_yn_offsetTop + _yn_section.offsetHeight) / _yn_bodyHeight * 100, 10)
    
-                    if(offsetTop > 100){
-                        if(debug){
-                            const eventName = 'scroll'
-                            console.log('Tracked scroll - ', eventName, name, depth)
+                    if(_yn_offsetTop > 100){
+                        if(_yn_debug){
+                            const _yn_eventName = 'scroll'
+                            console.log('Tracked scroll - ', _yn_eventName, _yn_name, _yn_depth)
                         }
-                        scrollEvents.forEach((event) => {
-                            event(name, depth)
+                        _yn_scrollEvents.forEach((_yn_event) => {
+                            _yn_event(_yn_name, _yn_depth)
                         })
                     }
                 }
             });
         }
 
-        const config = {
+        const _yn_config = {
             rootMargin: '-50% 0% -50% 0%',
             threshold: 0
         };
 
-        function round(number, increment) {
-            return Math.ceil(number / increment ) * increment;
+        function _yn_round(_yn_number, _yn_increment) {
+            return Math.ceil(_yn_number / _yn_increment ) * _yn_increment;
         }
 
-        const sections = document.querySelectorAll('section')
-        const observer = new IntersectionObserver(sectionIsActive, config);
-        let lastSectionOffset;
+        const _yn_sections = document.querySelectorAll('section')
+        const _yn_observer = new IntersectionObserver(_yn_sectionIsActive, _yn_config);
+        let _yn_lastSectionOffset;
 
-        sections.forEach((section) => {
-            observer.observe(section);
+        _yn_sections.forEach((_yn_section) => {
+            _yn_observer.observe(_yn_section);
         })
 
-        if(simpleDebug || debug){
-            console.log(`%c-> Scroll tracking added for ${scrollEvents.length} event(s) <-`,  'color: #e91f63')
+        if(_yn_simpleDebug || _yn_debug){
+            console.log(`%c-> Scroll tracking added for ${_yn_scrollEvents.length} event(s) <-`,  'color: #e91f63')
         }
     }
 </script>

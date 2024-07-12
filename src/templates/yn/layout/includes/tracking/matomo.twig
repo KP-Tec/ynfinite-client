@@ -2,15 +2,15 @@
 	{% isCookieActiveSeo findCookie(_yn_tracking_tool.consent.alias) %}
 		<!-- Matomo -->
 		<script>
-			let url = '{{_yn_tracking_tool.url}}'
-			if(url.slice(-1) !== '/'){
-				url += '/'
+			let _yn_url = '{{_yn_tracking_tool.url}}'
+			if(_yn_url.slice(-1) !== '/'){
+				_yn_url += '/'
 			}
 			var _paq = window._paq = window._paq || [];
 			/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
 			_paq.push(['enableLinkTracking']);
 			(function() {
-				var u=`//${url}`;
+				var u=`//${_yn_url}`;
 				_paq.push(['setTrackerUrl', u+'matomo.php']);
 				_paq.push(['setSiteId', '1']);
 				_paq.push(['setDomains', ["*.{{_ynfinite.domain.hostname}}"]]);
@@ -26,7 +26,7 @@
 				// Start Tracking
 				// ==================================================
 
-				if(simpleDebug || debug){
+				if(_yn_simpleDebug || _yn_debug){
 					console.log('%c-> Matomo added <-', 'color: #e91f63')
 				}	
 				
@@ -35,10 +35,10 @@
 				// ==================================================
 
 				{% if _yn_tracking_pageViews %}
-					const trackPageView = () => {
+					const _yn_trackPageView = () => {
 						_paq.push(['trackPageView']);
 					}
-					window.pageViewEvents.push(trackPageView);
+					window. _yn_pageViewEvents.push(_yn_trackPageView);
 				{% endif %}
 
 				// ==================================================
@@ -46,10 +46,10 @@
 				// ==================================================
 
 				{% if _yn_tracking_submit_form %}
-					function formTracking(name) {
-						_paq.push(['trackEvent', 'Form Submit', name]);
+					function _yn_formTracking(_yn_name) {
+						_paq.push(['trackEvent', 'Form Submit', _yn_name]);
 					}
-					window.formEvents.push(formTracking);
+					window._yn_formEvents.push(_yn_formTracking);
 				{% endif %}
 
 				// ==================================================
@@ -57,27 +57,26 @@
 				// ==================================================
 
 				{% if _yn_tracking_video %}
-					const videoTracking = (video) => {
-						const videoState = video.state;
-						const videoUrl = video.url;
-						const videoPercent = Math.round(video.percent * 100) + '%';
+					const _yn_videoTracking = (_yn_video) => {
+						const _yn_videoState = _yn_video.state;
+						const _yn_videoUrl = _yn_video.url;
+						const _yn_videoPercent = Math.round(_yn_video.percent * 100) + '%';
 
-						switch (videoState) {
+						switch (_yn_videoState) {
 							case 0: 
-							console.log()
-								_paq.push(['trackEvent', 'Video complete', videoUrl]);
+								_paq.push(['trackEvent', 'Video complete', _yn_videoUrl]);
 								break;
 							case 1: 
-								_paq.push(['trackEvent', 'Video start', videoUrl]);
+								_paq.push(['trackEvent', 'Video start', _yn_videoUrl]);
 								break;
 							case 2: 
-								_paq.push(['trackEvent', 'Video pause', videoUrl, videoPercent]);
+								_paq.push(['trackEvent', 'Video pause', _yn_videoUrl, _yn_videoPercent]);
 								break;
 							default:
 						}
 					}
 				
-					window.videoEvents.push(videoTracking);
+					window._yn_videoEvents.push(_yn_videoTracking);
 				{% endif %}
 
 				// ==================================================
@@ -85,14 +84,14 @@
 				// ==================================================
 
 				{% if _yn_tracking_external or _yn_tracking_downloads or _yn_tracking_email or _yn_tracking_tel %}
-					const linkTracking = (eventName = 'click', url) => {
-						if(eventName === 'click') eventName = 'External Link Click'
-						if(eventName === 'click_mail') eventName = 'Mail Link Click'
-						if(eventName === 'click_phone') eventName = 'Phone Link Click'
-						if(eventName === 'click_download') eventName = 'Download Link Click'
-						_paq.push(['trackEvent', 'Link Click', eventName, url]);
+					const _yn_linkTracking = (_yn_eventName = 'click', _yn_url) => {
+						if(_yn_eventName === 'click') _yn_eventName = 'External Link Click'
+						if(_yn_eventName === 'click_mail') _yn_eventName = 'Mail Link Click'
+						if(_yn_eventName === 'click_phone') _yn_eventName = 'Phone Link Click'
+						if(_yn_eventName === 'click_download') _yn_eventName = 'Download Link Click'
+						_paq.push(['trackEvent', 'Link Click', _yn_eventName, _yn_url]);
 					}
-					window.linkEvents.push(linkTracking)
+					window._yn_linkEvents.push(_yn_linkTracking)
 				{% endif %}
 
 				// ==================================================
@@ -100,11 +99,11 @@
 				// ==================================================
 
 				{% if _yn_tracking_pageScroll %}
-					const scrollTracking = (name, depth) => {
-						_paq.push(['trackEvent', 'Scroll', 'Section', name]);
-						_paq.push(['trackEvent', 'Scroll depth', depth + '%']);
+					const _yn_scrollTracking = (_yn_name, _yn_depth) => {
+						_paq.push(['trackEvent', 'Scroll', 'Section', _yn_name]);
+						_paq.push(['trackEvent', 'Scroll depth', _yn_depth + '%']);
 					}
-					window.scrollEvents.push(scrollTracking)
+					window._yn_scrollEvents.push(_yn_scrollTracking)
 				{% endif %}
 
 				// ==================================================

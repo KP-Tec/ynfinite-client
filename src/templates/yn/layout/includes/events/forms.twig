@@ -1,25 +1,25 @@
 <script>
-    const formEvents = window.formEvents
-    if(formEvents){
-        const forms = document.querySelectorAll('form')
-        if(forms){
-            forms.forEach((form) => {
-                form.addEventListener('submit', () => {
-                    const name = form.getAttribute('name');
-                    const id = form.getAttribute('id');
+    const _yn_formEvents = window._yn_formEvents
+    if(_yn_formEvents){
+        const _yn_forms = document.querySelectorAll('form')
+        if(_yn_forms){
+            _yn_forms.forEach((_yn_form) => {
+                _yn_form.addEventListener('submit', () => {
+                    const _yn_name = _yn_form.getAttribute('name');
+                    const _yn_id = _yn_form.getAttribute('id');
 
-                    window.formEvents.forEach((event) => {
-                        event(name, id)
-                        if(debug){
-                            const eventName = 'form_start'
-                            console.log('Tracked form - ', eventName, name, id)
+                    _yn_formEvents.forEach((_yn_event) => {
+                        _yn_event(_yn_name, _yn_id)
+                        if(_yn_debug){
+                            const _yn_eventName = 'form_start'
+                            console.log('Tracked form - ', _yn_eventName, _yn_name, _yn_id)
                         }
                     })
                 })
             })
 
-            if(simpleDebug || debug){
-                console.log(`%c-> Form tracking added for ${window.formEvents.length} event(s) - ${forms.length} form(s) found <-`,  'color: #e91f63')
+            if(_yn_simpleDebug || _yn_debug){
+                console.log(`%c-> Form tracking added for ${_yn_formEvents.length} event(s) - ${_yn_forms.length} form(s) found <-`,  'color: #e91f63')
             }
         }
     }
