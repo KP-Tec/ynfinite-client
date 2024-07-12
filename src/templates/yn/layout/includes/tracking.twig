@@ -1,8 +1,9 @@
 {# * Tracking #}
 {% set _yn_tracking = _ynfinite.site.seo.tracking.active %}
 {% set _yn_tracking_tools = _ynfinite.site.seo.tracking.tools %}
+{% set _yn_seo_debug = _ynfinite.site.seo.general.debug %}
 
-{% if _yn_tracking and _yn_tracking_tools %}
+{% if _yn_tracking and _yn_tracking_tools and ('localhost' not in _ynfinite.currentDomain or _yn_seo_debug) %}
     {% set _yn_tracking_pageViews = _ynfinite.site.seo.events.pageViews %}
     {% set _yn_tracking_pageScroll = _ynfinite.site.seo.events.pageScroll %}
     {% set _yn_tracking_video = _ynfinite.site.seo.events.watchVideo %}
@@ -11,7 +12,6 @@
     {% set _yn_tracking_downloads = _ynfinite.site.seo.events.clickDownloadsLink %}
     {% set _yn_tracking_email = _ynfinite.site.seo.events.clickEmailLink %}
     {% set _yn_tracking_tel = _ynfinite.site.seo.events.clickTelLink %}
-    {% set _yn_seo_debug = _ynfinite.site.seo.general.debug %}
 
     <script>
         const _yn_simpleDebug = false; // only log for added events
