@@ -34,11 +34,8 @@ final class RequestPageService extends RequestService
             return $body;
         }
         else if(in_array($statusCode, [301, 302, 307, 308], true)){
-            // Redirect
-            if($body["loginToken"] && strlen($body["loginToken"] > 0)){
-                $_SESSION["loginToken"] = $body["loginToken"];
-            };
-            return array("type" => 'redirect', "statusCode" => $statusCode, "url" => $body["url"]);
+            header("Location: " . $body['url']);
+            die();
         } else if ($statusCode === 404){
             // 404 render
             $body = $body['message'];
