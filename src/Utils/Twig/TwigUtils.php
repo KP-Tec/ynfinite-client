@@ -518,17 +518,24 @@ class TwigUtils
                 $pattern = '/<p\b[^>]*>(.*?)<\/p\b>/s';
                 $foundText = 0;
                 $i = 0;
-                while(!$foundText > 0){
+
+                while(!$foundText > 0 && isset($intro_text[$i])){
                     if(isset($intro_text[$i]) && preg_match_all($pattern, $intro_text[$i]['value'], $matches) > 0){
                         $foundText = preg_match_all($pattern, $intro_text[$i]['value'], $matches);
                     }
                     $i++;
                 }
+
+                if(!isset($matches[1])){
+                    return null;
+                }
+
                 $result = '<p>' . implode("\n", $matches[1]) . '</p>';
                 return($result);
             }
         }
     }
+
 
     public function authorlist($context, $authors, $options = []) {
         if($authors){
