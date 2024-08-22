@@ -1,0 +1,21 @@
+{# * Structured Data #}
+{% set _yn_structuredData = _ynfinite.site.structuredData|default([]) %}
+{% set _yn_structuredData = _yn_structuredData|merge(_ynfinite.content.structuredData|default([])) %}
+{% set _yn_structuredData = _yn_structuredData|merge(_ynfinite.page.structuredData|default([])) %}
+
+{% if _yn_structuredData %}
+    {% for _yn_schema in _yn_structuredData %}
+        {% if _yn_schema.type %}
+            {% include "yn/layout/includes/type/" ~ _yn_schema.type|raw ~ ".twig" %}
+        {% endif %}
+    {% endfor %}
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org/",
+            "@type": "WebSite",
+            "name": "{{(_ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title ?: _ynfinite.site.meta.title)|raw}}",
+            "url": "{{_ynfinite.domain.origin|raw}}",
+        }
+    </script>
+{% endif %}

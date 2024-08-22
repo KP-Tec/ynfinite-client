@@ -1,0 +1,98 @@
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        {% if _yn_schema.name %}
+            "name": "{{_yn_schema.name|raw}}",
+        {% endif %}
+        {% if _yn_schema.description %}
+            "description": "{{_yn_schema.description|raw}}",
+        {% endif %}
+        {% if _yn_schema.image %}
+            "image": "{{_yn_schema.image[0].path|raw}}",
+        {% endif %}
+        {% if _yn_schema.startDate %}
+            "startDate": "{{_yn_schema.startDate|date('Y-m-d')}}",
+        {% endif %}
+        {% if _yn_schema.endDate %}
+            "endDate": "{{_yn_schema.endDate|date('Y-m-d')}}",
+        {% endif %}
+        {% if _yn_schema.status %}
+            "eventStatus": "https://schema.org/Event{{_yn_schema.status|raw}}",
+        {% endif %}
+        {% if _yn_schema.attendanceMode %}
+            "eventAttendanceMode": "https://schema.org/{{_yn_schema.attendanceMode|raw}}EventAttendanceMode",
+        {% endif %}
+
+        {% if _yn_schema.streamUrl or _yn_schema.venueName or _yn_schema.venueStreet or _yn_schema.venueCity or _yn_schema.venueZip or _yn_schema.venueCountry %}
+        "location": [
+            {% if _yn_schema.streamUrl %}
+                {
+                    "@type": "VirtualLocation",
+                    "url": "{{_yn_schema.streamUrl|raw}}"
+                },
+            {% endif %}
+            {% if _yn_schema.venueName or _yn_schema.venueStreet or _yn_schema.venueCity or _yn_schema.venueZip or _yn_schema.venueCountry %}
+                {		
+                    "@type": "Place",
+                    {% if _yn_schema.venueName %}
+                        "name": "{{_yn_schema.venueName|raw}}",
+                    {% endif %}
+                    "address": {
+                    "@type": "PostalAddress",
+                    {% if _yn_schema.venueStreet %}
+                        "streetAddress": "{{_yn_schema.venueStreet|raw}}",
+                    {% endif %}
+                    {% if _yn_schema.venueCity %}
+                        "addressLocality": "{{_yn_schema.venueCity|raw}}",
+                    {% endif %}
+                    {% if _yn_schema.venueZip %}
+                        "postalCode": "{{_yn_schema.venueZip|raw}}",
+                    {% endif %}
+                    {% if _yn_schema.venueCountry %}
+                        "addressCountry": "{{_yn_schema.venueCountry|raw}}"
+                    {% endif %}
+                    }
+                },
+            {% endif %}
+        ]
+        {% endif %}
+        {% if _yn_schema.performerType or _yn_schema.performerName %}
+            "performer": {
+                {% if _yn_schema.performerType %}
+                    "@type": "{{_yn_schema.performerType|raw}}",
+                {% endif %}
+                {% if _yn_schema.performerName %}
+                    "name": "{{_yn_schema.performerName|raw}}"
+                {% endif %}
+            },
+        {% endif %}
+        {% if _yn_schema.offer %}
+        "offers": [
+            {% for _yn_offer in _yn_schema.offer %}
+                {
+                    "@type": "Offer",
+                    {% if _yn_offer.name %}
+                        "name": "{{_yn_offer.name|raw}}",
+                    {% endif %}
+                    {% if _yn_offer.price %}
+                        "price": "{{_yn_offer.price|raw}}",
+                    {% endif %}
+                    {% if _yn_offer.currency %}
+                        "priceCurrency": "{{_yn_offer.currency|raw}}",
+                    {% endif %}
+                    {% if _yn_offer.avalibleDate %}
+                        "validFrom": "{{_yn_offer.avalibleDate|date('Y-m-d')}}",
+                    {% endif %}
+                    {% if _yn_offer.url %}
+                        "url":  "{{_yn_offer.url|raw}}",
+                    {% endif %}
+                    {% if _yn_offer.availability %}
+                        "availability": "https://schema.org/{{_yn_offer.availability}}"
+                    {% endif %}
+                }
+            {% endfor %}
+        ]
+        {% endif %}
+    }
+</script>

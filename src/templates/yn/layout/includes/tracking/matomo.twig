@@ -21,7 +21,7 @@
 		<!-- End Matomo Code -->
 
 		<script>
-			if(!window.addedScripts.includes('matomo')){
+			if(!window.addedScripts.includes('matomo-{{_yn_tracking_tool.url}}')){
 				// ==================================================
 				// Start Tracking
 				// ==================================================
@@ -110,7 +110,7 @@
 				// End Tracking
 				// ==================================================
 
-				window.addedScripts.push('matomo')
+				window.addedScripts.push('matomo-{{_yn_tracking_tool.url}}')
 			}
 		</script>
 	{% endIsCookieActiveSeo %}

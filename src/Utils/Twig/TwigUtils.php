@@ -536,7 +536,6 @@ class TwigUtils
         }
     }
 
-
     public function authorlist($context, $authors, $options = []) {
         if($authors){
              return $this->twig->render(

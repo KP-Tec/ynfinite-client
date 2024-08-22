@@ -1,0 +1,10 @@
+{% set hasScript = '<script' not in _yn_schema.script %}
+{% if hasScript %}
+    <script type="application/ld+json">
+{% endif %}
+
+{{ _yfunc('asTemplate', _yn_schema.script|raw)}}
+
+{% if hasScript %}
+    </script>
+{% endif %}
