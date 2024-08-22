@@ -1,8 +1,13 @@
 {% if _yn_tracking_tool %}
 	<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id={{_yn_tracking_tool.key}}"></script>
 	<script>
-		if(!window.addedScripts.includes('google-analytics')){
+		if(!window.addedScripts.includes('google-analytics-{{_yn_tracking_tool.key}}')){
+			let script;
+			script = document.createElement('script')
+			script.setAttribute('src', "https://www.googletagmanager.com/gtag/js?id={{_yn_tracking_tool.key}}")
+			script.setAttribute('loading', "async")
+			document.head.appendChild(script)
+
 			// ==================================================
 			// Start Tracking
 			// ==================================================
@@ -184,7 +189,7 @@
 				// ==================================================
 			{% endIsCookieActiveSeo %}
 
-			window.addedScripts.push('google-analytics')
+			window.addedScripts.push('google-analytics-{{_yn_tracking_tool.key}}')
 		}
 	</script>
 {% endif %}

@@ -1,0 +1,28 @@
+<script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    {% if _yn_schema.videoName %}
+        "name": "{{_yn_schema.videoName|raw}}",
+    {% endif %}
+    {% if _yn_schema.videoDescription %}
+        "description": "{{_yn_schema.videoDescription|raw}}",
+    {% endif %}
+    {% if _yn_schema.videoImage %}
+    "thumbnailUrl": [
+        {% for _yn_image in _yn_schema.videoImage %}
+            "{{_yn_image.path|raw}}"{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ],
+    {% endif %}
+    {% if _yn_schema.videoUploadDate %}
+        "uploadDate": "{{_yn_schema.videoUploadDate|date('Y-m-d')}}",
+    {% endif %}
+    {% if _yn_schema.videoMinutes and _yn_schema.videoSeconds %}
+        "duration": "PT{{_yn_schema.videoMinutes|raw}}M{{_yn_schema.videoSeconds|raw}}S",
+    {% endif %}
+    {% if _yn_schema.videoUrl %}
+        "embedUrl": "{{_yn_schema.videoUrl|raw}}"
+    {% endif %}
+    }
+</script>

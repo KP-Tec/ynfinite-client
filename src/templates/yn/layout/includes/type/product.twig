@@ -1,0 +1,108 @@
+<script type="application/ld+json">
+    {
+    "@context": "https://schema.org/", 
+    "@type": "Product", 
+    {% if _yn_schema.name %}
+        "name": "{{_yn_schema.name}}",
+    {% endif %}
+    {% if _yn_schema.image %}
+        "image": "{{_yn_schema.image[0].path|raw}}",
+    {% endif %}
+    {% if _yn_schema.description %}
+        "description": "{{_yn_schema.description}}",
+    {% endif %}
+    {% if _yn_schema.brandName %}
+        "brand": {
+            "@type": "Brand",
+            "name": "{{_yn_schema.brandName}}"
+        },
+    {% endif %}
+    {% if _yn_schema.offerType or _yn_schema.url or _yn_schema.currency or _yn_schema.lowPrice or _yn_schema.highPrice or _yn_schema.offerCount or _yn_schema.price or _yn_schema.priceValidUntil or _yn_schema.availability or _yn_schema.itemCondition %}
+        "offers": {
+            {% if _yn_schema.offerType %}
+                "@type": "{{_yn_schema.offerType|raw}}",
+            {% endif %}
+            {% if _yn_schema.url %}
+                "url": "{{_yn_schema.url|raw}}",
+            {% endif %}
+            {% if _yn_schema.currency %}
+                "priceCurrency": "{{_yn_schema.currency|raw}}",
+            {% endif %}
+            {% if _yn_schema.lowPrice %}
+                "lowPrice": "{{_yn_schema.lowPrice|raw}}",
+            {% endif %}
+            {% if _yn_schema.highPrice %}
+                "highPrice": "{{_yn_schema.highPrice|raw}}",
+            {% endif %}
+            {% if _yn_schema.numberOfOffers %}
+                "offerCount": "{{_yn_schema.numberOfOffers|raw}}",
+            {% endif %}
+            {% if _yn_schema.price %}
+                "price": "{{_yn_schema.price|raw}}",
+            {% endif %}
+            {% if _yn_schema.priceValidUntil %}
+                "priceValidUntil": "{{_yn_schema.priceValidUntil|date('Y-m-d')}}",
+            {% endif %}
+            {% if _yn_schema.availability %}
+                "availability": "https://schema.org/{{_yn_schema.availability|raw}}",
+            {% endif %}
+            {% if _yn_schema.itemCondition %}
+                "itemCondition": "https://schema.org/{{_yn_schema.itemCondition|raw}}"
+            {% endif %}
+        },
+    {% endif %}
+    {% if _yn_schema.review %}
+			"review": [
+				{% for _yn_review in _yn_schema.review %}
+					{
+						"@type": "Review",
+						"name": "{{_yn_review.name|raw}}",
+						"reviewRating": {
+							"@type": "Rating",
+							"ratingValue": "{{_yn_review.rating|raw}}",
+						},
+						{% if _yn_review.author %}
+							"author": {
+								"@type": "Person",
+								"name": "{{_yn_review.author|raw}}"
+							},
+						{% endif %}
+						{% if _yn_review.publisher %}
+							"publisher": {
+								"@type": "Person",
+								"name": "{{_yn_review.publisher|raw}}"
+							},
+						{% endif %}
+						{% if _yn_review.text %}
+							"reviewBody": "{{_yn_review.text|raw}}"
+						{% endif %}
+					}
+				{% endfor %}
+			],
+		{% endif %}
+		{% if _yn_schema.aggregateRatingValue or _yn_schema.numberOfRatings or _yn_schema.highestValueAllowed or _yn_schema.lowestValueAllowed %}
+			"aggregateRating": {
+				"@type": "AggregateRating",
+				{% if _yn_schema.aggregateRatingValue %}
+					"ratingValue": "{{_yn_schema.aggregateRatingValue|raw}}",
+				{% endif %}
+				{% if _yn_schema.numberOfRatings %}
+					"reviewCount": "{{_yn_schema.numberOfRatings|raw}}",
+				{% endif %}
+				{% if _yn_schema.highestValueAllowed %}
+					"bestRating": "{{_yn_schema.highestValueAllowed|raw}}",
+				{% endif %}
+				{% if _yn_schema.lowestValueAllowed %}
+					"worstRating": "{{_yn_schema.lowestValueAllowed|raw}}"
+				{% endif %}
+			},
+		{% endif %}
+        {% if _yn_schema.awards %}
+            "awards": [
+                {% for _yn_awards in _yn_schema.awards %}
+                    "{{_yn_awards.award|raw}}"{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ],
+        {% endif %}
+    }
+</script>

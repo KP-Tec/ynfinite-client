@@ -31,12 +31,22 @@
 {% set ogImage = _ynfinite.content.settings.opengraph.images[0] ?:  _ynfinite.page.meta.opengraph.image|default(null) %}
 {% set ogLocale = _ynfinite.languages.current ? _ynfinite.languages.current == "en" ? "en_US" : "de_DE" : "de_DE" %}
 
-<meta property="og:site_name" content="{{ ogSite_name }}">
+{% if ogSite_name %}
+	<meta property="og:site_name" content="{{ ogSite_name }}">
+{% endif %}
 <meta property="og:title" content="{{ ogTitle ?: _ynfinite.page.meta.title }}">
-<meta property="og:description" content="{{ ogDesc }}">
-<meta property="og:url" content="{{ urlData.cleanURL }}">
-<meta property="og:type" content="{{ ogType }}">
-<meta property="og:locale" content="{{ ogLocale }}">
+{% if ogDesc %}
+	<meta property="og:description" content="{{ ogDesc }}">
+{% endif %}
+{% if urlData %}
+	<meta property="og:url" content="{{ urlData.cleanURL }}">
+{% endif %}
+{% if ogType %}
+	<meta property="og:type" content="{{ ogType }}">
+{% endif %}
+{% if ogLocale %}
+	<meta property="og:locale" content="{{ ogLocale }}">
+{% endif %}
 
 {% if ogImage %}
 	{% set ogImageTitle = ogImage.metadata.title|default(null) %}
@@ -70,22 +80,33 @@
 	{% endif %}
 {% endif %}
 
-<!-- Twitter Open Graph Tags -->
-<meta name="twitter:card" content="summary_large_image">
-<meta property="twitter:title" content="{{ ogTitle }}">
-<meta property="twitter:description" content="{{ ogDesc }}">
-<meta name="twitter:url" content="{{ urlData.cleanURL }}">
-<meta property="twitter:domain" content="{{ urlData.cleanURL }}">
-{% if ogImage and ogImageURL %}
-	<meta name="twitter:image" content="{{ ogImageURL }}?w=1200&h=675&disableWebp=1">
+{% if ogTitle or ogDesc or ogImage %}
+	<!-- Twitter Open Graph Tags -->
 {% endif %}
-{% if ogImage and ogImageAlt %}
-	<meta name="twitter:image:alt" content="{{ ogImageAlt }}">
+{% if ogTitle %}
+	<meta property="twitter:title" content="{{ ogTitle }}">
+{% endif %}
+{% if ogDesc %}
+	<meta property="twitter:description" content="{{ ogDesc }}">
+{% endif %}
+{% if urlData %}
+	<meta name="twitter:url" content="{{ urlData.cleanURL }}">
+	<meta property="twitter:domain" content="{{ urlData.cleanURL }}">
+{% endif %}
+{% if ogImage %}
+	<meta name="twitter:card" content="summary_large_image">
+
+	{% if ogImageURL %}
+		<meta name="twitter:image" content="{{ ogImageURL }}?w=1200&h=675&disableWebp=1">
+	{% endif %}
+	{% if ogImageAlt %}
+		<meta name="twitter:image:alt" content="{{ ogImageAlt }}">
+	{% endif %}
 {% endif %}
 
-<!-- Favicons -->
 {% set favicon = _ynfinite.site.meta.favicon[0]|default(null) %}
 {% if favicon is not null %}
+<!-- Favicons -->
 	<link rel="icon" type="{{ favicon.file_type }}" sizes="192x192" href="{{ favicon.path }}?w=192&h=192">
 	<link rel="icon" type="{{ favicon.file_type }}" sizes="32x32" href="{{ favicon.path }}?w=32&h=32">
 	<link rel="icon" type="{{ favicon.file_type }}" sizes="96x96" href="{{ favicon.path }}?w=96&h=96">
@@ -113,7 +134,9 @@
 	<link rel="canonical" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}">
 {% endif %}
 
+{% if _ynfinite.pagination.prevPage or _ynfinite.pagination.nextPage %}
 <!-- Prev / Next -->
+{% endif %}
 {% if _ynfinite.pagination.prevPage %}
 	{% if _ynfinite.pagination.prevPage == '1' %}
 <link rel="prev" href="{{ _ynfinite.page.meta.canonical|default(urlData.cleanURL) }}">
@@ -125,8 +148,8 @@
 <link rel="next" href="{{ _ynfinite.page.meta.canonical|default(urlData.listingURL) }}__yPage={{ _ynfinite.pagination.nextPage }}">
 {% endif %}
 
-<!-- Google Site Verification -->
 {% if _ynfinite.site.seo.general.google_search_console %}
+	<!-- Google Site Verification -->
 	<meta name="google-site-verification" content="{{_ynfinite.site.seo.general.google_search_console}}" />
 {% endif %}
 

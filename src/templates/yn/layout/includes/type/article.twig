@@ -1,0 +1,56 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "{{_yn_schema.variant|raw}}",
+  {% if _yn_schema.url %}
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{_yn_schema.url|raw}}"
+    },
+  {% endif %}
+  {% if _yn_schema.headline %}
+    "headline": "{{_yn_schema.headline|raw}}",
+  {% endif %}
+  {% if _yn_schema.description %}
+    "description": "{{_yn_schema.description|raw}}",
+  {% endif %}
+  {% if _yn_schema.image %}
+    "image": [
+        {% for _yn_image in _yn_schema.image %}
+            "{{_yn_image.path|raw}}"{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ],  
+  {% endif %}
+  {% if _yn_schema.author or _yn_schema.authorUrl %}
+    "author": {
+        "@type": "Person",
+        {% if _yn_schema.author %}
+            "name": "{{_yn_schema.author|raw}}",
+        {% endif %}
+        {% if _yn_schema.authorUrl %}
+            "url": "{{_yn_schema.authorUrl|raw}}"
+        {% endif %}
+    },  
+  {% endif %}
+  {% if _yn_schema.publisher or _yn_schema.publisherLogo %}
+    "publisher": {
+        "@type": "Organization",
+        {% if _yn_schema.publisher %}
+        "name": "{{_yn_schema.publisher|raw}}",
+        {% endif %}
+        {% if _yn_schema.publisherLogo %}
+        "logo": {
+        "@type": "ImageObject",
+        "url": "{{_yn_schema.publisherLogo[0].path|raw}}"
+        }
+        {% endif %}
+    },
+  {% endif %}
+  {% if _yn_schema.datePublished %}
+    "datePublished": "{{_yn_schema.datePublished|date('Y-m-d')}}",
+  {% endif %}
+  {% if _yn_schema.dateModified %}
+    "dateModified": "{{_yn_schema.dateModified|date('Y-m-d')}}",
+  {% endif %}
+}
+</script>

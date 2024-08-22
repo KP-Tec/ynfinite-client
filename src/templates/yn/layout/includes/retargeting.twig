@@ -2,10 +2,10 @@
 {% set _yn_retargeting = _ynfinite.site.seo.retargeting.active %}
 {% set _yn_retargeting_tools = _ynfinite.site.seo.retargeting.tools %}
 
-{% if _yn_retargeting and _yn_retargeting_tools %}
+{% if _yn_retargeting and _yn_retargeting_tools and ('localhost' not in _ynfinite.currentDomain or _yn_seo_debug) %}
     <script>
-        const _yn_simpleDebug = true; // only log for added events
-        const _yn_debug = true; // logs for every event
+        const _yn_simpleDebug = false; // only log for added events
+        const _yn_debug = "{{_yn_seo_debug|default(false)}}"; // logs for every event
     </script>
 
     {% for _yn_retargeting_tool in _yn_retargeting_tools %}
