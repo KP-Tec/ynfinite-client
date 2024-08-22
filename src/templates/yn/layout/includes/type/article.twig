@@ -1,28 +1,28 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "{{_yn_schema.variant|raw}}",
+  "@type": "{{_yn_schema.variant|raw}}"
   {% if _yn_schema.url %}
-    "mainEntityOfPage": {
+    ,"mainEntityOfPage": {
         "@type": "WebPage",
         "@id": "{{_yn_schema.url|raw}}"
-    },
+    }
   {% endif %}
   {% if _yn_schema.headline %}
-    "headline": "{{_yn_schema.headline|raw}}",
+    ,"headline": "{{_yn_schema.headline|raw}}"
   {% endif %}
   {% if _yn_schema.description %}
-    "description": "{{_yn_schema.description|raw}}",
+    ,"description": "{{_yn_schema.description|raw}}"
   {% endif %}
   {% if _yn_schema.image %}
-    "image": [
+    ,"image": [
         {% for _yn_image in _yn_schema.image %}
             "{{_yn_image.path|raw}}"{% if not loop.last %},{% endif %}
         {% endfor %}
-    ],  
+    ]
   {% endif %}
   {% if _yn_schema.author or _yn_schema.authorUrl %}
-    "author": {
+    ,"author": {
         "@type": "Person",
         {% if _yn_schema.author %}
             "name": "{{_yn_schema.author|raw}}",
@@ -30,27 +30,27 @@
         {% if _yn_schema.authorUrl %}
             "url": "{{_yn_schema.authorUrl|raw}}"
         {% endif %}
-    },  
+    }
   {% endif %}
   {% if _yn_schema.publisher or _yn_schema.publisherLogo %}
-    "publisher": {
-        "@type": "Organization",
+    ,"publisher": {
+        "@type": "Organization"
         {% if _yn_schema.publisher %}
-        "name": "{{_yn_schema.publisher|raw}}",
+        ,"name": "{{_yn_schema.publisher|raw}}"
         {% endif %}
         {% if _yn_schema.publisherLogo %}
-        "logo": {
+        ,"logo": {
         "@type": "ImageObject",
         "url": "{{_yn_schema.publisherLogo[0].path|raw}}"
         }
         {% endif %}
-    },
+    }
   {% endif %}
   {% if _yn_schema.datePublished %}
-    "datePublished": "{{_yn_schema.datePublished|date('Y-m-d')}}",
+    ,"datePublished": "{{_yn_schema.datePublished|date('Y-m-d')}}"
   {% endif %}
   {% if _yn_schema.dateModified %}
-    "dateModified": "{{_yn_schema.dateModified|date('Y-m-d')}}",
+    ,"dateModified": "{{_yn_schema.dateModified|date('Y-m-d')}}"
   {% endif %}
 }
 </script>

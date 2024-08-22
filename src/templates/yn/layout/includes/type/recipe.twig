@@ -1,89 +1,89 @@
 <script type="application/ld+json">
     {
         "@context": "https://schema.org/", 
-        "@type": "Recipe", 
+        "@type": "Recipe"
         {% if _yn_schema.name %}
-            "name": "{{_yn_schema.name|raw}}",
+            ,"name": "{{_yn_schema.name|raw}}"
         {% endif %}
         {% if _yn_schema.image %}
-            "image": [
+            ,"image": [
                 {% for _yn_image in _yn_schema.image %}
                     "{{_yn_image.path|raw}}"{% if not loop.last %},{% endif %}
                 {% endfor %}
-            ],  
+            ]
         {% endif %}
         {% if _yn_schema.description %}
-            "description": "{{_yn_schema.description|raw}}",
+            ,"description": "{{_yn_schema.description|raw}}"
         {% endif %}
         {% if _yn_schema.keywords %}
-            "keywords": "{{_yn_schema.keywords|raw}}",
+            ,"keywords": "{{_yn_schema.keywords|raw}}"
         {% endif %}
         {% if _yn_schema.creatorName %}
-            "author": {
+            ,"author": {
                 "@type": "Person",
                 "name": "{{_yn_schema.creatorName|raw}}"
-            },
+            }
         {% endif %}
         {% if _yn_schema.datePublished %}
-            "datePublished": "{{_yn_schema.datePublished|date('Y-m-d')}}",
+            ,"datePublished": "{{_yn_schema.datePublished|date('Y-m-d')}}"
         {% endif %}
         {% if _yn_schema.prepTime %}
-            "prepTime": "PT{{_yn_schema.preperation|raw}}M",
+            ,"prepTime": "PT{{_yn_schema.preperation|raw}}M"
         {% endif %}
         {% if _yn_schema.cookTime %}
-            "cookTime": "PT{{_yn_schema.cooking|raw}}M", 
+            ,"cookTime": "PT{{_yn_schema.cooking|raw}}M" 
         {% endif %}
         {% if _yn_schema.cookTime or _yn_schema.prepTime %}
-            "totalTime": "PT{{_yn_schema.preperation|raw + _yn_schema.cooking|raw}}M", 
+            ,"totalTime": "PT{{_yn_schema.preperation|raw + _yn_schema.cooking|raw}}M" 
         {% endif %}
         {% if _yn_schema.category %}
-            "recipeCategory": "{{_yn_schema.category|raw}}", 
+            ,"recipeCategory": "{{_yn_schema.category|raw}}" 
         {% endif %}
         {% if _yn_schema.servings %}
-            "recipeYield": "{{_yn_schema.servings|raw}}", 
+            ,"recipeYield": "{{_yn_schema.servings|raw}}" 
         {% endif %}
         {% if _yn_schema.ingredient %}
-            "recipeIngredient": [
+            ,"recipeIngredient": [
                 {% for _yn_ingredient in _yn_schema.ingredient %}
                     "{{_yn_ingredient.text|raw}}"{% if not loop.last %},{% endif %}
                 {% endfor %}
-            ],
+            ]
         {% endif %}
         {% if _yn_schema.steps %}
-            "recipeInstructions": [
+            ,"recipeInstructions": [
                 {% for _yn_steps in _yn_schema.steps %}
                     {
-                        "@type": "HowToStep",
+                        "@type": "HowToStep"
                         {% if _yn_steps.name %}
-                            "name": "{{_yn_steps.name|raw}}",
+                            ,"name": "{{_yn_steps.name|raw}}"
                         {% endif %}
                         {% if _yn_steps.text %}
-                            "text": "{{_yn_steps.text|raw}}",
+                            ,"text": "{{_yn_steps.text|raw}}"
                         {% endif %}
                         {% if _yn_steps.url %}
-                            "url": "{{_yn_steps.url|raw}}",
+                            ,"url": "{{_yn_steps.url|raw}}"
                         {% endif %}
                         {% if _yn_steps.image %}
-                            "image": "{{_yn_steps.image[0].path}}"
+                            ,"image": "{{_yn_steps.image[0].path}}"
                         {% endif %}
                     }{% if not loop.last %},{% endif %}
                 {% endfor %}
-            ],
+            ]
         {% endif %}
         {% if _yn_schema.aggregateRatingValue or _yn_schema.numberOfRatings or _yn_schema.highestValueAllowed or _yn_schema.lowestValueAllowed %}
-			"aggregateRating": {
-				"@type": "AggregateRating",
+			,"aggregateRating": {
+				"@type": "AggregateRating"
 				{% if _yn_schema.aggregateRatingValue %}
-					"ratingValue": "{{_yn_schema.aggregateRatingValue|raw}}",
+					,"ratingValue": "{{_yn_schema.aggregateRatingValue|raw}}"
 				{% endif %}
 				{% if _yn_schema.numberOfRatings %}
-					"reviewCount": "{{_yn_schema.numberOfRatings|raw}}",
+					,"reviewCount": "{{_yn_schema.numberOfRatings|raw}}"
 				{% endif %}
 				{% if _yn_schema.highestValueAllowed %}
-					"bestRating": "{{_yn_schema.highestValueAllowed|raw}}",
+					,"bestRating": "{{_yn_schema.highestValueAllowed|raw}}"
 				{% endif %}
 				{% if _yn_schema.lowestValueAllowed %}
-					"worstRating": "{{_yn_schema.lowestValueAllowed|raw}}"
+					,"worstRating": "{{_yn_schema.lowestValueAllowed|raw}}"
 				{% endif %}
 			},
 		{% endif %}
@@ -95,47 +95,47 @@
 						"name": "{{_yn_review.name|raw}}",
 						"reviewRating": {
 							"@type": "Rating",
-							"ratingValue": "{{_yn_review.rating|raw}}",
-						},
+							"ratingValue": "{{_yn_review.rating|raw}}"
+						}
 						{% if _yn_review.author %}
-							"author": {
+							,"author": {
 								"@type": "Person",
 								"name": "{{_yn_review.author|raw}}"
-							},
+							}
 						{% endif %}
 						{% if _yn_review.publisher %}
-							"publisher": {
+							,"publisher": {
 								"@type": "Person",
 								"name": "{{_yn_review.publisher|raw}}"
-							},
+							}
 						{% endif %}
 						{% if _yn_review.text %}
-							"reviewBody": "{{_yn_review.text|raw}}"
+							,"reviewBody": "{{_yn_review.text|raw}}"
 						{% endif %}
 					}
 				{% endfor %}
-			],
+			]
 		{% endif %}
-        "video": {
-            "@type": "VideoObject",
+        ,"video": {
+            "@type": "VideoObject"
             {% if _yn_schema.videoName %}
-                "name": "{{_yn_schema.videoName|raw}}",
+                ,"name": "{{_yn_schema.videoName|raw}}"
             {% endif %}
             {% if _yn_schema.description %}
-                "description": "{{_yn_schema.description|raw}}",
+                ,"description": "{{_yn_schema.description|raw}}"
             {% endif %}
              {% if _yn_schema.videoImage %}
-                "thumbnailUrl": [
+                ,"thumbnailUrl": [
                     {% for _yn_videoImage in _yn_schema.videoImage %}
                         "{{_yn_videoImage.path|raw}}"{% if not loop.last %},{% endif %}
                     {% endfor %}
-                ],  
+                ], 
             {% endif %}
             {% if _yn_schema.videoUploadDate %}
-                "uploadDate": "{{_yn_schema.videoUploadDate|date('Y-m-d')}}",
+                ,"uploadDate": "{{_yn_schema.videoUploadDate|date('Y-m-d')}}"
             {% endif %}
             {% if _yn_schema.url %}
-                "embedUrl": "{{_yn_schema.url|raw}}",
+                ,"embedUrl": "{{_yn_schema.url|raw}}"
             {% endif %}
         }  
     }
