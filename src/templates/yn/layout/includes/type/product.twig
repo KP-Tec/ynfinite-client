@@ -49,7 +49,7 @@
             {% if _yn_schema.itemCondition %}
                 ,"itemCondition": "https://schema.org/{{_yn_schema.itemCondition|raw}}"
             {% endif %}
-        },
+        }
     {% endif %}
     {% if _yn_schema.review %}
 			,"review": [
@@ -76,9 +76,9 @@
 						{% if _yn_review.text %}
 							,"reviewBody": "{{_yn_review.text|raw}}"
 						{% endif %}
-					}
+					}{% if not loop.last %},{% endif %}
 				{% endfor %}
-			],
+			]
 		{% endif %}
 		{% if _yn_schema.aggregateRatingValue or _yn_schema.numberOfRatings or _yn_schema.highestValueAllowed or _yn_schema.lowestValueAllowed %}
 			,"aggregateRating": {

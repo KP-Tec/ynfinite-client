@@ -90,7 +90,7 @@
                     {% if _yn_offer.availability %}
                         ,"availability": "https://schema.org/{{_yn_offer.availability}}"
                     {% endif %}
-                }
+                }{% if not loop.last %},{% endif %}
             {% endfor %}
         ]
         {% endif %}
