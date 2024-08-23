@@ -20,7 +20,7 @@
                 {% if _yn_schema.companyLogo %}
                     ,"logo": "{{_yn_schema.companyLogo[0].path}}"
                 {% endif %}
-            },
+            }
         {% endif %}
         {% if _yn_schema.industry %}
             ,"industry": "{{_yn_schema.industry|raw}}"
@@ -69,7 +69,7 @@
             ,"baseSalary": {
                 "@type": "MonetaryAmount"
                 {% if _yn_schema.salaryCurrency %}
-                    ,"currency": "{{_yn_schema.salaryCurrency|raw}}",
+                    ,"currency": "{{_yn_schema.salaryCurrency|raw}}"
                 {% endif %}
                 ,"value": {
                 "@type": "QuantitativeValue"
@@ -102,7 +102,7 @@
             ,"educationRequirements": "{{_yn_schema.educationRequirements|raw}}"
         {% endif %}
         {% if _yn_schema.experienceRequirements %}
-            ,"experienceRequirements": "{{_yn_schema.experienceRequirements|raw}}
+            ,"experienceRequirements": "{{_yn_schema.experienceRequirements|raw}}"
         {% endif %}
     }
 </script>

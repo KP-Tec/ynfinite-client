@@ -112,7 +112,7 @@
 						{% if _yn_review.text %}
 							,"reviewBody": "{{_yn_review.text|raw}}"
 						{% endif %}
-					}
+					}{% if not loop.last %},{% endif %}
 				{% endfor %}
 			]
 		{% endif %}
@@ -129,7 +129,7 @@
                     {% for _yn_videoImage in _yn_schema.videoImage %}
                         "{{_yn_videoImage.path|raw}}"{% if not loop.last %},{% endif %}
                     {% endfor %}
-                ], 
+                ]
             {% endif %}
             {% if _yn_schema.videoUploadDate %}
                 ,"uploadDate": "{{_yn_schema.videoUploadDate|date('Y-m-d')}}"

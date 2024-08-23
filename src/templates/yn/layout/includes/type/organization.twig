@@ -23,12 +23,12 @@
 					{
 						"@type": "ContactPoint",
 						"telephone": "{{_yn_contact.phone|raw}}",
-						"contactType": "{{_yn_contact.variant|raw}}",
+						"contactType": "{{_yn_contact.variant|raw}}"
 						{% if _yn_contact.areas %}
-							"areaServed": ["{% for _yn_lang in _yn_contact.areas %}{{_yn_lang|raw}}{% if not loop.last %},{% endif %}{% endfor %}"],
+							,"areaServed": [{% for _yn_lang in _yn_contact.areas %}"{{_yn_lang|raw}}"{% if not loop.last %},{% endif %}{% endfor %}]
 						{% endif %}
 						{% if _yn_contact.languages %}
-							"availableLanguage": ["{% for _yn_lang in _yn_contact.languages %}{{_yn_lang|raw}}{% if not loop.last %},{% endif %}{% endfor %}"],
+							,"availableLanguage": [{% for _yn_lang in _yn_contact.languages %}"{{_yn_lang|raw}}"{% if not loop.last %},{% endif %}{% endfor %}]
 						{% endif %}
 					}{% if not loop.last %},{% endif %}
 				{% endfor %}
