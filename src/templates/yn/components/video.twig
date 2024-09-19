@@ -11,7 +11,8 @@
             {% set attributes = 'rel="0" modestbranding="0" frameborder="0" allowfullscreen allow="fullscreen; picture-in-picture"' %}
         {% endif %}
 
-        <div class="yn-video" id="yn-video-youtube-{{randomKey}}" style="background-image: url('https://i.ytimg.com/vi/{{ id }}/maxresdefault.jpg?w=1280&h=720'); aspect-ratio: 16/9; width: 100%; height: auto; background-size: cover; background-position: center;"></div>
+        {# sddefault because maxresdefault is sometimes empty #}
+        <div class="yn-video" id="yn-video-youtube-{{randomKey}}" style="background-image: url('https://i.ytimg.com/vi/{{ id }}/sddefault.jpg'); aspect-ratio: 16/9; width: 100%; height: auto; background-size: cover; background-position: center;"></div>
         <script>
             window.addEventListener('load', () => {
                 if (!window.addedScripts.includes('video--youtube')){
