@@ -11,14 +11,14 @@
 				</li>
 			{% else %}
 				<optgroup class="level-{{ level }}" label="{{ item.label }}"></optgroup>
-				<option class="level-{{ level + 1 }}" value="{{ item.value }}" {% if field.value == item.value %}selected{% endif %}>{{ item.label }}</option>
+				<option class="level-{{ level + 1 }}" value="{{ item.value }}" {% if (field.multiple and item.value in field.value) or (not field.mutiple and item.value == field.value) %}selected{% endif %}>{{ item.label }}</option>
 				{{ _self.menuItems(field, item.children, type, level + 1) }}
 			{% endif %}
 		{% else %}
 			{% if type == 'list' %}
 				<li class="level-{{ level }}" value="{{ item.value }}">{{ item.label }}</li>
 			{% else %}
-				<option class="level-{{ level }}" value="{{ item.value }}" {% if field.value == item.value %}selected{% endif %}>{{ item.label }}</option>
+				<option class="level-{{ level }}" value="{{ item.value }}" {% if (field.multiple and item.value in field.value) or (not field.mutiple and item.value == field.value) %}selected{% endif %}>{{ item.label }}</option>
 			{% endif %}
 		{% endif %}
 	{% endfor %}

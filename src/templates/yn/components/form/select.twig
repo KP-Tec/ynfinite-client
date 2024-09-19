@@ -3,10 +3,10 @@
 {% block field %}
 	<select data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" name="fields{{ parent }}[{{ field.alias }}]{% if field.multiple %}[]{% endif %}" {% if field.required %}required{% endif %} {% if field.multiple %}multiple{% endif %} {{ field.attributes|raw }} {% if field.disabled %}disabled{% endif %}>
 		{% if field.emptyLabel %}
-			<option value=""selected{% if field.required %} disabled {% endif %}>{{ field.emptyLabel }}</option>
+			<option value="" selected {% if field.required %}disabled{% endif %}>{{ field.emptyLabel }}</option>
 		{% endif %}
 		{% for option in field.options %}
-			<option value="{{ option.value }}" {% if field.value == option.value or option.value in field.value or option.selected %}selected{% endif %}>{{ option.label }}</option>
+			<option value="{{ option.value }}" {% if (field.multiple and item.value in field.value) or (not field.mutiple and item.value == field.value) %}selected{% endif %}>{{ option.label }}</option>
 		{% endfor %}
 	</select>
 
