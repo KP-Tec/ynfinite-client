@@ -6,7 +6,7 @@
 			<option value="" selected {% if field.required %}disabled{% endif %}>{{ field.emptyLabel }}</option>
 		{% endif %}
 		{% for option in field.options %}
-			<option value="{{ option.value }}" {% if (field.multiple and item.value in field.value) or (not field.mutiple and item.value == field.value) %}selected{% endif %}>{{ option.label }}</option>
+			<option value="{{ option.value }}" {% if item.value and ((field.multiple and item.value in field.value) or (not field.mutiple and item.value == field.value)) %}selected{% endif %}>{{ option.label }}</option>
 		{% endfor %}
 	</select>
 
