@@ -534,6 +534,17 @@ class TwigUtils
                 return($result);
             }
         }
+        return "";
+    }
+
+    public function teaserHeading($context, $article, $options = []) {
+        if($article){
+            $heading = array_filter($article, function ($i) {return ($i['type'] == 'headline');});
+            if($heading){
+                return($heading[0]['value']);
+            }
+        }
+        return "";
     }
 
     public function authorlist($context, $authors, $options = []) {

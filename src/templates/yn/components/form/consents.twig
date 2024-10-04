@@ -1,11 +1,11 @@
 {% set consents = form.consents %}
 
 {% if consents %}
-	<div class="yn-consents">
+	<div class="yn-consents" {% if form.groups|length > 1 and not showAll|default(false) %}style="display: none"{% endif %}>
 		{% for consent in consents %}
 			{% if consent.text %}
 				<div class="widget widget--checkbox ynfinite-consent consent-{{ consent.alias }}">
-					<input type="checkbox" id="{{ form.uid }}_{{ consent.alias }}" name="consents[]" value="{{ consent.alias }}" {% if consent.mandatory %}required{% endif %}>
+					<input aria-label="Ich stimme ({{ consent.text }}) zu" type="checkbox" id="{{ form.uid }}_{{ consent.alias }}" name="consents[]" value="{{ consent.alias }}" {% if consent.mandatory %}required{% endif %}>
 					<label class="widget__label" for="{{ form.uid }}_{{ consent.alias }}">
 						<div class="ynfinite-consent-text">{{ consent.text|raw }}</div>
 					</label>

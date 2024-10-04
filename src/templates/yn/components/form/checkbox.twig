@@ -10,14 +10,15 @@
 		<div class="widget widget--checkbox">
 			<input data-ynfield="true" 
 				type="checkbox" 
-				id="{{ form.uid }}_{{ field.alias }}_{{ option.value }}" 
 				name="fields{{ parent }}[{{ field.alias }}][]" 
 				value="{{ option.value }}" 
+				aria-label="{{ field.name ?: field.label ?: field.alias }}"
+				id="{{form.alias}}_{{ field.alias }}_{{ option._id }}"
 				{% if field.value == option.value or option.selected %}checked{% endif %} 
 				{% if field.required %}required{% endif %}
 				{{ field.attributes|raw }}
 			>
-			<label class="widget__label" for="{{ form.uid }}_{{ field.alias }}_{{ option.value }}">
+			<label class="widget__label" for="{{form.alias}}_{{ field.alias }}_{{ option._id }}">
 				{{ option.label|raw }}
 			</label>
 		</div>

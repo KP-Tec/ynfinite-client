@@ -11,7 +11,7 @@
 
 {% block field %}
 	{% if not notifyAll and teamMembers|length > 1 %}
-		<select data-ynfield="true" name="fields{{ parent }}[{{ field.alias }}]" {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
+		<select aria-label="{{ field.name ?: field.label ?: field.alias }}" id="{{form.alias}}_{{ field.alias }}_{{ field._id }}" data-ynfield="true" name="fields{{ parent }}[{{ field.alias }}]" {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
 			{% if field.emptyLabel %}
 				<option value="" {% if field.required %} disabled {% endif %}>{{ field.emptyLabel }}</option>
 			{% endif %}

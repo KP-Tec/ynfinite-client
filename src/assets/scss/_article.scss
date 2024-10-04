@@ -1,7 +1,8 @@
 .yn-article {
 	[class*='yn-article__'],
 	[class*='yn-article__'] > :is(figure, iframe) {
-		margin-inline: auto;
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 	&__intro-text {

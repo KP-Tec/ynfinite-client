@@ -4,6 +4,8 @@
 	<input data-ynfield="true" 
 		type="{{ field.type }}" 
 		name="fields{{ parent }}[{{ field.alias }}]" 
+		aria-label="{{ field.name ?: field.label ?: field.alias }}" 
+		id="{{form.alias}}_{{ field.alias }}_{{ field._id }}"
 		value="{{ field.value|default(addValue|default(field.defaultValue)) }}"
 
 		{% if field.minLength %} minlength="{{ field.minLength }}" {% endif %} 

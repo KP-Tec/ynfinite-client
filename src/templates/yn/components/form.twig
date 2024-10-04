@@ -26,12 +26,14 @@
 	data-ynformmethod="{{form.method}}" 
 	data-events="{{form.events|map((x) => x._id)|json_encode}}"
 	{% if section._id %} data-ynsectionid="{{section._id}}" {% endif %} 
-	{{data}} 
 	{% if form.settings.noBotProtection %}data-has-proof="true" data-proofen-hash="true"{% endif %}
+	{{data}} 
 >
 	<fieldset>
+	    <legend style="display: none;">Contact Form</legend>
 		{% if form.method != "get" %}
-			<input type="text" name="confirm_email" value="my@email.com" style="display: none !important;" tabindex="-1" autocomplete="off"> 
+			<label style="display: none !important;" tabindex="-1" aria-label="hidden" for="confirm_email">Confirm E-Mail</label>
+			<input type="text" name="confirm_email" id="confirm_email" value="my@email.com" style="display: none !important;" tabindex="-1" aria-label="hidden" autocomplete="off"> 
 			<input type="hidden" value="{{form._id}}" name="formId">
 			<input type="hidden" value="{{_ynfinite.languages.current}}" name="formLanguage">
 		{% endif %}
@@ -51,26 +53,26 @@
 			</div>
 		</div>
 	</fieldset>
-	{% if form.type == "resetPasswordForm" or form.type == "registrationForm" %} {# //! DEV CHECK #}
-	<script>
-		const form = document.querySelector("#form_{{ form.uid }}");
-		form.addEventListener("submit", function (e) {
-			const data = new FormData(form);
-			const passwords = [];
-			for (const [name,value] of data) {
-				if(name.toLowerCase().includes('password')) {
-					passwords.push(value)
+	{% if form.type == "resetPasswordForm" or form.type == "registrationForm" %}
+		<script>
+			const form = document.querySelector("#form_{{ form.uid }}");
+			form.addEventListener("submit", function (e) {
+				const data = new FormData(form);
+				const passwords = [];
+				for (const [name,value] of data) {
+					if(name.toLowerCase().includes('password')) {
+						passwords.push(value)
+					}
 				}
-			}
-			if(!passwords.every(element => element === passwords[0])) {
-				const resetErrorContainer = document.querySelector('.yn-error');
-				resetErrorContainer.innerHTML = 'Password does not match.';
-				resetErrorContainer.style.color = 'red';
-				e.preventDefault();
-			}
-		});
+				if(!passwords.every(element => element === passwords[0])) {
+					const resetErrorContainer = document.querySelector('.yn-error');
+					resetErrorContainer.innerHTML = 'Password does not match.';
+					resetErrorContainer.style.color = 'red';
+					e.preventDefault();
+				}
+			});
 
-	</script>
+		</script>
 	{% endif %}
 	{% if form.method == "post" %}
 		<script>

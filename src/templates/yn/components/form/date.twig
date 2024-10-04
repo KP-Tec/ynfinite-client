@@ -1,6 +1,6 @@
 {% extends "yn/components/form/basic.twig" %}
 
 {% block field %}
-	<input class="yn-date flatpickr" placeholder="Bitte wählen…" id="{{ form.uid }}_{{ field.alias }}" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}]" {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
+	<input aria-label="{{ field.name ?: field.label ?: field.alias }}" id="{{form.alias}}_{{ field.alias }}_{{ field._id }}" class="yn-date flatpickr" placeholder="Bitte wählen…" id="{{ form.uid }}_{{ field.alias }}" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}]" {% if field.autocomplete %}autocomplete="{{ field.autocomplete }}"{% endif %} {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
 	{% include "/yn/components/includes/calculateDates.twig" %}
 {% endblock field %}
