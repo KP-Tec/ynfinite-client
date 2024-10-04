@@ -25,7 +25,7 @@
 {% endmacro %}
 
 {% block field %}
-	<select data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" name="fields{{ parent }}[{{ field.alias }}]{% if field.multiple %}[]{% endif %}" {% if field.value %}value="{{ field.value }}"{% endif %} {% if field.required %}required{% endif %} {% if field.multiple %}multiple{% endif %} {{ field.attributes|raw }}>
+	<select aria-label="{{ field.name ?: field.label ?: field.alias }}" id="{{form.alias}}_{{ field.alias }}_{{ field._id }}" data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" name="fields{{ parent }}[{{ field.alias }}]{% if field.multiple %}[]{% endif %}" {% if field.value %}value="{{ field.value }}"{% endif %} {% if field.required %}required{% endif %} {% if field.multiple %}multiple{% endif %} {{ field.attributes|raw }}>
 		{% if field.emptyLabel %}
 			<option value="">{{ field.emptyLabel }}</option>
 		{% endif %}

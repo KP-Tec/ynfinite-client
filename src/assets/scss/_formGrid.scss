@@ -149,23 +149,22 @@
 }
 
 .form-content.inactive {
-	opacity: 0;
+	display: none;
 }
 
 .yn-form-response {
 	width: 100%;
 	height: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
 	display: none;
+	visibility: hidden;
 
 	&__control {
-		padding: 1rem 0;
+		padding: 1rem 0 0;
 	}
 
 	&.active {
 		display: block;
+		visibility: visible;
 	}
 }
 

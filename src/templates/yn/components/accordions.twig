@@ -7,7 +7,7 @@
 
 			{% if header and (article or text)  %}
 				<div class="yn-accordion">
-					<div class="yn-accordion__header" role="button"><span>{{ header|raw }}</span></div>
+					<div class="yn-accordion__header accessibility-outline" role="button" aria-label="{{header|raw}}" tabindex="0" index="{{loop.index0}}"><span>{{ header|raw }}</span></div>
 					 <div class="yn-accordion__content">
 					 	{% if article %}
 					 		{{ _yfunc('article', article) }}

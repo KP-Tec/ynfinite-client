@@ -6,9 +6,10 @@
 	{% endif %}
 {% endif %}
 
+{% set _yn_global_sitename = _yn_global_sitename ?: global_seo_ending ?: _ynfinite.site.meta.title %}
 {% set seoTitle	= title ?: _ynfinite.site.meta.title %}
-{% if _ynfinite.site.meta.title|length > 0 and title|length > 0 and _ynfinite.site.meta.title|lower not in title|lower and hideTitle|default(false) != true %}
-	{% set seoTitle = title|raw ~ ' - ' ~ _ynfinite.site.meta.title|raw %}
+{% if _yn_global_sitename|length > 0 and title|length > 0 and _yn_global_sitename|lower not in title|lower and hideTitle|default(false) != true %}
+	{% set seoTitle = title|raw ~ ' - ' ~ _yn_global_sitename|raw %}
 {% endif %}
 
 <!-- Seo Meta Tags -->

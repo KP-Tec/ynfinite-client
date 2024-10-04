@@ -1,5 +1,5 @@
 {% extends "yn/components/form/basic.twig" %}
 
 {% block field %}
-	<input data-ynfield="true" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}]" {% if field.min %} min="{{ field.min }}" {% endif %} {% if field.max %} max="{{ field.max }}" {% endif %} {% if field.step %} step="{{ field.step }}" {% endif %} value="{{ field.value|default(addValue) }}" placeholder="{{ field.placeholder }}" {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
+	<input aria-label="{{ field.name ?: field.label ?: field.alias }}" id="{{form.alias}}_{{ field.alias }}_{{ field._id }}" data-ynfield="true" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}]" {% if field.min %} min="{{ field.min }}" {% endif %} {% if field.max %} max="{{ field.max }}" {% endif %} {% if field.step %} step="{{ field.step }}" {% endif %} value="{{ field.value|default(addValue) }}" placeholder="{{ field.placeholder }}" {% if field.autocomplete %}autocomplete="{{ field.autocomplete }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
 {% endblock field %}

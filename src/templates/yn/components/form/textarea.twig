@@ -1,9 +1,13 @@
 {% extends "yn/components/form/basic.twig" %}
 
 {% block field %}
-	<textarea data-ynfield="true" 
+	<textarea 
+		data-ynfield="true" 
 		name="fields{{ parent }}[{{ field.alias }}]" 
+		aria-label="{{ field.name ?: field.label ?: field.alias }}"
+		id="{{form.alias}}_{{ field.alias }}_{{ field._id }}"
 		
+		{% if field.autocomplete %}autocomplete="{{ field.autocomplete }}"{% endif %}
 		{% if field.placeholder %} placeholder="{{ field.placeholder }}" {% endif %} 
 		{% if field.minLength %} minlength="{{ field.minLength }}" {% endif %} 
 		{% if field.maxLength %} maxlength="{{ field.maxLength }}" {% endif %} 

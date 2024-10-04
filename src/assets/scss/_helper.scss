@@ -45,3 +45,37 @@ button.yn-loader {
 		margin-left: 8px;
 	}
 }
+
+#jumpToBody {
+	position: absolute;
+	pointer-events: none;
+	top: 1rem;
+	bottom: auto;
+	left: 0;
+	right: 0;
+	margin: auto;
+	transform: translateY(calc(-100% - 1.5rem));
+	transition: transform var(--atime, 0.33s) ease, opacity 0.2s ease !important;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+	opacity: 0;
+
+	&:focus-visible {
+		pointer-events: all;
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+.yn-buttons {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: calc(var(--item-gap, 1rem) * 0.33);
+
+	> * {
+		margin: 0 !important;
+	}
+}

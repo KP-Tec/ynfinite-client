@@ -5,8 +5,11 @@
 		<input data-ynfield="true" 
 			type="{{ field.type }}" 
 			name="fields{{ parent }}[{{ field.alias }}]" 
+			aria-label="{{ field.name ?: field.label ?: field.alias }}" 
+			id="{{form.alias}}_{{ field.alias }}_{{ field._id }}"
 			value="{{ field.value|default(addValue|default(field.defaultValue)) }}" 
 			
+			{% if field.autocomplete %}autocomplete="{{ field.autocomplete }}"{% endif %}
 			{% if field.min %} min="{{ field.min }}" {% endif %} 
 			{% if field.max %} max="{{ field.max }}" {% endif %} 
 			{% if field.step %} step="{{ field.step }}" {% endif %} 

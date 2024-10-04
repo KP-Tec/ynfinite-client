@@ -1,7 +1,7 @@
 {% block widget %}
 	{% if renderWidget != false %}
 		<div class='widget widget--{{ field.type }}' data-ynformuid="{{ field.uid }}">
-			<label class="widget__label" for="{{ field.alias }}">
+			<label class="widget__label" for="{{form.alias}}_{{ field.alias }}_{{ field._id }}">
 				{% if field.label %}
 					{{ field.label }}
 				{% else %}
@@ -14,7 +14,7 @@
 			<div class="widget__input-container">
 		{% endif %}
 	{% block field %}
-		<input type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}]" {% if field.value or addValue %}value="{{ field.value ?: addValue }}"{% endif %} {% if field.placeholder %} placeholder="{{ field.placeholder }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
+		<input aria-label="{{ field.name ?: field.label ?: field.alias }}" id="{{form.alias}}_{{ field.alias }}_{{ field._id }}" type="{{ field.type }}" name="fields{{ parent }}[{{ field.alias }}]" {% if field.value or addValue %}value="{{ field.value ?: addValue }}"{% endif %} {% if field.placeholder %} placeholder="{{ field.placeholder }}"{% endif %} {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
 	{% endblock field %}
 	{% block hint %}
 		{% if renderHint and field.hint %}

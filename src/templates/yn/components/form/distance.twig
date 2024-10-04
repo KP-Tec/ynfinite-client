@@ -1,27 +1,38 @@
-{% extends "yn/components/form/basic.twig" %}
 
-{% block field %}
-	<div class="distance-wrapper">
-		<input data-ynfield="true"
-			type="text"
-			name="fields{{ parent }}[{{ field.alias }}][loc]"
-			value="{{ field.value['loc']|default(addValue|default(field.defaultValue)) }}"
+<div class="distance-wrapper">
+	{% embed "yn/components/form/basic.twig" %}
+		{% block field %}
+			<input 
+				data-ynfield="true" 
+				type="text" 
+				aria-label="{{ field.name|raw }}" 
+				name="fields{{ parent }}[{{ field.alias }}][loc]" 
+				id="{{form.alias}}_{{ field.alias }}_{{ field._id }}"
+				value="{{ field.value['loc']|default(addValue|default(field.defaultValue)) }}" 
 
-			{% if field.minLength %} minlength="{{ field.minLength }}" {% endif %}
-			{% if field.maxLength %} maxlength="{{ field.maxLength }}" {% endif %}
-			{% if field.placeholder %} placeholder="{{ field.placeholder }}" {% endif %}
-			{% if field.required %} required {% endif %}
+				{% if field.autocomplete %}autocomplete="{{ field.autocomplete }}"{% endif %}
+				{% if field.minLength %} minlength="{{ field.minLength }}" {% endif %} 
+				{% if field.maxLength %} maxlength="{{ field.maxLength }}" {% endif %} 
+				{% if field.placeholder %} placeholder="{{ field.placeholder }}" {% endif %} 
+				{% if field.required %} required {% endif %} 
 
-			{{ field.attributes|raw }}
-		>
-		<select data-ynfield="true" name="fields{{ parent }}[{{ field.alias }}][distance]" value="{{ field.value['distance'] }}" {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
-			{% if field.emptyLabel %}
-				<option value="">{{ field.emptyLabel }}</option>
-			{% endif %}
-			{% set items = field.stepList|split(",") %}
-			{% for item in items %}
-				<option value="{{ item }}" {% if field.value['distance'] == item or (field.value['distance'] not in items and (items|length / 2)|round == loop.index ) %}selected{% endif %}>{{ item }} {{ field.stepListUnit }}</option>
-			{% endfor %}
-		</select>
-	</div>
-{% endblock field %}
+				{{ field.attributes|raw }}
+			>
+		{% endblock field %}
+	{% endembed %}
+
+	{% embed "yn/components/form/basic.twig" %}
+		{% set field = field|merge({'label': 'Umkreis', 'name': 'Umkreis', 'alias': 'umkreis'}) %}
+		{% block field %}
+			<select aria-label="{{ field.name ?: field.label ?: field.alias }}" id="{{form.alias}}_{{ field.alias }}_{{ field._id }}" data-ynfield="true" name="fields{{ parent }}[{{ field.alias }}][distance]" value="{{ field.value['distance'] }}" {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
+				{% if field.emptyLabel %}
+					<option value="">{{ field.emptyLabel }}</option>
+				{% endif %}
+				{% set items = field.stepList|split(",") %}
+				{% for item in items %}
+					<option value="{{ item }}" {% if field.value['distance'] == item or (field.value['distance'] not in items and (items|length / 2)|round == loop.index ) %}selected{% endif %}>{{ item }} {{ field.stepListUnit }}</option>
+				{% endfor %}
+			</select>
+		{% endblock field %}
+	{% endembed %}
+</div>

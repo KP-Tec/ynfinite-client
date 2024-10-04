@@ -45,13 +45,17 @@ final class TwigRenderer
 
         $templateFolders = array();
 
-        $templateFolders[] = getcwd(). "/../src/" . $this->settings["ynfinite"]["templateDir"];
-        $templateFolders[] = getcwd() . '/../templates/';
         $templateFolders[] = getcwd() . '/../templates/' . $data["theme"]["namespace"];
 
         $addNamespaces = explode(",", $data["theme"]["additionalNamespaces"] ?? "");
         foreach($addNamespaces as $addNamespace) {
             $templateFolders[] = getcwd() . '/../templates/' . trim($addNamespace);
+        }
+        $templateFolders[] = getcwd() . '/../templates/';
+        $templateFolders[] = getcwd(). "/../src/" . $this->settings["ynfinite"]["templateDir"];
+
+        if(array_key_exists('ynfinite-design', $_COOKIE) && $_COOKIE['ynfinite-design'] && $_SERVER["HTTP_HOST"] !== 'localhost'){
+            $templateFolders[1] = getcwd() . '/../templates/' . trim($_COOKIE['ynfinite-design']);
         }
 
         $loader = new FileSystemLoader($templateFolders, null, boolval($this->settings["ynfinite"]["debugTemplates"]));

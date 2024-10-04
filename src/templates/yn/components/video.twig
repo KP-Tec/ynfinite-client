@@ -27,6 +27,7 @@
                     if(videoEvents){
                         const video = {
                             title: event.target.videoTitle,
+                            ariaLabel: event.target.videoTitle,
                             url: event.target.getVideoUrl(),
                             state: event.target.getPlayerState(),
                             percent: Math.round(event.target.getCurrentTime() / event.target.getDuration() * 100),

@@ -1,6 +1,7 @@
 .yn-article [class*=yn-article__],
 .yn-article [class*=yn-article__] > :is(figure, iframe) {
-  margin-inline: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 .yn-article__intro-text {
   --font-size: var(--font-size-intro, 1.25rem);
@@ -440,22 +441,21 @@
 }
 
 .form-content.inactive {
-  opacity: 0;
+  display: none;
 }
 
 .yn-form-response {
   width: 100%;
   height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
   display: none;
+  visibility: hidden;
 }
 .yn-form-response__control {
-  padding: 1rem 0;
+  padding: 1rem 0 0;
 }
 .yn-form-response.active {
   display: block;
+  visibility: visible;
 }
 
 .yn-form-highlight {
@@ -760,6 +760,55 @@ button.yn-loader::after {
   top: 0;
   bottom: 0;
   margin-left: 8px;
+}
+
+#jumpToBody {
+  position: absolute;
+  pointer-events: none;
+  top: 1rem;
+  bottom: auto;
+  left: 0;
+  right: 0;
+  margin: auto;
+  -webkit-transform: translateY(calc(-100% - 1.5rem));
+          transform: translateY(calc(-100% - 1.5rem));
+  -webkit-transition: opacity 0.2s ease, -webkit-transform var(--atime, 0.33s) ease !important;
+  transition: opacity 0.2s ease, -webkit-transform var(--atime, 0.33s) ease !important;
+  transition: transform var(--atime, 0.33s) ease, opacity 0.2s ease !important;
+  transition: transform var(--atime, 0.33s) ease, opacity 0.2s ease, -webkit-transform var(--atime, 0.33s) ease !important;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  z-index: 9999;
+  opacity: 0;
+}
+#jumpToBody:focus-visible {
+  pointer-events: all;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+  opacity: 1;
+}
+
+.yn-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: calc(var(--item-gap, 1rem) * 0.33);
+}
+.yn-buttons > * {
+  margin: 0 !important;
 }
 
 :root {
@@ -1130,7 +1179,8 @@ button.yn-loader::after {
   opacity: 0.7;
 }
 .yn-dropdown__popup > * {
-  margin-block: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 .yn-dropdown__popup form {
   min-width: min(90vw, 22rem);

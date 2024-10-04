@@ -13,7 +13,7 @@
 {% endmacro %}
 
 {% block field %}
-	<select data-ynfield="true" name="fields{{ parent }}[{{ field.alias }}]" {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
+	<select aria-label="{{ field.name ?: field.label ?: field.alias }}" id="{{form.alias}}_{{ field.alias }}_{{ field._id }}" data-ynfield="true" name="fields{{ parent }}[{{ field.alias }}]" {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
 		{% if field.emptyLabel %}
 			<option value="">{{ field.emptyLabel }}</option>
 		{% endif %}
