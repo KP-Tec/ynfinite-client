@@ -13,19 +13,8 @@
     {% set _yn_tracking_email = _ynfinite.site.seo.events.clickEmailLink %}
     {% set _yn_tracking_tel = _ynfinite.site.seo.events.clickTelLink %}
 
-    <script>
-        const _yn_simpleDebug = false; // only log for added events
-        const _yn_debug = "{{_yn_seo_debug|default(false)}}"; // logs for every event
-        window._yn_pageViewEvents = []
-        window._yn_scrollEvents = []
-        window._yn_videoEvents = []
-        window._yn_formEvents = []
-        window._yn_linkEvents = []
-    </script>
-
-    {% for _yn_tracking_tool in _yn_tracking_tools %}
-        {% if _yn_tracking_tool.type %}
-            {% include "yn/layout/includes/tracking/" ~ _yn_tracking_tool.type|raw ~ ".twig" %}
-        {% endif %}
-    {% endfor %}
+    {% if _yn_tracking_pageViews %}{% include "yn/layout/includes/events/pageViews.twig" %}{% endif %}
+    {% if _yn_tracking_submit_form %}{% include "yn/layout/includes/events/forms.twig" %}{% endif %}
+    {% if _yn_tracking_external or _yn_tracking_downloads or _yn_tracking_email or _yn_tracking_tel %}{% include "yn/layout/includes/events/links.twig" %}{% endif %}
+    {% if _yn_tracking_pageScroll %}{% include "yn/layout/includes/events/scroll.twig" %}{% endif %}
 {% endif %}
