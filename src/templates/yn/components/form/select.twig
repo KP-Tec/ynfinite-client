@@ -1,12 +1,12 @@
 {% extends "yn/components/form/basic.twig" %}
 
 {% block field %}
-	<select aria-label="{{ field.name ?: field.label ?: field.alias }}" id="{{form.alias}}_{{ field.alias }}_{{ field._id }}" data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" name="fields{{ parent }}[{{ field.alias }}]{% if field.multiple %}[]{% endif %}" {% if field.required %}required{% endif %} {% if field.multiple %}multiple{% endif %} {{ field.attributes|raw }} {% if field.disabled %}disabled{% endif %}>
+	<select aria-label="{{ field.name }}" data-ynfield="true" id="{{ form.uid }}_{{ field.alias }}_from" name="fields{{ parent }}[{{ field.alias }}]{% if field.multiple %}[]{% endif %}" {% if field.required %}required{% endif %} {% if field.multiple %}multiple{% endif %} {{ field.attributes|raw }} {% if field.disabled %}disabled{% endif %}>
 		{% if field.emptyLabel %}
-			<option selected {% if field.required %}disabled{% endif %} value="">{{ field.emptyLabel }}</option>
+			<option value="" selected {% if field.required %}disabled{% endif %}>{{ field.emptyLabel }}</option>
 		{% endif %}
 		{% for option in field.options %}
-			<option value="{{ option.value }}" {% if item.value and ((field.multiple and item.value in field.value) or (not field.mutiple and item.value == field.value)) %}selected{% endif %}>{{ option.label }}</option>
+			<option value="{{ option.value }}" {% if option.value and ((field.multiple and option.value in field.value) or (not field.mutiple and option.value == field.value)) %}selected{% endif %}>{{ option.label }}</option>
 		{% endfor %}
 	</select>
 
