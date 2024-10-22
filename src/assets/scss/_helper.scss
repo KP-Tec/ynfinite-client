@@ -62,6 +62,10 @@ button.yn-loader {
 	z-index: 9999;
 	opacity: 0;
 
+	+ * {
+		margin-top: 0 !important;
+	}
+
 	&:focus-visible {
 		pointer-events: all;
 		transform: translateY(0);
