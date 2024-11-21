@@ -15,7 +15,7 @@ const YnfiniteFormSettings = {
 			}
 		}
 
-		const rerenderGroups = (groups, activeIndex, maxIndex, submitButtons, prevButton, nextButton) => {
+		const rerenderGroups = (groups, activeIndex, maxIndex, submitButtons, prevButton, nextButton, firstClick = false) => {
 			const fieldErrors = groups[activeIndex - 1].querySelectorAll('.yn-field-error')
 			if (fieldErrors) {
 				fieldErrors.forEach((f) => f.classList.remove('yn-field-error'))
@@ -27,7 +27,7 @@ const YnfiniteFormSettings = {
 
 				if (index === activeIndex) {
 					const firstElement = g.querySelector(':is(select, input, textarea):not([tabindex="-1"], [type="hidden"])')
-					if (firstElement) firstElement.focus()
+					if (firstElement && !firstClick) firstElement.focus()
 					rerenderButtons(groups, activeIndex, maxIndex, submitButtons, prevButton, nextButton)
 				}
 			})
@@ -136,7 +136,7 @@ const YnfiniteFormSettings = {
 				formContent.appendChild(buttonGroup)
 
 				// first group render
-				rerenderGroups(groups, activeIndex, groups.length, submitButtons, prevButton, nextButton)
+				rerenderGroups(groups, activeIndex, groups.length, submitButtons, prevButton, nextButton, true)
 				consents.style.display = ''
 			}
 		})

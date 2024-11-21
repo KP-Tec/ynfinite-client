@@ -588,6 +588,7 @@ class TwigUtils
         return $this->twig->render($this->getTemplate('article:article'), [
             'article' => $article,
             'imgConfig' => $options['imgConfig'] ?? "",
+            'classes' => $options['classes'] ?? "",
         ]);
     }
 

@@ -20,7 +20,7 @@
 	</head>
 
 	<body class="{% block body_classes %}{% endblock body_classes %} {{_ynfinite.page.css_classes}}" {% if _ynfinite.page.css_id %}id="{{_ynfinite.page.css_id}}"{% endif %}>
-		<a id="jumpToBody" href="#body" class="button button--solid" aria-label="Zum Inhalt springen" title="Zum Inhalt springen" role="link" tabindex="1" data-ynfield>Zum Inhalt springen</a>
+		<a id="jumpToBody" href="#body" class="button button--solid" aria-label="Zum Inhalt springen" title="Zum Inhalt springen" role="link" tabindex="0" data-ynfield>Zum Inhalt springen</a>
 		{% if templateList['header'] %}
 			{% block header %}
 				{{ include(templateList['header'], {template: _templates["header"]}) }}
