@@ -1,8 +1,8 @@
-{% if _yn_tracking_tool %}
-	{% isCookieActiveSeo findCookie(_yn_tracking_tool.consent.alias) %}
+{% if _yn_retargeting_tool %}
+	{% isCookieActiveSeo findCookie(_yn_retargeting_tool.consent.alias) %}
 		<script>
 			!function(e){if(!window.pintrk){window.pintrk=function(){window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var n=window.pintrk;n.queue=[],n.version="3.0";var t=document.createElement("script");t.async=!0,t.src=e;var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
-			pintrk('load', '{{_yn_tracking_tool.key}}');
+			pintrk('load', '{{_yn_retargeting_tool.key}}');
 		</script>
 		<script>
 			if(_yn_simpleDebug || _yn_debug){
