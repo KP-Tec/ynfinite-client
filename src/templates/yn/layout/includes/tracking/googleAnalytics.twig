@@ -1,11 +1,9 @@
 {% if _yn_tracking_tool %}
-	<!-- Google tag (gtag.js) -->
 	<script>
 		if(!window.addedScripts.includes('google-analytics-{{_yn_tracking_tool.key}}')){
 			// ==================================================
 			// Start Tracking
 			// ==================================================
-
 			window.dataLayer = window.dataLayer || [];
 			function gtag(){
 				dataLayer.push(arguments);
@@ -42,13 +40,13 @@
 			{% endIsCookieActiveSeo %}
 
 			if(_yn_simpleDebug || _yn_debug){
-				console.log('Google Analytics Consent: analytics_storage', _yn_analytics_storage)
-				console.log('Google Analytics Consent: personalization_storage', _yn_personalization_storage)
-				console.log('Google Analytics Consent: functionality_storage', _yn_functionality_storage)
-				console.log('Google Analytics Consent: security_storage', _yn_security_storage)
-				console.log('Google Analytics Consent: ad_storage', _yn_ad_storage)
-				console.log('Google Analytics Consent: ad_user_data', _yn_ad_user_data)
-				console.log('Google Analytics Consent: ad_personalization', _yn_ad_personalization)
+				console.log('Google Tag Manager Consent: analytics_storage', _yn_analytics_storage)
+				console.log('Google Tag Manager Consent: personalization_storage', _yn_personalization_storage)
+				console.log('Google Tag Manager Consent: functionality_storage', _yn_functionality_storage)
+				console.log('Google Tag Manager Consent: security_storage', _yn_security_storage)
+				console.log('Google Tag Manager Consent: ad_storage', _yn_ad_storage)
+				console.log('Google Tag Manager Consent: ad_user_data', _yn_ad_user_data)
+				console.log('Google Tag Manager Consent: ad_personalization', _yn_ad_personalization)
 			}	
 
 			gtag('consent', 'default', {
@@ -61,9 +59,6 @@
 				'ad_personalization': _yn_ad_personalization
 			});
 
-			gtag('js', new Date());
-			gtag('config', '{{_yn_tracking_tool.key}}', {sendBeacon: true});
-
 			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -71,7 +66,7 @@
 			})(window,document,'script','dataLayer','{{_yn_tracking_tool.key}}');			
 
 			if(_yn_simpleDebug || _yn_debug){
-				console.log('%c-> Google Analytics added <-',  'color: #e91f63')
+				console.log('%c-> Google Tag Manager added <-',  'color: #e91f63')
 			}	
 			
 			{% isCookieActiveSeo findCookie(_yn_tracking_tool.analytics_storage_consent.alias) %}
@@ -96,15 +91,18 @@
 				// ==================================================
 
 				{% if _yn_tracking_submit_form %}
-					function _yn_formTracking(_yn_name, _yn_id) {
-						const _yn_eventName = 'form_start'
+					function _yn_formTracking(_yn_name, _yn_id, _yn_eventName, _yn_formData) {
+						if(_yn_eventName == 'form_submit'){
+							_yn_eventName = 'form_start'
+						}
 
 						gtag('event', _yn_eventName, {
 							page_title: '{{ _ynfinite.page.name }}',
 							page_referrer: '{{ _ynfinite.domain.referrer }}',
 							page_location: '{{ _ynfinite.domain.href }}',
 							form_name: _yn_name,
-							form_id: _yn_id
+							form_id: _yn_id,
+							formData: _yn_formData
 						});
 					}
 					window._yn_formEvents.push(_yn_formTracking);

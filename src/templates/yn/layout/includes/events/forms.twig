@@ -3,15 +3,43 @@
     if(_yn_formEvents){
         const _yn_forms = document.querySelectorAll('form')
         if(_yn_forms){
+
+            const getFormData = (form) => {
+                const formData = new FormData(form)
+                const _yn_formData = {};
+                formData.forEach((value, key) => {
+                    const match = key.match(/\[(.*?)\]/);
+                    if (match && match.length > 0) {
+                        _yn_formData[match[1]] = value;
+                    }
+                });
+                
+                return _yn_formData;
+            }
+
             _yn_forms.forEach((_yn_form) => {
+                const _yn_name = _yn_form.getAttribute('name');
+                const _yn_id = _yn_form.getAttribute('id');
+
                 _yn_form.addEventListener('submit', () => {
-                    const _yn_name = _yn_form.getAttribute('name');
-                    const _yn_id = _yn_form.getAttribute('id');
+                    const _yn_formData = getFormData(_yn_form)
+                    const _yn_eventName = 'form_submit'
 
                     _yn_formEvents.forEach((_yn_event) => {
-                        _yn_event(_yn_name, _yn_id)
+                        _yn_event(_yn_name, _yn_id, _yn_eventName, _yn_formData)
                         if(_yn_debug){
-                            const _yn_eventName = 'form_start'
+                            console.log('Tracked form - ', _yn_eventName, _yn_name, _yn_id)
+                        }
+                    })
+                })
+
+                _yn_form.addEventListener('onAsyncChange', () => {
+                    const _yn_formData = getFormData(_yn_form)
+                    const _yn_eventName = 'form_success'
+
+                    _yn_formEvents.forEach((_yn_event) => {
+                        _yn_event(_yn_name, _yn_id, _yn_eventName, _yn_formData)
+                        if(_yn_debug){
                             console.log('Tracked form - ', _yn_eventName, _yn_name, _yn_id)
                         }
                     })
