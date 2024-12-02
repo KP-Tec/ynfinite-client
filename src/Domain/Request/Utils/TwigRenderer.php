@@ -54,8 +54,9 @@ final class TwigRenderer
         $templateFolders[] = getcwd() . '/../templates/';
         $templateFolders[] = getcwd(). "/../src/" . $this->settings["ynfinite"]["templateDir"];
 
-        if(array_key_exists('ynfinite-design', $_COOKIE) && $_COOKIE['ynfinite-design']){
-            $templateFolders[1] = getcwd() . '/../templates/' . trim($_COOKIE['ynfinite-design']);
+        if (array_key_exists('ynfinite-design', $_COOKIE) && $_COOKIE['ynfinite-design'] && str_contains($_COOKIE['ynfinite-design'], $data['site']['_id'])) {
+            $templatePath = str_replace('_'.$data['site']['_id'], '', trim($_COOKIE['ynfinite-design']));
+            $templateFolders[1] = getcwd() . '/../templates/' . $templatePath;
         }
 
         $loader = new FileSystemLoader($templateFolders, null, boolval($this->settings["ynfinite"]["debugTemplates"]));
