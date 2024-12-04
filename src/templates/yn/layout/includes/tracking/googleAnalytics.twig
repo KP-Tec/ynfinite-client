@@ -39,7 +39,7 @@
 				_yn_ad_personalization = 'granted'
 			{% endIsCookieActiveSeo %}
 
-			if(_yn_simpleDebug || _yn_debug){
+			if(_yn_debug){
 				console.log('Google Tag Manager Consent: analytics_storage', _yn_analytics_storage)
 				console.log('Google Tag Manager Consent: personalization_storage', _yn_personalization_storage)
 				console.log('Google Tag Manager Consent: functionality_storage', _yn_functionality_storage)
@@ -65,7 +65,7 @@
 			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 			})(window,document,'script','dataLayer','{{_yn_tracking_tool.key}}');			
 
-			if(_yn_simpleDebug || _yn_debug){
+			if(_yn_debug){
 				console.log('%c-> Google Tag Manager added <-',  'color: #e91f63')
 			}	
 			

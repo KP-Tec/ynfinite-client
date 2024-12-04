@@ -10,6 +10,7 @@
 		<link href="{{ _yfunc("withVersion", "/assets/vendor/ynfinite/css/main.css") }}" rel="stylesheet">
 		<script>
 			window.addedScripts = []
+            const _yn_debug = "{{ _ynfinite.site.seo.general.debug|default(false) }}"; // logs for tracking & retargeting
 		</script>
 		{% block head %}
 			{% include 'yn/layout/head.twig' %}
