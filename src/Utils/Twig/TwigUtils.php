@@ -456,6 +456,7 @@ class TwigUtils
                 'alt' => $options['alt'] ?? $image['metadata']['alt'] ?? $options['description'] ?? $image['metadata']['description'] ?? "",
                 'author' => $image['metadata']['author'] ?? "",
                 'filename' => $options['filename'] ?? $image['metadata']['filename'] ?? "",
+                'options' => $options,
             ]);
         }
     }
@@ -479,6 +480,7 @@ class TwigUtils
                 'alt' => $options['alt'] ?? $image['metadata']['alt'] ?? $options['description'] ?? $image['metadata']['description'] ?? "",
                 'author' => $image['metadata']['author'] ?? "",
                 'filename' => $options['filename'] ?? $image['metadata']['filename'] ?? "",
+                'options' => $options,
             ]);
         }
     }
@@ -487,7 +489,7 @@ class TwigUtils
         if($link){
             return $this->twig->render(
                 $this->getTemplate("link:link"),
-                ["link" => $link, "classes" => $options['classes'] ?? "", "params" => $options['params'] ?? ""]
+                ["link" => $link, "classes" => $options['classes'] ?? "", "params" => $options['params'] ?? "", "options" => $options]
             );
         }
     }
@@ -496,7 +498,7 @@ class TwigUtils
         if($links){
             return $this->twig->render(
                 $this->getTemplate("links:links"),
-                ["links" => $links, "classes" => $options['classes'] ?? "", "params" => $options['params'] ?? ""]
+                ["links" => $links, "classes" => $options['classes'] ?? "", "params" => $options['params'] ?? "", "options" => $options]
             );
         }
     }
@@ -505,7 +507,7 @@ class TwigUtils
         if($accordions){
             return $this->twig->render(
                 $this->getTemplate("accordions:accordions"),
-                ["accordions" => $accordions, "classes" => $options['classes'] ?? "", "params" => $options['params'] ?? ""]
+                ["accordions" => $accordions, "classes" => $options['classes'] ?? "", "params" => $options['params'] ?? "", "options" => $options]
             );
         }
     }
@@ -589,13 +591,14 @@ class TwigUtils
             'article' => $article,
             'imgConfig' => $options['imgConfig'] ?? "",
             'classes' => $options['classes'] ?? "",
+            'options' => $options
         ]);
     }
 
     public function articleComponent($context, $component, $options = []) {
         return $this->twig->render(
             $this->getTemplate('article:' . $component['type']),
-            ['component' => $component, 'imgConfig' => $options['imgConfig'] ?? ""]
+            ['component' => $component, 'imgConfig' => $options['imgConfig'] ?? "", 'options' => $options]
         );
     }
 
@@ -637,6 +640,7 @@ class TwigUtils
             'height' => $options['height'] ?? '',
             'width' => $options['width'] ?? '',
             'parameter' => $options['parameter'] ?? "",
+            'options' => $options
         ]);
     }
 
@@ -644,6 +648,7 @@ class TwigUtils
         return $this->twig->render($this->getTemplate('login:userDropdown'), [
             'form' => $options['form'] ?? null,
             'links' => $options['links'] ?? null,
+            'options' => $options
         ]);
     }
 }
