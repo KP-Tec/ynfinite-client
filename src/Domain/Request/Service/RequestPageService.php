@@ -53,7 +53,18 @@ final class RequestPageService extends RequestService
         // Parse URL to get query parameters
         $parsedUrl = parse_url($currentURL);
         $path_parts = pathinfo($parsedUrl['path']);
-        $queryString = isset($parsedUrl['query']) ? $parsedUrl['query'] : '';
+        $queryString = isset($parsedUrl['query']) ? html_entity_decode($parsedUrl['query']) : '';
+
+        $disallowedParams = ['_y__ynfinitePerPage', '_y__ynfinitePage', '_y_perPage', '_y_page'];
+        parse_str($queryString, $queryArray);
+        if (array_intersect_key(array_flip($disallowedParams), $queryArray)) {
+            return false;
+        }
+
+        $queryParams = explode(';', $queryString);
+        if ($queryParams && count($queryParams) !== count(array_unique($queryParams))) {
+            return false;
+        }
 
         // Parse query string manually and check for duplicate parameters
         $parameters = array_count_values(array_map(function ($pair) {

@@ -31,7 +31,7 @@ final class RenderPageAction
     ): ResponseInterface {
         try {
             if(!$this->requestPageService->isValidUrl()){
-                http_response_code(404);
+                http_response_code(410);
                 die();
             }
 
