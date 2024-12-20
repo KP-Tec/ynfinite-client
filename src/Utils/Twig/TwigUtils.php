@@ -514,14 +514,17 @@ class TwigUtils
 
     public function teaserText($context, $article, $options = []) {
         if($article){
-            $intro_text = array_filter($article, function ($i) {return ($i['type'] == 'introText' or $i['type'] == 'text');});
+            $intro_text = array_values(array_filter($article, function ($i) {return ($i['type'] == 'introText' or $i['type'] == 'text');}));
             if($intro_text){
                 // Filtert alles raus was nicht in <p> Tags steht
                 $pattern = '/<p\b[^>]*>(.*?)<\/p\b>/s';
                 $foundText = 0;
                 $i = 0;
-
+                
                 while(!$foundText > 0 && isset($intro_text[$i])){
+                    if (!empty($intro_text[$i]['value']) && !preg_match($pattern, $intro_text[$i]['value'])) {
+                        $intro_text[$i]['value'] = '<p>' . $intro_text[$i]['value'] . '</p>';
+                    }
                     if(isset($intro_text[$i]) && preg_match_all($pattern, $intro_text[$i]['value'], $matches) > 0){
                         $foundText = preg_match_all($pattern, $intro_text[$i]['value'], $matches);
                     }
