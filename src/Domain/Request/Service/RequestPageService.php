@@ -55,10 +55,11 @@ final class RequestPageService extends RequestService
         $path_parts = pathinfo($parsedUrl['path']);
         $queryString = isset($parsedUrl['query']) ? html_entity_decode($parsedUrl['query']) : '';
 
-        $disallowedParams = ['_y__ynfinitePerPage', '_y__ynfinitePage', '_y_perPage', '_y_page'];
-        parse_str($queryString, $queryArray);
-        if (array_intersect_key(array_flip($disallowedParams), $queryArray)) {
+        $disallowedStrings = ['_y__ynfinitePerPage', '_y__ynfinitePage', '_y_perPage', '_y_page', '&amp%3B'];
+        foreach ($disallowedStrings as $string) {
+            if (strpos($currentURL, $string) !== false) {
             return false;
+            }
         }
 
         $queryParams = explode(';', $queryString);
