@@ -1,9 +1,9 @@
 {% if article %}
-	<div class="yn-article {{classes}}">
+	<article class="yn-article {{classes}}">
 		{% for component in article %}
 			{% if component.config.published %}
 				{{_yfunc("articleComponent", component, { imgConfig: imgConfig })}}
 			{% endif %}
 		{% endfor %}
-	</div>
+	</article>
 {% endif %}
