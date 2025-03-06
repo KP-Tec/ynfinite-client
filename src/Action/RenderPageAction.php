@@ -49,7 +49,10 @@ final class RenderPageAction
             
             $formRequest = $request->getParsedBody();
             if($formRequest && $formRequest["method"] == "post" && !isset($formRequest["hasProof"])){
-                throw new Exception("The form has no proof that is was sent by a human. Sorry for you inconvenience.");
+                $this->securityError = array(
+                    "success" => false,
+                    "rendered" => "The form has no proof that is was sent by a human. Sorry for you inconvenience."
+                );
             }
             
             $data = $this->requestPageService->getPage($request);

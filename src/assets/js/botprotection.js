@@ -17,7 +17,7 @@ class Block {
 
 	// difficulty = size of number (4 = 0000)
 	// chances = number of chances (2 = 0000, 1111, 2222)
-	startProofOfWork(difficulty = 4, chances = 0, minRunTime = 2500) {
+	startProofOfWork(difficulty = 6, chances = 9, minRunTime = 5000) {
 		if (window.Worker) {
 			const blockWorker = new Worker('/assets/vendor/ynfinite/js/worker.min.js')
 
@@ -29,6 +29,7 @@ class Block {
 				const formSubmitButton = this.data.form.querySelector('button[type=submit]')
 
 				formSubmitButton.classList.remove('yn-loader')
+				formSubmitButton.classList.remove('yn-botprotection')
 				formSubmitButton.style.removeProperty('padding-left')
 				formSubmitButton.textContent = formSubmitButton.dataset.label
 
@@ -87,7 +88,7 @@ const YnfiniteBotProtection = {
 
 				const formSubmitButton = form.querySelector('button[type=submit]')
 
-				form.addEventListener('change', function () {
+				form.addEventListener('focusin', function () {
 					if (form.dataset.hasProof === 'false' && !form.dataset.working) {
 						form.dataset.working = true
 
@@ -95,6 +96,7 @@ const YnfiniteBotProtection = {
 						formSubmitButton.dataset.label = formSubmitButton.textContent
 						formSubmitButton.style.paddingLeft = formSubmitButton.style.paddingLeft = 'calc(' + pos + ')'
 						formSubmitButton.style.setProperty('--yn-loader-pos', 'calc((' + pos + ' - var(--loader-size,16px)) / 2);')
+						formSubmitButton.classList.add('yn-botprotection')
 						formSubmitButton.classList.add('yn-loader')
 						formSubmitButton.textContent = 'Bot-Prüfung'
 

@@ -26,7 +26,7 @@ const YnfiniteFormSettings = {
 				toggleHide(g, index !== activeIndex)
 
 				if (index === activeIndex) {
-					const firstElement = g.querySelector(':is(select, input, textarea):not([tabindex="-1"], [type="hidden"])')
+					const firstElement = g.querySelector(':is(select, input, textarea):not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_name"], [name="consents[]_v2"])')
 					if (firstElement && !firstClick) firstElement.focus()
 					rerenderButtons(groups, activeIndex, maxIndex, submitButtons, prevButton, nextButton)
 				}
@@ -42,7 +42,7 @@ const YnfiniteFormSettings = {
 		}
 
 		const validateFieldGroup = (groups, activeIndex) => {
-			const fields = groups[activeIndex - 1].querySelectorAll(':is(input, select, textarea):not([tabindex="-1"], [type="hidden"])')
+			const fields = groups[activeIndex - 1].querySelectorAll(':is(input, select, textarea):not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_name"], [name="consents[]_v2"])')
 			const invalidFields = Array.from(fields).filter((f) => !f.checkValidity())
 
 			if (invalidFields) {
@@ -60,7 +60,7 @@ const YnfiniteFormSettings = {
 
 			if (groups.length > 1) {
 				let activeIndex = 1
-				const submitButtons = form.querySelectorAll('[type=submit]:not([tabindex="-1"], [type="hidden"])')
+				const submitButtons = form.querySelectorAll('[type=submit]:not([tabindex="-1"], [type="hidden"], .hidden)')
 				const consents = form.querySelector('.yn-consents')
 				const formContent = form.querySelector('.form-content')
 
@@ -74,7 +74,7 @@ const YnfiniteFormSettings = {
 				groups[groups.length - 1].appendChild(consents)
 
 				// temp remove submitButtons
-				form.querySelectorAll('[type=submit]:not([tabindex="-1"], [type="hidden"])').forEach((btn) => {
+				form.querySelectorAll('[type=submit]:not([tabindex="-1"], [type="hidden"], .hidden)').forEach((btn) => {
 					btn.remove()
 				})
 

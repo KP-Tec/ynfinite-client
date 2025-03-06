@@ -1,26 +1,306 @@
+import { load } from '@fingerprintjs/botd'
+
+const debug = false
+const renderedKey = Math.random().toString(36).substring(2)
+const focusedElements = []
+let botD = undefined
+let humanMovement = false
+let botScore = 0
+
+function checkHoneypot(form) {
+	const honeypot_name = form.querySelector('input[name="yn_name"], [name="consents[]_v2"]')
+	if (!honeypot_name.value) {
+		honeypot_name.value = renderedKey
+	}
+
+	if (honeypot_name && honeypot_name.value !== renderedKey) {
+		if (debug) {
+			console.log('%cBot detected by name honeypot (added 100 Score)', 'color: red')
+		}
+		botScore += 100
+	} else if (debug) {
+		console.log('%cHoneypot (name) check passed', 'color: green')
+	}
+
+	const honeypot_mail = form.querySelector('input[name="confirm_email"]')
+	if (!honeypot_mail.value) {
+		honeypot_mail.value = 'my@email.com'
+	}
+
+	if (honeypot_mail && honeypot_mail.value !== 'my@email.com') {
+		if (debug) {
+			console.log('%cBot detected by mail honeypot (added 100 Score)', 'color: red')
+		}
+		botScore += 100
+	} else if (debug) {
+		console.log('%cHoneypot (mail) check passed', 'color: green')
+	}
+
+	const consent_honeypots = form.querySelectorAll('.yn_consents_v2')
+	consent_honeypots.forEach((consent) => {
+		const input = consent.querySelector('input[type="checkbox"]')
+		if (input.checked) {
+			if (debug) {
+				console.log('%cBot detected by consent honeypot (added 100 Score)', 'color: red')
+			}
+			botScore += 100
+		} else {
+			consent.remove()
+		}
+	})
+}
+
+function setHoneypotClickEvent() {
+	const forms = document.querySelectorAll('form')
+	forms.forEach((form) => {
+		const submitButtons = form.querySelectorAll('[type=submit]:not([tabindex="-1"], [type="hidden"], .hidden')
+		submitButtons.forEach((submitButton) => {
+			submitButton.addEventListener('click', () => {
+				checkHoneypot(form)
+			})
+		})
+	})
+}
+
+function checkHumanMovement() {
+	const setTabIndexFocus = (e) => {
+		// Check for Tab key specifically
+		if (e.key === 'Tab') {
+			humanMovement = true
+			if (debug) {
+				console.log('%cMovement check (tabindex) passed', 'color: green')
+			}
+			document.removeEventListener('keydown', setTabIndexFocus)
+		}
+	}
+
+	document.addEventListener('keydown', setTabIndexFocus)
+
+	const handleMovement = () => {
+		humanMovement = true
+		if (debug) {
+			console.log('%cMovement check (mouse or touch) passed', 'color: green')
+		}
+		document.removeEventListener('mousemove', handleMovement)
+		document.removeEventListener('touchmove', handleMovement)
+	}
+
+	document.addEventListener('mousemove', handleMovement)
+	document.addEventListener('touchmove', handleMovement)
+}
+
+function setFocusEvent() {
+	const fields = document.querySelectorAll(':is(input, select, textarea)[data-ynfield][required]:not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_name"], [name="consents[]_v2"])')
+
+	fields.forEach((field) => {
+		const handleFocusOrInput = () => {
+			if (!focusedElements.includes(field.getAttribute('id'))) {
+				focusedElements.push(field.getAttribute('id'))
+				// Remove event listeners once the field has been focused
+				field.removeEventListener('focusin', handleFocusOrInput)
+				field.removeEventListener('input', handleFocusOrInput)
+			}
+		}
+
+		// Handle manual focus events
+		field.addEventListener('focusin', handleFocusOrInput)
+
+		// Additional event for detecting autofill in most browsers
+		field.addEventListener('input', handleFocusOrInput)
+	})
+}
+
+function checkFocus(form) {
+	const fields = form.querySelectorAll(':is(input, select, textarea)[data-ynfield][required]:not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_name"], [name="consents[]_v2"])')
+	let notAllFieldsFocused = false
+
+	fields.forEach((field) => {
+		if (!focusedElements.includes(field.getAttribute('id'))) {
+			notAllFieldsFocused = true
+		}
+	})
+	if (notAllFieldsFocused) {
+		if (debug) {
+			console.log('%cBot detected by focus (added 100 Score)', 'color: red')
+		}
+		botScore += 100
+	} else {
+		if (debug) {
+			console.log('%cFocus check passed', 'color: green')
+		}
+	}
+}
+
+function botDCheck() {
+	load({ monitoring: false })
+		.then((botd) => botd.detect())
+		.then((result) => {
+			botD = result
+			if (botD.bot) {
+				if (debug) {
+					console.log('%cBot detected by BotD (added 100 Score)', 'color: red')
+				}
+				botScore += 100
+			} else if (debug) {
+				console.log('%cBotD check passed', 'color: green')
+			}
+		})
+		.catch((error) => console.error(error))
+}
+
+function webGLCheck() {
+	try {
+		const canvas = document.createElement('canvas')
+		const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+
+		if (!gl) {
+			if (debug) {
+				console.log('%cBot detected by WebGL (added 20 Score)', 'color: red')
+			}
+			botScore += 20
+			return false
+		}
+
+		const debugInfo = gl.getExtension('WEBGL_debug_renderer_info')
+		if (!debugInfo) {
+			if (debug) {
+				console.log('%cBot detected by WebGL debug info (added 20 Score)', 'color: red')
+			}
+			botScore += 20
+			return false
+		}
+
+		if (debug) {
+			console.log('%cWebGL check passed', 'color: green')
+		}
+		return true
+	} catch (e) {
+		console.log('Error during WebGL check (added 40 Score):', e)
+		botScore += 40
+		return false
+	}
+}
+
+function localStorageCheck() {
+	localStorage.setItem('ynfinite-bot-protection', renderedKey)
+	sessionStorage.setItem('ynfinite-bot-protection', renderedKey)
+	document.cookie = 'ynfinite-bot-protection=' + renderedKey + '; path=/'
+
+	if (localStorage.getItem('ynfinite-bot-protection') !== renderedKey) {
+		if (debug) {
+			console.log('%cBot detected by localStorage (added 30 Score)', 'color: red')
+		}
+		botScore += 30
+	} else if (debug) {
+		console.log('%clocalStorage check passed', 'color: green')
+	}
+
+	if (sessionStorage.getItem('ynfinite-bot-protection') !== renderedKey) {
+		if (debug) {
+			console.log('%cBot detected by sessionStorage (added 30 Score)', 'color: red')
+		}
+		botScore += 30
+	} else if (debug) {
+		console.log('%csessionStorage check passed', 'color: green')
+	}
+
+	if (document.cookie.indexOf('ynfinite-bot-protection=' + renderedKey) === -1) {
+		if (debug) {
+			console.log('%cBot detected by cookie (added 30 Score)', 'color: red')
+		}
+		botScore += 30
+	} else if (debug) {
+		console.log('%ccookie check passed', 'color: green')
+	}
+}
+
+function checkScreen() {
+	if(window.screen.width > 0 && window.screen.height > 0) {
+		if(debug) {
+			console.log('%cscreen size check passed', 'color: green')
+		}
+	} else {
+		if(debug) {
+			console.log('%cBot detected by screen size (added 70 Score)', 'color: red')
+		}
+		botScore += 70
+	}
+}
+
 const YnfiniteForms = {
 	resetForm(element) {
 		element.reset()
 	},
 
-	async submitForm(element, eventType) {
+	async submitForm(element) {
 		const redirect = element.getAttribute('redirect')
+		const method = element.getAttribute('method')
+		const hasProof = method == 'get' ? true : element.getAttribute('data-has-proof')
+		const proofenHash = method == 'get' ? true : element.getAttribute('data-proofen-hash')
+		const formSubmitButton = element.querySelector('button[type=submit]')
+		checkFocus(element)
+
+		if(!hasProof){
+			botScore += 100
+		}
+
+		if(!hasProof){
+			botScore += 100
+
+			if (debug) {
+				console.log('%cBot detected by missing hasProof (added 100 Score)', 'color: red')
+			} 
+		} else {
+			if (debug) {
+				console.log('%cHasProof check passed', 'color: green')
+			}
+		}
+
+		if(!proofenHash){
+			botScore += 100
+
+			if (debug) {
+				console.log('%cBot detected by missing proofenHash (added 100 Score)', 'color: red')
+			} 
+		} else {
+			if (debug) {
+				console.log('%cProofenHash check passed', 'color: green')
+			}
+		}
+
+		if(!humanMovement){
+			botScore += 100
+
+			if (debug){
+				console.log('%cBot detected by movement (added 100 Score)', 'color: red')
+			}
+		}
+
+		if (debug) {
+			if(botScore >= 100){
+				console.log(`%cBot score: ${botScore}`, 'color: red')
+			} else if (botScore < 100){
+				console.log(`%cBot score: ${botScore}`, 'color: green')
+			}
+		}
+
+		if (botScore >= 100) {
+			console.log('Sorry, there is no proof here that you are a human. The form can not be sent.', 'color: red')
+			formSubmitButton.classList.remove('yn-loader')
+			formSubmitButton.style.removeProperty('padding-left')
+			formSubmitButton.style.borderColor = 'var(--error, red)'
+			formSubmitButton.style.backgroundColor = 'var(--error, red)'
+			formSubmitButton.style.color = 'var(--light, white)'
+			formSubmitButton.style.pointerEvents = 'none'
+			formSubmitButton.textContent = 'Bot-Schutz fehlgeschlagen. Bitte neu laden.'
+			return
+		}
 
 		if (redirect === 'true') {
 			element.submit()
 			return
 		}
 
-		const method = element.getAttribute('method')
-		const hasProof = method == 'get' ? true : element.getAttribute('data-has-proof')
-		const proofenHash = method == 'get' ? true : element.getAttribute('data-proofen-hash')
-
-		if (!hasProof || !proofenHash) {
-			console.log('Sorry, there is no proof here that you are a human. The form can not be sent.')
-			return
-		}
-
-		const formSubmitButton = element.querySelector('button[type=submit]')
 		if (method == 'post' && formSubmitButton) {
 			const pos = 'var(--loader-size,16px) + ' + getComputedStyle(formSubmitButton).paddingLeft
 			formSubmitButton.classList.add('yn-loader')
@@ -120,6 +400,16 @@ const YnfiniteForms = {
 		document.addEventListener('DOMContentLoaded', () => {
 			const forms = document.querySelectorAll('[data-ynform=true]')
 
+			if (forms) {
+				botDCheck()
+				webGLCheck()
+				localStorageCheck()
+				setFocusEvent()
+				checkHumanMovement()
+				setHoneypotClickEvent()
+				checkScreen()
+			}
+
 			forms.forEach((form) => {
 				if (form.hasAttribute('data-onchange')) {
 					this.addChangeEvent(form)
@@ -133,7 +423,7 @@ const YnfiniteForms = {
 				// Handle reset action
 				const resetButton = form.querySelector("button[type='reset']")
 				if (resetButton) {
-					resetButton.addEventListener('click', async (e) => {
+					resetButton.addEventListener('click', async () => {
 						const formInputElements = form.querySelectorAll('select, input')
 
 						for (var i = 0; i < formInputElements.length; i++) {
@@ -262,4 +552,4 @@ const YnfiniteForms = {
 	},
 }
 
-module.exports = YnfiniteForms
+export default YnfiniteForms

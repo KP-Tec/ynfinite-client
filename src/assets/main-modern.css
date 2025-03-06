@@ -527,6 +527,11 @@ form.yn-form button.yn-loader::after {
   bottom: 0;
 }
 
+.yn_consents_v2 {
+  position: absolute !important;
+  left: -9999px !important;
+}
+
 .yn-accordion {
   padding: calc(var(--gap, 1.5rem) / 2) 0;
   position: relative;
@@ -787,6 +792,9 @@ button.yn-loader::after {
           align-items: center;
   z-index: 9999;
   opacity: 0;
+}
+#jumpToBody + * {
+  margin-top: 0 !important;
 }
 #jumpToBody:focus-visible {
   pointer-events: all;

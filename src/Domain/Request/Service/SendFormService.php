@@ -64,7 +64,7 @@ final class SendFormService extends RequestService
         if($body["confirm_email"] !== "my@email.com") {
             $this->securityError = array(
                 "success" => false,
-                "rendered" => "<p>This server does no longer exists. Please contact your administrator!"
+                "rendered" => "The form has no proof that is was sent by a human. Sorry for you inconvenience."
             );
                
             return false;

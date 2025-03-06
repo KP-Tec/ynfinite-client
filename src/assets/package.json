@@ -7,11 +7,12 @@
 	"license": "MIT",
 	"devDependencies": {},
 	"dependencies": {
-		"@justinribeiro/lite-youtube": "^1.5.0",
+		"@fingerprintjs/botd": "^1.9.1",
+		"@justinribeiro/lite-youtube": "^1.7.1",
 		"@slightlyoff/lite-vimeo": "^0.1.2",
-		"accordion-js": "^3.3.4",
+		"accordion-js": "^3.4.0",
 		"crypto-js": "^4.1.1",
-		"dayjs": "^1.11.7",
+		"dayjs": "^1.11.13",
 		"flatpickr": "^4.6.13"
 	},
 	"scripts": {
