@@ -408,7 +408,7 @@ function createCaptcha(form) {
 		else i--;
 	}
 	var canv = document.createElement("canvas");
-	canv.id = "captcha";
+	canv.classList.add('captcha')
 	canv.width = 140;
 	canv.height = 60;
 	canv.style.backgroundColor = accentFont
@@ -547,7 +547,7 @@ const YnfiniteForms = {
 
 			if(botScore > 0 && botScore < 100){
 				if (debug) {
-					console.log('%cPossible Bot detected, adding captcha', 'color: yellow')
+					console.log('%cPossible Bot detected - adding captcha', 'color: yellow')
 				}
 				createCaptcha(element);
 				return false

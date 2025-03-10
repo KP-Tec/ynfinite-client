@@ -536,8 +536,8 @@ form.yn-form button.yn-loader::after {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
-.yn-captcha .captchaTextBox {
-  margin-top: calc(var(--text-to-text) + var(--extra-spacing));
+.yn-captcha .captcha {
+  margin-bottom: calc(var(--text-to-text) + var(--extra-spacing));
 }
 
 .yn-accordion {

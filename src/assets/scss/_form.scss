@@ -30,9 +30,9 @@ form.yn-form {
 
 .yn-captcha {
 	margin-top: 1rem;
-	margin-bottom: 1rem;
+	margin-bottom: 1rem; 
 
-	.captchaTextBox{
-		margin-top: calc(var(--text-to-text) + var(--extra-spacing))
+	.captcha{
+		margin-bottom: calc(var(--text-to-text) + var(--extra-spacing))
 	}
 }
