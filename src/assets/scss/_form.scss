@@ -27,3 +27,12 @@ form.yn-form {
 	position: absolute !important;
 	left: -9999px !important;
 }
+
+.yn-captcha {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+
+	.captchaTextBox{
+		margin-top: calc(var(--text-to-text) + var(--extra-spacing))
+	}
+}
