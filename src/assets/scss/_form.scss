@@ -28,11 +28,11 @@ form.yn-form {
 	left: -9999px !important;
 }
 
-.yn-captcha {
+.yn-captcha-wrapper {
 	margin-top: 1rem;
 	margin-bottom: 1rem; 
 
-	.captcha{
+	.yn-captcha{
 		margin-bottom: calc(var(--text-to-text) + var(--extra-spacing))
 	}
 }

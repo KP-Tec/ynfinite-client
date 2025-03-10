@@ -386,7 +386,7 @@ function createCaptcha(form) {
 	col.classList.add('yn-form-grid-field', 'yn-form-grid-field-12')
 
 	const captchaWrapper = document.createElement('div')
-	captchaWrapper.classList.add('yn-captcha', 'widget', 'widget--captcha')
+	captchaWrapper.classList.add('yn-captcha-wrapper', 'widget', 'widget--captcha')
 
 	const label = document.createElement('label')
 	label.classList.add('widget__label')
@@ -408,7 +408,7 @@ function createCaptcha(form) {
 		else i--;
 	}
 	var canv = document.createElement("canvas");
-	canv.classList.add('captcha')
+	canv.classList.add('yn-captcha')
 	canv.width = 140;
 	canv.height = 60;
 	canv.style.backgroundColor = accentFont
