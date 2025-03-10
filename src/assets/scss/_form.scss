@@ -32,7 +32,16 @@ form.yn-form {
 	margin-top: 1rem;
 	margin-bottom: 1rem; 
 
-	.yn-captcha{
+	.yn-captcha {
 		margin-bottom: calc(var(--text-to-text) + var(--extra-spacing))
+	}
+}
+
+:where(.distance-wrapper){
+	display: flex;
+	gap: 1rem;
+
+	> * {
+		flex: 1;
 	}
 }
