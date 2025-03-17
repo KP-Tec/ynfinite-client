@@ -26,7 +26,7 @@ const YnfiniteFormSettings = {
 				toggleHide(g, index !== activeIndex)
 
 				if (index === activeIndex) {
-					const firstElement = g.querySelector(':is(select, input, textarea):not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_name"], [name="consents[]_v2"])')
+					const firstElement = g.querySelector(':is(select, input, textarea):not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_confirm_name"], [name="consents[]_v2"])')
 					if (firstElement && !firstClick) firstElement.focus()
 					rerenderButtons(groups, activeIndex, maxIndex, submitButtons, prevButton, nextButton)
 				}
@@ -42,7 +42,7 @@ const YnfiniteFormSettings = {
 		}
 
 		const validateFieldGroup = (groups, activeIndex) => {
-			const fields = groups[activeIndex - 1].querySelectorAll(':is(input, select, textarea):not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_name"], [name="consents[]_v2"])')
+			const fields = groups[activeIndex - 1].querySelectorAll(':is(input, select, textarea):not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_confirm_name"], [name="consents[]_v2"])')
 			const invalidFields = Array.from(fields).filter((f) => !f.checkValidity())
 
 			if (invalidFields) {

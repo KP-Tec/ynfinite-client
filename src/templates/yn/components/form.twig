@@ -32,9 +32,9 @@
 	<fieldset>
 	    <legend style="display: none;">Contact Form</legend>
 		{% if form.method != "get" %}
-			<label style="display: none !important;" tabindex="-1" aria-label="hidden" for="confirm_email">Confirm E-Mail</label>
-			<input type="text" name="confirm_email" id="confirm_email" required value style="display: none !important;" autocomplete="off"> 
-			<input type="text" name="yn_name" style="position:absolute; left:-9999px;" required value placeholder="Name" autocomplete="off" tabindex="-1" aria-hidden="true"> 
+			<label style="display: none !important;" tabindex="-1" aria-label="hidden" for="yn_confirm_email">Confirm E-Mail</label>
+			<input type="text" name="yn_confirm_email" id="yn_confirm_email" required value style="display: none !important;" autocomplete="off"> 
+			<input type="text" name="yn_confirm_name" style="position:absolute; left:-9999px;" required value placeholder="Name" autocomplete="off" tabindex="-1" aria-hidden="true"> 
 			<input type="hidden" value="{{form._id}}" name="formId">
 			<input type="hidden" value="{{_ynfinite.languages.current}}" name="formLanguage">
 		{% endif %}

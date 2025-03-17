@@ -61,7 +61,7 @@ final class SendFormService extends RequestService
     private function securityCheck($request) 
     {
         $body = $request->getParsedBody();
-        if($body["confirm_email"] !== "my@email.com") {
+        if($body["yn_confirm_email"] !== "my@email.com") {
             $this->securityError = array(
                 "success" => false,
                 "rendered" => "The form has no proof that is was sent by a human. Sorry for you inconvenience."

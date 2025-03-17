@@ -13,15 +13,31 @@ let captchaCode
 let normalTypingConsistency = true
 let errorCodes = []
 
+function dontFocusHoneypots() {
+	const honeypots = document.querySelectorAll('input[name="yn_confirm_name"], input[name="yn_confirm_email"], [name="consents[]_v2"]')
+
+	// add event focusin, find the parent form, find .form-content, find the first form field and focus it
+	honeypots.forEach((honeypot) => {
+		honeypot.addEventListener('focusin', (e) => {
+			const form = honeypot.closest('form')
+			const formContent = form.querySelector('.form-content')
+			const firstField = formContent.querySelector('input, textarea, select')
+			firstField.focus()
+		})
+	})
+}
+
 function checkHoneypot(form) {
-	const honeypot_name = form.querySelector('input[name="yn_name"], [name="consents[]_v2"]')
+	const honeypot_name = form.querySelector('input[name="yn_confirm_name"], [name="consents[]_v2"]')
 	if (!honeypot_name.value) {
 		honeypot_name.value = renderedKey
 	}
 
 	if (honeypot_name && honeypot_name.value !== renderedKey) {
 		botScore += 100
-		errorCodes.push('1')
+		if (!errorCodes.includes('1')) {
+			errorCodes.push('1')
+		}
 		if (debug) {
 			console.log('%cBot detected by name honeypot (added 100 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -30,14 +46,16 @@ function checkHoneypot(form) {
 		console.log('%cHoneypot (name) check passed', 'color: green')
 	}
 
-	const honeypot_mail = form.querySelector('input[name="confirm_email"]')
+	const honeypot_mail = form.querySelector('input[name="yn_confirm_email"]')
 	if (!honeypot_mail.value) {
 		honeypot_mail.value = 'my@email.com'
 	}
 
 	if (honeypot_mail && honeypot_mail.value !== 'my@email.com') {
 		botScore += 100
-		errorCodes.push('2')
+		if (!errorCodes.includes('2')) {
+			errorCodes.push('2')
+		}
 		if (debug) {
 			console.log('%cBot detected by mail honeypot (added 100 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -51,7 +69,9 @@ function checkHoneypot(form) {
 		const input = consent.querySelector('input[type="checkbox"]')
 		if (input.checked) {
 			botScore += 100
-			errorCodes.push('3')
+			if (!errorCodes.includes('3')) {
+				errorCodes.push('3')
+			}
 			if (debug) {
 				console.log('%cBot detected by consent honeypot (added 100 Score)', 'color: red')
 				console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -90,7 +110,9 @@ function analyzeTypingConsistency(patterns) {
 function checkTryTypingConsistency() {
 	if (normalTypingConsistency === false) {
 		botScore += 30
-		errorCodes.push('4')
+		if (!errorCodes.includes('4')) {
+			errorCodes.push('4')
+		}
 		if (debug) {
 			console.log(`%cBot detected by unnatural typing patterns (added 45 Score)`, 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -131,7 +153,9 @@ function checkBrowserEnvironment() {
 	// Prüfe, ob Navigator-Eigenschaften existieren (viele Bots haben diese nicht korrekt implementiert)
 	if (!navigator.language || !navigator.userAgent || !navigator.platform) {
 		botScore += 20
-		errorCodes.push('5')
+		if (!errorCodes.includes('5')) {
+			errorCodes.push('5')
+		}
 		if (debug) {
 			console.log('%cBot detected by missing navigator properties (added 60 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -142,7 +166,9 @@ function checkBrowserEnvironment() {
 	// Bots haben oft keine oder falsche Hardware-Beschleunigungsinformationen
 	if (!window.devicePixelRatio || window.devicePixelRatio === 0) {
 		botScore += 20
-		errorCodes.push('6')
+		if (!errorCodes.includes('6')) {
+			errorCodes.push('6')
+		}
 		if (debug) {
 			console.log('%cBot detected by suspicious devicePixelRatio (added 40 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -153,7 +179,9 @@ function checkBrowserEnvironment() {
 	// Prüfe, ob grundlegende Browser-Funktionen vorhanden sind
 	if (typeof document.addEventListener !== 'function' || typeof window.setTimeout !== 'function') {
 		botScore += 20
-		errorCodes.push('7')
+		if (!errorCodes.includes('7')) {
+			errorCodes.push('7')
+		}
 		if (debug) {
 			console.log('%cBot detected by missing core browser functions (added 70 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -229,7 +257,9 @@ function trackMovements() {
 		if (positions.length > 0) {
 			if (straightLineCounter > positions.length * 0.6) {
 				botScore += 30
-				errorCodes.push('8')
+				if (!errorCodes.includes('8')) {
+					errorCodes.push('8')
+				}
 				if (debug) {
 					console.log('%cBot detected by suspicious straight line movements (added 50 Score)', 'color: red')
 					console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -275,7 +305,7 @@ function checkHumanMovement() {
 }
 
 function setFocusEvent() {
-	const fields = document.querySelectorAll(':is(input, select, textarea)[data-ynfield][required]:not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_name"], [name="consents[]_v2"])')
+	const fields = document.querySelectorAll(':is(input, select, textarea)[data-ynfield][required]:not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_confirm_name"], [name="consents[]_v2"])')
 
 	fields.forEach((field) => {
 		const handleFocusOrInput = () => {
@@ -296,7 +326,7 @@ function setFocusEvent() {
 }
 
 function checkFocus(form) {
-	const fields = form.querySelectorAll(':is(input, select, textarea)[data-ynfield][required]:not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_name"], [name="consents[]_v2"])')
+	const fields = form.querySelectorAll(':is(input, select, textarea)[data-ynfield][required]:not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_confirm_name"], [name="consents[]_v2"])')
 	let notAllFieldsFocused = false
 
 	fields.forEach((field) => {
@@ -306,7 +336,9 @@ function checkFocus(form) {
 	})
 	if (notAllFieldsFocused) {
 		botScore += 100
-		errorCodes.push('9')
+		if (!errorCodes.includes('9')) {
+			errorCodes.push('9')
+		}
 		if (debug) {
 			console.log('%cBot detected by focus (added 100 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -325,7 +357,9 @@ function botDCheck() {
 			botD = result
 			if (botD.bot) {
 				botScore += 90
-				errorCodes.push('10')
+				if (!errorCodes.includes('10')) {
+					errorCodes.push('10')
+				}
 				if (debug) {
 					console.log('%cBot detected by BotD (added 90 Score)', 'color: red')
 					console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -344,7 +378,9 @@ function localStorageCheck() {
 
 	if (localStorage.getItem('ynfinite-bot-protection') !== renderedKey) {
 		botScore += 30
-		errorCodes.push('11')
+		if (!errorCodes.includes('11')) {
+			errorCodes.push('11')
+		}
 		if (debug) {
 			console.log('%cBot detected by localStorage (added 30 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -355,7 +391,9 @@ function localStorageCheck() {
 
 	if (sessionStorage.getItem('ynfinite-bot-protection') !== renderedKey) {
 		botScore += 30
-		errorCodes.push('12')
+		if (!errorCodes.includes('12')) {
+			errorCodes.push('12')
+		}
 		if (debug) {
 			console.log('%cBot detected by sessionStorage (added 30 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -366,7 +404,9 @@ function localStorageCheck() {
 
 	if (document.cookie.indexOf('ynfinite-bot-protection=' + renderedKey) === -1) {
 		botScore += 30
-		errorCodes.push('13')
+		if (!errorCodes.includes('13')) {
+			errorCodes.push('13')
+		}
 		if (debug) {
 			console.log('%cBot detected by cookie (added 30 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -383,7 +423,9 @@ function checkScreen() {
 		}
 	} else {
 		botScore += 30
-		errorCodes.push('14')
+		if (!errorCodes.includes('14')) {
+			errorCodes.push('14')
+		}
 		if (debug) {
 			console.log('%cBot detected by screen size (added 70 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
@@ -411,7 +453,7 @@ function createCaptcha(form) {
 	const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#000'
 	const accentFont = getComputedStyle(document.documentElement).getPropertyValue('--accent-font') || '#fff'
 
-	var charsArray = '0123456789abcdefghjkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ@!?'
+	var charsArray = '123456789abcdefghjkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ@!?'
 	var lengthOtp = 6
 	var captcha = []
 	for (var i = 0; i < lengthOtp; i++) {
@@ -514,7 +556,9 @@ const YnfiniteForms = {
 
 			if (!hasProof) {
 				botScore += 100
-				errorCodes.push('15')
+				if (!errorCodes.includes('15')) {
+					errorCodes.push('15')
+				}
 
 				if (debug) {
 					console.log('%cBot detected by missing hasProof (added 100 Score)', 'color: red')
@@ -528,7 +572,9 @@ const YnfiniteForms = {
 
 			if (!proofenHash) {
 				botScore += 100
-				errorCodes.push('16')
+				if (!errorCodes.includes('16')) {
+					errorCodes.push('16')
+				}
 
 				if (debug) {
 					console.log('%cBot detected by missing proofenHash (added 100 Score)', 'color: red')
@@ -542,7 +588,9 @@ const YnfiniteForms = {
 
 			if (!humanMovement) {
 				botScore += 100
-				errorCodes.push('17')
+				if (!errorCodes.includes('17')) {
+					errorCodes.push('17')
+				}
 
 				if (debug) {
 					console.log('%cBot detected by movement (added 100 Score)', 'color: red')
@@ -717,6 +765,7 @@ const YnfiniteForms = {
 				setupTypingAnalysis()
 				checkBrowserEnvironment()
 				trackMovements()
+				dontFocusHoneypots()
 			}
 
 			forms.forEach((form) => {
