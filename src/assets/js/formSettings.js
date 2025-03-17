@@ -100,6 +100,7 @@ const YnfiniteFormSettings = {
 					}
 				})
 
+				const buttonClasses = form.getAttribute('data-button-classes') || undefined
 				let nextButton = document.createElement('a')
 				nextButton.type = 'button'
 				nextButton.title = 'Weiter'
@@ -108,6 +109,11 @@ const YnfiniteFormSettings = {
 				nextButton.tabIndex = '0'
 				nextButton.innerHTML = 'Weiter'
 				nextButton.classList.add('button', 'button-next')
+				if (buttonClasses) {
+					buttonClasses.split(' ').forEach((c) => {
+						nextButton.classList.add(c)
+					})
+				}
 				const nextButtonFunc = () => {
 					if (validateFieldGroup(groups, activeIndex)) {
 						activeIndex++

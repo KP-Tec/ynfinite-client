@@ -6,11 +6,12 @@ const focusedElements = []
 let botD = undefined
 let humanMovement = false
 let botScore = 0
-let inputTypingPatterns = [];
-let inputLastKeyTime = 0;
+let inputTypingPatterns = []
+let inputLastKeyTime = 0
 let captchaExists = false
 let captchaCode
 let normalTypingConsistency = true
+let errorCodes = []
 
 function checkHoneypot(form) {
 	const honeypot_name = form.querySelector('input[name="yn_name"], [name="consents[]_v2"]')
@@ -19,11 +20,12 @@ function checkHoneypot(form) {
 	}
 
 	if (honeypot_name && honeypot_name.value !== renderedKey) {
+		botScore += 100
+		errorCodes.push('1')
 		if (debug) {
 			console.log('%cBot detected by name honeypot (added 100 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
-		botScore += 100
 	} else if (debug) {
 		console.log('%cHoneypot (name) check passed', 'color: green')
 	}
@@ -34,11 +36,12 @@ function checkHoneypot(form) {
 	}
 
 	if (honeypot_mail && honeypot_mail.value !== 'my@email.com') {
+		botScore += 100
+		errorCodes.push('2')
 		if (debug) {
 			console.log('%cBot detected by mail honeypot (added 100 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
-		botScore += 100
 	} else if (debug) {
 		console.log('%cHoneypot (mail) check passed', 'color: green')
 	}
@@ -47,11 +50,12 @@ function checkHoneypot(form) {
 	consent_honeypots.forEach((consent) => {
 		const input = consent.querySelector('input[type="checkbox"]')
 		if (input.checked) {
+			botScore += 100
+			errorCodes.push('3')
 			if (debug) {
 				console.log('%cBot detected by consent honeypot (added 100 Score)', 'color: red')
 				console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 			}
-			botScore += 100
 		} else {
 			consent.remove()
 		}
@@ -71,170 +75,176 @@ function setHoneypotClickEvent() {
 }
 
 function analyzeTypingConsistency(patterns) {
-  if (patterns.length < 3) return 0;
-  
-  // Calculate variance in typing patterns
-  const sum = patterns.reduce((a, b) => a + b, 0);
-  const mean = sum / patterns.length;
-  const squareDiffs = patterns.map(value => Math.pow(value - mean, 2));
-  const variance = squareDiffs.reduce((a, b) => a + b, 0) / patterns.length;
-  
-  // Low variance means very consistent typing (suspicious)
-  return Math.max(0, 1 - (Math.min(variance, 5000) / 5000));
+	if (patterns.length < 3) return 0
+
+	// Calculate variance in typing patterns
+	const sum = patterns.reduce((a, b) => a + b, 0)
+	const mean = sum / patterns.length
+	const squareDiffs = patterns.map((value) => Math.pow(value - mean, 2))
+	const variance = squareDiffs.reduce((a, b) => a + b, 0) / patterns.length
+
+	// Low variance means very consistent typing (suspicious)
+	return Math.max(0, 1 - Math.min(variance, 5000) / 5000)
 }
 
 function checkTryTypingConsistency() {
-	if(normalTypingConsistency === false){
+	if (normalTypingConsistency === false) {
+		botScore += 30
+		errorCodes.push('4')
 		if (debug) {
-			console.log(`%cBot detected by unnatural typing patterns (added 45 Score)`, 'color: red');
+			console.log(`%cBot detected by unnatural typing patterns (added 45 Score)`, 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
-		botScore += 30;
 	}
 }
 
 function setupTypingAnalysis() {
-	const inputs = document.querySelectorAll('input, textarea');
-	
-	inputs.forEach(input => {
+	const inputs = document.querySelectorAll('input, textarea')
+
+	inputs.forEach((input) => {
 		input.addEventListener('keydown', (e) => {
-			const currentTime = Date.now();
-			
+			const currentTime = Date.now()
+
 			if (inputLastKeyTime > 0) {
 				// Track time between keypresses
-				const timeDiff = currentTime - inputLastKeyTime;
-				inputTypingPatterns.push(timeDiff);
+				const timeDiff = currentTime - inputLastKeyTime
+				inputTypingPatterns.push(timeDiff)
 			}
-			
-			inputLastKeyTime = currentTime;
-		});
+
+			inputLastKeyTime = currentTime
+		})
 
 		input.addEventListener('blur', () => {
 			if (inputTypingPatterns.length > 4) {
-				const consistencyCheck = analyzeTypingConsistency(inputTypingPatterns);
+				const consistencyCheck = analyzeTypingConsistency(inputTypingPatterns)
 				if (consistencyCheck > 0.95) {
-					normalTypingConsistency = false;
+					normalTypingConsistency = false
 				}
 			}
-			inputTypingPatterns = [];
-			inputLastKeyTime = 0;
-		});
-	});
+			inputTypingPatterns = []
+			inputLastKeyTime = 0
+		})
+	})
 }
 
 function checkBrowserEnvironment() {
-  // Prüfe, ob Navigator-Eigenschaften existieren (viele Bots haben diese nicht korrekt implementiert)
-  if (!navigator.language || !navigator.userAgent || !navigator.platform) {
-    if (debug) {
-      console.log('%cBot detected by missing navigator properties (added 60 Score)', 'color: red');
-	  console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
-    }
-    botScore += 20;
-    return;
-  }
-  
-  // Bots haben oft keine oder falsche Hardware-Beschleunigungsinformationen
-  if (!window.devicePixelRatio || window.devicePixelRatio === 0) {
-	if (debug) {
-	console.log('%cBot detected by suspicious devicePixelRatio (added 40 Score)', 'color: red');
-	console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
+	// Prüfe, ob Navigator-Eigenschaften existieren (viele Bots haben diese nicht korrekt implementiert)
+	if (!navigator.language || !navigator.userAgent || !navigator.platform) {
+		botScore += 20
+		errorCodes.push('5')
+		if (debug) {
+			console.log('%cBot detected by missing navigator properties (added 60 Score)', 'color: red')
+			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
+		}
+		return
 	}
-	botScore += 20;
-	return;
-  }
 
-  // Prüfe, ob grundlegende Browser-Funktionen vorhanden sind
-  if (typeof document.addEventListener !== 'function' || typeof window.setTimeout !== 'function') {
-    if (debug) {
-	  console.log('%cBot detected by missing core browser functions (added 70 Score)', 'color: red');
-	  console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
-    }
-    botScore += 20;
-    return;
-  }
+	// Bots haben oft keine oder falsche Hardware-Beschleunigungsinformationen
+	if (!window.devicePixelRatio || window.devicePixelRatio === 0) {
+		botScore += 20
+		errorCodes.push('6')
+		if (debug) {
+			console.log('%cBot detected by suspicious devicePixelRatio (added 40 Score)', 'color: red')
+			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
+		}
+		return
+	}
 
-  if (debug) {
-    console.log('%cBrowser environment check passed', 'color: green');
-  }
+	// Prüfe, ob grundlegende Browser-Funktionen vorhanden sind
+	if (typeof document.addEventListener !== 'function' || typeof window.setTimeout !== 'function') {
+		botScore += 20
+		errorCodes.push('7')
+		if (debug) {
+			console.log('%cBot detected by missing core browser functions (added 70 Score)', 'color: red')
+			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
+		}
+		return
+	}
+
+	if (debug) {
+		console.log('%cBrowser environment check passed', 'color: green')
+	}
 }
 
 function trackMovements() {
-	let mousePositions = [];
-	let lastTime = 0;
-	let straightLineCounter = 0;
-	
+	let mousePositions = []
+	let lastTime = 0
+	let straightLineCounter = 0
+
 	const checkStraightLine = (positions, index) => {
-		if (index < 2) return false;
-		
-		const p1 = positions[index-2];
-		const p2 = positions[index-1];
-		const p3 = positions[index];
-		
+		if (index < 2) return false
+
+		const p1 = positions[index - 2]
+		const p2 = positions[index - 1]
+		const p3 = positions[index]
+
 		if (p1 && p2 && p3) {
-			const slope1 = p2.x !== p1.x ? (p2.y - p1.y) / (p2.x - p1.x) : Infinity;
-			const slope2 = p3.x !== p2.x ? (p3.y - p2.y) / (p3.x - p2.x) : Infinity;
-			
+			const slope1 = p2.x !== p1.x ? (p2.y - p1.y) / (p2.x - p1.x) : Infinity
+			const slope2 = p3.x !== p2.x ? (p3.y - p2.y) / (p3.x - p2.x) : Infinity
+
 			// Viel strengere Schwelle für die Erkennung gerader Linien
 			// 0.001 statt 0.01 bedeutet, dass die Linien fast exakt gerade sein müssen
-			const isStraight = Math.abs(slope1 - slope2) < 0.001;
-			
+			const isStraight = Math.abs(slope1 - slope2) < 0.001
+
 			// Zusätzlich: Prüfe die Distanz zwischen den Punkten, um gleichmäßige Bewegungen zu erkennen
-			const dist1 = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
-			const dist2 = Math.sqrt(Math.pow(p3.x - p2.x, 2) + Math.pow(p3.y - p2.y, 2));
-			
+			const dist1 = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2))
+			const dist2 = Math.sqrt(Math.pow(p3.x - p2.x, 2) + Math.pow(p3.y - p2.y, 2))
+
 			// Prüfe auch, ob die Abstände zwischen den Punkten ähnlich sind (ein weiterer Indikator für Bot-Bewegungen)
-			const isEvenlySpaced = Math.abs(dist1 - dist2) / Math.max(dist1, dist2) < 0.05;
-			
+			const isEvenlySpaced = Math.abs(dist1 - dist2) / Math.max(dist1, dist2) < 0.05
+
 			// Nur melden, wenn die Linie gerade UND gleichmäßig verteilt ist
-			const isRobotic = isStraight && isEvenlySpaced;
-			
+			const isRobotic = isStraight && isEvenlySpaced
+
 			if (debug && isRobotic) {
-				console.log('%cStraight line detected', 'color: yellow');
+				console.log('%cStraight line detected', 'color: yellow')
 			}
-			return isRobotic;
+			return isRobotic
 		}
-		return false;
-	};
-	
+		return false
+	}
+
 	const recordMousePosition = (e) => {
-		const currentTime = Date.now();
-		if (currentTime - lastTime > 50) { // Nur alle 50ms aufzeichnen, um die Leistung zu verbessern
-			mousePositions.push({ x: e.clientX, y: e.clientY, time: currentTime });
-			lastTime = currentTime;
-			
+		const currentTime = Date.now()
+		if (currentTime - lastTime > 50) {
+			// Nur alle 50ms aufzeichnen, um die Leistung zu verbessern
+			mousePositions.push({ x: e.clientX, y: e.clientY, time: currentTime })
+			lastTime = currentTime
+
 			// Prüfe auf verdächtig gerade Linien
 			if (checkStraightLine(mousePositions, mousePositions.length - 1)) {
-				straightLineCounter++;
+				straightLineCounter++
 			}
 		}
-	};
-	
-	document.addEventListener('mousemove', recordMousePosition);
-	
+	}
+
+	document.addEventListener('mousemove', recordMousePosition)
+
 	// Überprüfung beim Formular-Submit
 	const checkMovementPatterns = () => {
 		// Zu wenige aufgezeichnete Punkte sind verdächtig (falls Gerät keine Touch-Eingabe hat)
-		const positions = mousePositions;
-	
+		const positions = mousePositions
+
 		// Zu viele gerade Linien deuten auf einen Bot hin
-		if(positions.length > 0){
+		if (positions.length > 0) {
 			if (straightLineCounter > positions.length * 0.6) {
+				botScore += 30
+				errorCodes.push('8')
 				if (debug) {
-					console.log('%cBot detected by suspicious straight line movements (added 50 Score)', 'color: red');
+					console.log('%cBot detected by suspicious straight line movements (added 50 Score)', 'color: red')
 					console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 				}
-				botScore += 30;
 			} else if (debug) {
-				console.log('%cMovement pattern check passed', 'color: green');
+				console.log('%cMovement pattern check passed', 'color: green')
 			}
 		} else if (debug) {
-			console.log('%cMovement check skipped', 'color: yellow');
+			console.log('%cMovement check skipped', 'color: yellow')
 		}
-		
-		document.removeEventListener('mousemove', recordMousePosition);
-	};
-	
-	return checkMovementPatterns;
+
+		document.removeEventListener('mousemove', recordMousePosition)
+	}
+
+	return checkMovementPatterns
 }
 
 function checkHumanMovement() {
@@ -295,11 +305,12 @@ function checkFocus(form) {
 		}
 	})
 	if (notAllFieldsFocused) {
+		botScore += 100
+		errorCodes.push('9')
 		if (debug) {
 			console.log('%cBot detected by focus (added 100 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
-		botScore += 100
 	} else {
 		if (debug) {
 			console.log('%cFocus check passed', 'color: green')
@@ -313,11 +324,12 @@ function botDCheck() {
 		.then((result) => {
 			botD = result
 			if (botD.bot) {
+				botScore += 90
+				errorCodes.push('10')
 				if (debug) {
-					console.log('%cBot detected by BotD (added 100 Score)', 'color: red')
+					console.log('%cBot detected by BotD (added 90 Score)', 'color: red')
 					console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 				}
-				botScore += 100
 			} else if (debug) {
 				console.log('%cBotD check passed', 'color: green')
 			}
@@ -325,54 +337,57 @@ function botDCheck() {
 		.catch((error) => console.error(error))
 }
 
-
 function localStorageCheck() {
 	localStorage.setItem('ynfinite-bot-protection', renderedKey)
 	sessionStorage.setItem('ynfinite-bot-protection', renderedKey)
 	document.cookie = 'ynfinite-bot-protection=' + renderedKey + '; path=/'
 
 	if (localStorage.getItem('ynfinite-bot-protection') !== renderedKey) {
+		botScore += 30
+		errorCodes.push('11')
 		if (debug) {
 			console.log('%cBot detected by localStorage (added 30 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
-		botScore += 30
 	} else if (debug) {
 		console.log('%clocalStorage check passed', 'color: green')
 	}
 
 	if (sessionStorage.getItem('ynfinite-bot-protection') !== renderedKey) {
+		botScore += 30
+		errorCodes.push('12')
 		if (debug) {
 			console.log('%cBot detected by sessionStorage (added 30 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
-		botScore += 30
 	} else if (debug) {
 		console.log('%csessionStorage check passed', 'color: green')
 	}
 
 	if (document.cookie.indexOf('ynfinite-bot-protection=' + renderedKey) === -1) {
+		botScore += 30
+		errorCodes.push('13')
 		if (debug) {
 			console.log('%cBot detected by cookie (added 30 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
-		botScore += 30
 	} else if (debug) {
 		console.log('%ccookie check passed', 'color: green')
 	}
 }
 
 function checkScreen() {
-	if(window.screen.width > 0 && window.screen.height > 0) {
-		if(debug) {
+	if (window.screen.width > 0 && window.screen.height > 0) {
+		if (debug) {
 			console.log('%cscreen size check passed', 'color: green')
 		}
 	} else {
-		if(debug) {
+		botScore += 30
+		errorCodes.push('14')
+		if (debug) {
 			console.log('%cBot detected by screen size (added 70 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
-		botScore += 30
 	}
 }
 
@@ -396,65 +411,64 @@ function createCaptcha(form) {
 	const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#000'
 	const accentFont = getComputedStyle(document.documentElement).getPropertyValue('--accent-font') || '#fff'
 
-	var charsArray =
-	"0123456789abcdefghjkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ@!?";
-	var lengthOtp = 6;
-	var captcha = [];
+	var charsArray = '0123456789abcdefghjkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ@!?'
+	var lengthOtp = 6
+	var captcha = []
 	for (var i = 0; i < lengthOtp; i++) {
 		//below captchaCode will not allow Repetition of Characters
-		var index = Math.floor(Math.random() * charsArray.length + 1); //get the next character from the array
-		if (captcha.indexOf(charsArray[index]) == -1)
-		captcha.push(charsArray[index]);
-		else i--;
+		var index = Math.floor(Math.random() * charsArray.length + 1) //get the next character from the array
+		if (captcha.indexOf(charsArray[index]) == -1) captcha.push(charsArray[index])
+		else i--
 	}
-	var canv = document.createElement("canvas");
+	var canv = document.createElement('canvas')
 	canv.classList.add('yn-captcha')
-	canv.width = 140;
-	canv.height = 60;
+	canv.width = 140
+	canv.height = 60
 	canv.style.backgroundColor = accentFont
-	canv.style.borderRadius = "var(--border-radius, 0px)";
+	canv.style.borderRadius = 'var(--border-radius, 0px)'
 	// Set fixed display size in CSS pixels to prevent stretching
-	canv.style.width = "100%"; // Match the canvas width
-	canv.style.height = "60px";
+	canv.style.width = '100%' // Match the canvas width
+	canv.style.height = '60px'
 	// Make canvas responsive to container while maintaining aspect ratio
-	canv.style.objectFit = "contain";
-	canv.style.objectPosition = "left";
-	let ctx = canv.getContext("2d");
-	ctx.font = "30px Georgia";
-	ctx.strokeStyle = accent;
+	canv.style.objectFit = 'contain'
+	canv.style.objectPosition = 'left'
+	let ctx = canv.getContext('2d')
+	ctx.font = '30px Georgia'
+	ctx.strokeStyle = accent
 
 	// Set normal opacity for context initially
-	ctx.globalAlpha = 1.0;
+	ctx.globalAlpha = 1.0
 	// Draw some noise/pattern with reduced opacity
-	ctx.save();
-	ctx.globalAlpha = 0.5;
-	
+	ctx.save()
+	ctx.globalAlpha = 0.5
+
 	// Draw the noise lines
-	for (let i = 0; i < 10; i++) {
-		ctx.beginPath();
-		ctx.moveTo(Math.random() * canv.width, Math.random() * canv.height);
-		ctx.lineTo(Math.random() * canv.width, Math.random() * canv.height);
-		ctx.stroke();
+	for (let i = 0; i < 12; i++) {
+		ctx.beginPath()
+		ctx.lineWidth = 1 + Math.random() * 3
+		ctx.moveTo(Math.random() * canv.width, Math.random() * canv.height)
+		ctx.lineTo(Math.random() * canv.width, Math.random() * canv.height)
+		ctx.stroke()
 	}
-	
+
 	// Restore full opacity for the text
-	ctx.restore();
-	
-	ctx.fillStyle = accent;
-	ctx.textAlign = "center";
-	ctx.textBaseline = "middle";
-	ctx.fillText(captcha.join(""), canv.width/2, canv.height/2);
-	
+	ctx.restore()
+
+	ctx.fillStyle = accent
+	ctx.textAlign = 'center'
+	ctx.textBaseline = 'middle'
+	ctx.fillText(captcha.join(''), canv.width / 2, canv.height / 2)
+
 	// Add input field for captcha
-	var input = document.createElement("input");
-	input.classList.add("captchaTextBox");
-	input.type = "text"; 
-	input.name = "captcha";
-	input.placeholder = "Wiederholen Sie den Code";
-	input.required = true;
-	
+	var input = document.createElement('input')
+	input.classList.add('captchaTextBox')
+	input.type = 'text'
+	input.name = 'captcha'
+	input.placeholder = 'Wiederholen Sie den Code'
+	input.required = true
+
 	//storing captcha so that can validate you can save it somewhere else according to your specific requirements
-	captchaCode = captcha.join("");
+	captchaCode = captcha.join('')
 	captchaExists = true
 
 	// create div widget__input-container and append input to it
@@ -473,13 +487,13 @@ function createCaptcha(form) {
 }
 
 function validateCaptcha(form) {
-  	event.preventDefault();
-  	debugger
-  	if (form.querySelector(".captchaTextBox").value === captchaCode) {
-    	return true
-  	}else{
- 	   return false
-  	}
+	event.preventDefault()
+	debugger
+	if (form.querySelector('.captchaTextBox').value === captchaCode) {
+		return true
+	} else {
+		return false
+	}
 }
 
 const YnfiniteForms = {
@@ -494,69 +508,68 @@ const YnfiniteForms = {
 		const proofenHash = method == 'get' ? true : element.getAttribute('data-proofen-hash')
 		const formSubmitButton = element.querySelector('button[type=submit]')
 
-		if(!captchaExists){
+		if (!captchaExists) {
 			checkFocus(element)
 			checkTryTypingConsistency()
 
-			if(!hasProof){
+			if (!hasProof) {
 				botScore += 100
-			}
-
-			if(!hasProof){
-				botScore += 100
+				errorCodes.push('15')
 
 				if (debug) {
 					console.log('%cBot detected by missing hasProof (added 100 Score)', 'color: red')
 					console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
-				} 
+				}
 			} else {
 				if (debug) {
 					console.log('%cHasProof check passed', 'color: green')
 				}
 			}
 
-			if(!proofenHash){
+			if (!proofenHash) {
 				botScore += 100
+				errorCodes.push('16')
 
 				if (debug) {
 					console.log('%cBot detected by missing proofenHash (added 100 Score)', 'color: red')
 					console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
-				} 
+				}
 			} else {
 				if (debug) {
 					console.log('%cProofenHash check passed', 'color: green')
 				}
 			}
 
-			if(!humanMovement){
+			if (!humanMovement) {
 				botScore += 100
+				errorCodes.push('17')
 
-				if (debug){
+				if (debug) {
 					console.log('%cBot detected by movement (added 100 Score)', 'color: red')
 					console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 				}
 			}
 
 			if (debug) {
-				if(botScore >= 100){
+				if (botScore >= 100) {
 					console.log(`%cBot score: ${botScore}`, 'color: red')
-				} else if (botScore < 100){
+				} else if (botScore < 100) {
 					console.log(`%cBot score: ${botScore}`, 'color: green')
 				}
 			}
 
-			if(botScore > 0 && botScore < 100){
+			if (botScore > 0 && botScore < 100) {
 				if (debug) {
 					console.log('%cPossible Bot detected - adding captcha', 'color: yellow')
 				}
-				createCaptcha(element);
+				createCaptcha(element)
 				return false
 			}
 		}
 
-		if(captchaExists){
-			const captchaValidation = validateCaptcha(element);
-			if(!captchaValidation){
+		if (captchaExists) {
+			const captchaValidation = validateCaptcha(element)
+			if (!captchaValidation) {
 				if (debug) {
 					console.log('%cCaptcha check failed', 'color: red')
 				}
@@ -565,9 +578,13 @@ const YnfiniteForms = {
 				captchaTextBox.reportValidity()
 				captchaTextBox.focus()
 				// Reset validation message after user starts typing
-				captchaTextBox.addEventListener('input', () => {
-					captchaTextBox.setCustomValidity('')
-				}, { once: true })
+				captchaTextBox.addEventListener(
+					'input',
+					() => {
+						captchaTextBox.setCustomValidity('')
+					},
+					{ once: true }
+				)
 				return false
 			} else if (debug) {
 				console.log('%cCaptcha check passed', 'color: green')
@@ -582,7 +599,7 @@ const YnfiniteForms = {
 			formSubmitButton.style.backgroundColor = 'var(--error, red)'
 			formSubmitButton.style.color = 'var(--light, white)'
 			formSubmitButton.style.pointerEvents = 'none'
-			formSubmitButton.textContent = 'Bot-Schutz fehlgeschlagen. Bitte neu laden.'
+			formSubmitButton.textContent = `Bot-Schutz fehlgeschlagen [${errorCodes.join(', ')}]. Bitte neu laden.`
 			return
 		}
 

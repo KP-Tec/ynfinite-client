@@ -30,14 +30,14 @@ form.yn-form {
 
 .yn-captcha-wrapper {
 	margin-top: 1rem;
-	margin-bottom: 1rem; 
+	margin-bottom: 1rem;
 
 	.yn-captcha {
-		margin-bottom: calc(var(--text-to-text) + var(--extra-spacing))
+		margin-bottom: calc(var(--text-to-text) + var(--extra-spacing));
 	}
 }
 
-:where(.distance-wrapper){
+:where(.distance-wrapper) {
 	display: flex;
 	gap: 1rem;
 
