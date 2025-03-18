@@ -19,7 +19,7 @@
 <meta charset="UTF-8">
 <title>{{ overrideTitle ?: seoTitle }}</title>
 <meta name="title" content="{{ overrideTitle ?: seoTitle }}">
-<meta name="description" content="{{ seoDescription }}">
+<meta name="description" content="{{ seoDescription|striptags }}">
 <meta name="keywords" content="{{ seoKeywords }}">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="{{ _ynfinite.page.meta.robots|default("index,follow") }}">
@@ -35,9 +35,9 @@
 {% if ogSite_name %}
 	<meta property="og:site_name" content="{{ ogSite_name }}">
 {% endif %}
-<meta property="og:title" content="{{ ogTitle ?: _ynfinite.page.meta.title }}">
+	<meta property="og:title" content="{{ ogTitle ?: _ynfinite.page.meta.title }}">
 {% if ogDesc %}
-	<meta property="og:description" content="{{ ogDesc }}">
+	<meta property="og:description" content="{{ ogDesc|striptags }}">
 {% endif %}
 {% if urlData %}
 	<meta property="og:url" content="{{ urlData.cleanURL }}">
