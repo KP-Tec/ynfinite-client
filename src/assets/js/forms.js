@@ -3,6 +3,7 @@ import { load } from '@fingerprintjs/botd'
 const debug = false
 const renderedKey = Math.random().toString(36).substring(2)
 const focusedElements = []
+const defaultValueFields = []
 let botD = undefined
 let humanMovement = false
 let botScore = 0
@@ -304,6 +305,15 @@ function checkHumanMovement() {
 	document.addEventListener('touchmove', handleMovement)
 }
 
+function checkDefaultValues() {
+	const fields = document.querySelectorAll('.yn-form :is(input, select, textarea)[data-ynfield][required]:not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_confirm_name"], [name="consents[]_v2"])')
+	fields.forEach((field) => {
+		if (field.value) {
+			defaultValueFields.push(field.getAttribute('id'))
+		}
+	})
+}
+
 function setFocusEvent() {
 	const fields = document.querySelectorAll(':is(input, select, textarea)[data-ynfield][required]:not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_confirm_name"], [name="consents[]_v2"])')
 
@@ -319,8 +329,6 @@ function setFocusEvent() {
 
 		// Handle manual focus events
 		field.addEventListener('focusin', handleFocusOrInput)
-
-		// Additional event for detecting autofill in most browsers
 		field.addEventListener('input', handleFocusOrInput)
 	})
 }
@@ -329,11 +337,38 @@ function checkFocus(form) {
 	const fields = form.querySelectorAll(':is(input, select, textarea)[data-ynfield][required]:not([tabindex="-1"], [type="hidden"], .hidden, [name="yn_confirm_name"], [name="consents[]_v2"])')
 	let notAllFieldsFocused = false
 
+	const checkAutofill = (field) => {
+		// Safer approach to detect autofill across browsers
+		let hasAutofill = false
+		console.log('field', field)
+		try {
+			// Try standard selector first
+			if (field.matches(':autofill')) {
+				hasAutofill = true
+			}
+		} catch (e) {
+			// If standard selector fails, try vendor prefixes
+			try {
+				if (field.matches(':-webkit-autofill')) {
+					hasAutofill = true
+				}
+			} catch (e2) {}
+
+			try {
+				if (field.matches(':-moz-autofill')) {
+					hasAutofill = true
+				}
+			} catch (e3) {}
+		}
+		return hasAutofill
+	}
+
 	fields.forEach((field) => {
-		if (!focusedElements.includes(field.getAttribute('id'))) {
+		if (!focusedElements.includes(field.getAttribute('id')) && !checkAutofill(field) && !defaultValueFields.includes(field.getAttribute('id'))) {
 			notAllFieldsFocused = true
 		}
 	})
+
 	if (notAllFieldsFocused) {
 		botScore += 100
 		if (!errorCodes.includes('9')) {
@@ -640,7 +675,7 @@ const YnfiniteForms = {
 		}
 
 		if (botScore >= 100) {
-			console.log('Sorry, there is no proof here that you are a human. The form can not be sent.', 'color: red')
+			console.log('&cSorry, there is no proof here that you are a human. The form can not be sent.', 'color: red')
 			formSubmitButton.classList.remove('yn-loader')
 			formSubmitButton.style.removeProperty('padding-left')
 			formSubmitButton.style.borderColor = 'var(--error, red)'
@@ -756,6 +791,7 @@ const YnfiniteForms = {
 			const forms = document.querySelectorAll('[data-ynform=true]')
 
 			if (forms) {
+				checkDefaultValues()
 				botDCheck()
 				localStorageCheck()
 				setFocusEvent()
