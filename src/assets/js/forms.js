@@ -35,12 +35,12 @@ function checkHoneypot(form) {
 	}
 
 	if (honeypot_name && honeypot_name.value !== renderedKey) {
-		botScore += 100
+		botScore += 15
 		if (!errorCodes.includes('1')) {
 			errorCodes.push('1')
 		}
 		if (debug) {
-			console.log('%cBot detected by name honeypot (added 100 Score)', 'color: red')
+			console.log('%cBot detected by name honeypot (added 15 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
 	} else if (debug) {
@@ -53,12 +53,12 @@ function checkHoneypot(form) {
 	}
 
 	if (honeypot_mail && honeypot_mail.value !== 'my@email.com') {
-		botScore += 100
+		botScore += 15
 		if (!errorCodes.includes('2')) {
 			errorCodes.push('2')
 		}
 		if (debug) {
-			console.log('%cBot detected by mail honeypot (added 100 Score)', 'color: red')
+			console.log('%cBot detected by mail honeypot (added 15 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
 	} else if (debug) {
@@ -110,12 +110,12 @@ function analyzeTypingConsistency(patterns) {
 
 function checkTryTypingConsistency() {
 	if (normalTypingConsistency === false) {
-		botScore += 30
+		botScore += 20
 		if (!errorCodes.includes('4')) {
 			errorCodes.push('4')
 		}
 		if (debug) {
-			console.log(`%cBot detected by unnatural typing patterns (added 45 Score)`, 'color: red')
+			console.log(`%cBot detected by unnatural typing patterns (added 20 Score)`, 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
 	}
@@ -151,40 +151,37 @@ function setupTypingAnalysis() {
 }
 
 function checkBrowserEnvironment() {
-	// Prüfe, ob Navigator-Eigenschaften existieren (viele Bots haben diese nicht korrekt implementiert)
 	if (!navigator.language || !navigator.userAgent || !navigator.platform) {
-		botScore += 20
+		botScore += 5
 		if (!errorCodes.includes('5')) {
 			errorCodes.push('5')
 		}
 		if (debug) {
-			console.log('%cBot detected by missing navigator properties (added 60 Score)', 'color: red')
+			console.log('%cBot detected by missing navigator properties (added 5 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
 		return
 	}
 
-	// Bots haben oft keine oder falsche Hardware-Beschleunigungsinformationen
 	if (!window.devicePixelRatio || window.devicePixelRatio === 0) {
-		botScore += 20
+		botScore += 5
 		if (!errorCodes.includes('6')) {
 			errorCodes.push('6')
 		}
 		if (debug) {
-			console.log('%cBot detected by suspicious devicePixelRatio (added 40 Score)', 'color: red')
+			console.log('%cBot detected by suspicious devicePixelRatio (added 5 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
 		return
 	}
 
-	// Prüfe, ob grundlegende Browser-Funktionen vorhanden sind
 	if (typeof document.addEventListener !== 'function' || typeof window.setTimeout !== 'function') {
-		botScore += 20
+		botScore += 5
 		if (!errorCodes.includes('7')) {
 			errorCodes.push('7')
 		}
 		if (debug) {
-			console.log('%cBot detected by missing core browser functions (added 70 Score)', 'color: red')
+			console.log('%cBot detected by missing core browser functions (added 5 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
 		return
@@ -256,14 +253,14 @@ function trackMovements() {
 
 		// Zu viele gerade Linien deuten auf einen Bot hin
 		if (positions.length > 0) {
-			if (straightLineCounter > positions.length * 0.6) {
-				botScore += 30
+			if (straightLineCounter > positions.length * 0.5) {
 				if (!errorCodes.includes('8')) {
+					botScore += 20
 					errorCodes.push('8')
-				}
-				if (debug) {
-					console.log('%cBot detected by suspicious straight line movements (added 50 Score)', 'color: red')
-					console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
+					if (debug) {
+						console.log('%cBot detected by suspicious straight line movements (added 20 Score)', 'color: red')
+						console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
+					}
 				}
 			} else if (debug) {
 				console.log('%cMovement pattern check passed', 'color: green')
@@ -275,7 +272,8 @@ function trackMovements() {
 		document.removeEventListener('mousemove', recordMousePosition)
 	}
 
-	return checkMovementPatterns
+	// Store the function globally so it can be called when needed
+	window.checkMouseMovementPatterns = checkMovementPatterns
 }
 
 function checkHumanMovement() {
@@ -370,12 +368,12 @@ function checkFocus(form) {
 	})
 
 	if (notAllFieldsFocused) {
-		botScore += 100
+		botScore += 20
 		if (!errorCodes.includes('9')) {
 			errorCodes.push('9')
 		}
 		if (debug) {
-			console.log('%cBot detected by focus (added 100 Score)', 'color: red')
+			console.log('%cBot detected by focus (added 20 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
 	} else {
@@ -391,12 +389,12 @@ function botDCheck() {
 		.then((result) => {
 			botD = result
 			if (botD.bot) {
-				botScore += 90
+				botScore += 5
 				if (!errorCodes.includes('10')) {
 					errorCodes.push('10')
 				}
 				if (debug) {
-					console.log('%cBot detected by BotD (added 90 Score)', 'color: red')
+					console.log('%cBot detected by BotD (added 5 Score)', 'color: red')
 					console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 				}
 			} else if (debug) {
@@ -412,12 +410,12 @@ function localStorageCheck() {
 	document.cookie = 'ynfinite-bot-protection=' + renderedKey + '; path=/'
 
 	if (localStorage.getItem('ynfinite-bot-protection') !== renderedKey) {
-		botScore += 30
+		botScore += 5
 		if (!errorCodes.includes('11')) {
 			errorCodes.push('11')
 		}
 		if (debug) {
-			console.log('%cBot detected by localStorage (added 30 Score)', 'color: red')
+			console.log('%cBot detected by localStorage (added 5 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
 	} else if (debug) {
@@ -425,12 +423,12 @@ function localStorageCheck() {
 	}
 
 	if (sessionStorage.getItem('ynfinite-bot-protection') !== renderedKey) {
-		botScore += 30
+		botScore += 5
 		if (!errorCodes.includes('12')) {
 			errorCodes.push('12')
 		}
 		if (debug) {
-			console.log('%cBot detected by sessionStorage (added 30 Score)', 'color: red')
+			console.log('%cBot detected by sessionStorage (added 5 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
 	} else if (debug) {
@@ -438,12 +436,12 @@ function localStorageCheck() {
 	}
 
 	if (document.cookie.indexOf('ynfinite-bot-protection=' + renderedKey) === -1) {
-		botScore += 30
+		botScore += 5
 		if (!errorCodes.includes('13')) {
 			errorCodes.push('13')
 		}
 		if (debug) {
-			console.log('%cBot detected by cookie (added 30 Score)', 'color: red')
+			console.log('%cBot detected by cookie (added 5 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
 	} else if (debug) {
@@ -457,12 +455,12 @@ function checkScreen() {
 			console.log('%cscreen size check passed', 'color: green')
 		}
 	} else {
-		botScore += 30
+		botScore += 5
 		if (!errorCodes.includes('14')) {
 			errorCodes.push('14')
 		}
 		if (debug) {
-			console.log('%cBot detected by screen size (added 70 Score)', 'color: red')
+			console.log('%cBot detected by screen size (added 5 Score)', 'color: red')
 			console.log('%cNew Botscore: ' + botScore, `color: ${botScore >= 100 ? 'red' : 'yellow'}`)
 		}
 	}
@@ -589,6 +587,10 @@ const YnfiniteForms = {
 			checkFocus(element)
 			checkTryTypingConsistency()
 
+			if (window.checkMouseMovementPatterns) {
+				window.checkMouseMovementPatterns()
+			}
+
 			if (!hasProof) {
 				botScore += 100
 				if (!errorCodes.includes('15')) {
@@ -622,7 +624,7 @@ const YnfiniteForms = {
 			}
 
 			if (!humanMovement) {
-				botScore += 100
+				botScore += 50
 				if (!errorCodes.includes('17')) {
 					errorCodes.push('17')
 				}
@@ -633,12 +635,10 @@ const YnfiniteForms = {
 				}
 			}
 
-			if (debug) {
-				if (botScore >= 100) {
-					console.log(`%cBot score: ${botScore}`, 'color: red')
-				} else if (botScore < 100) {
-					console.log(`%cBot score: ${botScore}`, 'color: green')
-				}
+			if (botScore >= 100) {
+				console.log(`%cBot score: ${botScore}`, 'color: red')
+			} else if (botScore < 100) {
+				console.log(`%cBot score: ${botScore}`, 'color: green')
 			}
 
 			if (botScore > 0 && botScore < 100) {

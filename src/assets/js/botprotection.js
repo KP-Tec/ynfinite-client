@@ -17,7 +17,7 @@ class Block {
 
 	// difficulty = size of number (4 = 0000)
 	// chances = number of chances (2 = 0000, 1111, 2222)
-	startProofOfWork(difficulty = 6, chances = 9, minRunTime = 5000) {
+	startProofOfWork(difficulty = 5, chances = 1, minRunTime = 5000) {
 		if (window.Worker) {
 			const blockWorker = new Worker('/assets/vendor/ynfinite/js/worker.min.js')
 
