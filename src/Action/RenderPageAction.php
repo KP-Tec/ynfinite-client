@@ -57,6 +57,24 @@ final class RenderPageAction
             
             $data = $this->requestPageService->getPage($request);
             
+            if ((isset($data['type']) && $data['type'] === 'error' )|| !isset($data['type'])) {
+                $errorTemplatePath = __DIR__ . '/../templates/yn/error.twig';
+                if (file_exists($errorTemplatePath)) {
+                    $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../templates/yn');
+                    $twig = new \Twig\Environment($loader);
+                    $template = $twig->load('error.twig');
+                    $errorStatus = isset($data['statusCode']) ? $data['statusCode'] : 500;
+                    $response->getBody()->write($template->render([
+                        'message' => $data['message'],
+                        'statusCode' => $errorStatus
+                    ]));
+                    return $response->withStatus($errorStatus);
+                } else {
+                    $response->getBody()->write('An error occurred: ' . $data['message']);
+                }
+                return $response->withStatus(500);
+            }   
+
             if (is_array($data)) {
                 if (isset($data['data']['leadGroupIds'])) {
                     $leadGroupIds = $data['data']['leadGroupIds'];
