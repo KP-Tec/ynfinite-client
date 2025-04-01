@@ -75,9 +75,9 @@
                 </g>
             </svg>
             <div>
-                <span class="code">{{ statusCode }}</span>
+                <span class="code">{{ statusCode|raw }}</span>
                 <h2 class="message">
-                    {{ message }}
+                    {{ message|raw }}
                 </h2>
                 {% if error %}
                     <p class="error-description">

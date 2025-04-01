@@ -31,7 +31,7 @@ final class RequestPageService extends RequestService
             $body = $request["body"];
         } else {
             $statusCode = 503;
-            $body = array("message" => "Unsere Webseite ist derzeit wegen Wartungsarbeiten nicht erreichbar. Bitte versuche es später noch einmal - wir sind bald wieder für dich da!");
+            $body = array("message" => "Unsere Webseite ist derzeit wegen Wartungsarbeiten nicht erreichbar. <br> Bitte versuche es später noch einmal - wir sind bald wieder für dich da!");
         }
         if(in_array($statusCode, [200, 201, 206], true)){
             // Page render
