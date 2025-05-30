@@ -31,6 +31,6 @@ final class ApiGetContentService extends RequestService
 
         $response = $this->request(trim($path), $this->settings["services"]["api/getContent"], $postBody, true);
 
-        return $response;
+        return $response["body"];
     }
 }
