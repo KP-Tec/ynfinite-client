@@ -13,6 +13,8 @@ use App\Exception\YnfiniteException;
 
 final class ApiGetContentAction
 {
+    private ApiGetContentService $apiService;
+
     public function __construct(ApiGetContentService $apiService) {
         $this->apiService = $apiService;
     }
