@@ -11,13 +11,26 @@
 	</script>
 {% endif %}
 
+{% set formAction = '/yn-form/send' %}
+{% if form.method == 'get' and (not form.events or not form.events[0].async) %}
+	{% if form.redirectPage.route %}
+		{% if _ynfinite.languages.available|length > 1 %}
+			{% set formAction = _ynfinite.languages.prefix ~ form.redirectPage.route %}
+		{% else %}
+			{% set formAction = form.redirectPage.route %}
+		{% endif %}
+	{% else %}
+		{% set formAction = _ynfinite.domain.pathname %}
+	{% endif %}
+{% endif %}
+
 <form class="yn-form 
 	{% if form.settings.noBotProtection %}yn-no-bot-protection{% endif %}" 
 	id="form_{{form.uid}}" 
 	name="{{form.name}}" 
 	method="{{form.method}}" 
 	enctype="multipart/form-data" 
-	action="{{ form.method == 'get' and (not form.events or not form.events[0].async) ? form.redirectPage.route ? form.redirectPage.route : _ynfinite.domain.pathname : '/yn-form/send' }}" 
+	action="{{ formAction }}" 
 	redirect="{% if form.method == 'get' and (not form.events or not form.events[0].async) %}true{% else %}false{% endif %}"
 	data-ynalias="{{form.alias}}" 
 	data-ynform="true" 

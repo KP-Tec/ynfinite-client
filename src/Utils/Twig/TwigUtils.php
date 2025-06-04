@@ -46,6 +46,7 @@ class TwigUtils
             'links:links' => 'yn/components/links.twig',
             'form:form' => 'yn/components/form.twig',
             'video:video' => 'yn/components/video.twig',
+            'languages:languageSwitch' => 'yn/components/languageSwitch.twig',
             'login:userDropdown' => 'yn/components/login/userDropdown.twig',
             'form:fields.select' => 'yn/components/form/select.twig',
             'form:fields.radio' => 'yn/components/form/radio.twig',
@@ -652,6 +653,12 @@ class TwigUtils
             'form' => $options['form'] ?? null,
             'links' => $options['links'] ?? null,
             'options' => $options
+        ]);
+    }
+
+    public function languageSwitch($context, $options = []) {
+        return $this->twig->render($this->getTemplate('languages:languageSwitch'), [
+            'noPopup' => $options['noPopup'] ?? false,
         ]);
     }
 }
