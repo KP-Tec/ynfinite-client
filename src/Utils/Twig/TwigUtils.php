@@ -659,6 +659,7 @@ class TwigUtils
     public function languageSwitch($context, $options = []) {
         return $this->twig->render($this->getTemplate('languages:languageSwitch'), [
             'noPopup' => $options['noPopup'] ?? false,
+            'options' => $options
         ]);
     }
 }

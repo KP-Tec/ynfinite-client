@@ -7,7 +7,7 @@
 } %}
 
 {% if _ynfinite.languages.available|length > 1 %}
-    <div class="yn-languageSwitch">
+    <div class="yn-languageSwitch {% if options.classes %}{{ options.classes }}{% endif %}">
         {% if not noPopup %}
             <div class="yn-languageSwitch-button">
                 <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
