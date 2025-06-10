@@ -134,7 +134,7 @@ class I18nUtils {
       $this->twig = $twig;
 
       // Initialize I18n with main locale files
-      $this->i18n = new CustomMergeI18n(__DIR__ . '/../../locale/lang_{LANGUAGE}.ini', __DIR__.'/../../../tmp/locales/', "en");
+      $this->i18n = new CustomMergeI18n(__DIR__ . '/../../locale/lang_{LANGUAGE}.ini', __DIR__.'/../../../tmp/locales/', "de");
       $this->i18n->setCustomTranslationsPath(__DIR__ . '/../../../plugins/custom_translations/lang_{LANGUAGE}.ini');
       $this->i18n->setForcedLang($this->data["languages"]["current"]);
       $this->i18n->setMergeFallback(true);

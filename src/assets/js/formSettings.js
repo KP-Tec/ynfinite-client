@@ -81,11 +81,11 @@ const YnfiniteFormSettings = {
 				// add Next and Prev button
 				let prevButton = document.createElement('a')
 				prevButton.type = 'button'
-				prevButton.title = 'Zurück'
+				prevButton.title = window.ynTranslations?.yn_previous || 'Zurück'
 				prevButton.role = 'button'
-				prevButton.ariaLabel = 'Zurück'
+				prevButton.ariaLabel = window.ynTranslations?.yn_previous || 'Zurück'
 				prevButton.tabIndex = '0'
-				prevButton.innerHTML = 'Zurück'
+				prevButton.innerHTML = window.ynTranslations?.yn_previous || 'Zurück'
 				prevButton.classList.add('button', 'button-prev')
 				prevButton.style.marginRight = 'auto'
 				const prevButtonFunc = () => {
@@ -103,11 +103,11 @@ const YnfiniteFormSettings = {
 				const buttonClasses = form.getAttribute('data-button-classes') || undefined
 				let nextButton = document.createElement('a')
 				nextButton.type = 'button'
-				nextButton.title = 'Weiter'
+				nextButton.title = window.ynTranslations?.yn_next || 'Weiter'
 				nextButton.role = 'button'
-				nextButton.ariaLabel = 'Weiter'
+				nextButton.ariaLabel = window.ynTranslations?.yn_next || 'Weiter'
 				nextButton.tabIndex = '0'
-				nextButton.innerHTML = 'Weiter'
+				nextButton.innerHTML = window.ynTranslations?.yn_next || 'Weiter'
 				nextButton.classList.add('button', 'button-next')
 				if (buttonClasses) {
 					buttonClasses.split(' ').forEach((c) => {

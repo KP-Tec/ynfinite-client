@@ -8,7 +8,7 @@
 					{{ field.name }}
 				{% endif %}
 				{% if field.required %}
-					<span class="required">*</span>
+					<span class="required">{{ 'yn_required'|trans }}</span>
 				{% endif %}
 			</label>
 			<div class="widget__input-container">

@@ -12,6 +12,20 @@
 			window.addedScripts = []
             const _yn_debug = "{{ _ynfinite.site.seo.general.debug|default(false) }}"; // logs for tracking & retargeting
 		</script>
+		<script>
+			// JavaScript translations for form navigation
+			window.ynTranslations = {
+				yn_next: "{{ 'yn_next'|trans }}",
+				yn_previous: "{{ 'yn_previous'|trans }}",
+				yn_save: "{{ 'yn_save'|trans }}",
+				yn_cancel: "{{ 'yn_cancel'|trans }}",
+				yn_loading: "{{ 'yn_loading'|trans }}",
+				yn_error: "{{ 'yn_error'|trans }}",
+				yn_confirm: "{{ 'yn_confirm'|trans }}",
+				yn_yes: "{{ 'yn_yes'|trans }}",
+				yn_no: "{{ 'yn_no'|trans }}"
+			};
+		</script>
 		{% block head %}
 			{% include 'yn/layout/head.twig' %}
 		{% endblock %}
