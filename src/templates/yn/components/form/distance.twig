@@ -22,7 +22,7 @@
 	{% endembed %}
 
 	{% embed "yn/components/form/basic.twig" %}
-		{% set field = field|merge({'label': 'Umkreis', 'name': 'Umkreis'}) %}
+		{% set field = field|merge({'label': ('yn_radius'|trans), 'name': ('yn_radius'|trans)}) %}
 		{% block field %}
 			<select aria-label="{{ field.name ?: field.label ?: field.alias }}" id="{{form.alias}}_{{ field.alias }}_{{ field._id }}" data-ynfield="true" name="fields{{ parent }}[{{ field.alias }}][distance]" value="{{ field.value['distance'] }}" {% if field.required %}required{% endif %} {{ field.attributes|raw }}>
 				{% if field.emptyLabel %}

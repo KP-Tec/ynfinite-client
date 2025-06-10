@@ -13,7 +13,7 @@
                     <div data-ynfield class="yn-user__info">
                         <div class="close-wrapper">
                             <div>
-                                <label class="small-label" data-ynfield>Mail</label>
+                                <label class="small-label" data-ynfield>{{ 'yn_mail'|trans }}</label>
                                 <p data-ynfield class="small">{{ user.email }}</p>
                             </div>
                             <svg class="yn-dropdown__button close" width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -28,13 +28,13 @@
                             <a data-ynfield href="{{link.href}}" aria-label="{{link.title}}">{{link.text}}</a>
                         {% endfor %}
                     {% endif %}
-                    <a data-ynfield href="/profile" aria-label="Profil">Profil</a>
-                    <a data-ynfield href="/logout" aria-label="Logout">Logout</a>
+                    <a data-ynfield href="/profile" aria-label="{{ 'yn_profile'|trans }}">{{ 'yn_profile'|trans }}</a>
+                    <a data-ynfield href="/logout" aria-label="{{ 'yn_logout'|trans }}">{{ 'yn_logout'|trans }}</a>
                 {% elseif form %}
                     <div class="close-wrapper">
                         <div>
-                            <h4>Login</h4>
-                            <label>Noch kein Konto? <a href="/registration">Jetzt registrieren.</a></label>
+                            <h4>{{ 'yn_login'|trans }}</h4>
+                            <label>{{ 'yn_noAccount'|trans }} <a href="/registration">{{ 'yn_registerNow'|trans }}</a></label>
                         </div>
                         <svg class="yn-dropdown__button close" width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g id="Menu / Close_MD">

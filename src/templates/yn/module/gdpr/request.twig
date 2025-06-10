@@ -10,13 +10,13 @@
                     <div class="col-xs-12">
                         <div class='widget widget--email'>
                             <label class="widget__label" for="email">
-                                E-Mail
+                                {{ 'yn_email'|trans }}
                                 <span class="required">*</span>
                             </label>
 
                             <div class="widget__input-container">
                                 <input type="email" name="email" required value="m.claus@koenigspunkt.de">
-                                <small class="widget__hint">Bitte verwenden Sie die E-Mail Adresse die Sie auf dieser Seite verwendet haben. z.B. in Kontaktformularen</small>
+                                <small class="widget__hint">{{ 'yn_gdprEmailHint'|trans }}</small>
                             </div>
                         </div>
                     </div>
@@ -24,14 +24,14 @@
                 {{ _yfunc("consents", form) }}
                 <div class="yn-form-controlls">
                     <button type="submit" class="button">
-                        Jetzt absenden
+                        {{ 'yn_submitNow'|trans }}
                     </button>
                 </div>
             </div>
             <div class="yn-form-response">
                 <div class="yn-form-response__inner"></div>
                 <div class="yn-form-response__control">
-                    <a class="yn-form-response__new-form" href="#">Neues Formular</a>
+                    <a class="yn-form-response__new-form" href="#">{{ 'yn_newForm'|trans }}</a>
                 </div>
             </div>
 	    </fieldset>

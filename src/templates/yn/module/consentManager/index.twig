@@ -17,17 +17,17 @@
 			</div>
 			<div class='yn-cookies__footer'>
 				{% if cookies.available|length > 0 %}
-					<a id="yn-cookies__show-configuration" class='yn-cookies__link yn-cookies__button button button--border button--pri m0'>{{ "ConsentManager_ChangeSettings"|trans }}</a>
+					<a id="yn-cookies__show-configuration" class='yn-cookies__link yn-cookies__button button button--border button--pri m0'>{{ "yn_consentManagerChangeSettings"|trans }}</a>
 				{% endif %}
-				<a id="yn-cookies__deny-all" class='yn-cookies__button button button--solid button--pri m0'>{{ "ConsentManager_DenyAll"|trans }}</a>
-				<a id="yn-cookies__allow-all" class='yn-cookies__button button button--solid button--pri m0'>{{ "ConsentManager_AcceptAll"|trans }}</a>
+				<a id="yn-cookies__deny-all" class='yn-cookies__button button button--solid button--pri m0'>{{ "yn_consentManagerDenyAll"|trans }}</a>
+				<a id="yn-cookies__allow-all" class='yn-cookies__button button button--solid button--pri m0'>{{ "yn_consentManagerAcceptAll"|trans }}</a>
 			</div>
 		</div>
 
 		{# settings #}
 		<div class='yn-cookies__page yn-cookies__page--hidden' data-yn-cookie-page='configuration'>
 			<div class='yn-cookies__header'>
-				<h3>{{ "ConsentManager_Settings"|trans }}</h3>
+				<h3>{{ "yn_consentManagerSettings"|trans }}</h3>
 			</div>
 			<div class='yn-cookies__body'>
 				<form id="yn-cookies-form">
@@ -64,8 +64,8 @@
 				</form>
 			</div>
 			<div class="yn-cookies__footer">
-				<a id="yn-cookies__show-information" class="yn-cookies__link button button--border button--pri m0">{{ "ConsentManager_Back"|trans }}</a>
-				<a id="yn-cookies__set-cookies" class="yn-cookies__button button button--solid button--pri m0">{{ "ConsentManager_SaveSettings"|trans }}</a>
+				<a id="yn-cookies__show-information" class="yn-cookies__link button button--border button--pri m0">{{ "yn_consentManagerBack"|trans }}</a>
+				<a id="yn-cookies__set-cookies" class="yn-cookies__button button button--solid button--pri m0">{{ "yn_consentManagerSaveSettings"|trans }}</a>
 			</div>
 		</div>
 	</div>
