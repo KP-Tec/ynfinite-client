@@ -1,5 +1,14 @@
 const YnfiniteLanguageSwitch = {
 	setup() {
+		// Wait for DOM to be ready
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', () => this.init())
+		} else {
+			this.init()
+		}
+	},
+
+	init() {
 		const languageSwitchWrapper = document.querySelector('.yn-languageSwitch')
 
 		if (!languageSwitchWrapper) return
