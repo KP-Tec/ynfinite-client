@@ -39,8 +39,12 @@ final class RequestPageService extends RequestService
             return $body;
         }
         else if(in_array($statusCode, [301, 302, 307, 308], true)){
-            header("Location: " . $body['url']);
-            die();
+            // Redirect handling
+            return array(
+                "type" => 'redirect', 
+                "statusCode" => $statusCode, 
+                "url" => $body['url']
+            );
         } else if ($statusCode === 404){
             // 404 render
             $body = $body['message'];

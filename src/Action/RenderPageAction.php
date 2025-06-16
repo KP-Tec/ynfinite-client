@@ -57,7 +57,7 @@ final class RenderPageAction
             
             $data = $this->requestPageService->getPage($request);
             
-            if ((isset($data['type']) && $data['type'] === 'error' )|| !isset($data['type'])) {
+            if ((isset($data['type']) && $data['type'] === 'error') || !isset($data['type'])) {
                 $errorTemplatePath = __DIR__ . '/../templates/yn/error.twig';
                 if (file_exists($errorTemplatePath)) {
                     $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../templates/yn');
@@ -73,6 +73,16 @@ final class RenderPageAction
                     $response->getBody()->write('An error occurred: ' . $data['message']);
                 }
                 return $response->withStatus(500);
+            }
+
+            if (isset($data['type']) && $data['type'] === 'redirect') {
+                return $response->withHeader('Location', $data['url'])->withStatus($data['statusCode']);
+            }
+
+            if (isset($data['type']) && $data['type'] === '404') {
+                $renderedTemplate = $this->renderPageService->render($data["templates"], $data["data"]);
+                $response->getBody()->write($renderedTemplate);
+                return $response->withStatus(404);
             }   
 
             if (is_array($data)) {
@@ -86,8 +96,7 @@ final class RenderPageAction
                 if (!isset($data["data"]["errors"]) && isset($_POST['fields'])
                     && isset($_POST['fields']['general_e-mail'])
                     && isset($_POST['fields']['general_password'])) {
-                    header('Location: ' . $_SERVER['REQUEST_URI']);
-                    die();
+                    return $response->withHeader('Location', $_SERVER['REQUEST_URI'])->withStatus(302);
                 }
                 $renderedTemplate = $this->renderPageService->render($data["templates"], $data["data"]);
                 if($data["data"]["page"]["type"] !== "404") {
@@ -95,15 +104,18 @@ final class RenderPageAction
                 }
 
                 $response->getBody()->write($renderedTemplate);
+                return $response->withStatus(200);
             } else {
                 $response->getBody()->write($data);
+                return $response->withStatus(200);
             }
         }
         catch (YnfiniteException $e) {
             return $this->handleException($e, $response);
         }
 
-        return $response;
+        // This should never be reached due to explicit returns above
+        return $response->withStatus(500);
     }
 
     private function handleException($e, $response) {
