@@ -10,10 +10,10 @@
 						<div class="ynfinite-consent-text">{{ consent.text|raw }}</div>
 					</label>
 				</div>
-				<div class="widget widget--checkbox ynfinite-consent consent-{{ consent.alias }}_v2 yn_consents_v2">
-					<input aria-label="Ich stimme ({{ consent.text }}) zu" type="checkbox" id="{{ form.uid }}_{{ consent.alias }}_v2" name="consents[]_v2" value="{{ consent.alias }}_v2" required>
-					<label class="widget__label" for="{{ form.uid }}_{{ consent.alias }}_v2">
-						<div class="ynfinite-consent-text">{{ consent.text|raw }}</div>
+				<div class="widget widget--checkbox ynfinite-consent consent-{{ consent.alias }}_v2 yn_consents_v2 xxx" tabindex="-1" aria-hidden="true">
+					<input aria-label="Ich stimme ({{ consent.text }}) zu" type="checkbox" id="{{ form.uid }}_{{ consent.alias }}_v2" name="consents[]_v2" value="{{ consent.alias }}_v2" required tabindex="-1" disabled>
+					<label class="widget__label" for="{{ form.uid }}_{{ consent.alias }}_v2" tabindex="-1" aria-hidden="true">
+						<div class="ynfinite-consent-text ynfinite-consent-text_v2" tabindex="-1" aria-hidden="true">{{ consent.text|raw }}</div>
 					</label>
 				</div>
 			{% endif %}

@@ -790,6 +790,11 @@ const YnfiniteForms = {
 		document.addEventListener('DOMContentLoaded', () => {
 			const forms = document.querySelectorAll('[data-ynform=true]')
 
+			const consentTextElements = document.querySelectorAll('.ynfinite-consent-text_v2 :is(a, button)')
+			consentTextElements.forEach((element) => {
+				element.setAttribute('tabindex', '-1')
+			})
+
 			if (forms) {
 				checkDefaultValues()
 				botDCheck()
