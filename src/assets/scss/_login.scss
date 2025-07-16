@@ -7,6 +7,10 @@
 	align-items: center;
 	justify-content: center;
 	position: relative;
+
+	svg {
+		padding: 0;
+	}
 }
 
 .yn-user {
@@ -80,4 +84,12 @@
 	margin: 0 auto;
 	flex-basis: 1.5rem;
 	cursor: pointer;
+}
+
+.yn-error {
+	color: var(--error, #f74949);
+	text-align: left;
+	margin-right: auto;
+	width: auto;
+	font-weight: var(--font-weight-bold, 700);
 }

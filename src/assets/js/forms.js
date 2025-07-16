@@ -749,6 +749,7 @@ const YnfiniteForms = {
 				case '404':
 				case 'error':
 					console.log('404/Error: ', jsonResponse['message'])
+					element.querySelector('.yn-error').textContent = jsonResponse['message']
 					break
 			}
 
@@ -789,11 +790,6 @@ const YnfiniteForms = {
 	setup() {
 		document.addEventListener('DOMContentLoaded', () => {
 			const forms = document.querySelectorAll('[data-ynform=true]')
-
-			const consentTextElements = document.querySelectorAll('.ynfinite-consent-text_v2 :is(a, button)')
-			consentTextElements.forEach((element) => {
-				element.setAttribute('tabindex', '-1')
-			})
 
 			if (forms) {
 				checkDefaultValues()
