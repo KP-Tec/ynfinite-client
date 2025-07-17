@@ -1,64 +1,66 @@
 const YnfiniteConsents = {
 	setup() {
-		const manager = document.getElementById('yn-cookies')
+		window.addEventListener('DOMContentLoaded', () => {
+			const manager = document.getElementById('yn-cookies')
 
-		if (manager) {
-			if (manager.dataset.hideManager !== 'true') {
-				this.ynCheckForConsents()
-			}
+			if (manager) {
+				if (manager.dataset.hideManager !== 'true') {
+					this.ynCheckForConsents()
+				}
 
-			document.getElementById('yn-cookies__allow-all')?.addEventListener('click', (e) => {
-				e.preventDefault()
-				this.ynAcceptAllConsentSettings()
-			})
-
-			document.getElementById('yn-cookies__deny-all')?.addEventListener('click', (e) => {
-				e.preventDefault()
-				this.ynDenyAllConsentSettings()
-			})
-
-			document.getElementById('yn-cookies__show-configuration')?.addEventListener('click', (e) => {
-				e.preventDefault()
-				this.ynConsentShowPage('configuration')
-			})
-
-			document.getElementById('yn-cookies__show-information')?.addEventListener('click', (e) => {
-				e.preventDefault()
-				this.ynConsentShowPage('information')
-			})
-
-			document.getElementById('yn-cookies__set-cookies')?.addEventListener('click', (e) => {
-				e.preventDefault()
-				this.ynSetConsentSettings()
-			})
-
-			document.querySelectorAll('.toggleConsent').forEach(function (item) {
-				item.addEventListener('click', function () {
-					item.querySelector('[id="' + item.getAttribute('for') + '"]').checked = !item.querySelector('[id="' + item.getAttribute('for') + '"]').checked
+				document.getElementById('yn-cookies__allow-all')?.addEventListener('click', (e) => {
+					e.preventDefault()
+					this.ynAcceptAllConsentSettings()
 				})
-			})
 
-			const changeSelectionButton = document.querySelectorAll('.yn-cookies__change-selection').length >= 1 ? document.querySelectorAll('.yn-cookies__change-selection') : document.querySelectorAll('#yn-cookies__change-selection')
+				document.getElementById('yn-cookies__deny-all')?.addEventListener('click', (e) => {
+					e.preventDefault()
+					this.ynDenyAllConsentSettings()
+				})
 
-			Array.from(changeSelectionButton).forEach((element) => {
-				element.addEventListener('click', (e) => {
+				document.getElementById('yn-cookies__show-configuration')?.addEventListener('click', (e) => {
 					e.preventDefault()
 					this.ynConsentShowPage('configuration')
-					this.showConsent(true)
 				})
-			})
 
-			const consentButtons = document.querySelectorAll('.yn-cookie-consent--okay')
-
-			for (let i = 0; i < consentButtons.length; i++) {
-				let button = consentButtons[i]
-				button.addEventListener('click', (e) => {
+				document.getElementById('yn-cookies__show-information')?.addEventListener('click', (e) => {
 					e.preventDefault()
-					const id = button.dataset.consentId
-					this.ynAcceptConsent(id)
+					this.ynConsentShowPage('information')
 				})
+
+				document.getElementById('yn-cookies__set-cookies')?.addEventListener('click', (e) => {
+					e.preventDefault()
+					this.ynSetConsentSettings()
+				})
+
+				document.querySelectorAll('.toggleConsent').forEach(function (item) {
+					item.addEventListener('click', function () {
+						item.querySelector('[id="' + item.getAttribute('for') + '"]').checked = !item.querySelector('[id="' + item.getAttribute('for') + '"]').checked
+					})
+				})
+
+				const changeSelectionButton = document.querySelectorAll('.yn-cookies__change-selection').length >= 1 ? document.querySelectorAll('.yn-cookies__change-selection') : document.querySelectorAll('#yn-cookies__change-selection')
+
+				Array.from(changeSelectionButton).forEach((element) => {
+					element.addEventListener('click', (e) => {
+						e.preventDefault()
+						this.ynConsentShowPage('configuration')
+						this.showConsent(true)
+					})
+				})
+
+				const consentButtons = document.querySelectorAll('.yn-cookie-consent--okay')
+
+				for (let i = 0; i < consentButtons.length; i++) {
+					let button = consentButtons[i]
+					button.addEventListener('click', (e) => {
+						e.preventDefault()
+						const id = button.dataset.consentId
+						this.ynAcceptConsent(id)
+					})
+				}
 			}
-		}
+		})
 	},
 
 	showConsent(hideBackButton = false) {
