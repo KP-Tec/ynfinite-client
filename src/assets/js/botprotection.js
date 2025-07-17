@@ -74,36 +74,34 @@ class BlockChain {
 
 const YnfiniteBotProtection = {
 	setup() {
-		document.addEventListener('DOMContentLoaded', () => {
-			const blockchain = new BlockChain()
+		const blockchain = new BlockChain()
 
-			const forms = document.querySelectorAll('form[data-ynform=true][method=post]:not(.yn-no-bot-protection)')
-			if (forms.length === 0) {
-				return
-			}
+		const forms = document.querySelectorAll('form[data-ynform=true][method=post]:not(.yn-no-bot-protection)')
+		if (forms.length === 0) {
+			return
+		}
 
-			forms.forEach((form) => {
-				form.dataset.hasProof = 'false'
-				form.dataset.proofenHash = ''
+		forms.forEach((form) => {
+			form.dataset.hasProof = 'false'
+			form.dataset.proofenHash = ''
 
-				const formSubmitButton = form.querySelector('button[type=submit]')
+			const formSubmitButton = form.querySelector('button[type=submit]')
 
-				form.addEventListener('focusin', function () {
-					if (form.dataset.hasProof === 'false' && !form.dataset.working) {
-						form.dataset.working = true
+			form.addEventListener('focusin', function () {
+				if (form.dataset.hasProof === 'false' && !form.dataset.working) {
+					form.dataset.working = true
 
-						const pos = 'var(--loader-size,16px) + ' + getComputedStyle(formSubmitButton).paddingLeft
-						formSubmitButton.dataset.label = formSubmitButton.textContent
-						formSubmitButton.style.paddingLeft = formSubmitButton.style.paddingLeft = 'calc(' + pos + ')'
-						formSubmitButton.style.setProperty('--yn-loader-pos', 'calc((' + pos + ' - var(--loader-size,16px)) / 2);')
-						formSubmitButton.classList.add('yn-botprotection')
-						formSubmitButton.classList.add('yn-loader')
-						formSubmitButton.textContent = 'Bot-Prüfung'
+					const pos = 'var(--loader-size,16px) + ' + getComputedStyle(formSubmitButton).paddingLeft
+					formSubmitButton.dataset.label = formSubmitButton.textContent
+					formSubmitButton.style.paddingLeft = formSubmitButton.style.paddingLeft = 'calc(' + pos + ')'
+					formSubmitButton.style.setProperty('--yn-loader-pos', 'calc((' + pos + ' - var(--loader-size,16px)) / 2);')
+					formSubmitButton.classList.add('yn-botprotection')
+					formSubmitButton.classList.add('yn-loader')
+					formSubmitButton.textContent = 'Bot-Prüfung'
 
-						const block = blockchain.addBlock(new Block({ form: form }))
-						block.startProofOfWork()
-					}
-				})
+					const block = blockchain.addBlock(new Block({ form: form }))
+					block.startProofOfWork()
+				}
 			})
 		})
 	},

@@ -88,17 +88,6 @@
 
 		</script>
 	{% endif %}
-	{% if form.method == "post" %}
-		<script>
-			(function () {
-				const form = document.querySelector("#form_{{ form.uid }}");
-
-				form.addEventListener("onAsyncChange", function (e) {
-				window.$_yn.forms.showResponse(this, e.detail.response)
-				})
-			})()
-		</script>
-	{% endif %}
 
 	{% if form.method != "get" %}
 		{% if form.events|filter((x) => x.async == false) %}

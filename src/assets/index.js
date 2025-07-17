@@ -9,13 +9,15 @@ import YnfiniteLogin from './js/login'
 import YnfiniteFormSettings from './js/formSettings'
 import YnfiniteLanguageSwitch from './js/languageSwitch'
 
-YnfiniteConsents.setup()
-YnfiniteForms.setup()
-YnfiniteBotProtection.setup()
-YnfiniteAccordions.setup()
-YnfiniteLogin.setup()
-YnfiniteFormSettings.setup()
-YnfiniteLanguageSwitch.setup()
+window.addEventListener('DOMContentLoaded', () => {
+	YnfiniteForms.setup()
+	YnfiniteAccordions.setup()
+	YnfiniteConsents.setup()
+	YnfiniteBotProtection.setup()
+	YnfiniteLogin.setup()
+	YnfiniteFormSettings.setup()
+	YnfiniteLanguageSwitch.setup()
+})
 
 window.$_yn = {
 	forms: {

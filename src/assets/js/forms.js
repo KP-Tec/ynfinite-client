@@ -714,8 +714,6 @@ const YnfiniteForms = {
 
 		const action = element.getAttribute('action')
 
-		// const data = new URLSearchParams();
-
 		const params = new URLSearchParams(window.location.search)
 		const perPage = params.get('__yPerPage')
 
@@ -788,89 +786,96 @@ const YnfiniteForms = {
 	},
 
 	setup() {
-		document.addEventListener('DOMContentLoaded', () => {
-			const forms = document.querySelectorAll('[data-ynform=true]')
+		const forms = document.querySelectorAll('[data-ynform=true]')
 
-			if (forms) {
-				checkDefaultValues()
-				botDCheck()
-				localStorageCheck()
-				setFocusEvent()
-				checkHumanMovement()
-				setHoneypotClickEvent()
-				checkScreen()
-				setupTypingAnalysis()
-				checkBrowserEnvironment()
-				trackMovements()
-				dontFocusHoneypots()
+		if (forms) {
+			checkDefaultValues()
+			botDCheck()
+			localStorageCheck()
+			setFocusEvent()
+			checkHumanMovement()
+			setHoneypotClickEvent()
+			checkScreen()
+			setupTypingAnalysis()
+			checkBrowserEnvironment()
+			trackMovements()
+			dontFocusHoneypots()
+		}
+
+		forms.forEach((form) => {
+			if (form.method === 'post') {
+				// Add onAsyncChange event listener for async UI update
+				form.addEventListener('onAsyncChange', function (e) {
+					if (window.$_yn && window.$_yn.forms && typeof window.$_yn.forms.showResponse === 'function') {
+						window.$_yn.forms.showResponse(this, e.detail.response)
+					}
+				})
 			}
 
-			forms.forEach((form) => {
-				if (form.hasAttribute('data-onchange')) {
-					this.addChangeEvent(form)
-					form.addEventListener('submit', async (e) => e.preventDefault()) // if we dont remove the submit event here, the second time you send the same formdata a submit will be triggert
-				}
+			if (form.hasAttribute('data-onchange')) {
+				this.addChangeEvent(form)
+				form.addEventListener('submit', async (e) => e.preventDefault()) // if we dont remove the submit event here, the second time you send the same formdata a submit will be triggert
+			}
 
-				if (form.hasAttribute('data-onsubmit') || !form.hasAttribute('data-onchange')) {
-					this.addSubmitEvent(form)
-				}
+			if (form.hasAttribute('data-onsubmit') || !form.hasAttribute('data-onchange')) {
+				this.addSubmitEvent(form)
+			}
 
-				// Handle reset action
-				const resetButton = form.querySelector("button[type='reset']")
-				if (resetButton) {
-					resetButton.addEventListener('click', async () => {
-						const formInputElements = form.querySelectorAll('select, input')
+			// Handle reset action
+			const resetButton = form.querySelector("button[type='reset']")
+			if (resetButton) {
+				resetButton.addEventListener('click', async () => {
+					const formInputElements = form.querySelectorAll('select, input')
 
-						for (var i = 0; i < formInputElements.length; i++) {
-							formInputElements[i].value = ''
-						}
+					for (var i = 0; i < formInputElements.length; i++) {
+						formInputElements[i].value = ''
+					}
 
-						await this.submitForm(form)
+					await this.submitForm(form)
+				})
+			}
+
+			// Handle new form
+
+			const newFormLink = form.querySelector('.yn-form-response__new-form')
+			if (newFormLink) {
+				newFormLink.addEventListener('click', (e) => {
+					e.preventDefault()
+					this.resetForm(form)
+
+					newFormLink.closest('form').querySelector('.form-content').classList.remove('inactive')
+					newFormLink.closest('.yn-form-response').classList.remove('active')
+				})
+			}
+
+			// Handle list fields
+			const listFields = form.querySelectorAll('.yn-listForm-wrapper')
+
+			listFields.forEach((listField) => {
+				const newAction = listField.querySelector('.yn-listForm-actions-new')
+
+				const rowTemplate = listField.querySelector('#listField_' + listField.dataset.ynformalias)
+
+				const dataContainer = listField.querySelector('.yn-listForm-data')
+
+				newAction.addEventListener('click', (e) => {
+					e.preventDefault()
+					const newRow = rowTemplate.content.cloneNode(true)
+					newRow.className = 'yn-listForm-row'
+
+					const deleteButton = newRow.querySelector('.yn-listForm-actions-delete')
+
+					const fields = newRow.querySelectorAll('[data-ynfield=true]')
+					fields.forEach((f) => {
+						f.setAttribute('name', f.name.replace('::count::', dataContainer.childElementCount))
 					})
-				}
 
-				// Handle new form
+					dataContainer.appendChild(newRow)
 
-				const newFormLink = form.querySelector('.yn-form-response__new-form')
-				if (newFormLink) {
-					newFormLink.addEventListener('click', (e) => {
+					deleteButton.addEventListener('click', (e) => {
 						e.preventDefault()
-						this.resetForm(form)
-
-						newFormLink.closest('form').querySelector('.form-content').classList.remove('inactive')
-						newFormLink.closest('.yn-form-response').classList.remove('active')
-					})
-				}
-
-				// Handle list fields
-				const listFields = form.querySelectorAll('.yn-listForm-wrapper')
-
-				listFields.forEach((listField) => {
-					const newAction = listField.querySelector('.yn-listForm-actions-new')
-
-					const rowTemplate = listField.querySelector('#listField_' + listField.dataset.ynformalias)
-
-					const dataContainer = listField.querySelector('.yn-listForm-data')
-
-					newAction.addEventListener('click', (e) => {
-						e.preventDefault()
-						const newRow = rowTemplate.content.cloneNode(true)
-						newRow.className = 'yn-listForm-row'
-
-						const deleteButton = newRow.querySelector('.yn-listForm-actions-delete')
-
-						const fields = newRow.querySelectorAll('[data-ynfield=true]')
-						fields.forEach((f) => {
-							f.setAttribute('name', f.name.replace('::count::', dataContainer.childElementCount))
-						})
-
-						dataContainer.appendChild(newRow)
-
-						deleteButton.addEventListener('click', (e) => {
-							e.preventDefault()
-							const row = e.target.closest('.yn-listForm-row')
-							dataContainer.removeChild(row)
-						})
+						const row = e.target.closest('.yn-listForm-row')
+						dataContainer.removeChild(row)
 					})
 				})
 			})

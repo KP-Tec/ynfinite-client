@@ -10,7 +10,7 @@
 		"@fingerprintjs/botd": "^1.9.1",
 		"@justinribeiro/lite-youtube": "^1.7.1",
 		"@slightlyoff/lite-vimeo": "^0.1.2",
-		"accordion-js": "^3.4.0",
+		"accordion-js": "^3.4.1",
 		"crypto-js": "^4.2.0",
 		"dayjs": "^1.11.13",
 		"flatpickr": "^4.6.13"
