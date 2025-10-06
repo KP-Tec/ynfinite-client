@@ -1,0 +1,138 @@
+<!-- Hot Reload Development Script -->
+<!-- Include this snippet in your PHP templates during development -->
+<script>
+	;(function () {
+		// Only enable hot reload in development
+		if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+			return
+		}
+
+		console.log('🔥 Hot Reload enabled')
+
+		let reloadTimeout = null
+		let isReloading = false
+		const ws = new WebSocket('ws://localhost:3102')
+
+		ws.onopen = function () {
+			console.log('🔗 Connected to hot reload server')
+		}
+
+		ws.onmessage = function (event) {
+			if (isReloading) return // Prevent multiple reloads
+
+			const data = JSON.parse(event.data)
+			console.log('🔥 Hot reload:', data.type, data.file)
+
+			// Clear any pending reload
+			if (reloadTimeout) {
+				clearTimeout(reloadTimeout)
+			}
+
+			switch (data.type) {
+				case 'css':
+					reloadCSS()
+					showHotReloadNotification('🎨 CSS updated', 'success')
+					break
+				case 'js':
+					isReloading = true
+					showHotReloadNotification('📦 JavaScript updated - reloading...', 'info')
+					// Debounce reload to prevent multiple triggers
+					reloadTimeout = setTimeout(() => {
+						window.location.reload()
+					}, 300)
+					break
+				case 'template':
+				case 'php':
+					isReloading = true
+					showHotReloadNotification('🔄 Template updated - reloading...', 'info')
+					// Debounce reload to prevent multiple triggers
+					reloadTimeout = setTimeout(() => {
+						window.location.reload()
+					}, 300)
+					break
+				default:
+					console.log('Unknown reload type:', data.type)
+			}
+		}
+
+		ws.onclose = function () {
+			console.log('🔌 Disconnected from hot reload server')
+		}
+
+		ws.onerror = function (error) {
+			console.log('❌ WebSocket error:', error)
+		}
+
+		function reloadCSS() {
+			const links = document.querySelectorAll('link[rel="stylesheet"]')
+			const timestamp = Date.now()
+
+			links.forEach((link, index) => {
+				// Stagger CSS reloads slightly to avoid flashing
+				setTimeout(() => {
+					const href = link.href.split('?')[0]
+					link.href = href + '?v=' + timestamp
+				}, index * 50)
+			})
+		}
+
+		function showHotReloadNotification(message, type = 'success') {
+			// Remove existing notification
+			const existing = document.getElementById('hot-reload-notification')
+			if (existing) {
+				existing.remove()
+			}
+
+			const notification = document.createElement('div')
+			notification.id = 'hot-reload-notification'
+
+			const colors = {
+				success: '#4CAF50',
+				info: '#2196F3',
+				warning: '#FF9800',
+				error: '#f44336',
+			}
+
+			notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${colors[type] || colors.success};
+                color: white;
+                padding: 12px 16px;
+                border-radius: 8px;
+                z-index: 999999;
+                font-size: 14px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                transform: translateX(100%);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                opacity: 0;
+                pointer-events: none;
+            `
+
+			notification.innerHTML = message
+
+			document.body.appendChild(notification)
+
+			// Trigger animation
+			requestAnimationFrame(() => {
+				notification.style.transform = 'translateX(0)'
+				notification.style.opacity = '1'
+			})
+
+			// Auto-hide after 2.5 seconds
+			setTimeout(() => {
+				if (notification && notification.parentNode) {
+					notification.style.transform = 'translateX(100%)'
+					notification.style.opacity = '0'
+					setTimeout(() => {
+						if (notification.parentNode) {
+							notification.remove()
+						}
+					}, 300)
+				}
+			}, 2500)
+		}
+	})()
+</script>

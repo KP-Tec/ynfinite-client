@@ -544,10 +544,11 @@ class TwigUtils
     }
 
     public function teaserHeading($context, $article, $options = []) {
-        if($article){
-            $heading = array_filter($article, function ($i) {return ($i['type'] == 'headline');});
-            if($heading){
-                return($heading[0]['value']);
+        if($article && is_array($article)){
+            $heading = array_filter($article, function ($i) {return is_array($i) && isset($i['type']) && ($i['type'] == 'headline');});
+            if($heading && count($heading) > 0){
+                $firstHeading = reset($heading);
+                return($firstHeading['value'] ?? '');
             }
         }
         return "";

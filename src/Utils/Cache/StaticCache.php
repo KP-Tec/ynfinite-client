@@ -46,7 +46,8 @@ class StaticCache
 
     public static function createRequestCacheKey($pageOnly = false)
     {
-        $requestUrlParts = explode("?", $_SERVER["HTTP_REFERER"]);
+        $referer = $_SERVER["HTTP_REFERER"] ?? $_SERVER["REQUEST_URI"] ?? "/";
+        $requestUrlParts = explode("?", $referer);
 
         $url = $requestUrlParts[0];
 
