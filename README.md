@@ -130,6 +130,10 @@ Modify these paths in `build-css.mjs`:
 
 -   Line 19: Enter Css files names that needs to compile
 
+Modify the import of the main JS file
+
+-   from text/javascript into module
+
 ### Launch
 
 Follow the setup instructions above to start development.
