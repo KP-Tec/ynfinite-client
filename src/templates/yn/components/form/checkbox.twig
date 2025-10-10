@@ -1,4 +1,4 @@
-{% if field.items|length > 1 %}
+{% if field.options|length > 1 %}
 <div class="widget-group widget-group--checkbox">
 {% endif %}
 	<p class="widget-group-header">{{ field.label }}
@@ -15,7 +15,7 @@
 				aria-label="{{ field.name ?: field.label ?: field.alias }}"
 				id="{{form.alias}}_{{ field.alias }}_{{ option._id }}"
 				{% if field.value == option.value or option.selected %}checked{% endif %} 
-				{% if field.required %}required{% endif %}
+				{% if field.required and field.options|length == 1 %}required{% endif %}
 				{{ field.attributes|raw }}
 			>
 			<label class="widget__label" for="{{form.alias}}_{{ field.alias }}_{{ option._id }}">
@@ -23,6 +23,14 @@
 			</label>
 		</div>
 	{% endfor %}
-{% if field.items|length > 1 %}
+	{% if field.required and field.options|length > 1 %}
+		<input 
+			id="{{form.alias}}_{{ field.alias }}_validator"
+			type="checkbox" 
+			required
+			style="opacity: 0; position: absolute; top: 1rem; pointer-events: none;" 
+		>
+	{% endif %}
+{% if field.options|length > 1 %}
 	</div>
 {% endif %}

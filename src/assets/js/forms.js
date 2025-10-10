@@ -785,10 +785,42 @@ const YnfiniteForms = {
 		})
 	},
 
+	setupCheckboxValidation() {
+		const forms = document.querySelectorAll('[data-ynform=true]')
+
+		forms.forEach((form) => {
+			const checkboxValidators = form.querySelectorAll('input[id$="_validator"][type="checkbox"]')
+
+			checkboxValidators.forEach((validator) => {
+				const container = validator.parentElement
+				const checkboxes = container.querySelectorAll('input[type="checkbox"]:not([id$="_validator"])')
+
+				const updateValidatorState = () => {
+					const hasSelection = Array.from(checkboxes).some((cb) => cb.checked)
+
+					if (hasSelection) {
+						validator.checked = true
+						validator.setCustomValidity('')
+					} else {
+						validator.checked = false
+						validator.setCustomValidity('Please select at least one option.')
+					}
+				}
+
+				checkboxes.forEach((checkbox) => {
+					checkbox.addEventListener('change', updateValidatorState)
+				})
+
+				updateValidatorState()
+			})
+		})
+	},
+
 	setup() {
 		const forms = document.querySelectorAll('[data-ynform=true]')
 
 		if (forms) {
+			this.setupCheckboxValidation()
 			checkDefaultValues()
 			botDCheck()
 			localStorageCheck()
