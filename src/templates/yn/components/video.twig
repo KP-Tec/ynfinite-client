@@ -100,14 +100,14 @@
                     }
 
                     const trackVideo = (video) => {
-                        const videoEvents = window.videoEvents
+                        const videoEvents = window._yn_videoEvents
                         if(videoEvents){
                             if(debug){
                                 const eventName = 'video'
                                 console.log('Vimeo Video - ', eventName, video)
                             }
 
-                            window.videoEvents.forEach((script) => script(video));
+                            window._yn_videoEvents.forEach((script) => script(video));
                         }
                     }
 
