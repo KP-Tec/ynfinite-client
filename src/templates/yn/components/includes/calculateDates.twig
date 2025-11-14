@@ -23,7 +23,7 @@
             },
             disabledDays: JSON.parse('{{ field.restrictions.disabledDays|json_encode|raw }}'),
             // disabledHours: JSON.parse('{{ field.restrictions.disabledHours|json_encode|raw }}'),
-            value: '{{ field.defaultValue }}' ? dayjs('{{ field.defaultValue }}').toISOString() : calcDate('{{ field.restrictions.from.unit }}', '{{ field.restrictions.from.value }}'),
+            value: '{{ field.value|default(addValue|default(field.defaultValue)) }}' ? dayjs('{{ field.value|default(addValue|default(field.defaultValue)) }}').toISOString() : calcDate('{{ field.restrictions.from.unit }}', '{{ field.restrictions.from.value }}'),
         }
 
         // ================================================== DEBUGGING ==================================================
