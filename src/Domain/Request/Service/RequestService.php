@@ -111,6 +111,10 @@ class RequestService {
     protected function request($path, $service, $body = array(), $json = true)
     {
         $this->curlHandler->setUrl($service, $path);
+
+        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            $this->curlHandler->addHeader("Accept-Language", $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        }
         
         $response = $this->curlHandler->exec($body);  
         $body = $response["body"];
