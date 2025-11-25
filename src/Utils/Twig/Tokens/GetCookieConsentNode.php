@@ -9,7 +9,7 @@ class GetCookieConsentNode extends \Twig\Node\Node {
     public $active;
     public $cookie;
 
-    public function __construct(\Twig\Node\Node $tests, int $lineno, $twig, $cookie = array())
+    public function __construct($tests, int $lineno, $twig, $cookie = array())
     {
         $nodes = ['tests' => $tests];
 
@@ -20,7 +20,7 @@ class GetCookieConsentNode extends \Twig\Node\Node {
         parent::__construct($nodes, [], $lineno);
     }
     
-    public function compile(\Twig\Compiler $compiler)
+    public function compile(\Twig\Compiler $compiler): void
     {
         $compiler->addDebugInfo($this);
         if($this->active) {
@@ -30,9 +30,13 @@ class GetCookieConsentNode extends \Twig\Node\Node {
             
             // $cookieConsent = $this->twig->render("yn/module/cookieManager/consent.twig", array("cookie" => $this->cookie));
             
-            $compiler->write('$this->loadTemplate(\'yn/module/consentManager/consent.twig\')->display(')
-            ->repr(array("cookie" => $this->cookie))
-            ->write(');');
+            $compiler->write('yield from $this->loadTemplate(\'yn/module/consentManager/consent.twig\', ');
+            $compiler->repr($this->getTemplateName());
+            $compiler->write(', ');
+            $compiler->repr($this->getTemplateLine());
+            $compiler->write(')->unwrap()->yield(');
+            $compiler->repr(array("cookie" => $this->cookie));
+            $compiler->write(');');
         }
     }
 }

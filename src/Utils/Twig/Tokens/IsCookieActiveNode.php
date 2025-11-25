@@ -6,7 +6,7 @@ namespace App\Utils\Twig\Tokens;
 class IsCookieActiveNode extends \Twig\Node\Node {
     public $cookie;
     
-    public function __construct(\Twig\Node\Node $tests, int $lineno, $cookie = null)
+    public function __construct($tests, int $lineno, $cookie = null)
     {
         $nodes = ['tests' => $tests];
 
