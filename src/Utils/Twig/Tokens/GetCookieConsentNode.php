@@ -2,14 +2,14 @@
 
 namespace App\Utils\Twig\Tokens;
 
-#[YieldReady]
+#[\Twig\Attribute\YieldReady]
 class GetCookieConsentNode extends \Twig\Node\Node {
 
     public $twig;
     public $active;
     public $cookie;
 
-    public function __construct(\Twig\Node\Node $tests, int $lineno, string $tag = null, $twig, $cookie = array())
+    public function __construct(\Twig\Node\Node $tests, int $lineno, $twig, $cookie = array())
     {
         $nodes = ['tests' => $tests];
 
@@ -17,7 +17,7 @@ class GetCookieConsentNode extends \Twig\Node\Node {
         $this->cookie = $cookie["cookie"];
         $this->twig = $twig;
 
-        parent::__construct($nodes, [], $lineno, $tag);
+        parent::__construct($nodes, [], $lineno);
     }
     
     public function compile(\Twig\Compiler $compiler)

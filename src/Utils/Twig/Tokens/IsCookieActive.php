@@ -62,7 +62,7 @@ class IsCookieActive extends \Twig\TokenParser\AbstractTokenParser
 
         $isActiveCookie = $this->findCookie($name);
 
-        return new IsCookieActiveNode(new \Twig\Node\Node($tests), $lineno, $this->getTag(), $isActiveCookie);
+        return new IsCookieActiveNode(new \Twig\Node\Nodes($tests), $lineno, $isActiveCookie);
     }
 
     public function getTag()

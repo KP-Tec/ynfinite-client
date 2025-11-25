@@ -48,7 +48,7 @@ class IsScriptActive extends \Twig\TokenParser\AbstractTokenParser
 
         $isScriptActive = $this->findScript($name);
 
-        return new IsScriptActiveNode(new \Twig\Node\Node($tests), $lineno, $this->getTag(), $isScriptActive);
+        return new IsScriptActiveNode(new \Twig\Node\Nodes($tests), $lineno, $isScriptActive);
     }
 
     public function getTag()

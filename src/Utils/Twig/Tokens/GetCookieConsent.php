@@ -63,7 +63,7 @@ class GetCookieConsent extends \Twig\TokenParser\AbstractTokenParser
         $stream->expect(/* Token::BLOCK_END_TYPE */ 3); 
         $foundCookie = $this->findCookie($name);
 
-        return new GetCookieConsentNode(new \Twig\Node\Node($tests), $lineno, $this->getTag(), $this->twig, $foundCookie);
+        return new GetCookieConsentNode(new \Twig\Node\Nodes($tests), $lineno, $this->twig, $foundCookie);
     }
 
     public function getTag()

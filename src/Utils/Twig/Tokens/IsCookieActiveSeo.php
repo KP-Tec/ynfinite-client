@@ -40,7 +40,7 @@ class IsCookieActiveSeo extends \Twig\TokenParser\AbstractTokenParser
 
         $stream->expect(\Twig\Token::BLOCK_END_TYPE);
 
-        return new IsCookieActiveSeoNode(new \Twig\Node\Node($tests), $token->getLine(), $this->getTag());
+        return new IsCookieActiveSeoNode(new \Twig\Node\Nodes($tests), $token->getLine());
     }
 
     public function getTag()
