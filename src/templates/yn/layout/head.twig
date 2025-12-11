@@ -2,14 +2,14 @@
 	{% set title	= _ynfinite.content.settings.seo.title ?: _ynfinite.page.meta.title %}
 
 	{% if _ynfinite.pagination.currentPage > 1 %}
-		{% set title = title ~ ' - ' ~ "yn_listingsPagePrefix"|trans ~ ' ' ~ _ynfinite.pagination.currentPage %}
+		{% set title = title ~ ' - ' ~ ("yn_listingsPagePrefix"|trans) ~ ' ' ~ _ynfinite.pagination.currentPage %}
 	{% endif %}
 {% endif %}
 
 {% set _yn_global_sitename = _yn_global_sitename ?: global_seo_ending ?: _ynfinite.site.meta.title %}
 {% set seoTitle	= title ?: _ynfinite.site.meta.title %}
 {% if _yn_global_sitename|length > 0 and title|length > 0 and _yn_global_sitename|lower not in title|lower and hideTitle|default(false) != true %}
-	{% set seoTitle = title|raw ~ ' - ' ~ _yn_global_sitename|raw %}
+	{% set seoTitle = (title|raw) ~ ' - ' ~ (_yn_global_sitename|raw) %}
 {% endif %}
 
 <!-- Seo Meta Tags -->
