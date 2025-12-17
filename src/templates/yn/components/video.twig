@@ -1,4 +1,5 @@
 {% set randomKey = random(0, 999999999) %}
+{% set aspectRatio = orientation|default('horizontal') == 'vertical' ? '9/16' : '16/9' %}
 
 {% if '?' in id %}
     {% set id = id|split('?')[0] %}
@@ -12,7 +13,7 @@
         {% endif %}
 
         {# sddefault because maxresdefault is sometimes empty #}
-        <div class="yn-video" id="yn-video-youtube-{{randomKey}}" style="background-image: url('https://i.ytimg.com/vi/{{ id }}/sddefault.jpg'); aspect-ratio: 16/9; width: 100%; height: auto; background-size: cover; background-position: center;"></div>
+        <div class="yn-video" id="yn-video-youtube-{{randomKey}}" style="background-image: url('https://i.ytimg.com/vi/{{ id }}/sddefault.jpg'); aspect-ratio: {{ aspectRatio }}; width: 100%; height: auto; background-size: cover; background-position: center;"></div>
         <script>
             window.addEventListener('load', () => {
                 if (!window.addedScripts.includes('video--youtube')){
@@ -27,7 +28,6 @@
                     if(videoEvents){
                         const video = {
                             title: event.target.videoTitle,
-                            ariaLabel: event.target.videoTitle,
                             url: event.target.getVideoUrl(),
                             state: event.target.getPlayerState(),
                             percent: Math.round(event.target.getCurrentTime() / event.target.getDuration() * 100),
@@ -89,7 +89,7 @@
         </script>
 
     {% elseif provider == "vimeo" %}
-            <div class="yn-video" id="yn-video-vimeo-{{randomKey}}" data-vimeo-id-temp="{{id}}" {% if height %}data-vimeo-height="{{ height }}"{% endif %} {% if width %}data-vimeo-width="{{ width }}"{% endif %} style="background-image: url('https://i.vimeocdn.com/video/{{ id }}.webp?mw=1280&mh=720&q=70'); aspect-ratio: 16/9; width: 100%; height: auto; background-size: cover"></div>
+            <div class="yn-video" id="yn-video-vimeo-{{randomKey}}" data-vimeo-id-temp="{{id}}" {% if height %}data-vimeo-height="{{ height }}"{% endif %} {% if width %}data-vimeo-width="{{ width }}"{% endif %} style="background-image: url('https://i.vimeocdn.com/video/{{ id }}.webp?mw=1280&mh=720&q=70'); aspect-ratio: {{ aspectRatio }}; width: 100%; height: auto; background-size: cover"></div>
             <script>
                 window.addEventListener('load', () => {
                     if (!window.addedScripts.includes('video--vimeo')){
@@ -100,14 +100,14 @@
                     }
 
                     const trackVideo = (video) => {
-                        const videoEvents = window._yn_videoEvents
+                        const videoEvents = window.videoEvents
                         if(videoEvents){
                             if(debug){
                                 const eventName = 'video'
                                 console.log('Vimeo Video - ', eventName, video)
                             }
 
-                            window._yn_videoEvents.forEach((script) => script(video));
+                            window.videoEvents.forEach((script) => script(video));
                         }
                     }
 
