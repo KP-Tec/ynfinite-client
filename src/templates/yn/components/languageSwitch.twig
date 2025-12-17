@@ -43,6 +43,7 @@
 
                  <a href="{{ url }}" title="{{ key }}" class="yn-languageSwitch-link {% if active == key %}yn-languageSwitch-active{% endif %}">
                     <img class="yn-languageSwitch-flag" src="/assets/vendor/ynfinite/flags/{{ flagKey }}.svg" alt="{{ key }}" />
+                    <span class="yn-languageSwitch-name">{{ ('yn_lang_' ~ key)|trans }}</span>
                 </a>
             {% endfor %}
         </div>
